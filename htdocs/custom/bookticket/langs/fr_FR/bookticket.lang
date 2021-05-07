@@ -20,7 +20,7 @@
 # Module label 'ModuleBookTicketName'
 ModuleBookTicketName = BookTicket
 # Module description 'ModuleBookTicketDesc'
-ModuleBookTicketDesc = Description de BookTicket
+ModuleBookTicketDesc = Module de gestion et de vente de billet de voyage maritime.
 
 #
 # Page d'administration
