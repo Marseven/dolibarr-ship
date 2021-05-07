@@ -81,7 +81,7 @@ print load_fiche_titre($langs->trans("BookTicketArea"), '', 'bookticket.png@book
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
-/* BEGIN MODULEBUILDER DRAFT MYOBJECT
+/* BEGIN MODULEBUILDER DRAFT MYOBJECT*/
 // Draft MyObject
 if (! empty($conf->bookticket->enabled) && $user->rights->bookticket->read)
 {
@@ -153,7 +153,7 @@ if (! empty($conf->bookticket->enabled) && $user->rights->bookticket->read)
 		dol_print_error($db);
 	}
 }
-END MODULEBUILDER DRAFT MYOBJECT */
+/*END MODULEBUILDER DRAFT MYOBJECT */
 
 
 print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
@@ -162,7 +162,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 $NBMAX = $conf->global->MAIN_SIZE_SHORTLIST_LIMIT;
 $max = $conf->global->MAIN_SIZE_SHORTLIST_LIMIT;
 
-/* BEGIN MODULEBUILDER LASTMODIFIED MYOBJECT
+/* BEGIN MODULEBUILDER LASTMODIFIED MYOBJECT*/
 // Last modified myobject
 if (! empty($conf->bookticket->enabled) && $user->rights->bookticket->read)
 {
@@ -215,7 +215,7 @@ if (! empty($conf->bookticket->enabled) && $user->rights->bookticket->read)
 		print "</table><br>";
 	}
 }
-*/
+
 
 print '</div></div></div>';
 
