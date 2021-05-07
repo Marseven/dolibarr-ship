@@ -32,6 +32,7 @@ BOOKTICKET_MYPARAM1 = My param 1
 BOOKTICKET_MYPARAM1Tooltip = My param 1 tooltip
 BOOKTICKET_MYPARAM2=My param 2
 BOOKTICKET_MYPARAM2Tooltip=My param 2 tooltip
+BookTicketArea = Travel Ticket Management and Sale Area
 
 
 #

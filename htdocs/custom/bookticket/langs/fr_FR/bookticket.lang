@@ -28,6 +28,7 @@ ModuleBookTicketDesc = Description de BookTicket
 BookTicketSetup = Configuration du module BookTicket
 Settings = Réglages
 BookTicketSetupPage = Page de configuration du module BookTicket
+BookTicketArea = Espace de Gestion et Vente de Billet de voyage
 
 #
 # Page À propos
