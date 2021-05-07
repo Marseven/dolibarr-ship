@@ -1,5 +1,5 @@
 -- ===========================================================================
--- Copyright (C) 2008 Author <email@author.com>
+-- Copyright (C) 2021 Mebodo Aristide <mebodoaristide@gmail.com>
 -- 
 -- This program is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -15,6 +15,4 @@
 -- along with this program. If not, see <http://www.gnu.org/licenses/>.
 -- ===========================================================================
 
-ALTER TABLE llx_matable ADD UNIQUE uk_matable_field(field_one, field_two);
-
-ALTER TABLE llx_matable ADD CONSTRAINT fk_matable_fk_field FOREIGN KEY (fk_field) REFERENCES llx_matablepere (rowid);
+ALTER TABLE llx_travel ADD CONSTRAINT fk_travel_fk_ship FOREIGN KEY (fk_ship) REFERENCES llx_ship (rowid);

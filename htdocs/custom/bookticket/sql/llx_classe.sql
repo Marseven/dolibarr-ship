@@ -1,7 +1,5 @@
 -- ============================================================================
--- Copyright (C) 2004-2006  Laurent Destailleur <eldy@users.sourceforge.net>
--- Copyright (C) 2014       Juanjo Menent       <jmenent@2byte.es>
--- Copyright (C) 2016-2020  Alexandre Spangaro  <aspangaro@open-dsi.fr>
+-- Copyright (C) 2021 Mebodo Aristide <mebodoaristide@gmail.com>
 --
 -- This program is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -16,26 +14,26 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program. If not, see <https://www.gnu.org/licenses/>.
 --
--- Table of 'accounts' for accountancy expert module
+-- Table of 'classe' for accountancy expert module
 -- ============================================================================
 
-create table llx_accounting_account
+create table llx_classe
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
-  entity                    integer DEFAULT 1 NOT NULL,
-  datec                     datetime,
-  tms                       timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  fk_pcg_version            varchar(32)  NOT NULL,			  -- Chart system
-  pcg_type                  varchar(20)  NOT NULL,			  -- First part of Key for predefined groups
-  account_number            varchar(32)  NOT NULL,
-  account_parent            integer DEFAULT 0,                -- Hierarchic parent.
+  code                      integer DEFAULT 1 NOT NULL,
   label                     varchar(255) NOT NULL,
-  labelshort				varchar(255) DEFAULT NULL,
+  labelshort				        varchar(255) DEFAULT NULL,
+  prix_standard				      integer DEFAULT NULL,
+  prix_enfant				        integer DEFAULT NULL,
+  prix_enf_stand				    integer DEFAULT NULL,
+  kilo_bagage				        integer DEFAULT NULL,
+  entity                    integer default 1                    
+  date_creation             datetime                    
+  tms                       timestamp                   
+  import_key                varchar(32)                 
+  status                    smallint 
   fk_accounting_category    integer      DEFAULT 0,			  -- ID of personalized group for report
   fk_user_author            integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
   active                    tinyint      DEFAULT 1  NOT NULL,
-  reconcilable				tinyint      DEFAULT 0  NOT NULL,
-  import_key                varchar(14),
-  extraparams               varchar(255)                      -- for other parameters with json format
 )ENGINE=innodb;
