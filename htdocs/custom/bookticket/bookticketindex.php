@@ -78,7 +78,7 @@ llxHeader("", $langs->trans("BookTicketArea"));
 
 print load_fiche_titre($langs->trans("BookTicketArea"), '', 'bookticket.png@bookticket');
 
-print '<div class="fichecenter"><div class="fichethirdleft">testetetetetetetet';
+print '<div class="fichecenter"><div class="fichethirdleft">Ici sera le siege de l\'application';
 
 
 /* BEGIN MODULEBUILDER DRAFT MYOBJECT*/
