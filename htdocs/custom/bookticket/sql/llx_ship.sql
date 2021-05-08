@@ -20,7 +20,7 @@
 create table llx_ship
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
-  code                      integer DEFAULT 1 NOT NULL,
+  code                      varchar(128) DEFAULT 0 NOT NULL,
   label                     varchar(255) NOT NULL,
   labelshort				        varchar(255) DEFAULT NULL,
   nbre_place				        integer DEFAULT NULL,

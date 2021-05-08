@@ -18,7 +18,7 @@
 
 /**
  * \file        htdocs/modulebuilder/template/class/passenger.class.php
- * \ingroup     mymodule
+ * \ingroup     bookticket
  * \brief       This file is a CRUD class file for Passenger (Create/Read/Update/Delete)
  */
 
@@ -35,7 +35,7 @@ class Passenger extends CommonObject
 	/**
 	 * @var string ID of module.
 	 */
-	public $module = 'mymodule';
+	public $module = 'bookticket';
 
 	/**
 	 * @var string ID to identify managed object.
@@ -45,7 +45,7 @@ class Passenger extends CommonObject
 	/**
 	 * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.
 	 */
-	public $table_element = 'mymodule_passenger';
+	public $table_element = 'bookticket_passenger';
 
 	/**
 	 * @var int  Does this object support multicompany module ?
@@ -61,7 +61,7 @@ class Passenger extends CommonObject
 	/**
 	 * @var string String with name of icon for passenger. Must be the part after the 'object_' into object_passenger.png
 	 */
-	public $picto = 'passenger@mymodule';
+	public $picto = 'passenger@bookticket';
 
 
 	const STATUS_DRAFT = 0;
@@ -101,25 +101,18 @@ class Passenger extends CommonObject
 	 */
 	public $fields = array(
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
-		'ref'           => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
+		'nom'         => array('type'=>'varchar(255)', 'label'=>'Nom', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'prenom'         => array('type'=>'varchar(255)', 'label'=>'Prenom', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'adresse'         => array('type'=>'varchar(255)', 'label'=>'Adresse', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'telephone'         => array('type'=>'varchar(255)', 'label'=>'Téléphone', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'email'         => array('type'=>'varchar(255)', 'label'=>'Email', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'age'           => array('type'=>'integer', 'label'=>'Age', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
 		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'label'         => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'amount'        => array('type'=>'price', 'label'=>'Amount', 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
-		'qty'           => array('type'=>'real', 'label'=>'Qty', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
-		'fk_soc' 		=> array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'picto'=>'company', 'label'=>'ThirdParty', 'visible'=> 1, 'enabled'=>1, 'position'=>50, 'notnull'=>-1, 'index'=>1, 'help'=>'LinkToThirparty'),
-		'fk_project'    => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'picto'=>'project', 'enabled'=>1, 'visible'=>-1, 'position'=>52, 'notnull'=>-1, 'index'=>1),
-		'description'   => array('type'=>'text', 'label'=>'Description', 'enabled'=>1, 'visible'=>3, 'position'=>60),
-		'note_public'   => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>1, 'visible'=>0, 'position'=>61),
-		'note_private'  => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>1, 'visible'=>0, 'position'=>62),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
-		//'date_validation '    =>array('type'=>'datetime',     'label'=>'DateCreation',     'enabled'=>1, 'visible'=>-2, 'position'=>502),
 		'fk_user_creat' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
 		'fk_user_modif' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserModif', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=>-1, 'position'=>511),
-		//'fk_user_valid' => array('type'=>'integer:User:user/class/user.class.php',      'label'=>'UserValidation',        'enabled'=>1, 'visible'=>-1, 'position'=>512),
-		'last_main_doc' => array('type'=>'varchar(255)', 'label'=>'LastMainDoc', 'enabled'=>1, 'visible'=>0, 'notnull'=>0, 'position'=>600),
 		'import_key'    => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>1, 'visible'=>-2, 'notnull'=>-1, 'index'=>0, 'position'=>1000),
-		'model_pdf' 	=> array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>1, 'visible'=>0, 'notnull'=>-1, 'position'=>1010),
 		'status'        => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>1, 'visible'=>1, 'notnull'=> 1, 'default'=>0, 'index'=>1, 'position'=>1000, 'arrayofkeyval'=>array(0=>'Draft', 1=>'Validated', 9=>'Canceled')),
 	);
 
@@ -128,10 +121,6 @@ class Passenger extends CommonObject
 	 */
 	public $rowid;
 
-	/**
-	 * @var string Ref
-	 */
-	public $ref;
 
 	/**
 	 * @var int Entity
@@ -139,14 +128,34 @@ class Passenger extends CommonObject
 	public $entity;
 
 	/**
-	 * @var string label
+	 * @var string nom
 	 */
-	public $label;
+	public $nom;
 
 	/**
-	 * @var string amount
+	 * @var string prenom
 	 */
-	public $amount;
+	public $prenom;
+
+	/**
+	 * @var string adresse
+	 */
+	public $adresse;
+
+	/**
+	 * @var string telephone
+	 */
+	public $telephone;
+
+	/**
+	 * @var string email
+	 */
+	public $email;
+
+	/**
+	 * @var int age
+	 */
+	public $age;
 
 	/**
 	 * @var int Status
@@ -174,50 +183,11 @@ class Passenger extends CommonObject
 	public $fk_user_modif;
 
 	/**
-	 * @var string public $last_main_doc
-	 */
-	public $last_main_doc;
-
-	/**
 	 * @var string import_key
 	 */
 	public $import_key;
 	// END MODULEBUILDER PROPERTIES
 
-
-	// If this object has a subtable with lines
-
-	// /**
-	//  * @var string    Name of subtable line
-	//  */
-	// public $table_element_line = 'mymodule_passengerline';
-
-	// /**
-	//  * @var string    Field with ID of parent key if this object has a parent
-	//  */
-	// public $fk_element = 'fk_passenger';
-
-	// /**
-	//  * @var string    Name of subtable class that manage subtable lines
-	//  */
-	// public $class_element_line = 'passengerline';
-
-	// /**
-	//  * @var array	List of child tables. To test if we can delete object.
-	//  */
-	// protected $childtables = array();
-
-	// /**
-	//  * @var array    List of child tables. To know object to delete on cascade.
-	//  *               If name matches '@ClassNAme:FilePathClass;ParentFkFieldName' it will
-	//  *               call method deleteByParentField(parentId, ParentFkFieldName) to fetch and delete child object
-	//  */
-	// protected $childtablesoncascade = array('mymodule_passengerdet');
-
-	// /**
-	//  * @var passengerLine[]     Array of subtable lines
-	//  */
-	// public $lines = array();
 
 
 
@@ -236,7 +206,7 @@ class Passenger extends CommonObject
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->mymodule->passenger->read) {
+		/*if ($user->rights->bookticket->passenger->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -544,8 +514,8 @@ class Passenger extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->passenger->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->passenger->passenger_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->passenger->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->passenger->passenger_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -586,7 +556,7 @@ class Passenger extends CommonObject
 			if (!$error && !$notrigger)
 			{
 				// Call trigger
-				$result = $this->call_trigger('passenger_VALIDATE', $user);
+				$result = $this->call_trigger('PASSENGER_VALIDATE', $user);
 				if ($result < 0) $error++;
 				// End call triggers
 			}
@@ -608,8 +578,8 @@ class Passenger extends CommonObject
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->mymodule->dir_output.'/passenger/'.$oldref;
-				$dirdest = $conf->mymodule->dir_output.'/passenger/'.$newref;
+				$dirsource = $conf->bookticket->dir_output.'/passenger/'.$oldref;
+				$dirdest = $conf->bookticket->dir_output.'/passenger/'.$newref;
 				if (!$error && file_exists($dirsource))
 				{
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
@@ -618,7 +588,7 @@ class Passenger extends CommonObject
 					{
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->mymodule->dir_output.'/passenger/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/passenger/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry)
 						{
 							$dirsource = $fileentry['name'];
@@ -665,14 +635,14 @@ class Passenger extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'passenger_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'PASSENGER_UNVALIDATE');
 	}
 
 	/**
@@ -690,14 +660,14 @@ class Passenger extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'passenger_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'PASSENGER_CANCEL');
 	}
 
 	/**
@@ -715,14 +685,14 @@ class Passenger extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'passenger_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'PASSENGER_REOPEN');
 	}
 
 	/**
@@ -750,7 +720,7 @@ class Passenger extends CommonObject
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/mymodule/passenger_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/bookticket/passenger_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink')
 		{
@@ -845,7 +815,7 @@ class Passenger extends CommonObject
 		if (empty($this->labelStatus) || empty($this->labelStatusShort))
 		{
 			global $langs;
-			//$langs->load("mymodule@mymodule");
+			//$langs->load("bookticket@bookticket");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
 			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Enabled');
 			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Disabled');
@@ -954,24 +924,24 @@ class Passenger extends CommonObject
 	public function getNextNumRef()
 	{
 		global $langs, $conf;
-		$langs->load("mymodule@mymodule");
+		$langs->load("bookticket@bookticket");
 
-		if (empty($conf->global->MYMODULE_passenger_ADDON)) {
-			$conf->global->MYMODULE_passenger_ADDON = 'mod_passenger_standard';
+		if (empty($conf->global->BOOKTICKET_PASSENGER_ADDON)) {
+			$conf->global->BOOKTICKET_PASSENGER_ADDON = 'mod_passenger_standard';
 		}
 
-		if (!empty($conf->global->MYMODULE_passenger_ADDON))
+		if (!empty($conf->global->BOOKTICKET_PASSENGER_ADDON))
 		{
 			$mybool = false;
 
-			$file = $conf->global->MYMODULE_passenger_ADDON.".php";
-			$classname = $conf->global->MYMODULE_passenger_ADDON;
+			$file = $conf->global->BOOKTICKET_PASSENGER_ADDON.".php";
+			$classname = $conf->global->BOOKTICKET_PASSENGER_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 			foreach ($dirmodels as $reldir)
 			{
-				$dir = dol_buildpath($reldir."core/modules/mymodule/");
+				$dir = dol_buildpath($reldir."core/modules/bookticket/");
 
 				// Load file with numbering class (if found)
 				$mybool |= @include_once $dir.$file;
@@ -1023,19 +993,19 @@ class Passenger extends CommonObject
 		$result = 0;
 		$includedocgeneration = 0;
 
-		$langs->load("mymodule@mymodule");
+		$langs->load("bookticket@bookticket");
 
 		if (!dol_strlen($modele)) {
 			$modele = 'standard_passenger';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->passenger_ADDON_PDF)) {
-				$modele = $conf->global->passenger_ADDON_PDF;
+			} elseif (!empty($conf->global->PASSENGER_ADDON_PDF)) {
+				$modele = $conf->global->PASSENGER_ADDON_PDF;
 			}
 		}
 
-		$modelpath = "core/modules/mymodule/doc/";
+		$modelpath = "core/modules/bookticket/doc/";
 
 		if ($includedocgeneration && !empty($modele)) {
 			$result = $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref, $moreparams);

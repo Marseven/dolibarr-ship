@@ -20,6 +20,7 @@
 create table llx_ticket
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
+  code                      varchar(128) DEFAULT 0 NOT NULL,
   entity                    integer default 1                    
   date_creation             datetime                    
   tms                       timestamp                   

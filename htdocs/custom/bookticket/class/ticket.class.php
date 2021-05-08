@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) ---Put here your own copyright and developer email---
+ * Copyright (C) 2021 Mebodo Aristide <mebodoaristide@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
  */
 
 /**
- * \file        htdocs/modulebuilder/template/class/myobject.class.php
- * \ingroup     mymodule
- * \brief       This file is a CRUD class file for MyObject (Create/Read/Update/Delete)
+ * \file        htdocs/modulebuilder/template/class/ticket.class.php
+ * \ingroup     bookticket
+ * \brief       This file is a CRUD class file for Ticket (Create/Read/Update/Delete)
  */
 
 // Put here all includes required by your class file
@@ -28,24 +28,24 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 //require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
- * Class for MyObject
+ * Class for Ticket
  */
-class MyObject extends CommonObject
+class Ticket extends CommonObject
 {
 	/**
 	 * @var string ID of module.
 	 */
-	public $module = 'mymodule';
+	public $module = 'bookticket';
 
 	/**
 	 * @var string ID to identify managed object.
 	 */
-	public $element = 'myobject';
+	public $element = 'ticket';
 
 	/**
 	 * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.
 	 */
-	public $table_element = 'mymodule_myobject';
+	public $table_element = 'bookticket_ticket';
 
 	/**
 	 * @var int  Does this object support multicompany module ?
@@ -59,9 +59,9 @@ class MyObject extends CommonObject
 	public $isextrafieldmanaged = 1;
 
 	/**
-	 * @var string String with name of icon for myobject. Must be the part after the 'object_' into object_myobject.png
+	 * @var string String with name of icon for ticket. Must be the part after the 'object_' into object_ticket.png
 	 */
-	public $picto = 'myobject@mymodule';
+	public $picto = 'ticket@bookticket';
 
 
 	const STATUS_DRAFT = 0;
@@ -101,23 +101,15 @@ class MyObject extends CommonObject
 	 */
 	public $fields = array(
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
-		'ref'           => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
+		'code'           => array('type'=>'varchar(128)', 'label'=>'Code', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
+		'fk_ship' => array('type'=>'integer:Ship:ship/class/ship.class.php', 'label'=>'Le bateau', 'picto'=>'ship', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'ship.rowid'),
+		'fk_passenger' => array('type'=>'integer:Passenger:passenger/class/passenger.class.php', 'label'=>'Le passager', 'picto'=>'passenger', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'passenger.rowid'),
+		'fk_travel' => array('type'=>'integer:Travel:travel/class/travel.class.php', 'label'=>'Le voyage', 'picto'=>'travel', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'travel.rowid'),
+		'fk_classe' => array('type'=>'integer:Classe:classe/class/classe.class.php', 'label'=>'La classe', 'picto'=>'classe', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'classe.rowid'),
 		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'label'         => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'amount'        => array('type'=>'price', 'label'=>'Amount', 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
-		'qty'           => array('type'=>'real', 'label'=>'Qty', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
-		'fk_soc' 		=> array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'picto'=>'company', 'label'=>'ThirdParty', 'visible'=> 1, 'enabled'=>1, 'position'=>50, 'notnull'=>-1, 'index'=>1, 'help'=>'LinkToThirparty'),
-		'fk_project'    => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'picto'=>'project', 'enabled'=>1, 'visible'=>-1, 'position'=>52, 'notnull'=>-1, 'index'=>1),
-		'description'   => array('type'=>'text', 'label'=>'Description', 'enabled'=>1, 'visible'=>3, 'position'=>60),
-		'note_public'   => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>1, 'visible'=>0, 'position'=>61),
-		'note_private'  => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>1, 'visible'=>0, 'position'=>62),
-		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
-		//'date_validation '    =>array('type'=>'datetime',     'label'=>'DateCreation',     'enabled'=>1, 'visible'=>-2, 'position'=>502),
 		'fk_user_creat' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
 		'fk_user_modif' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserModif', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=>-1, 'position'=>511),
-		//'fk_user_valid' => array('type'=>'integer:User:user/class/user.class.php',      'label'=>'UserValidation',        'enabled'=>1, 'visible'=>-1, 'position'=>512),
-		'last_main_doc' => array('type'=>'varchar(255)', 'label'=>'LastMainDoc', 'enabled'=>1, 'visible'=>0, 'notnull'=>0, 'position'=>600),
 		'import_key'    => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>1, 'visible'=>-2, 'notnull'=>-1, 'index'=>0, 'position'=>1000),
 		'model_pdf' 	=> array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>1, 'visible'=>0, 'notnull'=>-1, 'position'=>1010),
 		'status'        => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>1, 'visible'=>1, 'notnull'=> 1, 'default'=>0, 'index'=>1, 'position'=>1000, 'arrayofkeyval'=>array(0=>'Draft', 1=>'Validated', 9=>'Canceled')),
@@ -129,24 +121,15 @@ class MyObject extends CommonObject
 	public $rowid;
 
 	/**
-	 * @var string Ref
+	 * @var string Code
 	 */
-	public $ref;
+	public $code;
 
 	/**
 	 * @var int Entity
 	 */
 	public $entity;
 
-	/**
-	 * @var string label
-	 */
-	public $label;
-
-	/**
-	 * @var string amount
-	 */
-	public $amount;
 
 	/**
 	 * @var int Status
@@ -174,51 +157,10 @@ class MyObject extends CommonObject
 	public $fk_user_modif;
 
 	/**
-	 * @var string public $last_main_doc
-	 */
-	public $last_main_doc;
-
-	/**
 	 * @var string import_key
 	 */
 	public $import_key;
 	// END MODULEBUILDER PROPERTIES
-
-
-	// If this object has a subtable with lines
-
-	// /**
-	//  * @var string    Name of subtable line
-	//  */
-	// public $table_element_line = 'mymodule_myobjectline';
-
-	// /**
-	//  * @var string    Field with ID of parent key if this object has a parent
-	//  */
-	// public $fk_element = 'fk_myobject';
-
-	// /**
-	//  * @var string    Name of subtable class that manage subtable lines
-	//  */
-	// public $class_element_line = 'MyObjectline';
-
-	// /**
-	//  * @var array	List of child tables. To test if we can delete object.
-	//  */
-	// protected $childtables = array();
-
-	// /**
-	//  * @var array    List of child tables. To know object to delete on cascade.
-	//  *               If name matches '@ClassNAme:FilePathClass;ParentFkFieldName' it will
-	//  *               call method deleteByParentField(parentId, ParentFkFieldName) to fetch and delete child object
-	//  */
-	// protected $childtablesoncascade = array('mymodule_myobjectdet');
-
-	// /**
-	//  * @var MyObjectLine[]     Array of subtable lines
-	//  */
-	// public $lines = array();
-
 
 
 	/**
@@ -236,7 +178,7 @@ class MyObject extends CommonObject
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->mymodule->myobject->read) {
+		/*if ($user->rights->bookticket->ticket->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -544,8 +486,8 @@ class MyObject extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->myobject->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->myobject->myobject_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->ticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->ticket->ticket_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -586,7 +528,7 @@ class MyObject extends CommonObject
 			if (!$error && !$notrigger)
 			{
 				// Call trigger
-				$result = $this->call_trigger('MYOBJECT_VALIDATE', $user);
+				$result = $this->call_trigger('TICKET_VALIDATE', $user);
 				if ($result < 0) $error++;
 				// End call triggers
 			}
@@ -600,16 +542,16 @@ class MyObject extends CommonObject
 			if (preg_match('/^[\(]?PROV/i', $this->ref))
 			{
 				// Now we rename also files into index
-				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'myobject/".$this->db->escape($this->newref)."'";
-				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'myobject/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
+				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'ticket/".$this->db->escape($this->newref)."'";
+				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'ticket/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
 				$resql = $this->db->query($sql);
 				if (!$resql) { $error++; $this->error = $this->db->lasterror(); }
 
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->mymodule->dir_output.'/myobject/'.$oldref;
-				$dirdest = $conf->mymodule->dir_output.'/myobject/'.$newref;
+				$dirsource = $conf->bookticket->dir_output.'/ticket/'.$oldref;
+				$dirdest = $conf->bookticket->dir_output.'/ticket/'.$newref;
 				if (!$error && file_exists($dirsource))
 				{
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
@@ -618,7 +560,7 @@ class MyObject extends CommonObject
 					{
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->mymodule->dir_output.'/myobject/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/ticket/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry)
 						{
 							$dirsource = $fileentry['name'];
@@ -665,14 +607,14 @@ class MyObject extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'MYOBJECT_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'TICKET_UNVALIDATE');
 	}
 
 	/**
@@ -690,14 +632,14 @@ class MyObject extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'MYOBJECT_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'TICKET_CANCEL');
 	}
 
 	/**
@@ -715,14 +657,14 @@ class MyObject extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'MYOBJECT_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'TICKET_REOPEN');
 	}
 
 	/**
@@ -743,14 +685,14 @@ class MyObject extends CommonObject
 
 		$result = '';
 
-		$label = img_picto('', $this->picto).' <u>'.$langs->trans("MyObject").'</u>';
+		$label = img_picto('', $this->picto).' <u>'.$langs->trans("Ticket").'</u>';
 		if (isset($this->status)) {
 			$label .= ' '.$this->getLibStatut(5);
 		}
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/mymodule/myobject_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/bookticket/ticket_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink')
 		{
@@ -765,7 +707,7 @@ class MyObject extends CommonObject
 		{
 			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
 			{
-				$label = $langs->trans("ShowMyObject");
+				$label = $langs->trans("ShowTicket");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
 			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
@@ -811,7 +753,7 @@ class MyObject extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('myobjectdao'));
+		$hookmanager->initHooks(array('ticketdao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) $result = $hookmanager->resPrint;
@@ -845,7 +787,7 @@ class MyObject extends CommonObject
 		if (empty($this->labelStatus) || empty($this->labelStatusShort))
 		{
 			global $langs;
-			//$langs->load("mymodule@mymodule");
+			//$langs->load("bookticket@bookticket");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
 			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Enabled');
 			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Disabled');
@@ -932,8 +874,8 @@ class MyObject extends CommonObject
 	{
 		$this->lines = array();
 
-		$objectline = new MyObjectLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_myobject = '.$this->id));
+		$objectline = new TicketLine($this->db);
+		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_ticket = '.$this->id));
 
 		if (is_numeric($result))
 		{
@@ -954,24 +896,24 @@ class MyObject extends CommonObject
 	public function getNextNumRef()
 	{
 		global $langs, $conf;
-		$langs->load("mymodule@mymodule");
+		$langs->load("bookticket@bookticket");
 
-		if (empty($conf->global->MYMODULE_MYOBJECT_ADDON)) {
-			$conf->global->MYMODULE_MYOBJECT_ADDON = 'mod_myobject_standard';
+		if (empty($conf->global->BOOKTICKET_TICKET_ADDON)) {
+			$conf->global->BOOKTICKET_TICKET_ADDON = 'mod_ticket_standard';
 		}
 
-		if (!empty($conf->global->MYMODULE_MYOBJECT_ADDON))
+		if (!empty($conf->global->BOOKTICKET_TICKET_ADDON))
 		{
 			$mybool = false;
 
-			$file = $conf->global->MYMODULE_MYOBJECT_ADDON.".php";
-			$classname = $conf->global->MYMODULE_MYOBJECT_ADDON;
+			$file = $conf->global->BOOKTICKET_TICKET_ADDON.".php";
+			$classname = $conf->global->BOOKTICKET_TICKET_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 			foreach ($dirmodels as $reldir)
 			{
-				$dir = dol_buildpath($reldir."core/modules/mymodule/");
+				$dir = dol_buildpath($reldir."core/modules/bookticket/");
 
 				// Load file with numbering class (if found)
 				$mybool |= @include_once $dir.$file;
@@ -1023,19 +965,19 @@ class MyObject extends CommonObject
 		$result = 0;
 		$includedocgeneration = 0;
 
-		$langs->load("mymodule@mymodule");
+		$langs->load("bookticket@bookticket");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_myobject';
+			$modele = 'standard_ticket';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->MYOBJECT_ADDON_PDF)) {
-				$modele = $conf->global->MYOBJECT_ADDON_PDF;
+			} elseif (!empty($conf->global->TICKET_ADDON_PDF)) {
+				$modele = $conf->global->TICKET_ADDON_PDF;
 			}
 		}
 
-		$modelpath = "core/modules/mymodule/doc/";
+		$modelpath = "core/modules/bookticket/doc/";
 
 		if ($includedocgeneration && !empty($modele)) {
 			$result = $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref, $moreparams);
@@ -1079,12 +1021,12 @@ class MyObject extends CommonObject
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 
 /**
- * Class MyObjectLine. You can also remove this and generate a CRUD class for lines objects.
+ * Class TicketLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class MyObjectLine extends CommonObjectLine
+class TicketLine extends CommonObjectLine
 {
-	// To complete with content of an object MyObjectLine
-	// We should have a field rowid, fk_myobject and position
+	// To complete with content of an object TicketLine
+	// We should have a field rowid, fk_ticket and position
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes

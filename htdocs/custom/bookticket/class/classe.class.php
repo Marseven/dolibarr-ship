@@ -18,7 +18,7 @@
 
 /**
  * \file        htdocs/modulebuilder/template/class/Classe.class.php
- * \ingroup     mymodule
+ * \ingroup     bookticket
  * \brief       This file is a CRUD class file for Classe (Create/Read/Update/Delete)
  */
 
@@ -59,7 +59,7 @@ class Classe extends CommonObject
 	public $isextrafieldmanaged = 1;
 
 	/**
-	 * @var string String with name of icon for myobject. Must be the part after the 'object_' into object_myobject.png
+	 * @var string String with name of icon for classe. Must be the part after the 'object_' into object_classe.png
 	 */
 	public $picto = 'classe@bookticket';
 
@@ -219,7 +219,7 @@ class Classe extends CommonObject
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->mymodule->myobject->read) {
+		/*if ($user->rights->bookticket->classe->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -527,8 +527,8 @@ class Classe extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->myobject->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->myobject->myobject_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->classe->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->classe->classe_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -569,7 +569,7 @@ class Classe extends CommonObject
 			if (!$error && !$notrigger)
 			{
 				// Call trigger
-				$result = $this->call_trigger('MYOBJECT_VALIDATE', $user);
+				$result = $this->call_trigger('CLASSE_VALIDATE', $user);
 				if ($result < 0) $error++;
 				// End call triggers
 			}
@@ -583,16 +583,16 @@ class Classe extends CommonObject
 			if (preg_match('/^[\(]?PROV/i', $this->ref))
 			{
 				// Now we rename also files into index
-				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'myobject/".$this->db->escape($this->newref)."'";
-				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'myobject/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
+				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'classe/".$this->db->escape($this->newref)."'";
+				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'classe/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
 				$resql = $this->db->query($sql);
 				if (!$resql) { $error++; $this->error = $this->db->lasterror(); }
 
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->mymodule->dir_output.'/myobject/'.$oldref;
-				$dirdest = $conf->mymodule->dir_output.'/myobject/'.$newref;
+				$dirsource = $conf->bookticket->dir_output.'/classe/'.$oldref;
+				$dirdest = $conf->bookticket->dir_output.'/classe/'.$newref;
 				if (!$error && file_exists($dirsource))
 				{
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
@@ -601,7 +601,7 @@ class Classe extends CommonObject
 					{
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->mymodule->dir_output.'/myobject/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/classe/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry)
 						{
 							$dirsource = $fileentry['name'];
@@ -648,14 +648,14 @@ class Classe extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'MYOBJECT_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'CLASSE_UNVALIDATE');
 	}
 
 	/**
@@ -673,14 +673,14 @@ class Classe extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'MYOBJECT_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'CLASSE_CANCEL');
 	}
 
 	/**
@@ -698,14 +698,14 @@ class Classe extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->mymodule->mymodule_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'MYOBJECT_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'CLASSE_REOPEN');
 	}
 
 	/**
@@ -726,14 +726,14 @@ class Classe extends CommonObject
 
 		$result = '';
 
-		$label = img_picto('', $this->picto).' <u>'.$langs->trans("MyObject").'</u>';
+		$label = img_picto('', $this->picto).' <u>'.$langs->trans("Classe").'</u>';
 		if (isset($this->status)) {
 			$label .= ' '.$this->getLibStatut(5);
 		}
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/mymodule/myobject_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/bookticket/classe_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink')
 		{
@@ -748,7 +748,7 @@ class Classe extends CommonObject
 		{
 			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
 			{
-				$label = $langs->trans("ShowMyObject");
+				$label = $langs->trans("ShowClasse");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
 			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
@@ -794,7 +794,7 @@ class Classe extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('myobjectdao'));
+		$hookmanager->initHooks(array('classedao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) $result = $hookmanager->resPrint;
@@ -828,7 +828,7 @@ class Classe extends CommonObject
 		if (empty($this->labelStatus) || empty($this->labelStatusShort))
 		{
 			global $langs;
-			//$langs->load("mymodule@mymodule");
+			//$langs->load("bookticket@bookticket");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
 			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Enabled');
 			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Disabled');
@@ -915,8 +915,8 @@ class Classe extends CommonObject
 	{
 		$this->lines = array();
 
-		$objectline = new MyObjectLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_myobject = '.$this->id));
+		$objectline = new ClasseLine($this->db);
+		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_classe = '.$this->id));
 
 		if (is_numeric($result))
 		{
@@ -937,24 +937,24 @@ class Classe extends CommonObject
 	public function getNextNumRef()
 	{
 		global $langs, $conf;
-		$langs->load("mymodule@mymodule");
+		$langs->load("bookticket@bookticket");
 
-		if (empty($conf->global->MYMODULE_MYOBJECT_ADDON)) {
-			$conf->global->MYMODULE_MYOBJECT_ADDON = 'mod_myobject_standard';
+		if (empty($conf->global->BOOKTICKET_CLASSE_ADDON)) {
+			$conf->global->BOOKTICKET_CLASSE_ADDON = 'mod_classe_standard';
 		}
 
-		if (!empty($conf->global->MYMODULE_MYOBJECT_ADDON))
+		if (!empty($conf->global->BOOKTICKET_CLASSE_ADDON))
 		{
 			$mybool = false;
 
-			$file = $conf->global->MYMODULE_MYOBJECT_ADDON.".php";
-			$classname = $conf->global->MYMODULE_MYOBJECT_ADDON;
+			$file = $conf->global->BOOKTICKET_CLASSE_ADDON.".php";
+			$classname = $conf->global->BOOKTICKET_CLASSE_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 			foreach ($dirmodels as $reldir)
 			{
-				$dir = dol_buildpath($reldir."core/modules/mymodule/");
+				$dir = dol_buildpath($reldir."core/modules/bookticket/");
 
 				// Load file with numbering class (if found)
 				$mybool |= @include_once $dir.$file;
@@ -1006,19 +1006,19 @@ class Classe extends CommonObject
 		$result = 0;
 		$includedocgeneration = 0;
 
-		$langs->load("mymodule@mymodule");
+		$langs->load("bookticket@bookticket");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_myobject';
+			$modele = 'standard_classe';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->MYOBJECT_ADDON_PDF)) {
-				$modele = $conf->global->MYOBJECT_ADDON_PDF;
+			} elseif (!empty($conf->global->CLASSE_ADDON_PDF)) {
+				$modele = $conf->global->CLASSE_ADDON_PDF;
 			}
 		}
 
-		$modelpath = "core/modules/mymodule/doc/";
+		$modelpath = "core/modules/bookticket/doc/";
 
 		if ($includedocgeneration && !empty($modele)) {
 			$result = $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref, $moreparams);
@@ -1062,12 +1062,12 @@ class Classe extends CommonObject
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 
 /**
- * Class MyObjectLine. You can also remove this and generate a CRUD class for lines objects.
+ * Class ClasseLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class MyObjectLine extends CommonObjectLine
+class ClasseLine extends CommonObjectLine
 {
-	// To complete with content of an object MyObjectLine
-	// We should have a field rowid, fk_myobject and position
+	// To complete with content of an object ClasseLine
+	// We should have a field rowid, fk_classe and position
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes
