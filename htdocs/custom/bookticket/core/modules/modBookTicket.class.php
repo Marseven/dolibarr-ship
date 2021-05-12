@@ -444,7 +444,7 @@ class modBookTicket extends DolibarrModules
 			'titre'=>'Ship',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'ship',
-			'url'=>'/bookticket/shipindex.php',
+			'url'=>'/bookticket/shipindex.php?leftmenu=ship',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
