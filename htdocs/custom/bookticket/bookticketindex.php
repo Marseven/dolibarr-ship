@@ -1,3 +1,4 @@
+
 <?php
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -78,10 +79,11 @@ llxHeader("", $langs->trans("BookTicketArea"));
 
 print load_fiche_titre($langs->trans("BookTicketArea"), '', 'bookticket.png@bookticket');
 
-print '<div class="fichecenter"><div class="fichethirdleft">Ici sera le siege de l\'application';
+print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
 /* BEGIN MODULEBUILDER DRAFT MYOBJECT*/
+
 // Draft MyObject
 if (! empty($conf->bookticket->enabled) && $user->rights->bookticket->read)
 {
@@ -163,6 +165,7 @@ $NBMAX = $conf->global->MAIN_SIZE_SHORTLIST_LIMIT;
 $max = $conf->global->MAIN_SIZE_SHORTLIST_LIMIT;
 
 /* BEGIN MODULEBUILDER LASTMODIFIED MYOBJECT*/
+
 // Last modified myobject
 if (! empty($conf->bookticket->enabled) && $user->rights->bookticket->read)
 {

@@ -265,6 +265,25 @@ class modBookTicket extends DolibarrModules
 		$r = 0;
 		// Add here entries to declare new permissions
 		/* BEGIN MODULEBUILDER PERMISSIONS */
+
+		//ship
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Read ship of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'ship'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Create/Update ship of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'ship'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Delete ship of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'ship'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+
+		//travel
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
 		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
 		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
@@ -280,6 +299,75 @@ class modBookTicket extends DolibarrModules
 		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
+
+		//ticket
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+
+		//passenger
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+
+		//city
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+
+		//classe
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+
 		/* END MODULEBUILDER PERMISSIONS */
 
 		// Main menu entries to add
@@ -444,7 +532,7 @@ class modBookTicket extends DolibarrModules
 			'titre'=>'Ship',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'ship',
-			'url'=>'/bookticket/shipindex.php?leftmenu=ship',
+			'url'=>'/bookticket/shipindex.php',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
@@ -459,7 +547,7 @@ class modBookTicket extends DolibarrModules
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'List Ship',
 			'mainmenu'=>'bookticket',
-			'leftmenu'=>'bookticket_ship_list',
+			'leftmenu'=>'ship',
 			'url'=>'/bookticket/ship_list.php',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
@@ -475,7 +563,7 @@ class modBookTicket extends DolibarrModules
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'Add Ship',
 			'mainmenu'=>'bookticket',
-			'leftmenu'=>'bookticket_ship_new',
+			'leftmenu'=>'ship',
 			'url'=>'/bookticket/ship_card.php?action=create',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
