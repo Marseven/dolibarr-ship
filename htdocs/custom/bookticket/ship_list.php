@@ -71,8 +71,7 @@ if (!$sortorder) $sortorder = "ASC";
 $contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'shiplist';
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$object = new Product($db);
-$hookmanager->initHooks(array('productservicelist'));
+$object = new Ship($db);
 $extrafields = new ExtraFields($db);
 $form = new Form($db);
 
