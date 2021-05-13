@@ -1,0 +1,37 @@
+# Copyright (C) 2019 Cédric Ancelin <cedric@c3do.fr>
+#
+# Donations https://www.paypal.me/cancelin
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+# \file    htdocs/expeditionplus/langs/en_US/expeditionplus.lang
+# \ingroup expeditionplus
+# \brief   LANG file for module expeditionplus.
+##
+
+### MODULE ###
+Module840103Name = Shipments plus
+Module840103Desc = Extension for the Shipments module
+
+### EXPEDITION ###
+ExpeditionsPlus = Shipments plus
+ExpeditionsEnMasse = Mass shipments
+Thereis = 
+CommandesExpediables = Shippable order(s)
+SendingsCreate = Create shipments
+MergeBL = Merge shipments sheets
+BL = Shipments sheets
+PDFMerge = PDF Merge
+ReadyToPrint = Ready to merge
+EP_GITHUBDESC = If you want to participate in the evolution of this module, suggest a feature, or report a bug, please visit the Github platform.

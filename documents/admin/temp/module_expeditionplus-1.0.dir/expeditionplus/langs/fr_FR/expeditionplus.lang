@@ -1,0 +1,37 @@
+# Copyright (C) 2019 Cédric Ancelin <cedric@c3do.fr>
+#
+# Donations https://www.paypal.me/cancelin
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+# \file    htdocs/expeditionplus/langs/fr_FR/expeditionplus.lang
+# \ingroup expeditionplus
+# \brief   LANG file for module expeditionplus.
+##
+
+### MODULE ###
+Module840103Name = Expedition plus
+Module840103Desc = Extension pour le module Expedition
+
+### BOXES ###
+ExpeditionsPlus = Expedition plus
+ExpeditionsEnMasse = Expéditions en masse
+Thereis = Il y a
+CommandesExpediables = Commande(s) expédiable(s)
+SendingsCreate = Créer les expéditions
+MergeBL = Fusionner les bons de livraison
+BL = bon(s) de livraison
+PDFMerge = Fusionner les PDFs
+ReadyToPrint = prêt(s) à être fusionné(s)
+EP_GITHUBDESC = Si vous souhaitez participer à l'évolution de ce module, suggérer une fontionnalitée, ou signaler un bug, n'hésitez pas à visiter la plateforme Github.

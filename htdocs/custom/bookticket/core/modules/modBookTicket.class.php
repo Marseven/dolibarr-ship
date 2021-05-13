@@ -547,7 +547,7 @@ class modBookTicket extends DolibarrModules
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'List Ship',
 			'mainmenu'=>'bookticket',
-			'leftmenu'=>'ship',
+			'leftmenu'=>'bookticket_ship_list',
 			'url'=>'/bookticket/ship_list.php',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
@@ -563,7 +563,7 @@ class modBookTicket extends DolibarrModules
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'Add Ship',
 			'mainmenu'=>'bookticket',
-			'leftmenu'=>'ship',
+			'leftmenu'=>'bookticket_ship_new',
 			'url'=>'/bookticket/ship_card.php?action=create',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
