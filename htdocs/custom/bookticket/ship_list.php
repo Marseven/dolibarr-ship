@@ -75,8 +75,6 @@ $object = new Ship($db);
 $extrafields = new ExtraFields($db);
 $form = new Form($db);
 
-var_dump($object);
-die;
 // fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 $search_array_options = $extrafields->getOptionalsFromPost($object->table_element, '', 'search_');
