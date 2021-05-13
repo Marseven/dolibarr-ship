@@ -42,8 +42,6 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 // Load translation files required by the page
 $langs->loadLangs('bookticket');
 
-die;
-
 $action = GETPOST('action', 'aZ09');
 $massaction = GETPOST('massaction', 'alpha');
 $show_files = GETPOST('show_files', 'int');
@@ -53,6 +51,7 @@ $toselect = GETPOST('toselect', 'array');
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_ref = GETPOST("search_ref", 'alpha');
 $search_label = GETPOST("search_label", 'alpha');
+$search_labelshort = GETPOST("search_labelshort", 'alpha');
 $search_finished = GETPOST("search_finished", 'int');
 $optioncss = GETPOST('optioncss', 'alpha');
 $type = GETPOST("type", "int");
@@ -67,6 +66,8 @@ $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortfield) $sortfield = "s.ref";
 if (!$sortorder) $sortorder = "ASC";
+
+die('je fonctionne bien !');
 
 // Initialize context for list
 $contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'productservicelist';
