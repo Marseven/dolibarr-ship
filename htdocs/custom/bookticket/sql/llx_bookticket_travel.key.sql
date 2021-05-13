@@ -15,4 +15,4 @@
 -- along with this program. If not, see <http://www.gnu.org/licenses/>.
 -- ===========================================================================
 
-ALTER TABLE llx_travel ADD CONSTRAINT fk_travel_fk_ship FOREIGN KEY (fk_ship) REFERENCES llx_ship (rowid);
+ALTER TABLE llx_bookticket_travel ADD CONSTRAINT fk_travel_fk_ship FOREIGN KEY (fk_ship) REFERENCES llx_bookticket_ship (rowid);

@@ -17,7 +17,7 @@
 -- Table of 'ship' for accountancy expert module
 -- ============================================================================
 
-create table llx_ship
+create table llx_bookticket_ship
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   code                      varchar(128) DEFAULT 0 NOT NULL,

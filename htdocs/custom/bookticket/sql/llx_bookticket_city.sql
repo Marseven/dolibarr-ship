@@ -17,7 +17,7 @@
 -- Table of 'city' for accountancy expert module
 -- ============================================================================
 
-create table llx_city
+create table llx_bookticket_city
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   label                     varchar(255) NOT NULL,

@@ -17,7 +17,7 @@
 -- Table of 'ticket' for accountancy expert module
 -- ============================================================================
 
-create table llx_ticket
+create table llx_bookticket_ticket
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   code                      varchar(128) DEFAULT 0 NOT NULL,

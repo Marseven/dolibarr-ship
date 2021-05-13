@@ -17,7 +17,7 @@
 -- Table of 'classe' for accountancy expert module
 -- ============================================================================
 
-create table llx_classe
+create table llx_bookticket_classe
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   code                      varchar(128) DEFAULT 0 NOT NULL,

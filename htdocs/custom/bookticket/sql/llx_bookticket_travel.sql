@@ -17,7 +17,7 @@
 -- Table of 'travel' for accountancy expert module
 -- ============================================================================
 
-create table llx_travel
+create table llx_bookticket_travel
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   code                      varchar(128) DEFAULT 0 NOT NULL,

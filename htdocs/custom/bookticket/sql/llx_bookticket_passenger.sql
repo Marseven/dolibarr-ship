@@ -17,7 +17,7 @@
 -- Table of 'passenger' for accountancy expert module
 -- ============================================================================
 
-create table llx_passenger
+create table llx_bookticket_passenger
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   nom				                varchar(255) DEFAULT NULL,
