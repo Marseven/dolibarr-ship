@@ -75,25 +75,17 @@ $object = new Ship($db);
 $extrafields = new ExtraFields($db);
 $form = new Form($db);
 
+var_dump($object);
+die;
 // fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 $search_array_options = $extrafields->getOptionalsFromPost($object->table_element, '', 'search_');
 
 if (empty($action)) $action = 'list';
 
-// Get object canvas (By default, this is not defined, so standard usage of dolibarr)
-$canvas = GETPOST("canvas");
-$objcanvas = null;
-if (!empty($canvas))
-{
-	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
-	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('ship', 'list', $canvas);
-}
-
 // Security check
 //$result = restrictedArea($user, 'ship', '', '', '', '', '', 0);
-die;
+
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
 	's.ref'=>"Ref",
