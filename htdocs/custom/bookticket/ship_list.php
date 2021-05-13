@@ -154,7 +154,7 @@ $sql .= ' s.datec as date_creation, s.tms as date_update';
 
 // Add fields from hooks
 $parameters = array();
-$sql .= ' FROM '.MAIN_DB_PREFIX.'ship as s';
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ship as s';
 
 $sql .= ' WHERE s.entity IN ('.getEntity('ship').')';
 
