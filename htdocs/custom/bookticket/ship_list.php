@@ -88,6 +88,7 @@ $fieldstosearchall = array(
 );
 
 //$isInEEC = isInEEC($mysoc);
+
 die('je fonctionne bien !');
 
 // Definition of fields for lists
