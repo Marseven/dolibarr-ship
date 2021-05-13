@@ -79,7 +79,7 @@ if (empty($action)) $action = 'list';
 
 // Security check
 //$result = restrictedArea($user, 'ship', '', '', '', '', '', 0);
-
+die;
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
 	's.ref'=>"Ref",
