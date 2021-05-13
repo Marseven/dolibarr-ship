@@ -86,8 +86,8 @@ $fieldstosearchall = array(
 	's.label'=>"ShipLabel",
 	's.labelshort'=>"ShipLabelShort",
 );
-die;
-$isInEEC = isInEEC($mysoc);
+
+//$isInEEC = isInEEC($mysoc);
 die('je fonctionne bien !');
 
 // Definition of fields for lists
