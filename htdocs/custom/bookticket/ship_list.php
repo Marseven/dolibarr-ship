@@ -67,12 +67,8 @@ $pagenext = $page + 1;
 if (!$sortfield) $sortfield = "s.ref";
 if (!$sortorder) $sortorder = "ASC";
 
-die('je fonctionne bien !');
-
 // Initialize context for list
-$contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'productservicelist';
-if ((string) $type == '1') { $contextpage = 'servicelist'; if ($search_type == '') $search_type = '1'; }
-if ((string) $type == '0') { $contextpage = 'productlist'; if ($search_type == '') $search_type = '0'; }
+$contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'shiplist';
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
 $object = new Product($db);
@@ -107,21 +103,8 @@ $fieldstosearchall = array(
 
 );
 
-// multilang
-if (!empty($conf->global->MAIN_MULTILANGS))
-{
-	$fieldstosearchall['pl.label'] = 'ProductLabelTranslated';
-	$fieldstosearchall['pl.description'] = 'ProductDescriptionTranslated';
-	$fieldstosearchall['pl.note'] = 'ProductNoteTranslated';
-}
-
-if (!empty($conf->barcode->enabled)) {
-	$fieldstosearchall['p.barcode'] = 'Gencod';
-	$fieldstosearchall['pfp.barcode'] = 'GencodBuyPrice';
-}
-
 $isInEEC = isInEEC($mysoc);
-
+die('je fonctionne bien !');
 // Definition of fields for lists
 $arrayfields = array(
 	'p.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
