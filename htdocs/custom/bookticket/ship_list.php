@@ -114,33 +114,30 @@ $parameters = array();
 
 $rightskey = 'ship';
 
-die('je fonctionne bien !');
+// Selection of new fields
+include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
 
-if (empty($reshook))
+// Purge search criteria
+if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) // All tests are required to be compatible with all browsers
 {
-	// Selection of new fields
-	include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
+	$sall = "";
+	$search_ref = "";
+	$search_label = "";
+	$search_labelshort = "";
+	$search_finished = '';
+						// There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
 
-	// Purge search criteria
-	if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) // All tests are required to be compatible with all browsers
-	{
-		$sall = "";
-		$search_ref = "";
-		$search_label = "";
-		$search_finished = '';
-		//$search_type='';						// There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
-
-		$search_array_options = array();
-	}
-
-	// Mass actions
-	$objectclass = 'Ship';
-
-	$permissiontoread = $user->rights->{$rightskey}->lire;
-	$permissiontodelete = $user->rights->{$rightskey}->supprimer;
-	$uploaddir = $conf->product->dir_output;
-	include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
+	$search_array_options = array();
 }
+
+// Mass actions
+$objectclass = 'Ship';
+
+$permissiontoread = $user->rights->{$rightskey}->lire;
+$permissiontodelete = $user->rights->{$rightskey}->supprimer;
+$uploaddir = $conf->product->dir_output;
+include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
+
 
 
 /*
@@ -152,42 +149,18 @@ $title = $langs->trans("Ships");
 $texte = $langs->trans("Ships");
 
 
-$sql = 'SELECT DISTINCT p.rowid, p.ref, p.label, p.fk_product_type, p.barcode, p.price, p.tva_tx, p.price_ttc, p.price_base_type, p.entity,';
-$sql .= ' p.fk_product_type, p.duration, p.finished, p.tosell, p.tobuy, p.seuil_stock_alerte, p.desiredstock,';
-$sql .= ' p.tobatch, p.accountancy_code_sell, p.accountancy_code_sell_intra, p.accountancy_code_sell_export,';
-$sql .= ' p.accountancy_code_buy, p.accountancy_code_buy_intra, p.accountancy_code_buy_export,';
-$sql .= ' p.datec as date_creation, p.tms as date_update, p.pmp, p.stock, p.cost_price,';
-$sql .= ' p.weight, p.weight_units, p.length, p.length_units, p.width, p.width_units, p.height, p.height_units, p.surface, p.surface_units, p.volume, p.volume_units, fk_country, fk_state,';
-
+$sql = 'SELECT DISTINCT s.rowid, s.ref, s.label, s.labelshort, s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco, s.entity,';
+$sql .= ' s.datec as date_creation, s.tms as date_update,';
 
 // Add fields from hooks
 $parameters = array();
-$reshook = $hookmanager->executeHooks('printFieldListSelect', $parameters); // Note that $action and $object may have been modified by hook
-$sql .= $hookmanager->resPrint;
 $sql .= ' FROM '.MAIN_DB_PREFIX.'ship as s';
 
-$sql .= ' WHERE p.entity IN ('.getEntity('ship').')';
+$sql .= ' WHERE s.entity IN ('.getEntity('ship').')';
 
-if ($search_ref)     $sql .= natural_search('p.ref', $search_ref);
-if ($search_label)   $sql .= natural_search('p.label', $search_label);
-if ($search_barcode) $sql .= natural_search('p.barcode', $search_barcode);
-
-// Add where from hooks
-$parameters = array();
-$reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // Note that $action and $object may have been modified by hook
-$sql .= $hookmanager->resPrint;
-$sql .= " GROUP BY p.rowid, p.ref, p.label, p.barcode, p.price, p.tva_tx, p.price_ttc, p.price_base_type,";
-$sql .= " p.fk_product_type, p.duration, p.finished, p.tosell, p.tobuy, p.seuil_stock_alerte, p.desiredstock,";
-$sql .= ' p.datec, p.tms, p.entity, p.tobatch, p.accountancy_code_sell, p.accountancy_code_sell_intra, p.accountancy_code_sell_export,';
-$sql .= ' p.accountancy_code_buy, p.accountancy_code_buy_intra, p.accountancy_code_buy_export, p.pmp, p.cost_price, p.stock,';
-$sql .= ' p.weight, p.weight_units, p.length, p.length_units, p.width, p.width_units, p.height, p.height_units, p.surface, p.surface_units, p.volume, p.volume_units, p.fk_country, p.fk_state';
-
-// Add fields from hooks
-$parameters = array();
-$reshook = $hookmanager->executeHooks('printFieldSelect', $parameters); // Note that $action and $object may have been modified by hook
-$sql .= $hookmanager->resPrint;
-//if (GETPOST("toolowstock")) $sql.= " HAVING SUM(s.reel) < p.seuil_stock_alerte";    // Not used yet
-$sql .= $db->order($sortfield, $sortorder);
+if ($search_ref)     $sql .= natural_search('s.ref', $search_ref);
+if ($search_label)   $sql .= natural_search('s.label', $search_label);
+if ($search_labelshort) $sql .= natural_search('s.barcode', $search_labelshort);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -220,8 +193,9 @@ if ($resql)
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Products|FR:Module_Produits|ES:M&oacute;dulo_Productos';
+	$helpurl = 'EN:Module_Ships|FR:Module_Ships|ES:M&oacute;dulo_Productos';
 
+	die('je fonctionne bien !');
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
