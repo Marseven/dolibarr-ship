@@ -92,7 +92,7 @@ if (!empty($canvas))
 }
 
 // Security check
-$result = restrictedArea($user, 'ship', '', '', '', '', '', 0);
+//$result = restrictedArea($user, 'ship', '', '', '', '', '', 0);
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
@@ -104,6 +104,7 @@ $fieldstosearchall = array(
 
 $isInEEC = isInEEC($mysoc);
 die('je fonctionne bien !');
+
 // Definition of fields for lists
 $arrayfields = array(
 	'p.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
