@@ -46,7 +46,7 @@ if (!empty($conf->categorie->enabled))
 // Load translation files required by the page
 $langs->loadLangs(array('products', 'stocks', 'suppliers', 'companies', 'margins'));
 if (!empty($conf->productbatch->enabled)) $langs->load("productbatch");
-
+die;
 $action = GETPOST('action', 'aZ09');
 $massaction = GETPOST('massaction', 'alpha');
 $show_files = GETPOST('show_files', 'int');
@@ -56,7 +56,6 @@ $toselect = GETPOST('toselect', 'array');
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_ref = GETPOST("search_ref", 'alpha');
 $search_label = GETPOST("search_label", 'alpha');
-$search_type = GETPOST("search_type", 'int');
 $search_finished = GETPOST("search_finished", 'int');
 $optioncss = GETPOST('optioncss', 'alpha');
 $type = GETPOST("type", "int");
@@ -100,15 +99,13 @@ if (!empty($canvas))
 }
 
 // Security check
-//if ($search_type == '0') $result = restrictedArea($user, 'produit', '', '', '', '', '', 0);
-//elseif ($search_type == '1') $result = restrictedArea($user, 'service', '', '', '', '', '', 0);
-//else $result = restrictedArea($user, 'produit|service', '', '', '', '', '', 0);
+$result = restrictedArea($user, 'ship', '', '', '', '', '', 0);
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
 	's.ref'=>"Ref",
-	'p.label'=>"ShipLabel",
-	'p.labelshort'=>"ShipLabelShort",
+	's.label'=>"ShipLabel",
+	's.labelshort'=>"ShipLabelShort",
 
 );
 
