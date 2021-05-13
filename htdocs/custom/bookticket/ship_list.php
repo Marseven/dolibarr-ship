@@ -40,13 +40,11 @@ if (! $res) die("Include of main fails");
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 
-if (!empty($conf->categorie->enabled))
-	require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
-
 // Load translation files required by the page
-$langs->loadLangs(array('products', 'stocks', 'suppliers', 'companies', 'margins'));
-if (!empty($conf->productbatch->enabled)) $langs->load("productbatch");
+$langs->loadLangs('bookticket');
+
 die;
+
 $action = GETPOST('action', 'aZ09');
 $massaction = GETPOST('massaction', 'alpha');
 $show_files = GETPOST('show_files', 'int');
