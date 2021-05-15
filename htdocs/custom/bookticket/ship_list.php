@@ -202,25 +202,16 @@ if ($resql)
 
 	// Displays ship removal confirmation
 	if (GETPOST('delprod')) {
-		setEventMessages($langs->trans("ProductDeleted", GETPOST('delprod')), null, 'mesgs');
+		setEventMessages($langs->trans("ShipDeleted", GETPOST('delprod')), null, 'mesgs');
 	}
 
 	$param = '';
 	if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param .= '&contextpage='.urlencode($contextpage);
 	if ($limit > 0 && $limit != $conf->liste_limit) $param .= '&limit='.urlencode($limit);
 	if ($sall) $param .= "&sall=".urlencode($sall);
-	if ($searchCategoryProductOperator == 1) $param .= "&search_category_product_operator=".urlencode($searchCategoryProductOperator);
-	foreach ($searchCategoryProductList as $searchCategoryProduct) {
-		$param .= "&search_category_product_list[]=".urlencode($searchCategoryProduct);
-	}
 	if ($search_ref) $param = "&search_ref=".urlencode($search_ref);
-	if ($search_ref_supplier) $param = "&search_ref_supplier=".urlencode($search_ref_supplier);
-	if ($search_barcode) $param .= ($search_barcode ? "&search_barcode=".urlencode($search_barcode) : "");
 	if ($search_label) $param .= "&search_label=".urlencode($search_label);
-	if ($search_finished) $param = "&search_finished=".urlencode($search_finished);
-
-	// Add $param from extra fields
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
+	if ($search_labelshort) $param .= "&search_labelshort=".urlencode($search_labelshort);
 
 	// List of mass actions available
 	$arrayofmassactions = array(
@@ -236,7 +227,7 @@ if ($resql)
 	$perm = $user->rights->ship->creer;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
-	$newcardbutton .= dolGetButtonTitle($langs->trans('NewProduct'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create&type=0', '', $perm, $params);
+	$newcardbutton .= dolGetButtonTitle($langs->trans('NewShip'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create&type=0', '', $perm, $params);
 	$label = 'NewShip';
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post" name="formulaire">';
@@ -281,12 +272,6 @@ if ($resql)
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['pfp.ref_fourn']['checked']))
-	{
-		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_ref_supplier" size="8" value="'.dol_escape_htmltag($search_ref_supplier).'">';
-		print '</td>';
-	}
 	if (!empty($arrayfields['p.label']['checked']))
 	{
 		print '<td class="liste_titre left">';
@@ -294,26 +279,43 @@ if ($resql)
 		print '</td>';
 	}
 
-	// Finished
-	if (!empty($arrayfields['p.finished']['checked']))
+	if (!empty($arrayfields['p.labelshort']['checked']))
 	{
-		print '<td class="liste_titre">';
-		print $formproduct->selectProductNature('search_finished', $search_finished);
+		print '<td class="liste_titre left">';
+		print '<input class="flat" type="text" name="search_labeshortl" size="12" value="'.dol_escape_htmltag($search_label).'">';
 		print '</td>';
 	}
-	// Weight
-	if (!empty($arrayfields['p.weight']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
-	// Extra fields
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_input.tpl.php';
 
-	// Fields from hook
-	$parameters = array('arrayfields'=>$arrayfields);
-	$reshook = $hookmanager->executeHooks('printFieldListOption', $parameters); // Note that $action and $object may have been modified by hook
-	print $hookmanager->resPrint;
+
+
+	// nbre_place
+	if (!empty($arrayfields['p.nbre_place']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
+	// nbre_vip
+	if (!empty($arrayfields['p.nbre_vip']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
+	// nbre_aff
+	if (!empty($arrayfields['p.nbre_aff']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
+	// nbre_eco
+	if (!empty($arrayfields['p.nbre_eco']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
 	// Date creation
 	if (!empty($arrayfields['p.datec']['checked']))
 	{
@@ -324,18 +326,6 @@ if ($resql)
 	if (!empty($arrayfields['p.tms']['checked']))
 	{
 		print '<td class="liste_titre">';
-		print '</td>';
-	}
-	if (!empty($arrayfields['p.tosell']['checked']))
-	{
-		print '<td class="liste_titre right">';
-		print $form->selectarray('search_tosell', array('0'=>$langs->trans('ProductStatusNotOnSellShort'), '1'=>$langs->trans('ProductStatusOnSellShort')), $search_tosell, 1);
-		print '</td >';
-	}
-	if (!empty($arrayfields['p.tobuy']['checked']))
-	{
-		print '<td class="liste_titre right">';
-		print $form->selectarray('search_tobuy', array('0'=>$langs->trans('ProductStatusNotOnBuyShort'), '1'=>$langs->trans('ProductStatusOnBuyShort')), $search_tobuy, 1);
 		print '</td>';
 	}
 	print '<td class="liste_titre center maxwidthsearch">';
@@ -352,20 +342,15 @@ if ($resql)
 	if (!empty($arrayfields['p.label']['checked'])) {
 		print_liste_field_titre($arrayfields['p.label']['label'], $_SERVER["PHP_SELF"], "p.label", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.duration']['checked'])) {
-		print_liste_field_titre($arrayfields['p.duration']['label'], $_SERVER["PHP_SELF"], "p.duration", "", $param, '', $sortfield, $sortorder, 'center ');
-	}
-	if (!empty($arrayfields['p.finished']['checked'])) {
-		print_liste_field_titre($arrayfields['p.finished']['label'], $_SERVER["PHP_SELF"], "p.finished", "", $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['p.labelshort']['checked'])) {
+		print_liste_field_titre($arrayfields['p.labelshort']['label'], $_SERVER["PHP_SELF"], "p.labelshort", "", $param, "", $sortfield, $sortorder);
 	}
 
-	if (!empty($arrayfields['p.weight']['checked']))  		print_liste_field_titre($arrayfields['p.weight']['label'], $_SERVER['PHP_SELF'], 'p.weight', '', $param, '', $sortfield, $sortorder, 'center ');
-	// Extra fields
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
-	// Hook fields
-	$parameters = array('arrayfields'=>$arrayfields, 'param'=>$param, 'sortfield'=>$sortfield, 'sortorder'=>$sortorder);
-	$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook
-	print $hookmanager->resPrint;
+	if (!empty($arrayfields['p.nbre_place']['checked']))  print_liste_field_titre($arrayfields['p.nbre_place']['label'], $_SERVER['PHP_SELF'], 'p.nbre_place', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['p.nbre_vip']['checked']))  print_liste_field_titre($arrayfields['p.nbre_vip']['label'], $_SERVER['PHP_SELF'], 'p.nbre_vip', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['p.nbre_aff']['checked']))  print_liste_field_titre($arrayfields['p.nbre_aff']['label'], $_SERVER['PHP_SELF'], 'p.nbre_aff', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['p.nbre_eco']['checked']))  print_liste_field_titre($arrayfields['p.nbre_eco']['label'], $_SERVER['PHP_SELF'], 'p.nbre_eco', '', $param, '', $sortfield, $sortorder, 'center ');
+
 	if (!empty($arrayfields['p.datec']['checked'])) {
 		print_liste_field_titre($arrayfields['p.datec']['label'], $_SERVER["PHP_SELF"], "p.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
@@ -384,7 +369,7 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 
-		// Multilangs
+		/* Multilangs
 		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
 		{
 			$sql = "SELECT label";
@@ -399,7 +384,7 @@ if ($resql)
 				$objtp = $db->fetch_object($result);
 				if (!empty($objtp->label)) $obj->label = $objtp->label;
 			}
-		}
+		}*/
 
 		$product_static->id = $obj->rowid;
 		$product_static->ref = $obj->ref;
@@ -422,30 +407,43 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Barcode
-		if (!empty($arrayfields['p.barcode']['checked']))
+		// Labelshort
+		if (!empty($arrayfields['p.labelshort']['checked']))
 		{
-			print '<td>'.$obj->barcode.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->labelshort).'">'.$obj->labelshort.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// Nbre_place
+		if (!empty($arrayfields['p.nbre_place']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_place).'">'.$obj->nbre_place.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// Nbre_vip
+		if (!empty($arrayfields['p.nbre_vip']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_vip).'">'.$obj->nbre_vip.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// Nbre_aff
+		if (!empty($arrayfields['p.nbre_aff']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_aff).'">'.$obj->nbre_aff.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// Nbre_eco
+		if (!empty($arrayfields['p.nbre_eco']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_eco).'">'.$obj->nbre_eco.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 
 
-		// Finished
-		if (!empty($arrayfields['p.finished']['checked']))
-		{
-			print '<td class="center">';
-			print $product_static->getLibFinished();
-			print '</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-		// Extra fields
-		include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_print_fields.tpl.php';
-		// Fields from hook
-		$parameters = array('arrayfields'=>$arrayfields, 'obj'=>$obj, 'i'=>$i, 'totalarray'=>&$totalarray);
-		$reshook = $hookmanager->executeHooks('printFieldListValue', $parameters); // Note that $action and $object may have been modified by hook
-		print $hookmanager->resPrint;
 		// Date creation
 		if (!empty($arrayfields['p.datec']['checked']))
 		{

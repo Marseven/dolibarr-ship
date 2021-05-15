@@ -28,12 +28,12 @@ create table llx_bookticket_ship
   nbre_aff				          integer DEFAULT NULL,
   nbre_eco				          integer DEFAULT NULL,
   entity                    integer default 1                    
-  date_creation             datetime                    
-  tms                       timestamp                   
-  import_key                varchar(32)                 
-  status                    smallint 
+  date_creation             datetime,                    
+  tms                       timestamp,                  
+  import_key                varchar(32),                 
+  status                    smallint, 
   fk_accounting_category    integer      DEFAULT 0,			  -- ID of personalized group for report
   fk_user_author            integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
-  active                    tinyint      DEFAULT 1  NOT NULL,
+  active                    tinyint      DEFAULT 1  NOT NULL
 )ENGINE=innodb;

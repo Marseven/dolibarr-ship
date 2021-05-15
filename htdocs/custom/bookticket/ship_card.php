@@ -68,10 +68,6 @@ $label_security_check = empty($conf->global->MAIN_SECURITY_ALLOW_UNSECURED_LABEL
 if (!empty($user->socid)) $socid = $user->socid;
 
 $object = new Ship($db);
-$extrafields = new ExtraFields($db);
-
-// fetch optionals attributes and labels
-$extrafields->fetch_name_optionals_label($object->table_element);
 
 if ($id > 0 || !empty($ref))
 {
@@ -102,12 +98,8 @@ if (!empty($canvas))
 // Security check
 $fieldvalue = (!empty($id) ? $id : (!empty($ref) ? $ref : ''));
 $fieldtype = (!empty($id) ? 'rowid' : 'ref');
-$result = restrictedArea($user, 'produit|service', $fieldvalue, 'ship&ship', '', '', $fieldtype);
 
-// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$hookmanager->initHooks(array('shipcard', 'globalcard'));
-
-
+//$result = restrictedArea($user, 'produit|service', $fieldvalue, 'ship&ship', '', '', $fieldtype);
 
 /*
  * Actions
@@ -118,12 +110,8 @@ if ($cancel) $action = '';
 $usercanread = $user->rights->ship->lire;
 $usercancreate = $user->rights->ship->creer;
 $usercandelete = $user->rights->ship->supprimer;
-$createbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->creer_advance)) $createbarcode = 0;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
-$reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
-if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 if (empty($reshook))
 {
@@ -135,35 +123,6 @@ if (empty($reshook))
 
 	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
-	// Barcode type
-	if ($action == 'setfk_barcode_type' && $createbarcode)
-	{
-		$result = $object->setValueFrom('fk_barcode_type', GETPOST('fk_barcode_type'), '', null, 'text', '', $user, 'ship_MODIFY');
-		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-		exit;
-	}
-
-	// Barcode value
-	if ($action == 'setbarcode' && $createbarcode)
-	{
-		$result = $object->check_barcode(GETPOST('barcode'), GETPOST('barcode_type_code'));
-
-		if ($result >= 0)
-		{
-			$result = $object->setValueFrom('barcode', GETPOST('barcode'), '', null, 'text', '', $user, 'ship_MODIFY');
-			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-			exit;
-		} else {
-			$langs->load("errors");
-			if ($result == -1) $errors[] = 'ErrorBadBarCodeSyntax';
-			elseif ($result == -2) $errors[] = 'ErrorBarCodeRequired';
-			elseif ($result == -3) $errors[] = 'ErrorBarCodeAlreadyUsed';
-			else $errors[] = 'FailedToValidateBarCode';
-
-			$error++;
-			setEventMessages($errors, null, 'errors');
-		}
-	}
 
 	// Add a ship
 	if ($action == 'add' && $usercancreate)
@@ -185,48 +144,16 @@ if (empty($reshook))
 
 		if (!$error)
 		{
-			$units = GETPOST('units', 'int');
-
-            $object->ref                   = $ref;
+			$object->ref                   = $ref;
             $object->label                 = GETPOST('label', $label_security_check);
+			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
+			$object->nbre_place             	 = GETPOST('nbre_place');
+			$object->nbre_vip             	 = GETPOST('nbre_vip');
+			$object->nbre_aff             	 = GETPOST('nbre_aff');
+			$object->nbre_eco             	 = GETPOST('nbre_eco');
 
-
-			$object->barcode_type          = GETPOST('fk_barcode_type');
-			$object->barcode = GETPOST('barcode');
-			// Set barcode_type_xxx from barcode_type id
-			$stdobject = new GenericObject($db);
-			$stdobject->element = 'ship';
-			$stdobject->barcode_type = GETPOST('fk_barcode_type');
-			$result = $stdobject->fetch_barcode();
-			if ($result < 0)
-			{
-				$error++;
-				$mesg = 'Failed to get bar code type information ';
-				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-			}
-			$object->barcode_type_code      = $stdobject->barcode_type_code;
-			$object->barcode_type_coder     = $stdobject->barcode_type_coder;
-			$object->barcode_type_label     = $stdobject->barcode_type_label;
-
-			$object->weight             	 = GETPOST('weight');
-			$finished = GETPOST('finished', 'int');
-			if ($finished > 0) {
-				$object->finished = $finished;
-			} else {
-				$object->finished = null;
-			}
-
-			$units = GETPOST('units', 'int');
-			if ($units > 0) {
-				$object->fk_unit = $units;
-			} else {
-				$object->fk_unit = null;
-			}
 
 			// Fill array 'array_options' with data from add form
-			$ret = $extrafields->setOptionalsFromPost(null, $object);
-			if ($ret < 0) $error++;
-
 			if (!$error)
 			{
 				$id = $object->create($user);
@@ -265,42 +192,11 @@ if (empty($reshook))
 
 				$object->ref                    = $ref;
 				$object->label                  = GETPOST('label', $label_security_check);
-				$object->description            = dol_htmlcleanlastbr(GETPOST('desc', 'restricthtml'));
-				$object->weight                 = GETPOST('weight');
-				$finished = GETPOST('finished', 'int');
-				if ($finished >= 0) {
-					$object->finished = $finished;
-				} else {
-					$object->finished = null;
-				}
-
-				$units = GETPOST('units', 'int');
-				if ($units > 0) {
-					$object->fk_unit = $units;
-				} else {
-					$object->fk_unit = null;
-				}
-
-				$object->barcode_type = GETPOST('fk_barcode_type');
-				$object->barcode = GETPOST('barcode');
-				// Set barcode_type_xxx from barcode_type id
-				$stdobject = new GenericObject($db);
-				$stdobject->element = 'ship';
-				$stdobject->barcode_type = GETPOST('fk_barcode_type');
-				$result = $stdobject->fetch_barcode();
-				if ($result < 0)
-				{
-					$error++;
-					$mesg = 'Failed to get bar code type information ';
-					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-				}
-				$object->barcode_type_code      = $stdobject->barcode_type_code;
-				$object->barcode_type_coder     = $stdobject->barcode_type_coder;
-				$object->barcode_type_label     = $stdobject->barcode_type_label;
-
-				// Fill array 'array_options' with data from add form
-				$ret = $extrafields->setOptionalsFromPost(null, $object);
-				if ($ret < 0) $error++;
+				$object->labelshort                 = GETPOST('labelshort', $label_security_check);
+				$object->nbre_place             	 = GETPOST('nbre_place');
+				$object->nbre_vip             	 = GETPOST('nbre_vip');
+				$object->nbre_aff             	 = GETPOST('nbre_aff');
+				$object->nbre_eco             	 = GETPOST('nbre_eco');
 
 				if (!$error && $object->check())
 				{
@@ -336,7 +232,6 @@ if (empty($reshook))
 			{
 				$object->ref = GETPOST('clone_ref', 'alphanohtml');
 				$object->id = null;
-				$object->barcode = -1;
 
 				if ($object->check())
 				{
@@ -356,32 +251,6 @@ if (empty($reshook))
 								exit;
 							}
 						}
-
-						if (GETPOST('clone_categories'))
-						{
-							$result = $object->cloneCategories($originalId, $id);
-
-							if ($result < 1)
-							{
-								$db->rollback();
-								setEventMessages($langs->trans('ErrorshipClone'), null, 'errors');
-								header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
-								exit;
-							}
-						}
-
-						if (GETPOST('clone_prices')) {
-							$result = $object->clone_price($originalId, $id);
-
-							if ($result < 1) {
-								$db->rollback();
-								setEventMessages($langs->trans('ErrorshipClone'), null, 'errors');
-								header('Location: '.$_SERVER['PHP_SELF'].'?id='.$originalId);
-								exit();
-							}
-						}
-
-						// $object->clone_fournisseurs($originalId, $id);
 
 						$db->commit();
 						$db->close();
@@ -466,24 +335,6 @@ $form = new Form($db);
 $formfile = new FormFile($db);
 $formcompany = new FormCompany($db);
 
-// Load object modBarCodeship
-$res = 0;
-if (!empty($conf->barcode->enabled) && !empty($conf->global->BARCODE_ship_ADDON_NUM))
-{
-	$module = strtolower($conf->global->BARCODE_ship_ADDON_NUM);
-	$dirbarcode = array_merge(array('/core/modules/barcode/'), $conf->modules_parts['barcode']);
-	foreach ($dirbarcode as $dirroot)
-	{
-		$res = dol_include_once($dirroot.$module.'.php');
-		if ($res) break;
-	}
-	if ($res > 0)
-	{
-			$modBarCodeship = new $module();
-	}
-}
-
-
 if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	// When used with CANVAS
@@ -505,36 +356,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
 		print '<script type="text/javascript">';
-				print '$(document).ready(function () {
-                        $("#selectcountry_id").change(function() {
-                        	document.formprod.action.value="create";
-                        	document.formprod.submit();
-                        });
-                     });';
-				print '</script>'."\n";
-
-		// Load object modCodeship
-		$module = (!empty($conf->global->ship_CODEship_ADDON) ? $conf->global->ship_CODEship_ADDON : 'mod_codeship_leopard');
-		if (substr($module, 0, 16) == 'mod_codeship_' && substr($module, -3) == 'php')
-		{
-			$module = substr($module, 0, dol_strlen($module) - 4);
-		}
-		$result = dol_include_once('/core/modules/ship/'.$module.'.php');
-		if ($result > 0)
-		{
-			$modCodeship = new $module();
-		}
+		print '$(document).ready(function () {
+				$("#selectcountry_id").change(function() {
+					document.formprod.action.value="create";
+					document.formprod.submit();
+				});
+				});';
+		print '</script>'."\n";
 
 		dol_set_focus('input[name="ref"]');
 
 		print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST" name="formprod">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add">';
-		print '<input type="hidden" name="type" value="'.$type.'">'."\n";
-		if (!empty($modCodeship->code_auto))
-			print '<input type="hidden" name="code_auto" value="1">';
-		if (!empty($modBarCodeship->code_auto))
-			print '<input type="hidden" name="barcode_auto" value="1">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
 
@@ -550,8 +384,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<tr>';
 		$tmpcode = '';
-		if (!empty($modCodeship->code_auto)) $tmpcode = $modCodeship->getNextValue($object, $type);
-		print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input id="ref" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpcode).'">';
+
 		if ($refalreadyexists)
 		{
 			print $langs->trans("RefAlreadyExists");
@@ -561,47 +394,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Label
 		print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label', $label_security_check)).'"></td></tr>';
 
-
-		$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-		if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
-
-		if ($showbarcode)
-		{
- 			print '<tr><td>'.$langs->trans('BarcodeType').'</td><td>';
- 			if (GETPOSTISSET('fk_barcode_type')) {
-			 	$fk_barcode_type = GETPOST('fk_barcode_type');
-			} else {
-				if (empty($fk_barcode_type) && !empty($conf->global->PRODUIT_DEFAULT_BARCODE_TYPE)) $fk_barcode_type = $conf->global->PRODUIT_DEFAULT_BARCODE_TYPE;
-			}
-			require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
-			$formbarcode = new FormBarCode($db);
-			print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
-			print '</td>';
-			if ($conf->browser->layout == 'phone') print '</tr><tr>';
-			print '<td>'.$langs->trans("BarcodeValue").'</td><td>';
-			$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-			if (empty($tmpcode) && !empty($modBarCodeship->code_auto)) $tmpcode = $modBarCodeship->getNextValue($object, $type);
-			print '<input class="maxwidth100" type="text" name="barcode" value="'.dol_escape_htmltag($tmpcode).'">';
-			print '</td></tr>';
-		}
-
-		// Description (used in invoice, propal...)
-		print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td colspan="3">';
-
-		$doleditor = new DolEditor('desc', GETPOST('desc', 'restricthtml'), '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_shipDESC, ROWS_4, '90%');
-		$doleditor->Create();
-
-		print "</td></tr>";
-
-
-		// Other attributes
-		$parameters = array('colspan' => 3, 'cols' => '3');
-		$reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-		print $hookmanager->resPrint;
-		if (empty($reshook))
-		{
-			print $object->showOptionals($extrafields, 'edit', $parameters);
-		}
+		// Labelshort
+		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
 
 		print '</table>';
 
@@ -609,10 +403,24 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<table class="border centpercent">';
 
-			// Price
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("SellingPrice").'</td>';
-			print '<td><input name="price" class="maxwidth50" value="'.$object->price.'">';
-			print $form->selectPriceBaseType($conf->global->ship_PRICE_BASE_TYPE, "price_base_type");
+			// Nbre_place
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
+			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			print '</td></tr>';
+
+			// Nbre_vip
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
+			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
+			print '</td></tr>';
+
+			// Nbre_aff
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
+			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
+			print '</td></tr>';
+
+			// Nbre_eco
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
+			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
 			print '</td></tr>';
 
 
@@ -670,40 +478,28 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Label
 			print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
 
-			// Barcode
-			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
+			// Labelshort
+			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'"></td></tr>';
 
-			if ($showbarcode)
-			{
-				print '<tr><td>'.$langs->trans('BarcodeType').'</td><td>';
-				if (GETPOSTISSET('fk_barcode_type')) {
-				 	$fk_barcode_type = GETPOST('fk_barcode_type');
-				} else {
-					$fk_barcode_type = $object->barcode_type;
-					if (empty($fk_barcode_type) && !empty($conf->global->PRODUIT_DEFAULT_BARCODE_TYPE)) $fk_barcode_type = $conf->global->PRODUIT_DEFAULT_BARCODE_TYPE;
-				}
-				require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
-				$formbarcode = new FormBarCode($db);
-				print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
-				print '</td><td>'.$langs->trans("BarcodeValue").'</td><td>';
-				$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-				if (empty($tmpcode) && !empty($modBarCodeship->code_auto)) $tmpcode = $modBarCodeship->getNextValue($object, $type);
-				print '<input size="40" class="maxwidthonsmartphone" type="text" name="barcode" value="'.dol_escape_htmltag($tmpcode).'">';
-				print '</td></tr>';
-			}
+			// Nbre_place
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
+			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			print '</td></tr>';
 
-			// Description (used in invoice, propal...)
-			print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td colspan="3">';
+			// Nbre_vip
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
+			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
+			print '</td></tr>';
 
-			// Other attributes
-			$parameters = array('colspan' => ' colspan="3"', 'cols' => 3);
-			$reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-			print $hookmanager->resPrint;
-			if (empty($reshook))
-			{
-				print $object->showOptionals($extrafields, 'edit', $parameters);
-			}
+			// Nbre_aff
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
+			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
+			print '</td></tr>';
+
+			// Nbre_eco
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
+			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
+			print '</td></tr>';
 
 			print '</table>';
 
@@ -720,9 +516,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
-			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
-
 			$head = ship_prepare_head($object);
 			$titre = $langs->trans("Cardship".$object->type);
 			$picto = 'ship';
@@ -742,56 +535,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<div class="underbanner clearboth"></div>';
 			print '<table class="border tableforfield" width="100%">';
-
-			if ($showbarcode)
-			{
-				// Barcode type
-				print '<tr><td class="nowrap">';
-				print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-				print $langs->trans("BarcodeType");
-				print '</td>';
-				if (($action != 'editbarcodetype') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcodetype&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
-				print '</tr></table>';
-				print '</td><td colspan="2">';
-				if ($action == 'editbarcodetype' || $action == 'editbarcode')
-				{
-					require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
-					$formbarcode = new FormBarCode($db);
-				}
-				if ($action == 'editbarcodetype')
-				{
-					print $formbarcode->formBarcodeType($_SERVER['PHP_SELF'].'?id='.$object->id, $object->barcode_type, 'fk_barcode_type');
-				} else {
-					$object->fetch_barcode();
-					print $object->barcode_type_label ? $object->barcode_type_label : ($object->barcode ? '<div class="warning">'.$langs->trans("SetDefaultBarcodeType").'<div>' : '');
-				}
-				print '</td></tr>'."\n";
-
-				// Barcode value
-				print '<tr><td class="nowrap">';
-				print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-				print $langs->trans("BarcodeValue");
-				print '</td>';
-				if (($action != 'editbarcode') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcode&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
-				print '</tr></table>';
-				print '</td><td colspan="2">';
-				if ($action == 'editbarcode')
-				{
-					$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-					if (empty($tmpcode) && !empty($modBarCodeship->code_auto)) $tmpcode = $modBarCodeship->getNextValue($object, $type);
-
-					print '<form method="post" action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'">';
-					print '<input type="hidden" name="token" value="'.newToken().'">';
-					print '<input type="hidden" name="action" value="setbarcode">';
-					print '<input type="hidden" name="barcode_type_code" value="'.$object->barcode_type_code.'">';
-					print '<input size="40" class="maxwidthonsmartphone" type="text" name="barcode" value="'.$tmpcode.'">';
-					print '&nbsp;<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
-					print '</form>';
-				} else {
-					print $object->barcode;
-				}
-				print '</td></tr>'."\n";
-			}
 
 
 			print '</table>';
@@ -815,8 +558,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	}
 }
 
-$tmpcode = '';
-if (!empty($modCodeship->code_auto)) $tmpcode = $modCodeship->getNextValue($object, $object->type);
 
 $formconfirm = '';
 
@@ -842,13 +583,7 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 
 	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneship', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
 }
-
-// Call Hook formConfirm
-$parameters = array('formConfirm' => $formconfirm, 'object' => $object);
-$reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-if (empty($reshook)) $formconfirm .= $hookmanager->resPrint;
-elseif ($reshook > 0) $formconfirm = $hookmanager->resPrint;
-
+;
 // Print form confirm
 print $formconfirm;
 
@@ -862,9 +597,8 @@ if ($action != 'create' && $action != 'edit')
 	print "\n".'<div class="tabsAction">'."\n";
 
 	$parameters = array();
-	$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-	if (empty($reshook))
-	{
+
+
 		if ($usercancreate)
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
@@ -897,7 +631,7 @@ if ($action != 'create' && $action != 'edit')
 		} else {
 			print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans("Delete").'</a>';
 		}
-	}
+
 
 	print "\n</div>\n";
 }

@@ -22,12 +22,12 @@ create table llx_bookticket_city
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   label                     varchar(255) NOT NULL,
   labelshort				        varchar(255) DEFAULT NULL,
-  entity                    integer default 1                    
-  date_creation             datetime                    
-  tms                       timestamp                   
-  import_key                varchar(32)                 
-  status                    smallint 
+  entity                    integer default 1,                    
+  date_creation             datetime,                    
+  tms                       timestamp,                   
+  import_key                varchar(32),                 
+  status                    smallint,
   fk_accounting_category    integer      DEFAULT 0,			  -- ID of personalized group for report
   fk_user_author            integer      DEFAULT NULL,
-  fk_user_modif             integer      DEFAULT NULL,
+  fk_user_modif             integer      DEFAULT NULL
 )ENGINE=innodb;

@@ -25,13 +25,13 @@ create table llx_bookticket_travel
   lieu_depart				        varchar(255) DEFAULT NULL,
   lieu_arrive				        varchar(255) DEFAULT NULL,
   fk_ship				            integer DEFAULT NULL,
-  entity                    integer default 1                    
-  date_creation             datetime                    
-  tms                       timestamp                   
-  import_key                varchar(32)                 
-  status                    smallint 
+  entity                    integer default 1,                    
+  date_creation             datetime,                    
+  tms                       timestamp,                   
+  import_key                varchar(32),                 
+  status                    smallint,
   fk_accounting_category    integer      DEFAULT 0,			  -- ID of personalized group for report
   fk_user_author            integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
-  active                    tinyint      DEFAULT 1  NOT NULL,
+  active                    tinyint      DEFAULT 1  NOT NULL
 )ENGINE=innodb;

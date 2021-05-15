@@ -14,24 +14,23 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program. If not, see <https://www.gnu.org/licenses/>.
 --
--- Table of 'ticket' for accountancy expert module
+-- Table of 'ticket' for bookticket module
 -- ============================================================================
 
 create table llx_bookticket_ticket
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   code                      varchar(128) DEFAULT 0 NOT NULL,
-  entity                    integer default 1                    
-  date_creation             datetime                    
-  tms                       timestamp                   
-  import_key                varchar(32)                 
-  status                    smallint
-  fk_ship                   integer      DEFAULT NULL
-  fk_passenger              integer      DEFAULT NULL
-  fk_travel                 integer      DEFAULT NULL
-  fk_classe                 integer      DEFAULT NULL 
-  fk_accounting_category    integer      DEFAULT 0,			  -- ID of personalized group for report
+  entity                    integer default 1,                    
+  date_creation             datetime,                    
+  tms                       timestamp,                   
+  import_key                varchar(32),                 
+  status                    smallint,
+  fk_ship                   integer      DEFAULT NULL,
+  fk_passenger              integer      DEFAULT NULL,
+  fk_travel                 integer      DEFAULT NULL,
+  fk_classe                 integer      DEFAULT NULL, 
   fk_user_author            integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
-  active                    tinyint      DEFAULT 1  NOT NULL,
+  active                    tinyint      DEFAULT 1  NOT NULL
 )ENGINE=innodb;
