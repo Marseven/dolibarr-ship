@@ -150,7 +150,7 @@ $texte = $langs->trans("Ships");
 
 
 $sql = 'SELECT DISTINCT s.rowid, s.ref, s.label, s.labelshort, s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco, s.entity,';
-$sql .= ' s.datec as date_creation, s.tms as date_update';
+$sql .= ' s.date_creation, s.tms as date_update';
 
 // Add fields from hooks
 $parameters = array();
