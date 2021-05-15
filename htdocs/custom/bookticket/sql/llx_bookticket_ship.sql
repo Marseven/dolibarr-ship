@@ -27,7 +27,7 @@ create table llx_bookticket_ship
   nbre_vip				          integer DEFAULT NULL,
   nbre_aff				          integer DEFAULT NULL,
   nbre_eco				          integer DEFAULT NULL,
-  entity                    integer default 1                    
+  entity                    integer default 1,                    
   date_creation             datetime,                    
   tms                       timestamp,                  
   import_key                varchar(32),                 
