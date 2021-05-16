@@ -39,27 +39,19 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.php';
 
-$type = GETPOST("type", 'int');
-if ($type == '' && !$user->rights->ship->lire) $type = '1'; // Force global page on service page only
-
 // Security check
-//if ($type == '0') $result = restrictedArea($user, 'produit');
-//elseif ($type == '1') $result = restrictedArea($user, 'service');
-//else $result = restrictedArea($user, 'produit|service|expedition');
+//$result = restrictedArea($user, 'ship');
 
 // Load translation files required by the page
 $langs->loadLangs('ship');
 
-// Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$hookmanager->initHooks(array('shipindex'));
-
 $ship_static = new Ship($db);
 
+$user->rights->ship->lire = true;
 
 /*
  * View
@@ -68,21 +60,9 @@ $ship_static = new Ship($db);
 $transAreaType = $langs->trans("ShipArea");
 
 $helpurl = '';
-if (!isset($_GET["type"]))
-{
-	$transAreaType = $langs->trans("ShipArea");
-	$helpurl = 'EN:Module_Ship|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 0) || empty($conf->service->enabled))
-{
-	$transAreaType = $langs->trans("ProductsArea");
-	$helpurl = 'EN:Module_Ship|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 1) || empty($conf->product->enabled))
-{
-	$transAreaType = $langs->trans("ServicesArea");
-	$helpurl = 'EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
-}
+$transAreaType = $langs->trans("ShipArea");
+$helpurl = 'EN:Module_Ship|FR:Module_Produits|ES:M&oacute;dulo_Productos';
+
 
 llxHeader("", $langs->trans("Ship"), $helpurl);
 
@@ -127,7 +107,7 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 /*
  * Number of Ship
  */
-if (!empty($conf->product->enabled) && $user->rights->ship->lire)
+if ($user->rights->ship->lire)
 {
 	$prodser = array();
 	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
@@ -196,7 +176,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Latest modified ship
  */
-if (!empty($conf->product->enabled) && $user->rights->ship->lire)
+if ($user->rights->ship->lire)
 {
 	$max = 15;
 	$sql = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
