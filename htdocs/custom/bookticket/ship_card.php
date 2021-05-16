@@ -382,6 +382,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		if ($refalreadyexists)
 		{
 			print $langs->trans("RefAlreadyExists");
+		}else{
+			// Ref
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
+
 		}
 		print '</td></tr>';
 
