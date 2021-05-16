@@ -94,9 +94,6 @@ if (!empty($canvas))
 }
 
 // Security check
-$fieldvalue = (!empty($id) ? $id : (!empty($ref) ? $ref : ''));
-$fieldtype = (!empty($id) ? 'rowid' : 'ref');
-
 //$result = restrictedArea($user, 'produit|service', $fieldvalue, 'ship&ship', '', '', $fieldtype);
 
 /*
@@ -105,216 +102,215 @@ $fieldtype = (!empty($id) ? 'rowid' : 'ref');
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->ship->lire;
-$usercancreate = $user->rights->ship->creer;
-$usercandelete = $user->rights->ship->supprimer;
+$usercanread = true; //$user->rights->ship->lire;
+$usercancreate = true; //$user->rights->ship->creer;
+$usercandelete = true; //$user->rights->ship->supprimer;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
-if (empty($reshook))
+
+
+// Actions to build doc
+$upload_dir = $conf->ship->dir_output;
+$permissiontoadd = $usercancreate;
+include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
+
+include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
+
+
+// Add a ship
+if ($action == 'add' && $usercancreate)
 {
+	$error = 0;
 
-	// Actions to build doc
-	$upload_dir = $conf->ship->dir_output;
-	$permissiontoadd = $usercancreate;
-	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
-
-	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
-
-
-	// Add a ship
-	if ($action == 'add' && $usercancreate)
+	if (!GETPOST('label', $label_security_check))
 	{
-		$error = 0;
+		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Label')), null, 'errors');
+		$action = "create";
+		$error++;
+	}
+	if (empty($ref))
+	{
+		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
+		$action = "create";
+		$error++;
+	}
 
-        if (!GETPOST('label', $label_security_check))
-        {
-            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Label')), null, 'errors');
-            $action = "create";
-            $error++;
-        }
-        if (empty($ref))
-        {
-            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
-            $action = "create";
-            $error++;
-        }
+	if (!$error)
+	{
+		$object->ref                   = $ref;
+		$object->label                 = GETPOST('label', $label_security_check);
+		$object->labelshort             = GETPOST('labelshort');
+		$object->nbre_place             = GETPOST('nbre_place');
+		$object->nbre_vip             	 = GETPOST('nbre_vip');
+		$object->nbre_aff             	 = GETPOST('nbre_aff');
+		$object->nbre_eco             	 = GETPOST('nbre_eco');
 
+
+		// Fill array 'array_options' with data from add form
 		if (!$error)
 		{
-			$object->ref                   = $ref;
-            $object->label                 = GETPOST('label', $label_security_check);
+			$id = $object->create($user);
+		}
+
+		if ($id > 0)
+		{
+			if (!empty($backtopage))
+			{
+				$backtopage = preg_replace('/--IDFORBACKTOPAGE--/', $object->id, $backtopage); // New method to autoselect project after a New on another form object creation
+				if (preg_match('/\?/', $backtopage)) $backtopage .= '&socid='.$object->id; // Old method
+				header("Location: ".$backtopage);
+				exit;
+			} else {
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
+				exit;
+			}
+		} else {
+			if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+			else setEventMessages($langs->trans($object->error), null, 'errors');
+			$action = "create";
+		}
+	}
+}
+
+// Update a ship
+if ($action == 'update' && $usercancreate)
+{
+	if (GETPOST('cancel', 'alpha'))
+	{
+		$action = '';
+	} else {
+		if ($object->id > 0)
+		{
+			$object->oldcopy = clone $object;
+
+			$object->ref                    = $ref;
+			$object->label                  = GETPOST('label', $label_security_check);
 			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
 			$object->nbre_place             	 = GETPOST('nbre_place');
 			$object->nbre_vip             	 = GETPOST('nbre_vip');
 			$object->nbre_aff             	 = GETPOST('nbre_aff');
 			$object->nbre_eco             	 = GETPOST('nbre_eco');
 
-
-			// Fill array 'array_options' with data from add form
-			if (!$error)
+			if (!$error && $object->check())
 			{
-				$id = $object->create($user);
-			}
-
-			if ($id > 0)
-			{
-				if (!empty($backtopage))
+				if ($object->update($object->id, $user) > 0)
 				{
-					$backtopage = preg_replace('/--IDFORBACKTOPAGE--/', $object->id, $backtopage); // New method to autoselect project after a New on another form object creation
-					if (preg_match('/\?/', $backtopage)) $backtopage .= '&socid='.$object->id; // Old method
-					header("Location: ".$backtopage);
-					exit;
+					$action = 'view';
 				} else {
-					header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
-					exit;
+					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+					else setEventMessages($langs->trans($object->error), null, 'errors');
+					$action = 'edit';
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans($object->error), null, 'errors');
-				$action = "create";
+				else setEventMessages($langs->trans("ErrorshipBadRefOrLabel"), null, 'errors');
+				$action = 'edit';
 			}
 		}
-	}
-
-	// Update a ship
-	if ($action == 'update' && $usercancreate)
-	{
-		if (GETPOST('cancel', 'alpha'))
-		{
-			$action = '';
-		} else {
-			if ($object->id > 0)
-			{
-				$object->oldcopy = clone $object;
-
-				$object->ref                    = $ref;
-				$object->label                  = GETPOST('label', $label_security_check);
-				$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-				$object->nbre_place             	 = GETPOST('nbre_place');
-				$object->nbre_vip             	 = GETPOST('nbre_vip');
-				$object->nbre_aff             	 = GETPOST('nbre_aff');
-				$object->nbre_eco             	 = GETPOST('nbre_eco');
-
-				if (!$error && $object->check())
-				{
-					if ($object->update($object->id, $user) > 0)
-					{
-						$action = 'view';
-					} else {
-						if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-						else setEventMessages($langs->trans($object->error), null, 'errors');
-						$action = 'edit';
-					}
-				} else {
-					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-					else setEventMessages($langs->trans("ErrorshipBadRefOrLabel"), null, 'errors');
-					$action = 'edit';
-				}
-			}
-		}
-	}
-
-	// Action clone object
-	if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-	{
-		if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-		{
-			setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-		} else {
-			$db->begin();
-
-			$originalId = $id;
-			if ($object->id > 0)
-			{
-				$object->ref = GETPOST('clone_ref', 'alphanohtml');
-				$object->id = null;
-
-				if ($object->check())
-				{
-					$object->context['createfromclone'] = 'createfromclone';
-					$id = $object->create($user);
-					if ($id > 0)
-					{
-						if (GETPOST('clone_composition'))
-						{
-							$result = $object->clone_associations($originalId, $id);
-
-							if ($result < 1)
-							{
-								$db->rollback();
-								setEventMessages($langs->trans('ErrorshipClone'), null, 'errors');
-								header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
-								exit;
-							}
-						}
-
-						$db->commit();
-						$db->close();
-
-						header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-						exit;
-					} else {
-						$id = $originalId;
-
-						if ($object->error == 'ErrorshipAlreadyExists')
-						{
-							$db->rollback();
-
-							$refalreadyexists++;
-							$action = "";
-
-							$mesg = $langs->trans("ErrorshipAlreadyExists", $object->ref);
-							$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-							setEventMessages($mesg, null, 'errors');
-							$object->fetch($id);
-						} else {
-							$db->rollback();
-							if (count($object->errors))
-							{
-								setEventMessages($object->error, $object->errors, 'errors');
-								dol_print_error($db, $object->errors);
-							} else {
-								setEventMessages($langs->trans($object->error), null, 'errors');
-								dol_print_error($db, $object->error);
-							}
-						}
-					}
-
-					unset($object->context['createfromclone']);
-				}
-			} else {
-				$db->rollback();
-				dol_print_error($db, $object->error);
-			}
-		}
-	}
-
-	// Delete a ship
-	if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
-	{
-		$result = $object->delete($user);
-
-		if ($result > 0)
-		{
-			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?type='.$object->type.'&delprod='.urlencode($object->ref));
-			exit;
-		} else {
-			setEventMessages($langs->trans($object->error), null, 'errors');
-			$reload = 0;
-			$action = '';
-		}
-	}
-
-
-	// Add ship into object
-	if ($object->id > 0 && $action == 'addin')
-	{
-		$thirpdartyid = 0;
 	}
 }
+
+// Action clone object
+if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
+if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
+{
+	if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
+	{
+		setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
+	} else {
+		$db->begin();
+
+		$originalId = $id;
+		if ($object->id > 0)
+		{
+			$object->ref = GETPOST('clone_ref', 'alphanohtml');
+			$object->id = null;
+
+			if ($object->check())
+			{
+				$object->context['createfromclone'] = 'createfromclone';
+				$id = $object->create($user);
+				if ($id > 0)
+				{
+					if (GETPOST('clone_composition'))
+					{
+						$result = $object->clone_associations($originalId, $id);
+
+						if ($result < 1)
+						{
+							$db->rollback();
+							setEventMessages($langs->trans('ErrorshipClone'), null, 'errors');
+							header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
+							exit;
+						}
+					}
+
+					$db->commit();
+					$db->close();
+
+					header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
+					exit;
+				} else {
+					$id = $originalId;
+
+					if ($object->error == 'ErrorshipAlreadyExists')
+					{
+						$db->rollback();
+
+						$refalreadyexists++;
+						$action = "";
+
+						$mesg = $langs->trans("ErrorshipAlreadyExists", $object->ref);
+						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
+						setEventMessages($mesg, null, 'errors');
+						$object->fetch($id);
+					} else {
+						$db->rollback();
+						if (count($object->errors))
+						{
+							setEventMessages($object->error, $object->errors, 'errors');
+							dol_print_error($db, $object->errors);
+						} else {
+							setEventMessages($langs->trans($object->error), null, 'errors');
+							dol_print_error($db, $object->error);
+						}
+					}
+				}
+
+				unset($object->context['createfromclone']);
+			}
+		} else {
+			$db->rollback();
+			dol_print_error($db, $object->error);
+		}
+	}
+}
+
+// Delete a ship
+if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
+if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
+{
+	$result = $object->delete($user);
+
+	if ($result > 0)
+	{
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?type='.$object->type.'&delprod='.urlencode($object->ref));
+		exit;
+	} else {
+		setEventMessages($langs->trans($object->error), null, 'errors');
+		$reload = 0;
+		$action = '';
+	}
+}
+
+
+// Add ship into object
+if ($object->id > 0 && $action == 'addin')
+{
+	$thirpdartyid = 0;
+}
+
 
 
 /*
