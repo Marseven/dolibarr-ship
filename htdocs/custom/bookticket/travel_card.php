@@ -379,7 +379,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</td></tr>';
 
 		// Jour_heure
-		print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="datetime" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('jour_heure', $jour_heure_security_check)).'"></td></tr>';
+		print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('jour_heure', $jour_heure_security_check)).'"></td></tr>';
 
 		// Ship
 		print '<tr><td class="fieldrequired">'.$langs->trans("Ship").'</td><td colspan="3"><input name="ship" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('ship')).'"></td></tr>';
@@ -392,12 +392,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// lieu_depart
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
-			print '<td><input name="lieu_depart" class="maxwidth50" value="'.$object->lieu_depart.'">';
+			print '<td><input name="lieu_depart" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_depart.'">';
 			print '</td></tr>';
 
 			// lieu_arrive
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
-			print '<td><input name="lieu_arrive" class="maxwidth50" value="'.$object->lieu_arrive.'">';
+			print '<td><input name="lieu_arrive" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_arrive.'">';
 			print '</td></tr>';
 
 		print '</table>';
@@ -452,19 +452,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
 
 			// Jour_heure
-			print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="datetime" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour_heure).'"></td></tr>';
+			print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour_heure).'"></td></tr>';
 
 			// Ship
 			print '<tr><td class="fieldrequired">'.$langs->trans("Ship").'</td><td colspan="3"><input name="ship" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->ship).'"></td></tr>';
 
 			// lieu_depart
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
-			print '<td><input name="lieu_depart" class="maxwidth50" value="'.$object->lieu_depart.'">';
+			print '<td><input name="lieu_depart" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_depart.'">';
 			print '</td></tr>';
 
 			// lieu_arrive
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
-			print '<td><input name="lieu_arrive" class="maxwidth50" value="'.$object->lieu_arrive.'">';
+			print '<td><input name="lieu_arrive" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_arrive.'">';
 			print '</td></tr>';
 
 			print '</table>';
