@@ -40,10 +40,10 @@ if (! $res) die("Include of main fails");
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 
-die;
+die('Je fonctionne bien !');
 
 // Load translation files required by the page
-$langs->loadLangs(array('bookticket'));
+$langs->loadLangs('bookticket');
 
 $action = GETPOST('action', 'aZ09');
 $massaction = GETPOST('massaction', 'alpha');
@@ -173,7 +173,6 @@ $texte = $langs->trans("Tickets");
 
 
 $sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, tr.ref as travel, t.entity,';
-
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -184,8 +183,6 @@ $sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
 if ($search_label)   $sql .= natural_search('t.label', $search_label);
 if ($search_barcode) $sql .= natural_search('t.barcode', $search_barcode);
-
-//if (GETPOST("toolowstock")) $sql.= " HAVING SUM(s.reel) < t.seuil_stock_alerte";    // Not used yet
 $sql .= $db->order($sortfield, $sortorder);
 
 $nbtotalofrecords = '';
@@ -224,10 +221,9 @@ if ($resql)
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "");
 
-
 	// Displays ship removal confirmation
-	if (GETPOST('delprod')) {
-		setEventMessages($langs->trans("ProductDeleted", GETPOST('delprod')), null, 'mesgs');
+	if (GETPOST('delTicket')) {
+		setEventMessages($langs->trans("TicketDeleted", GETPOST('delTicket')), null, 'mesgs');
 	}
 
 	$param = '';
