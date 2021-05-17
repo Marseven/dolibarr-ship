@@ -191,7 +191,6 @@ if ($resql)
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
-
 	// Displays Travel removal confirmation
 	if (GETPOST('delprod')) {
 		setEventMessages($langs->trans("TravelDeleted", GETPOST('delprod')), null, 'mesgs');

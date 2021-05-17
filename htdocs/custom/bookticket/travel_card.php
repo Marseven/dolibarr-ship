@@ -79,8 +79,6 @@ if ($id > 0 || !empty($ref))
 	}
 }
 
-$modulepart = 'travel';
-
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = !empty($object->canvas) ? $object->canvas : GETPOST("canvas");
 $objcanvas = null;
@@ -92,9 +90,6 @@ if (!empty($canvas))
 }
 
 // Security check
-$fieldvalue = (!empty($id) ? $id : (!empty($ref) ? $ref : ''));
-$fieldtype = (!empty($id) ? 'rowid' : 'ref');
-
 //$result = restrictedArea($user, 'produit|service', $fieldvalue, 'travel&travel', '', '', $fieldtype);
 
 /*
@@ -103,9 +98,9 @@ $fieldtype = (!empty($id) ? 'rowid' : 'ref');
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->travel->lire;
-$usercancreate = $user->rights->travel->creer;
-$usercandelete = $user->rights->travel->supprimer;
+$usercanread = true; //$user->rights->travel->lire;
+$usercancreate = true; //$user->rights->travel->creer;
+$usercandelete = true; //$user->rights->travel->supprimer;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
@@ -125,9 +120,9 @@ if (empty($reshook))
 	{
 		$error = 0;
 
-        if (!GETPOST('label', $label_security_check))
+        if (!GETPOST('jopur_heure', $jour_heure_security_check))
         {
-            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Label')), null, 'errors');
+            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('JourHeure')), null, 'errors');
             $action = "create";
             $error++;
         }
@@ -141,12 +136,10 @@ if (empty($reshook))
 		if (!$error)
 		{
 			$object->ref                   = $ref;
-            $object->label                 = GETPOST('label', $label_security_check);
-			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-			$object->nbre_place             	 = GETPOST('nbre_place');
-			$object->nbre_vip             	 = GETPOST('nbre_vip');
-			$object->nbre_aff             	 = GETPOST('nbre_aff');
-			$object->nbre_eco             	 = GETPOST('nbre_eco');
+            $object->jour_heure                 = GETPOST('jour_heure', $jour_heure_security_check);
+			$object->ship                 = GETPOST('ship');
+			$object->lieu_depart             	 = GETPOST('lieu_depart');
+			$object->lieu_arrive             	 = GETPOST('lieu_arrive');
 
 
 			// Fill array 'array_options' with data from add form
@@ -187,12 +180,10 @@ if (empty($reshook))
 				$object->oldcopy = clone $object;
 
 				$object->ref                    = $ref;
-				$object->label                  = GETPOST('label', $label_security_check);
-				$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-				$object->nbre_place             	 = GETPOST('nbre_place');
-				$object->nbre_vip             	 = GETPOST('nbre_vip');
-				$object->nbre_aff             	 = GETPOST('nbre_aff');
-				$object->nbre_eco             	 = GETPOST('nbre_eco');
+				$object->jour_heure             = GETPOST('jour_heure', $jour_heure_security_check);
+				$object->ship                   = GETPOST('ship');
+				$object->lieu_depart            = GETPOST('lieu_depart');
+				$object->lieu_arrive            = GETPOST('lieu_arrive');
 
 				if (!$error && $object->check())
 				{
@@ -387,11 +378,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		}
 		print '</td></tr>';
 
-		// Label
-		print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label', $label_security_check)).'"></td></tr>';
+		// Jour_heure
+		print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="datetime" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('jour_heure', $jour_heure_security_check)).'"></td></tr>';
 
-		// Labelshort
-		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
+		// Ship
+		print '<tr><td class="fieldrequired">'.$langs->trans("Ship").'</td><td colspan="3"><input name="ship" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('ship')).'"></td></tr>';
 
 		print '</table>';
 
@@ -399,26 +390,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<table class="border centpercent">';
 
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			// lieu_depart
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
+			print '<td><input name="lieu_depart" class="maxwidth50" value="'.$object->lieu_depart.'">';
 			print '</td></tr>';
 
-			// Nbre_vip
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
+			// lieu_arrive
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
+			print '<td><input name="lieu_arrive" class="maxwidth50" value="'.$object->lieu_arrive.'">';
 			print '</td></tr>';
-
-			// Nbre_aff
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
-			print '</td></tr>';
-
-			// Nbre_eco
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
-			print '</td></tr>';
-
 
 		print '</table>';
 
@@ -471,30 +451,20 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
 
-			// Label
-			print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
+			// Jour_heure
+			print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="datetime" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour_heure).'"></td></tr>';
 
-			// Labelshort
-			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'"></td></tr>';
+			// Ship
+			print '<tr><td class="fieldrequired">'.$langs->trans("Ship").'</td><td colspan="3"><input name="ship" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->ship).'"></td></tr>';
 
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			// lieu_depart
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
+			print '<td><input name="lieu_depart" class="maxwidth50" value="'.$object->lieu_depart.'">';
 			print '</td></tr>';
 
-			// Nbre_vip
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
-			print '</td></tr>';
-
-			// Nbre_aff
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
-			print '</td></tr>';
-
-			// Nbre_eco
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
+			// lieu_arrive
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
+			print '<td><input name="lieu_arrive" class="maxwidth50" value="'.$object->lieu_arrive.'">';
 			print '</td></tr>';
 
 			print '</table>';
@@ -561,7 +531,7 @@ $formconfirm = '';
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
 	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
 {
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("Deletetravel"), $langs->trans("ConfirmDeleteTravel"), "confirm_delete", '', 0, "action-delete");
+	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeleteTravel"), $langs->trans("ConfirmDeleteTravel"), "confirm_delete", '', 0, "action-delete");
 }
 
 // Clone confirmation
@@ -572,8 +542,6 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 	$formquestionclone = array(
 		'text' => $langs->trans("ConfirmClone"),
 		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentTravel"), 'value' => 1),
-		array('type' => 'checkbox', 'name' => 'clone_categories', 'label' => $langs->trans("CloneCategoriesTravel"), 'value' => 1),
 	);
 
 
