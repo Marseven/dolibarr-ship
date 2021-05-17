@@ -285,86 +285,86 @@ class modBookTicket extends DolibarrModules
 
 		//travel
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Read travel of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'travel'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Create/Update travel of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'travel'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Delete travel of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'travel'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
 		//ticket
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Read ticket of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'ticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Create/Update ticket of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'ticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Delete ticket of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'ticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
 		//passenger
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Read passenger of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'passenger'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Create/Update passenger of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'passenger'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Delete passenger of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'passenger'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
 		//city
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Read city of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'city'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Create/Update city of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'city'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Delete city of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'city'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
 		//classe
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Read classe of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'classe'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Create/Update classe of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'classe'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete objects of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'myobject'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Delete classe of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'classe'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
