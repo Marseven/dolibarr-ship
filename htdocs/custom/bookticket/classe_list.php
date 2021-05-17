@@ -93,7 +93,7 @@ $arrayfields = array(
 	'c.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
 	'c.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
 	'c.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
-	'c.prix_standard'=>array('label'=>$langs->trans('Prixstandard'), 'checked'=>0,  'position'=>30),
+	'c.prix_standard'=>array('label'=>$langs->trans('PrixStandard'), 'checked'=>1,  'position'=>30),
 	'c.prix_enfant'=>array('label'=>$langs->trans("PrixEnfant"), 'checked'=>1,  'position'=>52),
 	'c.prix_enf_stand'=>array('label'=>$langs->trans("PrixEnfStand"), 'checked'=>1,  'position'=>53),
 	'c.kilo_bagage'=>array('label'=>$langs->trans("KiloBagage"), 'checked'=>1,  'position'=>54),
