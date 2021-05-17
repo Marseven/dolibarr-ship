@@ -40,6 +40,7 @@ if (! $res) die("Include of main fails");
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 
+die;
 
 // Load translation files required by the page
 $langs->loadLangs(array('bookticket'));
