@@ -64,7 +64,7 @@ if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('b
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "c.ref";
+if (!$sortfield) $sortfield = "c.rowid";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
@@ -81,7 +81,6 @@ if (empty($action)) $action = 'list';
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-	'c.ref'=>"Ref",
 	'c.label'=>"CityLabel",
 	'c.labelshort'=>"CityLabelShort",
 );
@@ -90,7 +89,7 @@ $fieldstosearchall = array(
 
 // Definition of fields for lists
 $arrayfields = array(
-	'c.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
+	'c.rowid'=>array('label'=>$langs->trans("ID"), 'checked'=>1),
 	'c.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
 	'c.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
 	'c.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
@@ -143,7 +142,7 @@ $title = $langs->trans("Citys");
 $texte = $langs->trans("Citys");
 
 
-$sql = 'SELECT DISTINCT c.rowid, c.ref, c.label, c.labelshort, c.entity,';
+$sql = 'SELECT DISTINCT c.rowid, c.label, c.labelshort, c.entity,';
 $sql .= ' c.date_creation, c.tms as date_update';
 
 // Add fields from hooks
@@ -151,7 +150,6 @@ $parameters = array();
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_city as c';
 $sql .= ' WHERE c.entity IN ('.getEntity('city').')';
 
-if ($search_ref)     $sql .= natural_search('c.ref', $search_ref);
 if ($search_label)   $sql .= natural_search('c.label', $search_label);
 if ($search_labelshort) $sql .= natural_search('c.barcode', $search_labelshort);
 
@@ -259,12 +257,6 @@ if ($resql)
 
 	// Lines with input filters
 	print '<tr class="liste_titre_filter">';
-	if (!empty($arrayfields['c.ref']['checked']))
-	{
-		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
-		print '</td>';
-	}
 	if (!empty($arrayfields['c.label']['checked']))
 	{
 		print '<td class="liste_titre left">';
@@ -300,9 +292,7 @@ if ($resql)
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	if (!empty($arrayfields['c.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['c.ref']['label'], $_SERVER["PHP_SELF"], "c.ref", "", $param, "", $sortfield, $sortorder);
-	}
+
 	if (!empty($arrayfields['c.label']['checked'])) {
 		print_liste_field_titre($arrayfields['c.label']['label'], $_SERVER["PHP_SELF"], "c.label", "", $param, "", $sortfield, $sortorder);
 	}
@@ -350,14 +340,6 @@ if ($resql)
 		$product_static->label = $obj->label;
 		print '<tr class="oddeven">';
 
-		// Ref
-		if (!empty($arrayfields['c.ref']['checked']))
-		{
-			print '<td class="tdoverflowmax200">';
-			print $product_static->getNomUrl(1);
-			print "</td>\n";
-			if (!$i) $totalarray['nbfield']++;
-		}
 
 		// Label
 		if (!empty($arrayfields['c.label']['checked']))
