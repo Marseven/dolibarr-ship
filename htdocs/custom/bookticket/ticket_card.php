@@ -16,9 +16,9 @@
  */
 
 /**
- *	\file       bookticket/shipindex.php
+ *	\file       bookticket/ticketindex.php
  *	\ingroup    bookticket
- *	\brief      Home page of ship left menu
+ *	\brief      Home page of ticket left menu
  */
 
 
@@ -73,12 +73,12 @@ if ($id > 0 || !empty($ref))
 {
 	$result = $object->fetch($id, $ref);
 
-	if (!empty($conf->ship->enabled)) $upload_dir = $conf->ship->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ship').dol_sanitizeFileName($object->ref);
-	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ship').dol_sanitizeFileName($object->ref);
+	if (!empty($conf->ticket->enabled)) $upload_dir = $conf->ticket->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ticket').dol_sanitizeFileName($object->ref);
+	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ticket').dol_sanitizeFileName($object->ref);
 
-	if (!empty($conf->global->ship_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
+	if (!empty($conf->global->TICKET_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
 	{
-		if (!empty($conf->ship->enabled)) $upload_dirold = $conf->ship->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
+		if (!empty($conf->ticket->enabled)) $upload_dirold = $conf->ticket->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 		else $upload_dirold = $conf->service->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 	}
 }
@@ -102,9 +102,9 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->ship->lire;
-$usercancreate = $user->rights->ship->creer;
-$usercandelete = $user->rights->ship->supprimer;
+$usercanread = $user->rights->ticket->lire;
+$usercancreate = $user->rights->ticket->creer;
+$usercandelete = $user->rights->ticket->supprimer;
 $createbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->creer_advance)) $createbarcode = 0;
 
@@ -116,7 +116,7 @@ if (empty($reshook))
 {
 
 	// Actions to build doc
-	$upload_dir = $conf->ship->dir_output;
+	$upload_dir = $conf->ticket->dir_output;
 	$permissiontoadd = $usercancreate;
 	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 
@@ -125,7 +125,7 @@ if (empty($reshook))
 	// Barcode type
 	if ($action == 'setfk_barcode_type' && $createbarcode)
 	{
-		$result = $object->setValueFrom('fk_barcode_type', GETPOST('fk_barcode_type'), '', null, 'text', '', $user, 'ship_MODIFY');
+		$result = $object->setValueFrom('fk_barcode_type', GETPOST('fk_barcode_type'), '', null, 'text', '', $user, 'TICKET_MODIFY');
 		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	}
@@ -137,7 +137,7 @@ if (empty($reshook))
 
 		if ($result >= 0)
 		{
-			$result = $object->setValueFrom('barcode', GETPOST('barcode'), '', null, 'text', '', $user, 'ship_MODIFY');
+			$result = $object->setValueFrom('barcode', GETPOST('barcode'), '', null, 'text', '', $user, 'TICKET_MODIFY');
 			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		} else {
@@ -218,7 +218,7 @@ if (empty($reshook))
 		}
 	}
 
-	// Update a ship
+	// Update a ticket
 	if ($action == 'update' && $usercancreate)
 	{
 		if (GETPOST('cancel', 'alpha'))
@@ -240,7 +240,7 @@ if (empty($reshook))
 				$object->barcode = GETPOST('barcode');
 				// Set barcode_type_xxx from barcode_type id
 				$stdobject = new GenericObject($db);
-				$stdobject->element = 'ship';
+				$stdobject->element = 'ticket';
 				$stdobject->barcode_type = GETPOST('fk_barcode_type');
 				$result = $stdobject->fetch_barcode();
 				if ($result < 0)
@@ -265,7 +265,7 @@ if (empty($reshook))
 					}
 				} else {
 					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-					else setEventMessages($langs->trans("ErrorshipBadRefOrLabel"), null, 'errors');
+					else setEventMessages($langs->trans("ErrorTicketBadRefOrLabel"), null, 'errors');
 					$action = 'edit';
 				}
 			}
@@ -302,7 +302,7 @@ if (empty($reshook))
 							if ($result < 1)
 							{
 								$db->rollback();
-								setEventMessages($langs->trans('ErrorshipClone'), null, 'errors');
+								setEventMessages($langs->trans('ErrorTicketClone'), null, 'errors');
 								header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
 								exit;
 							}
@@ -318,14 +318,14 @@ if (empty($reshook))
 					} else {
 						$id = $originalId;
 
-						if ($object->error == 'ErrorshipAlreadyExists')
+						if ($object->error == 'ErrorTicketAlreadyExists')
 						{
 							$db->rollback();
 
 							$refalreadyexists++;
 							$action = "";
 
-							$mesg = $langs->trans("ErrorshipAlreadyExists", $object->ref);
+							$mesg = $langs->trans("ErrorTicketAlreadyExists", $object->ref);
 							$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
 							setEventMessages($mesg, null, 'errors');
 							$object->fetch($id);
@@ -351,7 +351,7 @@ if (empty($reshook))
 		}
 	}
 
-	// Delete a ship
+	// Delete a Ticket
 	if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
 	if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
 	{
@@ -369,7 +369,7 @@ if (empty($reshook))
 	}
 
 
-	// Add ship into object
+	// Add Ticket into object
 	if ($object->id > 0 && $action == 'addin')
 	{
 		$thirpdartyid = 0;
@@ -393,11 +393,11 @@ $form = new Form($db);
 $formfile = new FormFile($db);
 $formcompany = new FormCompany($db);
 
-// Load object modBarCodeship
+// Load object modBarCodeTicket
 $res = 0;
-if (!empty($conf->barcode->enabled) && !empty($conf->global->BARCODE_ship_ADDON_NUM))
+if (!empty($conf->barcode->enabled) && !empty($conf->global->BARCODE_TICKET_ADDON_NUM))
 {
-	$module = strtolower($conf->global->BARCODE_ship_ADDON_NUM);
+	$module = strtolower($conf->global->BARCODE_TICKET_ADDON_NUM);
 	$dirbarcode = array_merge(array('/core/modules/barcode/'), $conf->modules_parts['barcode']);
 	foreach ($dirbarcode as $dirroot)
 	{
@@ -406,7 +406,7 @@ if (!empty($conf->barcode->enabled) && !empty($conf->global->BARCODE_ship_ADDON_
 	}
 	if ($res > 0)
 	{
-			$modBarCodeship = new $module();
+			$modBarCodeTicket = new $module();
 	}
 }
 
@@ -417,7 +417,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	if (empty($object->error) && $id)
 	{
-		$object = new ship($db);
+		$object = new Ticket($db);
 		$result = $object->fetch($id);
 		if ($result <= 0) dol_print_error('', $object->error);
 	}
@@ -446,9 +446,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add">';
 		print '<input type="hidden" name="type" value="'.$type.'">'."\n";
-		if (!empty($modCodeship->code_auto))
+		if (!empty($modCodeTicket->code_auto))
 			print '<input type="hidden" name="code_auto" value="1">';
-		if (!empty($modBarCodeship->code_auto))
+		if (!empty($modBarCodeTicket->code_auto))
 			print '<input type="hidden" name="barcode_auto" value="1">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
@@ -465,7 +465,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<tr>';
 			$tmpcode = '';
-			if (!empty($modCodeship->code_auto)) $tmpcode = $modCodeship->getNextValue($object, $type);
+			if (!empty($modCodeTicket->code_auto)) $tmpcode = $modCodeTicket->getNextValue($object, $type);
 			print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input id="ref" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpcode).'">';
 			if ($refalreadyexists)
 			{
@@ -491,7 +491,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				if ($conf->browser->layout == 'phone') print '</tr><tr>';
 				print '<td>'.$langs->trans("BarcodeValue").'</td><td>';
 				$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-				if (empty($tmpcode) && !empty($modBarCodeship->code_auto)) $tmpcode = $modBarCodeship->getNextValue($object, $type);
+				if (empty($tmpcode) && !empty($modBarCodeTicket->code_auto)) $tmpcode = $modBarCodeTicket->getNextValue($object, $type);
 				print '<input class="maxwidth100" type="text" name="barcode" value="'.dol_escape_htmltag($tmpcode).'">';
 				print '</td></tr>';
 			}
@@ -565,7 +565,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</form>';
 	} elseif ($object->id > 0) {
 		/*
-         * ship card
+         * Ticket card
          */
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
@@ -583,7 +583,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</script>'."\n";
 
 
-			$type = $langs->trans('ship');
+			$type = $langs->trans('Ticket');
 
 			// Main official, simple, and not duplicated code
 			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST" name="formprod">'."\n";
@@ -592,9 +592,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
 			print '<input type="hidden" name="canvas" value="'.$object->canvas.'">';
 
-			$head = ship_prepare_head($object);
-			$titre = $langs->trans("Cardship".$object->type);
-			$picto =  'ship';
+			$head = ticket_prepare_head($object);
+			$titre = $langs->trans("CardTicket".$object->type);
+			$picto =  'Ticket';
 			print dol_get_fiche_head($head, 'card', $titre, 0, $picto);
 
 
@@ -621,7 +621,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
 				print '</td><td>'.$langs->trans("BarcodeValue").'</td><td>';
 				$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-				if (empty($tmpcode) && !empty($modBarCodeship->code_auto)) $tmpcode = $modBarCodeship->getNextValue($object, $type);
+				if (empty($tmpcode) && !empty($modBarCodeTicket->code_auto)) $tmpcode = $modBarCodeTicket->getNextValue($object, $type);
 				print '<input size="40" class="maxwidthonsmartphone" type="text" name="barcode" value="'.dol_escape_htmltag($tmpcode).'">';
 				print '</td></tr>';
 			}
@@ -691,16 +691,16 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$head = ship_prepare_head($object);
-			$titre = $langs->trans("Cardship".$object->type);
-			$picto = 'ship';
+			$head = ticket_prepare_head($object);
+			$titre = $langs->trans("CardTicket".$object->type);
+			$picto = 'Ticket';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
-			if ($user->socid && !in_array('ship', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
+			if ($user->socid && !in_array('ticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
 			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
@@ -746,7 +746,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				if ($action == 'editbarcode')
 				{
 					$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-					if (empty($tmpcode) && !empty($modBarCodeship->code_auto)) $tmpcode = $modBarCodeship->getNextValue($object);
+					if (empty($tmpcode) && !empty($modBarCodeTicket->code_auto)) $tmpcode = $modBarCodeTicket->getNextValue($object);
 
 					print '<form method="post" action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'">';
 					print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -784,11 +784,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 }
 
 $tmpcode = '';
-if (!empty($modCodeship->code_auto)) $tmpcode = $modCodeship->getNextValue($object);
+if (!empty($modCodeTicket->code_auto)) $tmpcode = $modCodeTicket->getNextValue($object);
 
 $formconfirm = '';
 
-// Confirm delete ship
+// Confirm delete Ticket
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
 	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
 {
@@ -807,7 +807,7 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 	);
 
 
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneship', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
+	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneTicket', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
 }
 
 // Call Hook formConfirm
@@ -859,7 +859,7 @@ if ($action != 'create' && $action != 'edit')
 					print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 				}
 			} else {
-				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("shipIsUsed").'">'.$langs->trans("Delete").'</a>';
+				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("TicketIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}
 		} else {
 			print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans("Delete").'</a>';
@@ -923,10 +923,10 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	// Documents
 	$objectref = dol_sanitizeFileName($object->ref);
 	$relativepath = $comref.'/'.$objectref.'.pdf';
-	if (!empty($conf->ship->multidir_output[$object->entity])) {
-		$filedir = $conf->ship->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
+	if (!empty($conf->ticket->multidir_output[$object->entity])) {
+		$filedir = $conf->ticket->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
 	} else {
-		$filedir = $conf->ship->dir_output.'/'.$objectref;
+		$filedir = $conf->ticket->dir_output.'/'.$objectref;
 	}
 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 	$genallowed = $usercanread;
@@ -939,14 +939,14 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 
 	$MAXEVENT = 10;
 
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ship_agenda.php?id='.$object->id.'">';
+	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_agenda.php?id='.$object->id.'">';
 	$morehtmlright .= $langs->trans("SeeAll");
 	$morehtmlright .= '</a>';
 
 	// List of actions on element
 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
 	$formactions = new FormActions($db);
-	$somethingshown = $formactions->showactions($object, 'ship', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for ship
+	$somethingshown = $formactions->showactions($object, 'ticket', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for ticket
 
 	print '</div></div></div>';
 }
