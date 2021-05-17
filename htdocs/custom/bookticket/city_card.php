@@ -362,8 +362,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '</table>';
 
-		print '<hr>';
-
 		print dol_get_fiche_end();
 
 		print '<div class="center">';
