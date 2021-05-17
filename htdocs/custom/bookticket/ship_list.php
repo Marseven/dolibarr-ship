@@ -91,15 +91,15 @@ $fieldstosearchall = array(
 
 // Definition of fields for lists
 $arrayfields = array(
-	'p.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
-	'p.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
-	'p.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
-	'p.nbre_place'=>array('label'=>$langs->trans('NbrePlace'), 'checked'=>0,  'position'=>30),
-	'p.nbre_vip'=>array('label'=>$langs->trans("NbreVip"), 'checked'=>1,  'position'=>52),
-	'p.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>53),
-	'p.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>54),
-	'p.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-	'p.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+	's.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
+	's.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
+	's.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
+	's.nbre_place'=>array('label'=>$langs->trans('NbrePlace'), 'checked'=>0,  'position'=>30),
+	's.nbre_vip'=>array('label'=>$langs->trans("NbreVip"), 'checked'=>1,  'position'=>52),
+	's.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>53),
+	's.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>54),
+	's.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
+	's.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
 
 
@@ -266,20 +266,20 @@ if ($resql)
 
 	// Lines with input filters
 	print '<tr class="liste_titre_filter">';
-	if (!empty($arrayfields['p.ref']['checked']))
+	if (!empty($arrayfields['s.ref']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['p.label']['checked']))
+	if (!empty($arrayfields['s.label']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_label" size="12" value="'.dol_escape_htmltag($search_label).'">';
 		print '</td>';
 	}
 
-	if (!empty($arrayfields['p.labelshort']['checked']))
+	if (!empty($arrayfields['s.labelshort']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_labeshortl" size="12" value="'.dol_escape_htmltag($search_label).'">';
@@ -289,41 +289,41 @@ if ($resql)
 
 
 	// nbre_place
-	if (!empty($arrayfields['p.nbre_place']['checked']))
+	if (!empty($arrayfields['s.nbre_place']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
 	// nbre_vip
-	if (!empty($arrayfields['p.nbre_vip']['checked']))
+	if (!empty($arrayfields['s.nbre_vip']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
 	// nbre_aff
-	if (!empty($arrayfields['p.nbre_aff']['checked']))
+	if (!empty($arrayfields['s.nbre_aff']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
 	// nbre_eco
-	if (!empty($arrayfields['p.nbre_eco']['checked']))
+	if (!empty($arrayfields['s.nbre_eco']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
 	// Date creation
-	if (!empty($arrayfields['p.datec']['checked']))
+	if (!empty($arrayfields['s.datec']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 	// Date modification
-	if (!empty($arrayfields['p.tms']['checked']))
+	if (!empty($arrayfields['s.tms']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -336,26 +336,26 @@ if ($resql)
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	if (!empty($arrayfields['p.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['p.ref']['label'], $_SERVER["PHP_SELF"], "p.ref", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['s.ref']['checked'])) {
+		print_liste_field_titre($arrayfields['s.ref']['label'], $_SERVER["PHP_SELF"], "s.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.label']['checked'])) {
-		print_liste_field_titre($arrayfields['p.label']['label'], $_SERVER["PHP_SELF"], "p.label", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['s.label']['checked'])) {
+		print_liste_field_titre($arrayfields['s.label']['label'], $_SERVER["PHP_SELF"], "s.label", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.labelshort']['checked'])) {
-		print_liste_field_titre($arrayfields['p.labelshort']['label'], $_SERVER["PHP_SELF"], "p.labelshort", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['s.labelshort']['checked'])) {
+		print_liste_field_titre($arrayfields['s.labelshort']['label'], $_SERVER["PHP_SELF"], "s.labelshort", "", $param, "", $sortfield, $sortorder);
 	}
 
-	if (!empty($arrayfields['p.nbre_place']['checked']))  print_liste_field_titre($arrayfields['p.nbre_place']['label'], $_SERVER['PHP_SELF'], 'p.nbre_place', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_vip']['checked']))  print_liste_field_titre($arrayfields['p.nbre_vip']['label'], $_SERVER['PHP_SELF'], 'p.nbre_vip', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_aff']['checked']))  print_liste_field_titre($arrayfields['p.nbre_aff']['label'], $_SERVER['PHP_SELF'], 'p.nbre_aff', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_eco']['checked']))  print_liste_field_titre($arrayfields['p.nbre_eco']['label'], $_SERVER['PHP_SELF'], 'p.nbre_eco', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['s.nbre_place']['checked']))  print_liste_field_titre($arrayfields['s.nbre_place']['label'], $_SERVER['PHP_SELF'], 's.nbre_place', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['s.nbre_vip']['checked']))  print_liste_field_titre($arrayfields['s.nbre_vip']['label'], $_SERVER['PHP_SELF'], 's.nbre_vip', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['s.nbre_aff']['checked']))  print_liste_field_titre($arrayfields['s.nbre_aff']['label'], $_SERVER['PHP_SELF'], 's.nbre_aff', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['s.nbre_eco']['checked']))  print_liste_field_titre($arrayfields['s.nbre_eco']['label'], $_SERVER['PHP_SELF'], 's.nbre_eco', '', $param, '', $sortfield, $sortorder, 'center ');
 
-	if (!empty($arrayfields['p.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['p.datec']['label'], $_SERVER["PHP_SELF"], "p.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['s.datec']['checked'])) {
+		print_liste_field_titre($arrayfields['s.datec']['label'], $_SERVER["PHP_SELF"], "s.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
-	if (!empty($arrayfields['p.tms']['checked'])) {
-		print_liste_field_titre($arrayfields['p.tms']['label'], $_SERVER["PHP_SELF"], "p.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['s.tms']['checked'])) {
+		print_liste_field_titre($arrayfields['s.tms']['label'], $_SERVER["PHP_SELF"], "s.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	print "</tr>\n";
@@ -392,7 +392,7 @@ if ($resql)
 		print '<tr class="oddeven">';
 
 		// Ref
-		if (!empty($arrayfields['p.ref']['checked']))
+		if (!empty($arrayfields['s.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
 			print $product_static->getNomUrl(1);
@@ -401,42 +401,42 @@ if ($resql)
 		}
 
 		// Label
-		if (!empty($arrayfields['p.label']['checked']))
+		if (!empty($arrayfields['s.label']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">'.$obj->label.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Labelshort
-		if (!empty($arrayfields['p.labelshort']['checked']))
+		if (!empty($arrayfields['s.labelshort']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->labelshort).'">'.$obj->labelshort.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Nbre_place
-		if (!empty($arrayfields['p.nbre_place']['checked']))
+		if (!empty($arrayfields['s.nbre_place']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_place).'">'.$obj->nbre_place.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Nbre_vip
-		if (!empty($arrayfields['p.nbre_vip']['checked']))
+		if (!empty($arrayfields['s.nbre_vip']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_vip).'">'.$obj->nbre_vip.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Nbre_aff
-		if (!empty($arrayfields['p.nbre_aff']['checked']))
+		if (!empty($arrayfields['s.nbre_aff']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_aff).'">'.$obj->nbre_aff.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Nbre_eco
-		if (!empty($arrayfields['p.nbre_eco']['checked']))
+		if (!empty($arrayfields['s.nbre_eco']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_eco).'">'.$obj->nbre_eco.'</td>';
 			if (!$i) $totalarray['nbfield']++;
@@ -445,7 +445,7 @@ if ($resql)
 
 
 		// Date creation
-		if (!empty($arrayfields['p.datec']['checked']))
+		if (!empty($arrayfields['s.datec']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
@@ -453,7 +453,7 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 		// Date modification
-		if (!empty($arrayfields['p.tms']['checked']))
+		if (!empty($arrayfields['s.tms']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');

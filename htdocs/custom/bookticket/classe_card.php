@@ -16,9 +16,9 @@
  */
 
 /**
- *	\file       bookticket/shipindex.php
+ *	\file       bookticket/classeindex.php
  *	\ingroup    bookticket
- *	\brief      Home page of ship left menu
+ *	\brief      Home page of classe left menu
  */
 
 
@@ -36,17 +36,16 @@ if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
 if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
-die;
+
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
-require_once DOL_DOCUMENT_ROOT.'/ship/class/html.formship.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array('ship', 'other'));
+$langs->loadLangs(array('bookticket', 'other'));
 
 $mesg = ''; $error = 0; $errors = array();
 
@@ -59,31 +58,28 @@ $cancel = GETPOST('cancel', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 $confirm = GETPOST('confirm', 'alpha');
 $socid = GETPOST('socid', 'int');
-$duration_value = GETPOST('duration_value', 'int');
-$duration_unit = GETPOST('duration_unit', 'alpha');
 
 // by default 'alphanohtml' (better security); hidden conf MAIN_SECURITY_ALLOW_UNSECURED_LABELS_WITH_HTML allows basic html
 $label_security_check = empty($conf->global->MAIN_SECURITY_ALLOW_UNSECURED_LABELS_WITH_HTML) ? 'alphanohtml' : 'restricthtml';
 
 if (!empty($user->socid)) $socid = $user->socid;
 
-$object = new Ship($db);
+$object = new Classe($db);
 
 if ($id > 0 || !empty($ref))
 {
 	$result = $object->fetch($id, $ref);
 
-	if (!empty($conf->ship->enabled)) $upload_dir = $conf->ship->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ship').dol_sanitizeFileName($object->ref);
-	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ship').dol_sanitizeFileName($object->ref);
+	if (!empty($conf->classe->enabled)) $upload_dir = $conf->classe->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'classe').dol_sanitizeFileName($object->ref);
+	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'classe').dol_sanitizeFileName($object->ref);
 
-	if (!empty($conf->global->ship_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
+	if (!empty($conf->global->Classe_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
 	{
-		if (!empty($conf->ship->enabled)) $upload_dirold = $conf->ship->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
+		if (!empty($conf->classe->enabled)) $upload_dirold = $conf->classe->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 		else $upload_dirold = $conf->service->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 	}
 }
 
-$modulepart = 'ship';
 
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = !empty($object->canvas) ? $object->canvas : GETPOST("canvas");
@@ -92,14 +88,11 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('ship', 'card', $canvas);
+	$objcanvas->getCanvas('classe', 'card', $canvas);
 }
 
 // Security check
-$fieldvalue = (!empty($id) ? $id : (!empty($ref) ? $ref : ''));
-$fieldtype = (!empty($id) ? 'rowid' : 'ref');
-
-//$result = restrictedArea($user, 'produit|service', $fieldvalue, 'ship&ship', '', '', $fieldtype);
+//$result = restrictedArea($user, 'classe');
 
 /*
  * Actions
@@ -107,227 +100,224 @@ $fieldtype = (!empty($id) ? 'rowid' : 'ref');
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->ship->lire;
-$usercancreate = $user->rights->ship->creer;
-$usercandelete = $user->rights->ship->supprimer;
+$usercanread = true; //$user->rights->classe->lire;
+$usercancreate = true; //$user->rights->classe->creer;
+$usercandelete = true; //$user->rights->classe->supprimer;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
-if (empty($reshook))
+// Actions to build doc
+$upload_dir = $conf->classe->dir_output;
+$permissiontoadd = $usercancreate;
+include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
+
+include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
+
+
+// Add a classe
+if ($action == 'add' && $usercancreate)
 {
+	$error = 0;
 
-	// Actions to build doc
-	$upload_dir = $conf->ship->dir_output;
-	$permissiontoadd = $usercancreate;
-	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
-
-	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
-
-
-	// Add a ship
-	if ($action == 'add' && $usercancreate)
+	if (!GETPOST('label', $label_security_check))
 	{
-		$error = 0;
+		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Label')), null, 'errors');
+		$action = "create";
+		$error++;
+	}
+	if (empty($ref))
+	{
+		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
+		$action = "create";
+		$error++;
+	}
 
-        if (!GETPOST('label', $label_security_check))
-        {
-            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Label')), null, 'errors');
-            $action = "create";
-            $error++;
-        }
-        if (empty($ref))
-        {
-            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
-            $action = "create";
-            $error++;
-        }
+	if (!$error)
+	{
+		$object->ref                   = $ref;
+		$object->label                 = GETPOST('label', $label_security_check);
+		$object->labelshort                 = GETPOST('labelshort');
+		$object->prix_standard             	 = GETPOST('prix_standard');
+		$object->prix_enfant             	 = GETPOST('prix_enfant');
+		$object->prix_enf_stand             	 = GETPOST('prix_enf_stand');
+		$object->kilo_bagage             	 = GETPOST('kilo_bagage');
 
+
+		// Fill array 'array_options' with data from add form
 		if (!$error)
 		{
-			$object->ref                   = $ref;
-            $object->label                 = GETPOST('label', $label_security_check);
-			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-			$object->nbre_place             	 = GETPOST('nbre_place');
-			$object->nbre_vip             	 = GETPOST('nbre_vip');
-			$object->nbre_aff             	 = GETPOST('nbre_aff');
-			$object->nbre_eco             	 = GETPOST('nbre_eco');
+			$id = $object->create($user);
+		}
 
-
-			// Fill array 'array_options' with data from add form
-			if (!$error)
+		if ($id > 0)
+		{
+			if (!empty($backtopage))
 			{
-				$id = $object->create($user);
+				$backtopage = preg_replace('/--IDFORBACKTOPAGE--/', $object->id, $backtopage); // New method to autoselect project after a New on another form object creation
+				if (preg_match('/\?/', $backtopage)) $backtopage .= '&socid='.$object->id; // Old method
+				header("Location: ".$backtopage);
+				exit;
+			} else {
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
+				exit;
 			}
+		} else {
+			if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+			else setEventMessages($langs->trans($object->error), null, 'errors');
+			$action = "create";
+		}
+	}
+}
 
-			if ($id > 0)
+// Update a classe
+if ($action == 'update' && $usercancreate)
+{
+	if (GETPOST('cancel', 'alpha'))
+	{
+		$action = '';
+	} else {
+		if ($object->id > 0)
+		{
+			$object->oldcopy = clone $object;
+
+			$object->ref                    = $ref;
+			$object->label                  = GETPOST('label', $label_security_check);
+			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
+			$object->prix_standard             	 = GETPOST('prix_standard');
+			$object->prix_enfant             	 = GETPOST('prix_enfant');
+			$object->prix_enf_stand             	 = GETPOST('prix_enf_stand');
+			$object->kilo_bagage             	 = GETPOST('kilo_bagage');
+
+			if (!$error && $object->check())
 			{
-				if (!empty($backtopage))
+				if ($object->update($object->id, $user) > 0)
 				{
-					$backtopage = preg_replace('/--IDFORBACKTOPAGE--/', $object->id, $backtopage); // New method to autoselect project after a New on another form object creation
-					if (preg_match('/\?/', $backtopage)) $backtopage .= '&socid='.$object->id; // Old method
-					header("Location: ".$backtopage);
-					exit;
+					$action = 'view';
 				} else {
-					header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
-					exit;
+					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+					else setEventMessages($langs->trans($object->error), null, 'errors');
+					$action = 'edit';
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans($object->error), null, 'errors');
-				$action = "create";
+				else setEventMessages($langs->trans("ErrorClasseBadRefOrLabel"), null, 'errors');
+				$action = 'edit';
 			}
 		}
-	}
-
-	// Update a ship
-	if ($action == 'update' && $usercancreate)
-	{
-		if (GETPOST('cancel', 'alpha'))
-		{
-			$action = '';
-		} else {
-			if ($object->id > 0)
-			{
-				$object->oldcopy = clone $object;
-
-				$object->ref                    = $ref;
-				$object->label                  = GETPOST('label', $label_security_check);
-				$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-				$object->nbre_place             	 = GETPOST('nbre_place');
-				$object->nbre_vip             	 = GETPOST('nbre_vip');
-				$object->nbre_aff             	 = GETPOST('nbre_aff');
-				$object->nbre_eco             	 = GETPOST('nbre_eco');
-
-				if (!$error && $object->check())
-				{
-					if ($object->update($object->id, $user) > 0)
-					{
-						$action = 'view';
-					} else {
-						if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-						else setEventMessages($langs->trans($object->error), null, 'errors');
-						$action = 'edit';
-					}
-				} else {
-					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-					else setEventMessages($langs->trans("ErrorshipBadRefOrLabel"), null, 'errors');
-					$action = 'edit';
-				}
-			}
-		}
-	}
-
-	// Action clone object
-	if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-	{
-		if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-		{
-			setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-		} else {
-			$db->begin();
-
-			$originalId = $id;
-			if ($object->id > 0)
-			{
-				$object->ref = GETPOST('clone_ref', 'alphanohtml');
-				$object->id = null;
-
-				if ($object->check())
-				{
-					$object->context['createfromclone'] = 'createfromclone';
-					$id = $object->create($user);
-					if ($id > 0)
-					{
-						if (GETPOST('clone_composition'))
-						{
-							$result = $object->clone_associations($originalId, $id);
-
-							if ($result < 1)
-							{
-								$db->rollback();
-								setEventMessages($langs->trans('ErrorshipClone'), null, 'errors');
-								header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
-								exit;
-							}
-						}
-
-						$db->commit();
-						$db->close();
-
-						header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-						exit;
-					} else {
-						$id = $originalId;
-
-						if ($object->error == 'ErrorshipAlreadyExists')
-						{
-							$db->rollback();
-
-							$refalreadyexists++;
-							$action = "";
-
-							$mesg = $langs->trans("ErrorshipAlreadyExists", $object->ref);
-							$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-							setEventMessages($mesg, null, 'errors');
-							$object->fetch($id);
-						} else {
-							$db->rollback();
-							if (count($object->errors))
-							{
-								setEventMessages($object->error, $object->errors, 'errors');
-								dol_print_error($db, $object->errors);
-							} else {
-								setEventMessages($langs->trans($object->error), null, 'errors');
-								dol_print_error($db, $object->error);
-							}
-						}
-					}
-
-					unset($object->context['createfromclone']);
-				}
-			} else {
-				$db->rollback();
-				dol_print_error($db, $object->error);
-			}
-		}
-	}
-
-	// Delete a ship
-	if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
-	{
-		$result = $object->delete($user);
-
-		if ($result > 0)
-		{
-			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?type='.$object->type.'&delprod='.urlencode($object->ref));
-			exit;
-		} else {
-			setEventMessages($langs->trans($object->error), null, 'errors');
-			$reload = 0;
-			$action = '';
-		}
-	}
-
-
-	// Add ship into object
-	if ($object->id > 0 && $action == 'addin')
-	{
-		$thirpdartyid = 0;
 	}
 }
+
+// Action clone object
+if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
+if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
+{
+	if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
+	{
+		setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
+	} else {
+		$db->begin();
+
+		$originalId = $id;
+		if ($object->id > 0)
+		{
+			$object->ref = GETPOST('clone_ref', 'alphanohtml');
+			$object->id = null;
+
+			if ($object->check())
+			{
+				$object->context['createfromclone'] = 'createfromclone';
+				$id = $object->create($user);
+				if ($id > 0)
+				{
+					if (GETPOST('clone_composition'))
+					{
+						$result = $object->clone_associations($originalId, $id);
+
+						if ($result < 1)
+						{
+							$db->rollback();
+							setEventMessages($langs->trans('ErrorClasseClone'), null, 'errors');
+							header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
+							exit;
+						}
+					}
+
+					$db->commit();
+					$db->close();
+
+					header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
+					exit;
+				} else {
+					$id = $originalId;
+
+					if ($object->error == 'ErrorClasseAlreadyExists')
+					{
+						$db->rollback();
+
+						$refalreadyexists++;
+						$action = "";
+
+						$mesg = $langs->trans("ErrorClasseAlreadyExists", $object->ref);
+						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
+						setEventMessages($mesg, null, 'errors');
+						$object->fetch($id);
+					} else {
+						$db->rollback();
+						if (count($object->errors))
+						{
+							setEventMessages($object->error, $object->errors, 'errors');
+							dol_print_error($db, $object->errors);
+						} else {
+							setEventMessages($langs->trans($object->error), null, 'errors');
+							dol_print_error($db, $object->error);
+						}
+					}
+				}
+
+				unset($object->context['createfromclone']);
+			}
+		} else {
+			$db->rollback();
+			dol_print_error($db, $object->error);
+		}
+	}
+}
+
+// Delete a classe
+if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
+if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
+{
+	$result = $object->delete($user);
+
+	if ($result > 0)
+	{
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/classe_list.php?type='.$object->type.'&delprod='.urlencode($object->ref));
+		exit;
+	} else {
+		setEventMessages($langs->trans($object->error), null, 'errors');
+		$reload = 0;
+		$action = '';
+	}
+}
+
+
+// Add classe into object
+if ($object->id > 0 && $action == 'addin')
+{
+	$thirpdartyid = 0;
+}
+
 
 
 /*
  * View
  */
 
-$title = $langs->trans('ShipCard');
+$title = $langs->trans('ClasseCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->label, 16);
-$title = $langs->trans('Ship')." ".$shortlabel." - ".$langs->trans('Card');
-$helpurl = 'EN:Module_ships|FR:Module_Produits|ES:M&oacute;dulo_shipos';
+$title = $langs->trans('Classe')." ".$shortlabel." - ".$langs->trans('Card');
+$helpurl = 'EN:Module_Classes|FR:Module_Produits|ES:M&oacute;dulo_Classeos';
 
 llxHeader('', $title, $helpurl);
 
@@ -341,7 +331,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	if (empty($object->error) && $id)
 	{
-		$object = new ship($db);
+		$object = new Classe($db);
 		$result = $object->fetch($id);
 		if ($result <= 0) dol_print_error('', $object->error);
 	}
@@ -364,13 +354,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				});';
 		print '</script>'."\n";
 
-
-		$result = dol_include_once('/core/modules/ship/'.$module.'.php');
-		if ($result > 0)
-		{
-			$modCodeship = new $module();
-		}
-
 		dol_set_focus('input[name="ref"]');
 
 		print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST" name="formprod">';
@@ -379,8 +362,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
 
-		$picto = 'ship';
-		$title = $langs->trans("NewShip");
+		$picto = 'classe';
+		$title = $langs->trans("NewClasse");
 
 		$linkback = "";
 		print load_fiche_titre($title, $linkback, $picto);
@@ -395,6 +378,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		if ($refalreadyexists)
 		{
 			print $langs->trans("RefAlreadyExists");
+		}else{
+			// Ref
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
 		}
 		print '</td></tr>';
 
@@ -410,24 +396,24 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<table class="border centpercent">';
 
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			// prix_standard
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixStandard").'</td>';
+			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'">';
 			print '</td></tr>';
 
-			// Nbre_vip
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
+			// prix_enfant
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfant").'</td>';
+			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'">';
 			print '</td></tr>';
 
-			// Nbre_aff
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
+			// prix_enf_stand
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfStand").'</td>';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'">';
 			print '</td></tr>';
 
-			// Nbre_eco
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
+			// kilo_bagage
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("KiloBagage").'</td>';
+			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'">';
 			print '</td></tr>';
 
 
@@ -444,7 +430,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</form>';
 	} elseif ($object->id > 0) {
 		/*
-         * ship card
+         * classe card
          */
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
@@ -462,7 +448,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</script>'."\n";
 
 
-			$type = $langs->trans('ship');
+			$type = $langs->trans('classe');
 
 			// Main official, simple, and not duplicated code
 			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST" name="formprod">'."\n";
@@ -471,9 +457,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
 			print '<input type="hidden" name="canvas" value="'.$object->canvas.'">';
 
-			$head = ship_prepare_head($object);
-			$titre = $langs->trans("Cardship".$object->type);
-			$picto =  'ship';
+			$head = classe_prepare_head($object);
+			$titre = $langs->trans("CardClasse".$object->type);
+			$picto =  'classe';
 			print dol_get_fiche_head($head, 'card', $titre, 0, $picto);
 
 
@@ -488,24 +474,24 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Labelshort
 			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'"></td></tr>';
 
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			// prix_standard
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixStandard").'</td>';
+			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'">';
 			print '</td></tr>';
 
-			// Nbre_vip
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
+			// prix_enfant
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfant").'</td>';
+			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'">';
 			print '</td></tr>';
 
-			// Nbre_aff
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
+			// prix_enf_stand
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfStand").'</td>';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'">';
 			print '</td></tr>';
 
-			// Nbre_eco
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
+			// kilo_bagage
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("KiloBagage").'</td>';
+			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'">';
 			print '</td></tr>';
 
 			print '</table>';
@@ -523,16 +509,16 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
-			$head = ship_prepare_head($object);
-			$titre = $langs->trans("Cardship".$object->type);
-			$picto = 'ship';
+			$head = classe_prepare_head($object);
+			$titre = $langs->trans("CardClasse".$object->type);
+			$picto = 'classe';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/classe_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
-			if ($user->socid && !in_array('ship', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
+			if ($user->socid && !in_array('classe', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
 			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
@@ -568,11 +554,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 $formconfirm = '';
 
-// Confirm delete ship
+// Confirm delete classe
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
 	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
 {
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("Deleteship"), $langs->trans("ConfirmDeleteship"), "confirm_delete", '', 0, "action-delete");
+	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeleteClasse"), $langs->trans("ConfirmDeleteClasse"), "confirm_delete", '', 0, "action-delete");
 }
 
 // Clone confirmation
@@ -583,12 +569,12 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 	$formquestionclone = array(
 		'text' => $langs->trans("ConfirmClone"),
 		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentship"), 'value' => 1),
-		array('type' => 'checkbox', 'name' => 'clone_categories', 'label' => $langs->trans("CloneCategoriesship"), 'value' => 1),
+		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentClasse"), 'value' => 1),
+		array('type' => 'checkbox', 'name' => 'clone_categories', 'label' => $langs->trans("CloneCategoriesClasse"), 'value' => 1),
 	);
 
 
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneship', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
+	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneClasse', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
 }
 ;
 // Print form confirm
@@ -633,7 +619,7 @@ if ($action != 'create' && $action != 'edit')
 					print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 				}
 			} else {
-				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("shipIsUsed").'">'.$langs->trans("Delete").'</a>';
+				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("ClasseIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}
 		} else {
 			print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans("Delete").'</a>';
@@ -697,10 +683,10 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	// Documents
 	$objectref = dol_sanitizeFileName($object->ref);
 	$relativepath = $comref.'/'.$objectref.'.pdf';
-	if (!empty($conf->ship->multidir_output[$object->entity])) {
-		$filedir = $conf->ship->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
+	if (!empty($conf->classe->multidir_output[$object->entity])) {
+		$filedir = $conf->classe->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
 	} else {
-		$filedir = $conf->ship->dir_output.'/'.$objectref;
+		$filedir = $conf->classe->dir_output.'/'.$objectref;
 	}
 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 	$genallowed = $usercanread;
@@ -713,14 +699,14 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 
 	$MAXEVENT = 10;
 
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ship_agenda.php?id='.$object->id.'">';
+	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/classe_agenda.php?id='.$object->id.'">';
 	$morehtmlright .= $langs->trans("SeeAll");
 	$morehtmlright .= '</a>';
 
 	// List of actions on element
 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
 	$formactions = new FormActions($db);
-	$somethingshown = $formactions->showactions($object, 'ship', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for ship
+	$somethingshown = $formactions->showactions($object, 'classe', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for classe
 
 	print '</div></div></div>';
 }

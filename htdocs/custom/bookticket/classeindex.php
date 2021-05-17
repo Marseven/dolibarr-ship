@@ -179,7 +179,7 @@ if ($user->rights->classe->lire)
 	$sql = "SELECT c.rowid, c.ref, c.label, c.labelshort,  c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.kilo_bagage,";
 	$sql .= " s.entity,";
 	$sql .= " s.tms as datem";
-	$sql .= " FROM ".MAIN_DB_PREFIX."classe as c";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_classe as c";
 	//$sql .= " WHERE p.entity IN (".getEntity($classe_static->element, 1).")";
 
 	$sql .= $db->order("s.tms", "DESC");
