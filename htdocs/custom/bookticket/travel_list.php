@@ -50,11 +50,10 @@ $toselect = GETPOST('toselect', 'array');
 
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_ref = GETPOST("search_ref", 'alpha');
-$search_label = GETPOST("search_label", 'alpha');
-$search_labelshort = GETPOST("search_labelshort", 'alpha');
+$search_jour_heure = GETPOST("search_jour_heure", 'alpha');
+$search_ship = GETPOST("search_ship", 'alpha');
 $search_finished = GETPOST("search_finished", 'int');
 $optioncss = GETPOST('optioncss', 'alpha');
-$type = GETPOST("type", "int");
 
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
@@ -64,7 +63,7 @@ if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('b
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "s.ref";
+if (!$sortfield) $sortfield = "t.ref";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
@@ -72,7 +71,6 @@ $contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'tra
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
 $object = new Travel($db);
-$extrafields = new ExtraFields($db);
 $form = new Form($db);
 
 if (empty($action)) $action = 'list';
@@ -82,24 +80,22 @@ if (empty($action)) $action = 'list';
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-	's.ref'=>"Ref",
-	's.label'=>"TravelLabel",
-	's.labelshort'=>"TravelLabelShort",
+	't.ref'=>"Ref",
+	't.jour_heure'=>"TravelJourHeure",
+	't.ship'=>"TravelShip",
 );
 
 //$isInEEC = isInEEC($mysoc);
 
 // Definition of fields for lists
 $arrayfields = array(
-	'p.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
-	'p.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
-	'p.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
-	'p.nbre_place'=>array('label'=>$langs->trans('NbrePlace'), 'checked'=>0,  'position'=>30),
-	'p.nbre_vip'=>array('label'=>$langs->trans("NbreVip"), 'checked'=>1,  'position'=>52),
-	'p.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>53),
-	'p.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>54),
-	'p.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-	'p.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+	't.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
+	't.jour_heure'=>array('label'=>$langs->trans("JourHeure"), 'checked'=>1, 'position'=>10),
+	't.ship'=>array('label'=>$langs->trans("Ship"), 'checked'=>1, 'position'=>20),
+	't.lieu_depart'=>array('label'=>$langs->trans('LieuDepart'), 'checked'=>1,  'position'=>30),
+	't.lieu_arrive'=>array('label'=>$langs->trans("LieuArrive"), 'checked'=>1,  'position'=>52),
+	't.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
+	't.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
 
 
@@ -122,11 +118,9 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 {
 	$sall = "";
 	$search_ref = "";
-	$search_label = "";
-	$search_labelshort = "";
-	$search_finished = '';
-						// There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
-
+	$search_jour_heure = "";
+	$search_ship = "";
+	$search_finished = ''; // There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
 	$search_array_options = array();
 }
 
@@ -149,18 +143,18 @@ $title = $langs->trans("Travels");
 $texte = $langs->trans("Travels");
 
 
-$sql = 'SELECT DISTINCT s.rowid, s.ref, s.label, s.labelshort, s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco, s.entity,';
-$sql .= ' s.datec as date_creation, s.tms as date_update';
+$sql = 'SELECT DISTINCT t.rowid, t.ref, t.jour_heure, t.lieu_depart, t.lieu_arrive, s.label as ship, t.entity,';
+$sql .= ' t.date_creation, t.tms as date_update';
 
 // Add fields from hooks
 $parameters = array();
-$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as s';
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+$sql .= ' WHERE t.entity IN ('.getEntity('travel').')';
 
-$sql .= ' WHERE s.entity IN ('.getEntity('travel').')';
-
-if ($search_ref)     $sql .= natural_search('s.ref', $search_ref);
-if ($search_label)   $sql .= natural_search('s.label', $search_label);
-if ($search_labelshort) $sql .= natural_search('s.barcode', $search_labelshort);
+if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
+if ($search_jour_heure)   $sql .= natural_search('t.jour_heure', $search_jour_heure);
+if ($search_ship) $sql .= natural_search('t.ship', $search_ship);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -210,8 +204,8 @@ if ($resql)
 	if ($limit > 0 && $limit != $conf->liste_limit) $param .= '&limit='.urlencode($limit);
 	if ($sall) $param .= "&sall=".urlencode($sall);
 	if ($search_ref) $param = "&search_ref=".urlencode($search_ref);
-	if ($search_label) $param .= "&search_label=".urlencode($search_label);
-	if ($search_labelshort) $param .= "&search_labelshort=".urlencode($search_labelshort);
+	if ($search_jour_heure) $param .= "&search_jour_heure=".urlencode($search_jour_heure);
+	if ($search_ship) $param .= "&search_ship=".urlencode($search_ship);
 
 	// List of mass actions available
 	$arrayofmassactions = array(
@@ -266,64 +260,50 @@ if ($resql)
 
 	// Lines with input filters
 	print '<tr class="liste_titre_filter">';
-	if (!empty($arrayfields['p.ref']['checked']))
+	if (!empty($arrayfields['t.ref']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['p.label']['checked']))
+	if (!empty($arrayfields['t.jour_heure']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_label" size="12" value="'.dol_escape_htmltag($search_label).'">';
+		print '<input class="flat" type="datetime" name="search_jour_heure" size="12" value="'.dol_escape_htmltag($search_jour_heure).'">';
 		print '</td>';
 	}
 
-	if (!empty($arrayfields['p.labelshort']['checked']))
+	if (!empty($arrayfields['t.ship']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_labeshortl" size="12" value="'.dol_escape_htmltag($search_label).'">';
+		print '<input class="flat" type="text" name="search_ship" size="12" value="'.dol_escape_htmltag($search_ship).'">';
 		print '</td>';
 	}
 
 
 
-	// nbre_place
-	if (!empty($arrayfields['p.nbre_place']['checked']))
+	// lieu_depart
+	if (!empty($arrayfields['t.lieu_depart']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
-	// nbre_vip
-	if (!empty($arrayfields['p.nbre_vip']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
-
-	// nbre_aff
-	if (!empty($arrayfields['p.nbre_aff']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
-
-	// nbre_eco
-	if (!empty($arrayfields['p.nbre_eco']['checked']))
+	// lieu_arrive
+	if (!empty($arrayfields['t.lieu_arrive']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
 	// Date creation
-	if (!empty($arrayfields['p.datec']['checked']))
+	if (!empty($arrayfields['t.datec']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 	// Date modification
-	if (!empty($arrayfields['p.tms']['checked']))
+	if (!empty($arrayfields['t.tms']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -336,26 +316,24 @@ if ($resql)
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	if (!empty($arrayfields['p.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['p.ref']['label'], $_SERVER["PHP_SELF"], "p.ref", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.ref']['checked'])) {
+		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.label']['checked'])) {
-		print_liste_field_titre($arrayfields['p.label']['label'], $_SERVER["PHP_SELF"], "p.label", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.jour_heure']['checked'])) {
+		print_liste_field_titre($arrayfields['t.jour_heure']['label'], $_SERVER["PHP_SELF"], "t.jour_heure", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.labelshort']['checked'])) {
-		print_liste_field_titre($arrayfields['p.labelshort']['label'], $_SERVER["PHP_SELF"], "p.labelshort", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.ship']['checked'])) {
+		print_liste_field_titre($arrayfields['t.ship']['label'], $_SERVER["PHP_SELF"], "t.ship", "", $param, "", $sortfield, $sortorder);
 	}
 
-	if (!empty($arrayfields['p.nbre_place']['checked']))  print_liste_field_titre($arrayfields['p.nbre_place']['label'], $_SERVER['PHP_SELF'], 'p.nbre_place', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_vip']['checked']))  print_liste_field_titre($arrayfields['p.nbre_vip']['label'], $_SERVER['PHP_SELF'], 'p.nbre_vip', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_aff']['checked']))  print_liste_field_titre($arrayfields['p.nbre_aff']['label'], $_SERVER['PHP_SELF'], 'p.nbre_aff', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_eco']['checked']))  print_liste_field_titre($arrayfields['p.nbre_eco']['label'], $_SERVER['PHP_SELF'], 'p.nbre_eco', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.lieu_depart']['checked']))  print_liste_field_titre($arrayfields['t.lieu_depart']['label'], $_SERVER['PHP_SELF'], 't.lieu_depart', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.lieu_arrive']['checked']))  print_liste_field_titre($arrayfields['t.lieu_arrive']['label'], $_SERVER['PHP_SELF'], 't.lieu_arrive', '', $param, '', $sortfield, $sortorder, 'center ');
 
-	if (!empty($arrayfields['p.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['p.datec']['label'], $_SERVER["PHP_SELF"], "p.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['t.datec']['checked'])) {
+		print_liste_field_titre($arrayfields['t.datec']['label'], $_SERVER["PHP_SELF"], "t.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
-	if (!empty($arrayfields['p.tms']['checked'])) {
-		print_liste_field_titre($arrayfields['p.tms']['label'], $_SERVER["PHP_SELF"], "p.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['t.tms']['checked'])) {
+		print_liste_field_titre($arrayfields['t.tms']['label'], $_SERVER["PHP_SELF"], "t.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	print "</tr>\n";
@@ -388,11 +366,11 @@ if ($resql)
 
 		$product_static->id = $obj->rowid;
 		$product_static->ref = $obj->ref;
-		$product_static->label = $obj->label;
+		$product_static->jour_heure = $obj->jour_heure;
 		print '<tr class="oddeven">';
 
 		// Ref
-		if (!empty($arrayfields['p.ref']['checked']))
+		if (!empty($arrayfields['t.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
 			print $product_static->getNomUrl(1);
@@ -400,52 +378,36 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Label
-		if (!empty($arrayfields['p.label']['checked']))
+		// Jour_heure
+		if (!empty($arrayfields['t.jour_heure']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">'.$obj->label.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->jour_heure).'">'.$obj->jour_heure.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Labelshort
-		if (!empty($arrayfields['p.labelshort']['checked']))
+		// Ship
+		if (!empty($arrayfields['t.ship']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->labelshort).'">'.$obj->labelshort.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->ship).'">'.$obj->ship.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Nbre_place
-		if (!empty($arrayfields['p.nbre_place']['checked']))
+		// lieu_depart
+		if (!empty($arrayfields['t.lieu_depart']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_place).'">'.$obj->nbre_place.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->lieu_depart).'">'.$obj->lieu_depart.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Nbre_vip
-		if (!empty($arrayfields['p.nbre_vip']['checked']))
+		// lieu_arrive
+		if (!empty($arrayfields['t.lieu_arrive']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_vip).'">'.$obj->nbre_vip.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->lieu_arrive).'">'.$obj->lieu_arrive.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
-
-		// Nbre_aff
-		if (!empty($arrayfields['p.nbre_aff']['checked']))
-		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_aff).'">'.$obj->nbre_aff.'</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-		// Nbre_eco
-		if (!empty($arrayfields['p.nbre_eco']['checked']))
-		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_eco).'">'.$obj->nbre_eco.'</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-
 
 		// Date creation
-		if (!empty($arrayfields['p.datec']['checked']))
+		if (!empty($arrayfields['t.datec']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
@@ -453,7 +415,7 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 		// Date modification
-		if (!empty($arrayfields['p.tms']['checked']))
+		if (!empty($arrayfields['t.tms']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
