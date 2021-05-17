@@ -188,7 +188,6 @@ if ($resql)
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
-
 	// Displays city removal confirmation
 	if (GETPOST('delprod')) {
 		setEventMessages($langs->trans("CityDeleted", GETPOST('delprod')), null, 'mesgs');
