@@ -20,7 +20,8 @@
 create table llx_bookticket_ticket
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
-  ref                      varchar(128) DEFAULT 0 NOT NULL,
+  ref                       varchar(128) DEFAULT 0 NOT NULL,
+  barcode                   varchar(128) DEFAULT 0 NOT NULL,
   entity                    integer default 1,                    
   date_creation             datetime,                    
   tms                       timestamp,                   

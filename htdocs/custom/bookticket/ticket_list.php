@@ -40,12 +40,9 @@ if (! $res) die("Include of main fails");
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 
-if (!empty($conf->categorie->enabled))
-	require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array('products', 'stocks', 'suppliers', 'companies', 'margins'));
-if (!empty($conf->productbatch->enabled)) $langs->load("productbatch");
+$langs->loadLangs(array('bookticket'));
 
 $action = GETPOST('action', 'aZ09');
 $massaction = GETPOST('massaction', 'alpha');
@@ -56,37 +53,29 @@ $toselect = GETPOST('toselect', 'array');
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_ref = GETPOST("search_ref", 'alpha');
 $search_barcode = GETPOST("search_barcode", 'alpha');
-$search_label = GETPOST("search_label", 'alpha');
+$search_passenger = GETPOST("search_passenger", 'alpha');
 $search_type = GETPOST("search_type", 'int');
 $search_finished = GETPOST("search_finished", 'int');
 $optioncss = GETPOST('optioncss', 'alpha');
-$type = GETPOST("type", "int");
 
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+
 if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "s.ref";
+if (!$sortfield) $sortfield = "t.ref";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
-$contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'productservicelist';
-if ((string) $type == '1') { $contextpage = 'servicelist'; if ($search_type == '') $search_type = '1'; }
-if ((string) $type == '0') { $contextpage = 'productlist'; if ($search_type == '') $search_type = '0'; }
+$contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'ticketlist';
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$object = new Product($db);
-$hookmanager->initHooks(array('productservicelist'));
-$extrafields = new ExtraFields($db);
+$object = new Ticket($db);
 $form = new Form($db);
-
-// fetch optionals attributes and labels
-$extrafields->fetch_name_optionals_label($object->table_element);
-$search_array_options = $extrafields->getOptionalsFromPost($object->table_element, '', 'search_');
 
 if (empty($action)) $action = 'list';
 
@@ -101,42 +90,30 @@ if (!empty($canvas))
 }
 
 // Security check
-//if ($search_type == '0') $result = restrictedArea($user, 'produit', '', '', '', '', '', 0);
-//elseif ($search_type == '1') $result = restrictedArea($user, 'service', '', '', '', '', '', 0);
-//else $result = restrictedArea($user, 'produit|service', '', '', '', '', '', 0);
+//$result = restrictedArea($user, 'ticket', '', '', '', '', '', 0);
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-	's.ref'=>"Ref",
-	'p.label'=>"ShipLabel",
-	'p.labelshort'=>"ShipLabelShort",
-
+	't.ref'=>"Ref",
+	't.passenger'=>"Passenger",
 );
 
-// multilang
-if (!empty($conf->global->MAIN_MULTILANGS))
-{
-	$fieldstosearchall['pl.label'] = 'ProductLabelTranslated';
-	$fieldstosearchall['pl.description'] = 'ProductDescriptionTranslated';
-	$fieldstosearchall['pl.note'] = 'ProductNoteTranslated';
-}
-
 if (!empty($conf->barcode->enabled)) {
-	$fieldstosearchall['p.barcode'] = 'Gencod';
-	$fieldstosearchall['pfp.barcode'] = 'GencodBuyPrice';
+	$fieldstosearchall['t.barcode'] = 'Gencod';
 }
 
-$isInEEC = isInEEC($mysoc);
+//$isInEEC = isInEEC($mysoc);
 
 // Definition of fields for lists
 $arrayfields = array(
-	'p.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
-	'p.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
-	'p.barcode'=>array('label'=>$langs->trans("Gencod"), 'checked'=>1, 'enabled'=>(!empty($conf->barcode->enabled)), 'position'=>12),
-	'p.weight'=>array('label'=>$langs->trans('Weight'), 'checked'=>0, 'enabled'=>(!empty($conf->product->enabled) && $type != '1'), 'position'=>20),
-	'p.stock'=>array('label'=>$langs->trans("PhysicalStock"), 'checked'=>1, 'enabled'=>(!empty($conf->stock->enabled) && $user->rights->stock->lire && $contextpage != 'service'), 'position'=>52),
-	'p.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-	'p.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+	't.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
+	't.barcode'=>array('label'=>$langs->trans("Gencod"), 'checked'=>1, 'position'=>12),
+	't.travel'=>array('label'=>$langs->trans('Travel'), 'checked'=>1, 'position'=>20),
+	't.ship'=>array('label'=>$langs->trans("Ship"), 'checked'=>1, 'position'=>52),
+	't.classe'=>array('label'=>$langs->trans('Classe'), 'checked'=>1, 'position'=>20),
+	't.passenger'=>array('label'=>$langs->trans("Passenger"), 'checked'=>1, 'position'=>52),
+	't.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
+	't.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
 
 
@@ -156,98 +133,58 @@ if (GETPOST('cancel', 'alpha')) { $action = 'list'; $massaction = ''; }
 if (!GETPOST('confirmmassaction', 'alpha') && $massaction != 'presend' && $massaction != 'confirm_presend') { $massaction = ''; }
 
 $parameters = array();
-$reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
-if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
-$rightskey = 'ship';
+$rightskey = 'ticket';
 
-if (empty($reshook))
+// Selection of new fields
+include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
+
+// Purge search criteria
+if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) // All tests are required to be compatible with all browsers
 {
-	// Selection of new fields
-	include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
-
-	// Purge search criteria
-	if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) // All tests are required to be compatible with all browsers
-	{
-		$sall = "";
-		$search_ref = "";
-		$search_label = "";
-		$search_barcode = "";
-		$searchCategoryProductOperator = 0;
-		$searchCategoryProductList = array();
-		$search_tosell = "";
-		$search_tobuy = "";
-		$search_tobatch = '';
-		$search_country = "";
-		$search_state = "";
-		$search_vatrate = "";
-		$search_finished = '';
-		//$search_type='';						// There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
-
-		$show_childproducts = '';
-		$search_accountancy_code_sell = '';
-		$search_accountancy_code_sell_intra = '';
-		$search_accountancy_code_sell_export = '';
-		$search_accountancy_code_buy = '';
-		$search_accountancy_code_buy_intra = '';
-		$search_accountancy_code_buy_export = '';
-		$search_array_options = array();
-	}
-
-	// Mass actions
-	$objectclass = 'Ship';
-
-	$permissiontoread = $user->rights->{$rightskey}->lire;
-	$permissiontodelete = $user->rights->{$rightskey}->supprimer;
-	$uploaddir = $conf->product->dir_output;
-	include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
+	$sall = "";
+	$search_ref = "";
+	$search_barcode = "";
+	$search_travel = "";
+	$search_ship = "";
+	$search_classe = '';
+	$search_passenger = "";
+	$search_finished = '';
+	$search_array_options = array();
 }
+
+// Mass actions
+$objectclass = 'Travel';
+
+$permissiontoread = $user->rights->{$rightskey}->lire;
+$permissiontodelete = $user->rights->{$rightskey}->supprimer;
+$uploaddir = $conf->product->dir_output;
+include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
 
 /*
  * View
  */
 
-$title = $langs->trans("Ships");
+$title = $langs->trans("Tickets");
 
-$texte = $langs->trans("Ships");
-
-
-$sql = 'SELECT DISTINCT p.rowid, p.ref, p.label, p.fk_product_type, p.barcode, p.price, p.tva_tx, p.price_ttc, p.price_base_type, p.entity,';
-$sql .= ' p.fk_product_type, p.duration, p.finished, p.tosell, p.tobuy, p.seuil_stock_alerte, p.desiredstock,';
-$sql .= ' p.tobatch, p.accountancy_code_sell, p.accountancy_code_sell_intra, p.accountancy_code_sell_export,';
-$sql .= ' p.accountancy_code_buy, p.accountancy_code_buy_intra, p.accountancy_code_buy_export,';
-$sql .= ' p.datec as date_creation, p.tms as date_update, p.pmp, p.stock, p.cost_price,';
-$sql .= ' p.weight, p.weight_units, p.length, p.length_units, p.width, p.width_units, p.height, p.height_units, p.surface, p.surface_units, p.volume, p.volume_units, fk_country, fk_state,';
+$texte = $langs->trans("Tickets");
 
 
-// Add fields from hooks
-$parameters = array();
-$reshook = $hookmanager->executeHooks('printFieldListSelect', $parameters); // Note that $action and $object may have been modified by hook
-$sql .= $hookmanager->resPrint;
-$sql .= ' FROM '.MAIN_DB_PREFIX.'ship as s';
+$sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, tr.ref as travel, t.entity,';
 
-$sql .= ' WHERE p.entity IN ('.getEntity('ship').')';
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_ship = tr.rowid";
+$sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 
-if ($search_ref)     $sql .= natural_search('p.ref', $search_ref);
-if ($search_label)   $sql .= natural_search('p.label', $search_label);
-if ($search_barcode) $sql .= natural_search('p.barcode', $search_barcode);
+if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
+if ($search_label)   $sql .= natural_search('t.label', $search_label);
+if ($search_barcode) $sql .= natural_search('t.barcode', $search_barcode);
 
-// Add where from hooks
-$parameters = array();
-$reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // Note that $action and $object may have been modified by hook
-$sql .= $hookmanager->resPrint;
-$sql .= " GROUP BY p.rowid, p.ref, p.label, p.barcode, p.price, p.tva_tx, p.price_ttc, p.price_base_type,";
-$sql .= " p.fk_product_type, p.duration, p.finished, p.tosell, p.tobuy, p.seuil_stock_alerte, p.desiredstock,";
-$sql .= ' p.datec, p.tms, p.entity, p.tobatch, p.accountancy_code_sell, p.accountancy_code_sell_intra, p.accountancy_code_sell_export,';
-$sql .= ' p.accountancy_code_buy, p.accountancy_code_buy_intra, p.accountancy_code_buy_export, p.pmp, p.cost_price, p.stock,';
-$sql .= ' p.weight, p.weight_units, p.length, p.length_units, p.width, p.width_units, p.height, p.height_units, p.surface, p.surface_units, p.volume, p.volume_units, p.fk_country, p.fk_state';
-
-// Add fields from hooks
-$parameters = array();
-$reshook = $hookmanager->executeHooks('printFieldSelect', $parameters); // Note that $action and $object may have been modified by hook
-$sql .= $hookmanager->resPrint;
-//if (GETPOST("toolowstock")) $sql.= " HAVING SUM(s.reel) < p.seuil_stock_alerte";    // Not used yet
+//if (GETPOST("toolowstock")) $sql.= " HAVING SUM(s.reel) < t.seuil_stock_alerte";    // Not used yet
 $sql .= $db->order($sortfield, $sortorder);
 
 $nbtotalofrecords = '';
@@ -281,10 +218,10 @@ if ($resql)
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Products|FR:Module_Produits|ES:M&oacute;dulo_Productos';
+	$helpurl = 'EN:Module_Ticket|FR:Module_Tickets|ES:M&oacute;dulo_Tickets';
 
 
-    llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
+    llxHeader('', $title, $helpurl, '', 0, 0, "", "");
 
 
 	// Displays ship removal confirmation
@@ -296,14 +233,9 @@ if ($resql)
 	if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param .= '&contextpage='.urlencode($contextpage);
 	if ($limit > 0 && $limit != $conf->liste_limit) $param .= '&limit='.urlencode($limit);
 	if ($sall) $param .= "&sall=".urlencode($sall);
-	if ($searchCategoryProductOperator == 1) $param .= "&search_category_product_operator=".urlencode($searchCategoryProductOperator);
-	foreach ($searchCategoryProductList as $searchCategoryProduct) {
-		$param .= "&search_category_product_list[]=".urlencode($searchCategoryProduct);
-	}
 	if ($search_ref) $param = "&search_ref=".urlencode($search_ref);
-	if ($search_ref_supplier) $param = "&search_ref_supplier=".urlencode($search_ref_supplier);
 	if ($search_barcode) $param .= ($search_barcode ? "&search_barcode=".urlencode($search_barcode) : "");
-	if ($search_label) $param .= "&search_label=".urlencode($search_label);
+	if ($search_passenger) $param .= "&search_passenger=".urlencode($search_passenger);
 	if ($search_finished) $param = "&search_finished=".urlencode($search_finished);
 
 	// Add $param from extra fields
@@ -323,8 +255,8 @@ if ($resql)
 	$perm = $user->rights->ship->creer;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
-	$newcardbutton .= dolGetButtonTitle($langs->trans('NewProduct'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create&type=0', '', $perm, $params);
-	$label = 'NewShip';
+	$newcardbutton .= dolGetButtonTitle($langs->trans('NewTicket'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create&type=0', '', $perm, $params);
+	$label = 'NewTicket';
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post" name="formulaire">';
 	if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -336,13 +268,13 @@ if ($resql)
 	//print '<input type="hidden" name="page" value="'.$page.'">';
 	print '<input type="hidden" name="type" value="'.$type.'">';
 
-	$picto = 'ship';
+	$picto = 'ticket';
 
 	print_barre_liste($texte, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 	$topicmail = "Information";
-	$modelmail = "ship";
-	$objecttmp = new Ship($db);
+	$modelmail = "ticket";
+	$objecttmp = new Ticket($db);
 	$trackid = 'ship'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
@@ -362,80 +294,58 @@ if ($resql)
 
 	// Lines with input filters
 	print '<tr class="liste_titre_filter">';
-	if (!empty($arrayfields['p.ref']['checked']))
+	if (!empty($arrayfields['t.ref']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['pfp.ref_fourn']['checked']))
+	if (!empty($arrayfields['t.passenger']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_ref_supplier" size="8" value="'.dol_escape_htmltag($search_ref_supplier).'">';
-		print '</td>';
-	}
-	if (!empty($arrayfields['p.label']['checked']))
-	{
-		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_label" size="12" value="'.dol_escape_htmltag($search_label).'">';
+		print '<input class="flat" type="text" name="search_label" size="12" value="'.dol_escape_htmltag($search_passenger).'">';
 		print '</td>';
 	}
 
 	// Barcode
-	if (!empty($arrayfields['p.barcode']['checked']))
+	if (!empty($arrayfields['t.barcode']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '<input class="flat" type="text" name="search_barcode" size="6" value="'.dol_escape_htmltag($search_barcode).'">';
 		print '</td>';
 	}
-	// Duration
-	if (!empty($arrayfields['p.duration']['checked']))
+
+	// travel
+	if (!empty($arrayfields['t.travel']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
-	// Finished
-	if (!empty($arrayfields['p.finished']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print $formproduct->selectProductNature('search_finished', $search_finished);
-		print '</td>';
-	}
-	// Weight
-	if (!empty($arrayfields['p.weight']['checked']))
+	// ship
+	if (!empty($arrayfields['t.ship']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
-	// Extra fields
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_input.tpl.php';
-	// Fields from hook
-	$parameters = array('arrayfields'=>$arrayfields);
-	$reshook = $hookmanager->executeHooks('printFieldListOption', $parameters); // Note that $action and $object may have been modified by hook
-	print $hookmanager->resPrint;
+
+	// classe
+	if (!empty($arrayfields['t.classe']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
 	// Date creation
-	if (!empty($arrayfields['p.datec']['checked']))
+	if (!empty($arrayfields['t.date_creation']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 	// Date modification
-	if (!empty($arrayfields['p.tms']['checked']))
+	if (!empty($arrayfields['t.tms']['checked']))
 	{
 		print '<td class="liste_titre">';
-		print '</td>';
-	}
-	if (!empty($arrayfields['p.tosell']['checked']))
-	{
-		print '<td class="liste_titre right">';
-		print $form->selectarray('search_tosell', array('0'=>$langs->trans('ProductStatusNotOnSellShort'), '1'=>$langs->trans('ProductStatusOnSellShort')), $search_tosell, 1);
-		print '</td >';
-	}
-	if (!empty($arrayfields['p.tobuy']['checked']))
-	{
-		print '<td class="liste_titre right">';
-		print $form->selectarray('search_tobuy', array('0'=>$langs->trans('ProductStatusNotOnBuyShort'), '1'=>$langs->trans('ProductStatusOnBuyShort')), $search_tobuy, 1);
 		print '</td>';
 	}
 	print '<td class="liste_titre center maxwidthsearch">';
@@ -446,34 +356,28 @@ if ($resql)
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	if (!empty($arrayfields['p.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['p.ref']['label'], $_SERVER["PHP_SELF"], "p.ref", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.ref']['checked'])) {
+		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.label']['checked'])) {
-		print_liste_field_titre($arrayfields['p.label']['label'], $_SERVER["PHP_SELF"], "p.label", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.passenger']['checked'])) {
+		print_liste_field_titre($arrayfields['t.passenger']['label'], $_SERVER["PHP_SELF"], "t.passenger", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.barcode']['checked'])) {
-		print_liste_field_titre($arrayfields['p.barcode']['label'], $_SERVER["PHP_SELF"], "p.barcode", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.barcode']['checked'])) {
+		print_liste_field_titre($arrayfields['t.barcode']['label'], $_SERVER["PHP_SELF"], "t.barcode", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.duration']['checked'])) {
-		print_liste_field_titre($arrayfields['p.duration']['label'], $_SERVER["PHP_SELF"], "p.duration", "", $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.travel']['checked'])) {
+		print_liste_field_titre($arrayfields['t.travel']['label'], $_SERVER["PHP_SELF"], "t.travel", "", $param, '', $sortfield, $sortorder, 'center ');
 	}
-	if (!empty($arrayfields['p.finished']['checked'])) {
-		print_liste_field_titre($arrayfields['p.finished']['label'], $_SERVER["PHP_SELF"], "p.finished", "", $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.ship']['checked'])) {
+		print_liste_field_titre($arrayfields['t.ship']['label'], $_SERVER["PHP_SELF"], "t.ship", "", $param, '', $sortfield, $sortorder, 'center ');
 	}
 
-	if (!empty($arrayfields['p.weight']['checked']))  		print_liste_field_titre($arrayfields['p.weight']['label'], $_SERVER['PHP_SELF'], 'p.weight', '', $param, '', $sortfield, $sortorder, 'center ');
-	// Extra fields
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
-	// Hook fields
-	$parameters = array('arrayfields'=>$arrayfields, 'param'=>$param, 'sortfield'=>$sortfield, 'sortorder'=>$sortorder);
-	$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook
-	print $hookmanager->resPrint;
-	if (!empty($arrayfields['p.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['p.datec']['label'], $_SERVER["PHP_SELF"], "p.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['t.classe']['checked']))  		print_liste_field_titre($arrayfields['t.classe']['label'], $_SERVER['PHP_SELF'], 't.classe', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.date_creation']['checked'])) {
+		print_liste_field_titre($arrayfields['t.datec']['label'], $_SERVER["PHP_SELF"], "t.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
-	if (!empty($arrayfields['p.tms']['checked'])) {
-		print_liste_field_titre($arrayfields['p.tms']['label'], $_SERVER["PHP_SELF"], "p.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['t.tms']['checked'])) {
+		print_liste_field_titre($arrayfields['t.tms']['label'], $_SERVER["PHP_SELF"], "t.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	print "</tr>\n";
@@ -491,8 +395,8 @@ if ($resql)
 		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
 		{
 			$sql = "SELECT label";
-			$sql .= " FROM ".MAIN_DB_PREFIX."product_lang";
-			$sql .= " WHERE fk_product=".$obj->rowid;
+			$sql .= " FROM ".MAIN_DB_PREFIX."ticket_lang";
+			$sql .= " WHERE fk_ticket=".$obj->rowid;
 			$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
 			$sql .= " LIMIT 1";
 
@@ -504,29 +408,29 @@ if ($resql)
 			}
 		}
 
-		$product_static->id = $obj->rowid;
-		$product_static->ref = $obj->ref;
-		$product_static->label = $obj->label;
+		$ticket_static->id = $obj->rowid;
+		$ticket_static->ref = $obj->ref;
+		$ticket_static->passenger = $obj->passenger;
 		print '<tr class="oddeven">';
 
 		// Ref
-		if (!empty($arrayfields['p.ref']['checked']))
+		if (!empty($arrayfields['t.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
-			print $product_static->getNomUrl(1);
+			print $ticket_static->getNomUrl(1);
 			print "</td>\n";
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Label
-		if (!empty($arrayfields['p.label']['checked']))
+		if (!empty($arrayfields['t.passenger']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">'.$obj->label.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passeneger).'">'.$obj->passenger.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Barcode
-		if (!empty($arrayfields['p.barcode']['checked']))
+		if (!empty($arrayfields['t.barcode']['checked']))
 		{
 			print '<td>'.$obj->barcode.'</td>';
 			if (!$i) $totalarray['nbfield']++;
@@ -534,23 +438,35 @@ if ($resql)
 
 
 
-		// Finished
-		if (!empty($arrayfields['p.finished']['checked']))
+		// travel
+		if (!empty($arrayfields['t.travel']['checked']))
 		{
 			print '<td class="center">';
-			print $product_static->getLibFinished();
+			print $obj->travel;
 			print '</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Extra fields
-		include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_print_fields.tpl.php';
-		// Fields from hook
-		$parameters = array('arrayfields'=>$arrayfields, 'obj'=>$obj, 'i'=>$i, 'totalarray'=>&$totalarray);
-		$reshook = $hookmanager->executeHooks('printFieldListValue', $parameters); // Note that $action and $object may have been modified by hook
-		print $hookmanager->resPrint;
+		// ship
+		if (!empty($arrayfields['t.ship']['checked']))
+		{
+			print '<td class="center">';
+			print $obj->ship;
+			print '</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// classe
+		if (!empty($arrayfields['t.classe']['checked']))
+		{
+			print '<td class="center">';
+			print $obj->classe;
+			print '</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
 		// Date creation
-		if (!empty($arrayfields['p.datec']['checked']))
+		if (!empty($arrayfields['t.date_creation']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
@@ -558,7 +474,7 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 		// Date modification
-		if (!empty($arrayfields['p.tms']['checked']))
+		if (!empty($arrayfields['t.tms']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
