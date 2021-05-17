@@ -36,31 +36,25 @@ if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
 if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
-die;
+
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/city.class.php';
-require_once DOL_DOCUMENT_ROOT.'/city/class/html.formcity.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array('city', 'other'));
+$langs->loadLangs(array('bookticket', 'other'));
 
 $mesg = ''; $error = 0; $errors = array();
 
-$refalreadyexists = 0;
-
 $id = GETPOST('id', 'int');
-$ref = GETPOST('ref', 'alpha');
 $action = (GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view');
 $cancel = GETPOST('cancel', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 $confirm = GETPOST('confirm', 'alpha');
 $socid = GETPOST('socid', 'int');
-$duration_value = GETPOST('duration_value', 'int');
-$duration_unit = GETPOST('duration_unit', 'alpha');
 
 // by default 'alphanohtml' (better security); hidden conf MAIN_SECURITY_ALLOW_UNSECURED_LABELS_WITH_HTML allows basic html
 $label_security_check = empty($conf->global->MAIN_SECURITY_ALLOW_UNSECURED_LABELS_WITH_HTML) ? 'alphanohtml' : 'restricthtml';
@@ -69,12 +63,12 @@ if (!empty($user->socid)) $socid = $user->socid;
 
 $object = new City($db);
 
-if ($id > 0 || !empty($ref))
+if ($id > 0))
 {
-	$result = $object->fetch($id, $ref);
+	$result = $object->fetch($id);
 
-	if (!empty($conf->city->enabled)) $upload_dir = $conf->city->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'city').dol_sanitizeFileName($object->ref);
-	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'city').dol_sanitizeFileName($object->ref);
+	if (!empty($conf->city->enabled)) $upload_dir = $conf->city->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'city');
+	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'city');
 
 	if (!empty($conf->global->city_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
 	{
@@ -96,9 +90,6 @@ if (!empty($canvas))
 }
 
 // Security check
-$fieldvalue = (!empty($id) ? $id : (!empty($ref) ? $ref : ''));
-$fieldtype = (!empty($id) ? 'rowid' : 'ref');
-
 //$result = restrictedArea($user, 'produit|service', $fieldvalue, 'city&city', '', '', $fieldtype);
 
 /*
@@ -107,11 +98,11 @@ $fieldtype = (!empty($id) ? 'rowid' : 'ref');
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->city->lire;
-$usercancreate = $user->rights->city->creer;
-$usercandelete = $user->rights->city->supprimer;
+$usercanread = true; //$user->rights->city->lire;
+$usercancreate = true; //$user->rights->city->creer;
+$usercandelete = true; //$user->rights->city->supprimer;
 
-$parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
+$parameters = array('id'=>$id, 'objcanvas'=>$objcanvas);
 
 if (empty($reshook))
 {
@@ -135,23 +126,11 @@ if (empty($reshook))
             $action = "create";
             $error++;
         }
-        if (empty($ref))
-        {
-            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
-            $action = "create";
-            $error++;
-        }
 
 		if (!$error)
 		{
-			$object->ref                   = $ref;
-            $object->label                 = GETPOST('label', $label_security_check);
-			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-			$object->nbre_place             	 = GETPOST('nbre_place');
-			$object->nbre_vip             	 = GETPOST('nbre_vip');
-			$object->nbre_aff             	 = GETPOST('nbre_aff');
-			$object->nbre_eco             	 = GETPOST('nbre_eco');
-
+			$object->label                 = GETPOST('label', $label_security_check);
+			$object->labelshort                 = GETPOST('labelshort');
 
 			// Fill array 'array_options' with data from add form
 			if (!$error)
@@ -190,13 +169,8 @@ if (empty($reshook))
 			{
 				$object->oldcopy = clone $object;
 
-				$object->ref                    = $ref;
 				$object->label                  = GETPOST('label', $label_security_check);
-				$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-				$object->nbre_place             	 = GETPOST('nbre_place');
-				$object->nbre_vip             	 = GETPOST('nbre_vip');
-				$object->nbre_aff             	 = GETPOST('nbre_aff');
-				$object->nbre_eco             	 = GETPOST('nbre_eco');
+				$object->labelshort                 = GETPOST('labelshort');
 
 				if (!$error && $object->check())
 				{
@@ -230,7 +204,6 @@ if (empty($reshook))
 			$originalId = $id;
 			if ($object->id > 0)
 			{
-				$object->ref = GETPOST('clone_ref', 'alphanohtml');
 				$object->id = null;
 
 				if ($object->check())
@@ -264,12 +237,8 @@ if (empty($reshook))
 						{
 							$db->rollback();
 
-							$refalreadyexists++;
 							$action = "";
 
-							$mesg = $langs->trans("ErrorCityAlreadyExists", $object->ref);
-							$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-							setEventMessages($mesg, null, 'errors');
 							$object->fetch($id);
 						} else {
 							$db->rollback();
@@ -301,7 +270,7 @@ if (empty($reshook))
 
 		if ($result > 0)
 		{
-			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/city_list.php?type='.$object->type.'&delprod='.urlencode($object->ref));
+			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/city_list.php?type='.$object->type.'&delcity='.urlencode($object->rowid));
 			exit;
 		} else {
 			setEventMessages($langs->trans($object->error), null, 'errors');
@@ -345,7 +314,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		$result = $object->fetch($id);
 		if ($result <= 0) dol_print_error('', $object->error);
 	}
-	$objcanvas->assign_values($action, $object->id, $object->ref); // Set value for templates
+	$objcanvas->assign_values($action, $object->id); // Set value for templates
 	$objcanvas->display_canvas($action); // Show template
 } else {
 	// -----------------------------------------
@@ -364,7 +333,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				});';
 		print '</script>'."\n";
 
-		dol_set_focus('input[name="ref"]');
+		//dol_set_focus('input[name="ref"]');
 
 		print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST" name="formprod">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -385,10 +354,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<tr>';
 		$tmpcode = '';
 
-		if ($refalreadyexists)
-		{
-			print $langs->trans("RefAlreadyExists");
-		}
 		print '</td></tr>';
 
 		// Label
@@ -400,31 +365,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</table>';
 
 		print '<hr>';
-
-		print '<table class="border centpercent">';
-
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
-			print '</td></tr>';
-
-			// Nbre_vip
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
-			print '</td></tr>';
-
-			// Nbre_aff
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
-			print '</td></tr>';
-
-			// Nbre_eco
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
-			print '</td></tr>';
-
-
-		print '</table>';
 
 		print dol_get_fiche_end();
 
@@ -472,34 +412,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<table class="border allwidth">';
 
-			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
-
 			// Label
 			print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
 
 			// Labelshort
 			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'"></td></tr>';
-
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
-			print '</td></tr>';
-
-			// Nbre_vip
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
-			print '</td></tr>';
-
-			// Nbre_aff
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
-			print '</td></tr>';
-
-			// Nbre_eco
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
-			print '</td></tr>';
 
 			print '</table>';
 
@@ -527,7 +444,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$shownav = 1;
 			if ($user->socid && !in_array('city', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
-			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
+			//dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
 
 			print '<div class="fichecenter">';
@@ -575,13 +492,12 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 	// Define confirmation messages
 	$formquestionclone = array(
 		'text' => $langs->trans("ConfirmClone"),
-		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
 		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentCity"), 'value' => 1),
 		array('type' => 'checkbox', 'name' => 'clone_categories', 'label' => $langs->trans("CloneCategoriesCity"), 'value' => 1),
 	);
 
 
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneCity', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
+	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneCity', $object->rowid), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
 }
 ;
 // Print form confirm
@@ -688,18 +604,18 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	print '<a name="builddoc"></a>'; // ancre
 
 	// Documents
-	$objectref = dol_sanitizeFileName($object->ref);
-	$relativepath = $comref.'/'.$objectref.'.pdf';
+	$objectrowid = dol_sanitizeFileName($object->rowid);
+	$relativepath = $comrowid.'/'.$objectrowid.'.pdf';
 	if (!empty($conf->city->multidir_output[$object->entity])) {
-		$filedir = $conf->city->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
+		$filedir = $conf->city->multidir_output[$object->entity].'/'.$objectrowid; //Check repertories of current entities
 	} else {
-		$filedir = $conf->city->dir_output.'/'.$objectref;
+		$filedir = $conf->city->dir_output.'/'.$objectrowid;
 	}
 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 	$genallowed = $usercanread;
 	$delallowed = $usercancreate;
 
-	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
+	print $formfile->showdocuments($modulepart, $object->rowid, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
 	$somethingshown = $formfile->numoffiles;
 
 	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
