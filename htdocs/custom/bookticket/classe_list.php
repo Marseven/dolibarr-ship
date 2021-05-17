@@ -148,16 +148,16 @@ $texte = $langs->trans("Classes");
 
 
 $sql = 'SELECT DISTINCT c.rowid, c.ref, c.label, c.labelshort, c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.kilo_bagage, c.entity,';
-$sql .= ' s.date_creation, s.tms as date_update';
+$sql .= ' c.date_creation, c.tms as date_update';
 
 // Add fields from hooks
 $parameters = array();
-$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as s';
-$sql .= ' WHERE s.entity IN ('.getEntity('classe').')';
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
+$sql .= ' WHERE c.entity IN ('.getEntity('classe').')';
 
-if ($search_ref)     $sql .= natural_search('s.ref', $search_ref);
-if ($search_label)   $sql .= natural_search('s.label', $search_label);
-if ($search_labelshort) $sql .= natural_search('s.barcode', $search_labelshort);
+if ($search_ref)     $sql .= natural_search('c.ref', $search_ref);
+if ($search_label)   $sql .= natural_search('c.label', $search_label);
+if ($search_labelshort) $sql .= natural_search('c.barcode', $search_labelshort);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
