@@ -182,14 +182,9 @@ if ($user->rights->ship->lire)
 	$sql = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
 	$sql .= " s.entity,";
 	$sql .= " s.tms as datem";
-	$sql .= " FROM ".MAIN_DB_PREFIX."ship as s";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
 	//$sql .= " WHERE p.entity IN (".getEntity($ship_static->element, 1).")";
-	//if ($type != '') $sql .= " AND s.fk_product_type = ".$type;
-	// Add where from hooks
 
-	$parameters = array();
-	$reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // Note that $action and $object may have been modified by hook
-	$sql .= $hookmanager->resPrint;
 	$sql .= $db->order("s.tms", "DESC");
 	$sql .= $db->plimit($max, 0);
 
