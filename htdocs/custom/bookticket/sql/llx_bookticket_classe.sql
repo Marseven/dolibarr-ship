@@ -20,7 +20,7 @@
 create table llx_bookticket_classe
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
-  ref                      varchar(128) DEFAULT 0 NOT NULL,
+  ref                       varchar(128) DEFAULT 0 NOT NULL,
   label                     varchar(255) NOT NULL,
   labelshort				        varchar(255) DEFAULT NULL,
   prix_standard				      integer DEFAULT NULL,

@@ -39,24 +39,15 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.php';
 
-$type = GETPOST("type", 'int');
-if ($type == '' && !$user->rights->classe->lire) $type = '1'; // Force global page on service page only
-
 // Security check
-//if ($type == '0') $result = restrictedArea($user, 'produit');
-//elseif ($type == '1') $result = restrictedArea($user, 'service');
-//else $result = restrictedArea($user, 'produit|service|expedition');
+// $result = restrictedArea($user, 'classe');
 
 // Load translation files required by the page
 $langs->loadLangs('classe');
-
-// Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$hookmanager->initHooks(array('classeindex'));
 
 $classe_static = new Classe($db);
 
@@ -68,21 +59,10 @@ $classe_static = new Classe($db);
 $transAreaType = $langs->trans("ClasseArea");
 
 $helpurl = '';
-if (!isset($_GET["type"]))
-{
-	$transAreaType = $langs->trans("ClasseArea");
-	$helpurl = 'EN:Module_Classe|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 0) || empty($conf->service->enabled))
-{
-	$transAreaType = $langs->trans("ProductsArea");
-	$helpurl = 'EN:Module_Classe|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 1) || empty($conf->product->enabled))
-{
-	$transAreaType = $langs->trans("ServicesArea");
-	$helpurl = 'EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
-}
+$transAreaType = $langs->trans("ClasseArea");
+$helpurl = 'EN:Module_Classe|FR:Module_Produits|ES:M&oacute;dulo_Productos';
+
+$user->rights->classe->lire = true;
 
 llxHeader("", $langs->trans("Classe"), $helpurl);
 
@@ -127,18 +107,15 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 /*
  * Number of classe
  */
-if (!empty($conf->product->enabled) && $user->rights->classe->lire)
+if ($user->rights->classe->lire)
 {
 	$prodser = array();
 	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
 	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
 
-	$sql = "SELECT COUNT(s.rowid) as total";
-	$sql .= " FROM ".MAIN_DB_PREFIX."classe as s";
+	$sql = "SELECT COUNT(c.rowid) as total";
+	$sql .= " FROM ".MAIN_DB_PREFIX."classe as c";
 	//$sql .= ' WHERE s.entity IN ('.getEntity($classe_static->element, 1).')';
-	// Add where from hooks
-	$parameters = array();
-
 
 	if ($conf->use_javascript_ajax)
 	{
@@ -196,20 +173,15 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Latest modified classe
  */
-if (!empty($conf->product->enabled) && $user->rights->classe->lire)
+if ($user->rights->classe->lire)
 {
 	$max = 15;
-	$sql = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
+	$sql = "SELECT c.rowid, c.ref, c.label, c.labelshort,  c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.kilo_bagage,";
 	$sql .= " s.entity,";
 	$sql .= " s.tms as datem";
-	$sql .= " FROM ".MAIN_DB_PREFIX."classe as s";
+	$sql .= " FROM ".MAIN_DB_PREFIX."classe as c";
 	//$sql .= " WHERE p.entity IN (".getEntity($classe_static->element, 1).")";
-	//if ($type != '') $sql .= " AND s.fk_product_type = ".$type;
-	// Add where from hooks
 
-	$parameters = array();
-	$reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // Note that $action and $object may have been modified by hook
-	$sql .= $hookmanager->resPrint;
 	$sql .= $db->order("s.tms", "DESC");
 	$sql .= $db->plimit($max, 0);
 
@@ -230,7 +202,6 @@ if (!empty($conf->product->enabled) && $user->rights->classe->lire)
 			print '<table class="noborder centpercent">';
 
 			$colnb = 2;
-			if (empty($conf->global->PRODUIT_MULTIPRICES)) $colnb++;
 
 			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
 			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/classe_list.php?sortfield=s.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
@@ -244,10 +215,10 @@ if (!empty($conf->product->enabled) && $user->rights->classe->lire)
 				$classe_static->ref = $objp->ref;
 				$classe_static->label = $objp->label;
 				$classe_static->labelshort = $objp->labelshort;
-				$classe_static->nbre_place = $objp->nbre_place;
-				$classe_static->nbre_vip = $objp->nbre_vip;
-				$classe_static->nbre_aff = $objp->nbre_aff;
-				$classe_static->nbre_eco = $objp->nbre_eco;
+				$classe_static->prix_standard = $objp->prix_standard;
+				$classe_static->prix_enfant = $objp->prix_enfant;
+				$classe_static->prix_enf_stand = $objp->prix_enf_stand;
+				$classe_static->kilo_bagage = $objp->kilo_bagage;
 				$classe_static->entity = $objp->entity;
 
 				//Multilangs
@@ -277,10 +248,16 @@ if (!empty($conf->product->enabled) && $user->rights->classe->lire)
 				print "</td>";
 
 				print '<td class="right nowrap width25"><span class="statusrefsell">';
-				print $classe_static->LibStatut($objp->nbre_place, 3, 0);
+				print $classe_static->LibStatut($objp->prix_standard, 3, 0);
 				print "</span></td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $classe_static->LibStatut($objp->nbre_vip, 3, 1);
+				print $classe_static->LibStatut($objp->prix_enfant, 3, 1);
+				print "</span></td>";
+				print '<td class="right nowrap width25"><span class="statusrefbuy">';
+				print $classe_static->LibStatut($objp->prix_enf_stand, 3, 2);
+				print "</span></td>";
+				print '<td class="right nowrap width25"><span class="statusrefbuy">';
+				print $classe_static->LibStatut($objp->kilo_bagage, 3, 3);
 				print "</span></td>";
 				print "</tr>\n";
 				$i++;
@@ -300,9 +277,6 @@ if (!empty($conf->product->enabled) && $user->rights->classe->lire)
 
 
 print '</div></div></div>';
-
-$parameters = array('type' => $type, 'user' => $user);
-$reshook = $hookmanager->executeHooks('dashboardClasse', $parameters, $object); // Note that $action and $object may have been modified by hook
 
 // End of page
 llxFooter();
