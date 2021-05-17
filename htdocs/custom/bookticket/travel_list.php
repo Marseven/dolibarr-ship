@@ -189,8 +189,6 @@ if ($resql)
 	$helpurl = '';
 	$helpurl = 'EN:Module_Travels|FR:Module_Travels|ES:M&oacute;dulo_Productos';
 
-	die('je fonctionne bien !');
-
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
 
