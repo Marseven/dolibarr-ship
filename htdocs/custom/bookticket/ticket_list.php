@@ -37,8 +37,11 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-require '../main.inc.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ticket.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 
 die('Je fonctionne bien !');
 
