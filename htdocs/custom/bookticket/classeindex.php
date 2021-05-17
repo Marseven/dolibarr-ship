@@ -115,7 +115,7 @@ if ($user->rights->classe->lire)
 
 	$sql = "SELECT COUNT(c.rowid) as total";
 	$sql .= " FROM ".MAIN_DB_PREFIX."classe as c";
-	//$sql .= ' WHERE s.entity IN ('.getEntity($classe_static->element, 1).')';
+	//$sql .= ' WHERE c.entity IN ('.getEntity($classe_static->element, 1).')';
 
 	if ($conf->use_javascript_ajax)
 	{
@@ -177,12 +177,12 @@ if ($user->rights->classe->lire)
 {
 	$max = 15;
 	$sql = "SELECT c.rowid, c.ref, c.label, c.labelshort,  c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.kilo_bagage,";
-	$sql .= " s.entity,";
-	$sql .= " s.tms as datem";
+	$sql .= " c.entity,";
+	$sql .= " c.tms as datem";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_classe as c";
 	//$sql .= " WHERE p.entity IN (".getEntity($classe_static->element, 1).")";
 
-	$sql .= $db->order("s.tms", "DESC");
+	$sql .= $db->order("c.tms", "DESC");
 	$sql .= $db->plimit($max, 0);
 
 	//print $sql;
@@ -204,7 +204,7 @@ if ($user->rights->classe->lire)
 			$colnb = 2;
 
 			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
-			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/classe_list.php?sortfield=s.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/classe_list.php?sortfield=c.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
 			print '</tr>';
 
 			while ($i < $num)
