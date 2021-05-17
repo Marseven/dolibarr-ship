@@ -102,9 +102,9 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->ticket->lire;
-$usercancreate = $user->rights->ticket->creer;
-$usercandelete = $user->rights->ticket->supprimer;
+$usercanread = true; //$user->rights->ticket->lire;
+$usercancreate = true; //$user->rights->ticket->creer;
+$usercandelete = true; //$user->rights->ticket->supprimer;
 $createbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->creer_advance)) $createbarcode = 0;
 
