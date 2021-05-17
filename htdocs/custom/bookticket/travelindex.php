@@ -44,19 +44,11 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.php';
 
-$type = GETPOST("type", 'int');
-if ($type == '' && !$user->rights->travel->lire) $type = '1'; // Force global page on service page only
-
 // Security check
-//if ($type == '0') $result = restrictedArea($user, 'produit');
-//elseif ($type == '1') $result = restrictedArea($user, 'service');
-//else $result = restrictedArea($user, 'produit|service|expedition');
+//$result = restrictedArea($user, 'produit|service|expedition');
 
 // Load translation files required by the page
 $langs->loadLangs('travel');
-
-// Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$hookmanager->initHooks(array('travelindex'));
 
 $travel_static = new Travel($db);
 
@@ -68,21 +60,10 @@ $travel_static = new Travel($db);
 $transAreaType = $langs->trans("TravelArea");
 
 $helpurl = '';
-if (!isset($_GET["type"]))
-{
-	$transAreaType = $langs->trans("TravelArea");
-	$helpurl = 'EN:Module_Travel|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 0) || empty($conf->service->enabled))
-{
-	$transAreaType = $langs->trans("ProductsArea");
-	$helpurl = 'EN:Module_Travel|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 1) || empty($conf->product->enabled))
-{
-	$transAreaType = $langs->trans("ServicesArea");
-	$helpurl = 'EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
-}
+$transAreaType = $langs->trans("TravelArea");
+$helpurl = 'EN:Module_Travel|FR:Module_Produits|ES:M&oacute;dulo_Productos';
+
+$user->rights->travel->lire = true;
 
 llxHeader("", $langs->trans("travel"), $helpurl);
 
@@ -127,15 +108,15 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 /*
  * Number of Travel
  */
-if (!empty($conf->product->enabled) && $user->rights->travel->lire)
+if ($user->rights->travel->lire)
 {
 	$prodser = array();
 	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
 	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
 
-	$sql = "SELECT COUNT(s.rowid) as total";
-	$sql .= " FROM ".MAIN_DB_PREFIX."travel as s";
-	//$sql .= ' WHERE s.entity IN ('.getEntity($travel_static->element, 1).')';
+	$sql = "SELECT COUNT(t.rowid) as total";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_travel as t";
+	//$sql .= ' WHERE t.entity IN ('.getEntity($travel_static->element, 1).')';
 	// Add where from hooks
 	$parameters = array();
 
@@ -199,18 +180,15 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 if (!empty($conf->product->enabled) && $user->rights->travel->lire)
 {
 	$max = 15;
-	$sql = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
-	$sql .= " s.entity,";
-	$sql .= " s.tms as datem";
-	$sql .= " FROM ".MAIN_DB_PREFIX."travel as s";
+	$sql = "SELECT t.rowid, t.ref, t.jour_heure, t.lieu_depart,  t.lieu_arrive, s.label as ship,";
+	$sql .= " t.entity,";
+	$sql .= " t.tms as datem";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_travel as t";
+	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	//$sql .= " WHERE p.entity IN (".getEntity($travel_static->element, 1).")";
-	//if ($type != '') $sql .= " AND s.fk_product_type = ".$type;
-	// Add where from hooks
 
 	$parameters = array();
-	$reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // Note that $action and $object may have been modified by hook
-	$sql .= $hookmanager->resPrint;
-	$sql .= $db->order("s.tms", "DESC");
+	$sql .= $db->order("t.tms", "DESC");
 	$sql .= $db->plimit($max, 0);
 
 	//print $sql;
@@ -233,7 +211,7 @@ if (!empty($conf->product->enabled) && $user->rights->travel->lire)
 			if (empty($conf->global->PRODUIT_MULTIPRICES)) $colnb++;
 
 			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
-			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/travel_list.php?sortfield=s.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/travel_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
 			print '</tr>';
 
 			while ($i < $num)
@@ -242,12 +220,10 @@ if (!empty($conf->product->enabled) && $user->rights->travel->lire)
 
 				$travel_static->id = $objp->rowid;
 				$travel_static->ref = $objp->ref;
-				$travel_static->label = $objp->label;
-				$travel_static->labelshort = $objp->labelshort;
-				$travel_static->nbre_place = $objp->nbre_place;
-				$travel_static->nbre_vip = $objp->nbre_vip;
-				$travel_static->nbre_aff = $objp->nbre_aff;
-				$travel_static->nbre_eco = $objp->nbre_eco;
+				$travel_static->jour_heure = $objp->label;
+				$travel_static->lieu_depart = $objp->labelshort;
+				$travel_static->lieu_arrive = $objp->nbre_place;
+				$travel_static->ship = $objp->ship;
 				$travel_static->entity = $objp->entity;
 
 				//Multilangs
@@ -271,16 +247,16 @@ if (!empty($conf->product->enabled) && $user->rights->travel->lire)
 				print '<td class="nowrap">';
 				print $travel_static->getNomUrl(1, '', 16);
 				print "</td>\n";
-				print '<td>'.dol_trunc($objp->label, 32).'</td>';
+				print '<td>'.dol_trunc($objp->ship, 32).'</td>';
 				print "<td>";
-				print dol_print_date($db->jdate($objp->datem), 'day');
+				print dol_print_date($db->jdate($objp->jour_heure), 'day');
 				print "</td>";
 
 				print '<td class="right nowrap width25"><span class="statusrefsell">';
-				print $travel_static->LibStatut($objp->nbre_place, 3, 0);
+				print $travel_static->LibStatut($objp->lieu_depart, 3, 0);
 				print "</span></td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $travel_static->LibStatut($objp->nbre_vip, 3, 1);
+				print $travel_static->LibStatut($objp->lieu_arrive, 3, 1);
 				print "</span></td>";
 				print "</tr>\n";
 				$i++;
@@ -297,12 +273,7 @@ if (!empty($conf->product->enabled) && $user->rights->travel->lire)
 	}
 }
 
-
-
 print '</div></div></div>';
-
-$parameters = array('type' => $type, 'user' => $user);
-$reshook = $hookmanager->executeHooks('dashboardTravel', $parameters, $object); // Note that $action and $object may have been modified by hook
 
 // End of page
 llxFooter();

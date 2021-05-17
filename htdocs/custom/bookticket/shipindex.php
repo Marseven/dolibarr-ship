@@ -114,7 +114,7 @@ if ($user->rights->ship->lire)
 	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
 
 	$sql = "SELECT COUNT(s.rowid) as total";
-	$sql .= " FROM ".MAIN_DB_PREFIX."ship as s";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
 	//$sql .= ' WHERE s.entity IN ('.getEntity($ship_static->element, 1).')';
 	// Add where from hooks
 	$parameters = array();

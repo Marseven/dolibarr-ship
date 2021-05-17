@@ -36,13 +36,11 @@ if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
 if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
-die;
+
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
-require_once DOL_DOCUMENT_ROOT.'/travel/class/html.formship.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
 // Load translation files required by the page
@@ -59,8 +57,6 @@ $cancel = GETPOST('cancel', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 $confirm = GETPOST('confirm', 'alpha');
 $socid = GETPOST('socid', 'int');
-$duration_value = GETPOST('duration_value', 'int');
-$duration_unit = GETPOST('duration_unit', 'alpha');
 
 // by default 'alphanohtml' (better security); hidden conf MAIN_SECURITY_ALLOW_UNSECURED_LABELS_WITH_HTML allows basic html
 $label_security_check = empty($conf->global->MAIN_SECURITY_ALLOW_UNSECURED_LABELS_WITH_HTML) ? 'alphanohtml' : 'restricthtml';

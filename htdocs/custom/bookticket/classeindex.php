@@ -114,7 +114,7 @@ if ($user->rights->classe->lire)
 	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
 
 	$sql = "SELECT COUNT(c.rowid) as total";
-	$sql .= " FROM ".MAIN_DB_PREFIX."classe as c";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_classe as c";
 	//$sql .= ' WHERE c.entity IN ('.getEntity($classe_static->element, 1).')';
 
 	if ($conf->use_javascript_ajax)
