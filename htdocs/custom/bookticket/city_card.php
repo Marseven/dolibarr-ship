@@ -63,7 +63,7 @@ if (!empty($user->socid)) $socid = $user->socid;
 
 $object = new City($db);
 
-if ($id > 0))
+if ($id > 0)
 {
 	$result = $object->fetch($id);
 
@@ -76,8 +76,6 @@ if ($id > 0))
 		else $upload_dirold = $conf->service->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 	}
 }
-
-$modulepart = 'city';
 
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = !empty($object->canvas) ? $object->canvas : GETPOST("canvas");
