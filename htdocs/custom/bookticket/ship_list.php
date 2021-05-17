@@ -94,7 +94,7 @@ $arrayfields = array(
 	's.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
 	's.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
 	's.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
-	's.nbre_place'=>array('label'=>$langs->trans('NbrePlace'), 'checked'=>0,  'position'=>30),
+	's.nbre_place'=>array('label'=>$langs->trans('NbrePlace'), 'checked'=>1,  'position'=>30),
 	's.nbre_vip'=>array('label'=>$langs->trans("NbreVip"), 'checked'=>1,  'position'=>52),
 	's.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>53),
 	's.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>54),

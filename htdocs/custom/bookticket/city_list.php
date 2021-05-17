@@ -64,7 +64,7 @@ if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('b
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "s.ref";
+if (!$sortfield) $sortfield = "c.ref";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
@@ -72,7 +72,6 @@ $contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'cit
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
 $object = new City($db);
-$extrafields = new ExtraFields($db);
 $form = new Form($db);
 
 if (empty($action)) $action = 'list';
@@ -82,24 +81,20 @@ if (empty($action)) $action = 'list';
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-	's.ref'=>"Ref",
-	's.label'=>"CityLabel",
-	's.labelshort'=>"CityLabelShort",
+	'c.ref'=>"Ref",
+	'c.label'=>"CityLabel",
+	'c.labelshort'=>"CityLabelShort",
 );
 
 //$isInEEC = isInEEC($mysoc);
 
 // Definition of fields for lists
 $arrayfields = array(
-	'p.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
-	'p.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
-	'p.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
-	'p.nbre_place'=>array('label'=>$langs->trans('NbrePlace'), 'checked'=>0,  'position'=>30),
-	'p.nbre_vip'=>array('label'=>$langs->trans("NbreVip"), 'checked'=>1,  'position'=>52),
-	'p.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>53),
-	'p.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>54),
-	'p.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-	'p.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+	'c.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
+	'c.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
+	'c.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
+	'c.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
+	'c.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>1, 'position'=>500),
 );
 
 
@@ -124,8 +119,7 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 	$search_ref = "";
 	$search_label = "";
 	$search_labelshort = "";
-	$search_finished = '';
-						// There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
+	$search_finished = ''; // There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
 
 	$search_array_options = array();
 }
@@ -149,18 +143,17 @@ $title = $langs->trans("Citys");
 $texte = $langs->trans("Citys");
 
 
-$sql = 'SELECT DISTINCT s.rowid, s.ref, s.label, s.labelshort, s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco, s.entity,';
-$sql .= ' s.datec as date_creation, s.tms as date_update';
+$sql = 'SELECT DISTINCT c.rowid, c.ref, c.label, c.labelshort, c.entity,';
+$sql .= ' c.date_creation, c.tms as date_update';
 
 // Add fields from hooks
 $parameters = array();
-$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_city as s';
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_city as c';
+$sql .= ' WHERE c.entity IN ('.getEntity('city').')';
 
-$sql .= ' WHERE s.entity IN ('.getEntity('city').')';
-
-if ($search_ref)     $sql .= natural_search('s.ref', $search_ref);
-if ($search_label)   $sql .= natural_search('s.label', $search_label);
-if ($search_labelshort) $sql .= natural_search('s.barcode', $search_labelshort);
+if ($search_ref)     $sql .= natural_search('c.ref', $search_ref);
+if ($search_label)   $sql .= natural_search('c.label', $search_label);
+if ($search_labelshort) $sql .= natural_search('c.barcode', $search_labelshort);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -188,7 +181,7 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 		$id = $obj->rowid;
-		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/City_card.php?id='.$id);
+		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/city_card.php?id='.$id);
 		exit;
 	}
 
@@ -266,20 +259,20 @@ if ($resql)
 
 	// Lines with input filters
 	print '<tr class="liste_titre_filter">';
-	if (!empty($arrayfields['p.ref']['checked']))
+	if (!empty($arrayfields['c.ref']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['p.label']['checked']))
+	if (!empty($arrayfields['c.label']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_label" size="12" value="'.dol_escape_htmltag($search_label).'">';
 		print '</td>';
 	}
 
-	if (!empty($arrayfields['p.labelshort']['checked']))
+	if (!empty($arrayfields['c.labelshort']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_labeshortl" size="12" value="'.dol_escape_htmltag($search_label).'">';
@@ -287,43 +280,14 @@ if ($resql)
 	}
 
 
-
-	// nbre_place
-	if (!empty($arrayfields['p.nbre_place']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
-
-	// nbre_vip
-	if (!empty($arrayfields['p.nbre_vip']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
-
-	// nbre_aff
-	if (!empty($arrayfields['p.nbre_aff']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
-
-	// nbre_eco
-	if (!empty($arrayfields['p.nbre_eco']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
-
 	// Date creation
-	if (!empty($arrayfields['p.datec']['checked']))
+	if (!empty($arrayfields['c.datec']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 	// Date modification
-	if (!empty($arrayfields['p.tms']['checked']))
+	if (!empty($arrayfields['c.tms']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -336,26 +300,21 @@ if ($resql)
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	if (!empty($arrayfields['p.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['p.ref']['label'], $_SERVER["PHP_SELF"], "p.ref", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['c.ref']['checked'])) {
+		print_liste_field_titre($arrayfields['c.ref']['label'], $_SERVER["PHP_SELF"], "c.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.label']['checked'])) {
-		print_liste_field_titre($arrayfields['p.label']['label'], $_SERVER["PHP_SELF"], "p.label", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['c.label']['checked'])) {
+		print_liste_field_titre($arrayfields['c.label']['label'], $_SERVER["PHP_SELF"], "c.label", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.labelshort']['checked'])) {
-		print_liste_field_titre($arrayfields['p.labelshort']['label'], $_SERVER["PHP_SELF"], "p.labelshort", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['c.labelshort']['checked'])) {
+		print_liste_field_titre($arrayfields['c.labelshort']['label'], $_SERVER["PHP_SELF"], "c.labelshort", "", $param, "", $sortfield, $sortorder);
 	}
 
-	if (!empty($arrayfields['p.nbre_place']['checked']))  print_liste_field_titre($arrayfields['p.nbre_place']['label'], $_SERVER['PHP_SELF'], 'p.nbre_place', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_vip']['checked']))  print_liste_field_titre($arrayfields['p.nbre_vip']['label'], $_SERVER['PHP_SELF'], 'p.nbre_vip', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_aff']['checked']))  print_liste_field_titre($arrayfields['p.nbre_aff']['label'], $_SERVER['PHP_SELF'], 'p.nbre_aff', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['p.nbre_eco']['checked']))  print_liste_field_titre($arrayfields['p.nbre_eco']['label'], $_SERVER['PHP_SELF'], 'p.nbre_eco', '', $param, '', $sortfield, $sortorder, 'center ');
-
-	if (!empty($arrayfields['p.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['p.datec']['label'], $_SERVER["PHP_SELF"], "p.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['c.datec']['checked'])) {
+		print_liste_field_titre($arrayfields['c.datec']['label'], $_SERVER["PHP_SELF"], "c.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
-	if (!empty($arrayfields['p.tms']['checked'])) {
-		print_liste_field_titre($arrayfields['p.tms']['label'], $_SERVER["PHP_SELF"], "p.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['c.tms']['checked'])) {
+		print_liste_field_titre($arrayfields['c.tms']['label'], $_SERVER["PHP_SELF"], "c.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	print "</tr>\n";
@@ -392,7 +351,7 @@ if ($resql)
 		print '<tr class="oddeven">';
 
 		// Ref
-		if (!empty($arrayfields['p.ref']['checked']))
+		if (!empty($arrayfields['c.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
 			print $product_static->getNomUrl(1);
@@ -401,51 +360,21 @@ if ($resql)
 		}
 
 		// Label
-		if (!empty($arrayfields['p.label']['checked']))
+		if (!empty($arrayfields['c.label']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">'.$obj->label.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Labelshort
-		if (!empty($arrayfields['p.labelshort']['checked']))
+		if (!empty($arrayfields['c.labelshort']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->labelshort).'">'.$obj->labelshort.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Nbre_place
-		if (!empty($arrayfields['p.nbre_place']['checked']))
-		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_place).'">'.$obj->nbre_place.'</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-		// Nbre_vip
-		if (!empty($arrayfields['p.nbre_vip']['checked']))
-		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_vip).'">'.$obj->nbre_vip.'</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-		// Nbre_aff
-		if (!empty($arrayfields['p.nbre_aff']['checked']))
-		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_aff).'">'.$obj->nbre_aff.'</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-		// Nbre_eco
-		if (!empty($arrayfields['p.nbre_eco']['checked']))
-		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_eco).'">'.$obj->nbre_eco.'</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-
-
 		// Date creation
-		if (!empty($arrayfields['p.datec']['checked']))
+		if (!empty($arrayfields['c.datec']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
@@ -453,7 +382,7 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 		// Date modification
-		if (!empty($arrayfields['p.tms']['checked']))
+		if (!empty($arrayfields['c.tms']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');

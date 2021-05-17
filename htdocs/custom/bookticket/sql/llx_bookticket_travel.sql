@@ -30,7 +30,6 @@ create table llx_bookticket_travel
   tms                       timestamp,                   
   import_key                varchar(32),                 
   status                    smallint,
-  fk_accounting_category    integer      DEFAULT 0,			  -- ID of personalized group for report
   fk_user_author            integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
   active                    tinyint      DEFAULT 1  NOT NULL
