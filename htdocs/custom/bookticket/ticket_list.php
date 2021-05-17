@@ -177,7 +177,7 @@ $texte = $langs->trans("Tickets");
 
 
 $sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, tr.ref as travel, t.entity';
-$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
