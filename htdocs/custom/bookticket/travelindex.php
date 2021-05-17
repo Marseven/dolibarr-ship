@@ -177,7 +177,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Latest modified travel
  */
-if (!empty($conf->product->enabled) && $user->rights->travel->lire)
+if ($user->rights->travel->lire)
 {
 	$max = 15;
 	$sql = "SELECT t.rowid, t.ref, t.jour_heure, t.lieu_depart,  t.lieu_arrive, s.label as ship,";
