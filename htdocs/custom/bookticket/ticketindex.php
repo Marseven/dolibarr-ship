@@ -16,9 +16,9 @@
  */
 
 /**
- *	\file       bookticket/shipindex.php
+ *	\file       bookticket/ticketindex.php
  *	\ingroup    bookticket
- *	\brief      Home page of ship left menu
+ *	\brief      Home page of ticket left menu
  */
 
 
@@ -40,54 +40,36 @@ if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main
 if (! $res) die("Include of main fails");
 
 
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ticket.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.php';
 
-$type = GETPOST("type", 'int');
-if ($type == '' && !$user->rights->ship->lire) $type = '1'; // Force global page on service page only
-
 // Security check
-//if ($type == '0') $result = restrictedArea($user, 'produit');
-//elseif ($type == '1') $result = restrictedArea($user, 'service');
-//else $result = restrictedArea($user, 'produit|service|expedition');
+//$result = restrictedArea($user, 'produit|service|expedition');
 
 // Load translation files required by the page
-$langs->loadLangs('ship');
+$langs->loadLangs('ticket');
 
-// Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$hookmanager->initHooks(array('shipindex'));
 
-$ship_static = new Ship($db);
+$ticket_static = new Ticket($db);
 
 
 /*
  * View
  */
 
-$transAreaType = $langs->trans("ShipArea");
+$transAreaType = $langs->trans("TicketArea");
 
 $helpurl = '';
-if (!isset($_GET["type"]))
-{
-	$transAreaType = $langs->trans("ShipArea");
-	$helpurl = 'EN:Module_Ship|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 0) || empty($conf->service->enabled))
-{
-	$transAreaType = $langs->trans("ProductsArea");
-	$helpurl = 'EN:Module_Ship|FR:Module_Produits|ES:M&oacute;dulo_Productos';
-}
-if ((isset($_GET["type"]) && $_GET["type"] == 1) || empty($conf->product->enabled))
-{
-	$transAreaType = $langs->trans("ServicesArea");
-	$helpurl = 'EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
-}
+$transAreaType = $langs->trans("TicketArea");
+$helpurl = 'EN:Module_Ticket|FR:Module_Ticket|ES:M&oacute;dulo_Ticket';
 
-llxHeader("", $langs->trans("Ship"), $helpurl);
+$user->rights->ticket->lire = true;
+
+llxHeader("", $langs->trans("Ticket"), $helpurl);
 
 $linkback = "";
-print load_fiche_titre($transAreaType, $linkback, 'ship');
+print load_fiche_titre($transAreaType, $linkback, 'ticket');
 
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
@@ -96,9 +78,9 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useless due to the global search combo
 {
 	// Search contract
-	if (!empty($conf->ship->enabled) && $user->rights->ship->lire)
+	if ($user->rights->ticket->lire)
 	{
-		$listofsearchfields['search_ship'] = array('text'=>'Ship');
+		$listofsearchfields['search_ticket'] = array('text'=>'Ticket');
 	}
 
 	if (count($listofsearchfields))
@@ -125,17 +107,17 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 }
 
 /*
- * Number of Ship
+ * Number of Ticket
  */
-if (!empty($conf->product->enabled) && $user->rights->ship->lire)
+if ($user->rights->ticket->lire)
 {
 	$prodser = array();
 	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
 	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
 
-	$sql = "SELECT COUNT(s.rowid) as total";
-	$sql .= " FROM ".MAIN_DB_PREFIX."ship as s";
-	//$sql .= ' WHERE s.entity IN ('.getEntity($ship_static->element, 1).')';
+	$sql = "SELECT COUNT(t.rowid) as total";
+	$sql .= " FROM ".MAIN_DB_PREFIX."ticket as t";
+	//$sql .= ' WHERE t.entity IN ('.getEntity($ticket_static->element, 1).')';
 	// Add where from hooks
 	$parameters = array();
 
@@ -194,23 +176,24 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 
 
 /*
- * Latest modified ship
+ * Latest modified ticket
  */
-if (!empty($conf->product->enabled) && $user->rights->ship->lire)
+if (!empty($conf->product->enabled) && $user->rights->ticket->lire)
 {
 	$max = 15;
-	$sql = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
-	$sql .= " s.entity,";
-	$sql .= " s.tms as datem";
-	$sql .= " FROM ".MAIN_DB_PREFIX."ship as s";
-	//$sql .= " WHERE p.entity IN (".getEntity($ship_static->element, 1).")";
-	//if ($type != '') $sql .= " AND s.fk_product_type = ".$type;
+	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as voyage,";
+	$sql .= " t.entity,";
+	$sql .= " t.tms as datem";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_ticket as t";
+	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_ship = tr.rowid";
+	//$sql .= " WHERE p.entity IN (".getEntity($ticket_static->element, 1).")";
 	// Add where from hooks
 
 	$parameters = array();
-	$reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // Note that $action and $object may have been modified by hook
-	$sql .= $hookmanager->resPrint;
-	$sql .= $db->order("s.tms", "DESC");
+	$sql .= $db->order("t.tms", "DESC");
 	$sql .= $db->plimit($max, 0);
 
 	//print $sql;
@@ -223,8 +206,8 @@ if (!empty($conf->product->enabled) && $user->rights->ship->lire)
 
 		if ($num > 0)
 		{
-			$transRecordedType = $langs->trans("LastModifiedShip", $max);
-			$transRecordedType = $langs->trans("LastRecordedShip", $max);
+			$transRecordedType = $langs->trans("LastModifiedTicket", $max);
+			$transRecordedType = $langs->trans("LastRecordedTicket", $max);
 
 			print '<div class="div-table-responsive-no-min">';
 			print '<table class="noborder centpercent">';
@@ -233,28 +216,26 @@ if (!empty($conf->product->enabled) && $user->rights->ship->lire)
 			if (empty($conf->global->PRODUIT_MULTIPRICES)) $colnb++;
 
 			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
-			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?sortfield=s.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
 			print '</tr>';
 
 			while ($i < $num)
 			{
 				$objp = $db->fetch_object($result);
 
-				$ship_static->id = $objp->rowid;
-				$ship_static->ref = $objp->ref;
-				$ship_static->label = $objp->label;
-				$ship_static->labelshort = $objp->labelshort;
-				$ship_static->nbre_place = $objp->nbre_place;
-				$ship_static->nbre_vip = $objp->nbre_vip;
-				$ship_static->nbre_aff = $objp->nbre_aff;
-				$ship_static->nbre_eco = $objp->nbre_eco;
-				$ship_static->entity = $objp->entity;
+				$ticket_static->id = $objp->rowid;
+				$ticket_static->ref = $objp->ref;
+				$ticket_static->ship = $objp->ship;
+				$ticket_static->passenger = $objp->passenger;
+				$ticket_static->travel = $objp->travel;
+				$ticket_static->classe = $objp->classe;
+				$ticket_static->entity = $objp->entity;
 
 				//Multilangs
 				if (!empty($conf->global->MAIN_MULTILANGS))
 				{
 					$sql = "SELECT label";
-					$sql .= " FROM ".MAIN_DB_PREFIX."ship_lang";
+					$sql .= " FROM ".MAIN_DB_PREFIX."ticket_lang";
 					$sql .= " WHERE fk_product=".$objp->rowid;
 					$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
 
@@ -269,18 +250,18 @@ if (!empty($conf->product->enabled) && $user->rights->ship->lire)
 
 				print '<tr class="oddeven">';
 				print '<td class="nowrap">';
-				print $ship_static->getNomUrl(1, '', 16);
+				print $ticket_static->getNomUrl(1, '', 16);
 				print "</td>\n";
-				print '<td>'.dol_trunc($objp->label, 32).'</td>';
+				print '<td>'.dol_trunc($objp->travel, 32).'</td>';
 				print "<td>";
 				print dol_print_date($db->jdate($objp->datem), 'day');
 				print "</td>";
 
 				print '<td class="right nowrap width25"><span class="statusrefsell">';
-				print $ship_static->LibStatut($objp->nbre_place, 3, 0);
+				print $ticket_static->LibStatut($objp->passenger, 3, 0);
 				print "</span></td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $ship_static->LibStatut($objp->nbre_vip, 3, 1);
+				print $ticket_static->LibStatut($objp->classe, 3, 1);
 				print "</span></td>";
 				print "</tr>\n";
 				$i++;
@@ -297,12 +278,7 @@ if (!empty($conf->product->enabled) && $user->rights->ship->lire)
 	}
 }
 
-
-
 print '</div></div></div>';
-
-$parameters = array('type' => $type, 'user' => $user);
-$reshook = $hookmanager->executeHooks('dashboardShip', $parameters, $object); // Note that $action and $object may have been modified by hook
 
 // End of page
 llxFooter();
