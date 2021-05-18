@@ -34,7 +34,7 @@ create table llx_bookticket_passenger
   tms                       timestamp,                   
   import_key                varchar(32),                 
   status                    smallint, 
-  fk_user_author            integer      DEFAULT NULL,
+  fk_user_creat            integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
   active                    tinyint      DEFAULT 1  NOT NULL
 )ENGINE=innodb;
