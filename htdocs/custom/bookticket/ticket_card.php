@@ -512,19 +512,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				dol_print_error($db);
 				return -1;
 			} else {
-				$travel .= '<select class="flat" name="fk_travel">';
+				$travel = '<td><select class="flat" name="fk_travel">';
 				if (empty($travelsrecords->records))
 				{
 					$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 				}else{
 					foreach ($travelsrecords->records as $lines)
 					{
-						$return .= '<option value="';
-						$return .= $lines->rowid;
-						$return .= '"';
-						$return .= '>';
-						$return .= $langs->trans($lines->ref);
-						$return .= '</option>';
+						$travel .= '<option value="';
+						$travel .= $lines->rowid;
+						$travel .= '"';
+						$travel .= '>';
+						$travel .= $langs->trans($lines->ref);
+						$travel .= '</option>';
 					}
 				}
 
@@ -585,7 +585,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
 			//print '<td><input type="checkbox" name="accompagne" class="maxwidth50">';
-			print '<input type="checkbox" id="search_show_childproducts" name="search_show_childproducts"'.($object->accompagne == 1 ? 'checked="checked"' : '').'>';
+			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == 1 ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
 
 			// nom_enfant
