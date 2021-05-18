@@ -133,9 +133,11 @@ if (empty($reshook))
 			// Fill array 'array_options' with data from add form
 			if (!$error)
 			{
+				var_dump($object);
 				$id = $object->create($user);
+				var_dump($object);
 			}
-
+			die;
 			if ($id > 0)
 			{
 				if (!empty($backtopage))
