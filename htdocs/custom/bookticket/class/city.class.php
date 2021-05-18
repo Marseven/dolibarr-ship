@@ -44,7 +44,7 @@ class City extends CommonObject
 	/**
 	 * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.
 	 */
-	public $table_element = 'city';
+	public $table_element = 'bookticket_city';
 
 	/**
 	 * @var int  Does this object support multicompany module ?
