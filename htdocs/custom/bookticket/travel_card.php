@@ -382,7 +382,38 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('jour_heure', $jour_heure_security_check)).'"></td></tr>';
 
 		// Ship
-		print '<tr><td class="fieldrequired">'.$langs->trans("Ship").'</td><td colspan="3"><input name="ship" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('ship')).'"></td></tr>';
+		print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
+		$shipsrecords = new Ship($db);
+
+		$filter = array();
+		$filter['t.status'] = 1;
+		$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
+
+		if ($result < 0) {
+			dol_print_error($db);
+			return -1;
+		} else {
+			$ship = '<td><select class="flat" name="fk_ship">';
+			if (empty($shipsrecords->records))
+			{
+				$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($shipsrecords->records as $lines)
+				{
+					$ship .= '<option value="';
+					$ship .= $lines->rowid;
+					$ship .= '"';
+					$ship .= '>';
+					$ship .= $langs->trans($lines->label);
+					$ship .= '</option>';
+				}
+			}
+
+			$ship .= '</select>';
+
+			print $ship;
+		}
+		print '</td></tr>';
 
 		print '</table>';
 
@@ -392,12 +423,64 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// lieu_depart
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
-			print '<td><input name="lieu_depart" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_depart.'">';
+			$citysrecords = new City($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $citysrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$city_depart = '<td><select class="flat" name="lieu_depart">';
+				if (empty($citysrecords->records))
+				{
+					$city_depart .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($citysrecords->records as $lines)
+					{
+						$city_depart .= '<option value="';
+						$city_depart .= $lines->rowid;
+						$city_depart .= '"';
+						$city_depart .= '>';
+						$city_depart .= $langs->trans($lines->label);
+						$city_depart .= '</option>';
+					}
+				}
+
+				$city_depart .= '</select>';
+
+				print $city_depart;
+			}
 			print '</td></tr>';
 
 			// lieu_arrive
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
-			print '<td><input name="lieu_arrive" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_arrive.'">';
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$city_depart = '<td><select class="flat" name="lieu_arrive">';
+				if (empty($citysrecords->records))
+				{
+					$city_depart .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($citysrecords->records as $lines)
+					{
+						$city_depart .= '<option value="';
+						$city_depart .= $lines->rowid;
+						$city_depart .= '"';
+						$city_depart .= '>';
+						$city_depart .= $langs->trans($lines->label);
+						$city_depart .= '</option>';
+					}
+				}
+
+				$city_depart .= '</select>';
+
+				print $city_depart;
+			}
 			print '</td></tr>';
 
 		print '</table>';
@@ -455,16 +538,99 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour_heure).'"></td></tr>';
 
 			// Ship
-			print '<tr><td class="fieldrequired">'.$langs->trans("Ship").'</td><td colspan="3"><input name="ship" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->ship).'"></td></tr>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
+			$shipsrecords = new Ship($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$ship = '<td><select class="flat" name="fk_ship">';
+				if (empty($shipsrecords->records))
+				{
+					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($shipsrecords->records as $lines)
+					{
+						$ship .= '<option value="';
+						$ship .= $lines->rowid;
+						$ship .= '"';
+						$ship .= '>';
+						$ship .= $langs->trans($lines->label);
+						$ship .= '</option>';
+					}
+				}
+
+				$ship .= '</select>';
+
+				print $ship;
+			}
+			print '</td></tr>';
 
 			// lieu_depart
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
-			print '<td><input name="lieu_depart" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_depart.'">';
+			$citysrecords = new City($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $citysrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$city_depart = '<td><select class="flat" name="lieu_depart">';
+				if (empty($citysrecords->records))
+				{
+					$city_depart .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($citysrecords->records as $lines)
+					{
+						$city_depart .= '<option value="';
+						$city_depart .= $lines->rowid;
+						$city_depart .= '"';
+						$city_depart .= '>';
+						$city_depart .= $langs->trans($lines->label);
+						$city_depart .= '</option>';
+					}
+				}
+
+				$city_depart .= '</select>';
+
+				print $city_depart;
+			}
 			print '</td></tr>';
 
 			// lieu_arrive
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
-			print '<td><input name="lieu_arrive" class="minwidth300 maxwidth400onsmartphone" value="'.$object->lieu_arrive.'">';
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$city_depart = '<td><select class="flat" name="lieu_arrive">';
+				if (empty($citysrecords->records))
+				{
+					$city_depart .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($citysrecords->records as $lines)
+					{
+						$city_depart .= '<option value="';
+						$city_depart .= $lines->rowid;
+						$city_depart .= '"';
+						$city_depart .= '>';
+						$city_depart .= $langs->trans($lines->label);
+						$city_depart .= '</option>';
+					}
+				}
+
+				$city_depart .= '</select>';
+
+				print $city_depart;
+			}
 			print '</td></tr>';
 
 			print '</table>';

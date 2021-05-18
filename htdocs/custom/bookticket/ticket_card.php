@@ -500,8 +500,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// travel
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-			//print '<td><input name="travel" class="maxwidth250" value="'.$object->travel.'">';
-
 			$travelsrecords = new Travel($db);
 
 			$filter = array();
@@ -536,12 +534,70 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// ship
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
-			print '<td><input name="ship" class="maxwidth250" value="'.$object->ship.'">';
+			$shipsrecords = new Ship($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$ship = '<td><select class="flat" name="fk_ship">';
+				if (empty($shipsrecords->records))
+				{
+					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($shipsrecords->records as $lines)
+					{
+						$ship .= '<option value="';
+						$ship .= $lines->rowid;
+						$ship .= '"';
+						$ship .= '>';
+						$ship .= $langs->trans($lines->label);
+						$ship .= '</option>';
+					}
+				}
+
+				$ship .= '</select>';
+
+				print $ship;
+			}
 			print '</td></tr>';
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
-			print '<td><input name="classe" class="maxwidth250" value="'.$object->classe.'">';
+			$classesrecords = new Classe($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$ship = '<td><select class="flat" name="fk_classe">';
+				if (empty($classesrecords->records))
+				{
+					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($classesrecords->records as $lines)
+					{
+						$classe .= '<option value="';
+						$classe .= $lines->rowid;
+						$classe .= '"';
+						$classe .= '>';
+						$classe .= $langs->trans($lines->label);
+						$classe .= '</option>';
+					}
+				}
+
+				$classe .= '</select>';
+
+				print $classe;
+			}
 			print '</td></tr>';
 
 		print '</table>';
@@ -564,7 +620,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" class="maxwidth50" value="'.$object->age.'">';
+			print '<td><input name="age" class="maxwidth50" value="'.$object->age.'"> ANS';
 			print '</td></tr>';
 
 			// adresse
@@ -584,7 +640,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			//print '<td><input type="checkbox" name="accompagne" class="maxwidth50">';
 			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == 1 ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
 
@@ -675,17 +730,104 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// travel
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-			print '<td><input name="travel" class="maxwidth250" value="'.$object->travel.'">';
+			$travelsrecords = new Travel($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $travelsrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$travel = '<td><select class="flat" name="fk_travel">';
+				if (empty($travelsrecords->records))
+				{
+					$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($travelsrecords->records as $lines)
+					{
+						$travel .= '<option value="';
+						$travel .= $lines->rowid;
+						$travel .= '"';
+						$travel .= '>';
+						$travel .= $langs->trans($lines->ref);
+						$travel .= '</option>';
+					}
+				}
+
+				$travel .= '</select>';
+
+				print $travel;
+			}
 			print '</td></tr>';
 
 			// ship
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
-			print '<td><input name="ship" class="maxwidth250" value="'.$object->ship.'">';
+			$shipsrecords = new Ship($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$ship = '<td><select class="flat" name="fk_ship">';
+				if (empty($shipsrecords->records))
+				{
+					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($shipsrecords->records as $lines)
+					{
+						$ship .= '<option value="';
+						$ship .= $lines->rowid;
+						$ship .= '"';
+						$ship .= '>';
+						$ship .= $langs->trans($lines->label);
+						$ship .= '</option>';
+					}
+				}
+
+				$ship .= '</select>';
+
+				print $ship;
+			}
 			print '</td></tr>';
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
-			print '<td><input name="classe" class="maxwidth250" value="'.$object->classe.'">';
+			$classesrecords = new Classe($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
+
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$ship = '<td><select class="flat" name="fk_classe">';
+				if (empty($classesrecords->records))
+				{
+					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($classesrecords->records as $lines)
+					{
+						$classe .= '<option value="';
+						$classe .= $lines->rowid;
+						$classe .= '"';
+						$classe .= '>';
+						$classe .= $langs->trans($lines->label);
+						$classe .= '</option>';
+					}
+				}
+
+				$classe .= '</select>';
+
+				print $classe;
+			}
 			print '</td></tr>';
 
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("InformationPassager").'</td></tr>';
@@ -722,7 +864,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			print '<td><input type="checkbox" name="accompagne" class="maxwidth50" '.($object->accompagne == 1) ? 'checked' : '' .' >';
+			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == 1 ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
 
 			// nom_enfant
