@@ -47,11 +47,9 @@ require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.
 //$result = restrictedArea($user, 'ship');
 
 // Load translation files required by the page
-$langs->loadLangs('ship');
+$langs->loadLangs('bookticket');
 
 $ship_static = new Ship($db);
-
-$user->rights->ship->lire = true;
 
 /*
  * View
@@ -107,11 +105,11 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 /*
  * Number of Ship
  */
-if ($user->rights->ship->lire)
+if ($user->rights->bookticket->ship->read)
 {
-	$prodser = array();
-	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
-	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
+	$shipser = array();
+	$shipser[0][0] = $shipser[0][1] = $shipser[0][2] = $shipser[0][3] = 0;
+	$shipser[1][0] = $shipser[1][1] = $shipser[1][2] = $shipser[1][3] = 0;
 
 	$sql = "SELECT COUNT(s.rowid) as total";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
@@ -176,7 +174,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Latest modified ship
  */
-if ($user->rights->ship->lire)
+if ($user->rights->bookticket->ship->read)
 {
 	$max = 15;
 	$sql = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
