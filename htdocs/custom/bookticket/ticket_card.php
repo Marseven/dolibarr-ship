@@ -620,7 +620,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" class="maxwidth50" value="'.$object->age.'"> ANS';
+			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'"> ANS';
 			print '</td></tr>';
 
 			// adresse
@@ -650,7 +650,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" class="maxwidth50" value="'.$object->age_enfant.'">';
+			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'">';
 			print '</td></tr>';
 
 
@@ -830,7 +830,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 			print '</td></tr>';
 
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("InformationPassager").'</td></tr>';
+			print '<tr><td class="titlefieldcreate"><h3>'.$langs->trans("InformationPassager").'</h3></td></tr>';
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
@@ -844,7 +844,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" class="maxwidth50" value="'.$object->age.'">';
+			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'">';
 			print '</td></tr>';
 
 			// adresse
@@ -874,7 +874,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" class="maxwidth50" value="'.$object->age_enfant.'">';
+			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'">';
 			print '</td></tr>';
 
 			print '</table>';
