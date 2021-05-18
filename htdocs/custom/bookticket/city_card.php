@@ -133,8 +133,8 @@ if (empty($reshook))
 			// Fill array 'array_options' with data from add form
 			if (!$error)
 			{
-				print_r($object);
 				$id = $object->create($user);
+				print_r($object->error);
 				var_dump($id);
 			}
 			die;
