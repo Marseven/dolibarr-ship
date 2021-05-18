@@ -98,6 +98,7 @@ print load_fiche_titre($langs->trans("BookTicketArea"), '', 'bookticket.png@book
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
+print "je fonctionne bien ici !";
 
 /*
  * Dashboard Dolibarr states (statistics)
