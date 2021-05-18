@@ -499,9 +499,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print "</td></tr>";
 
 			// travel
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-			print '<td><input name="travel" class="maxwidth250" value="'.$object->travel.'">';
-			print '</td></tr>';
+			//print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
+			//print '<td><input name="travel" class="maxwidth250" value="'.$object->travel.'">';
+			//print '</td></tr>';
 			$travelsrecords = new Travel($db);
 
 			$filter = array();
