@@ -96,9 +96,9 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = true; //$user->rights->city->lire;
-$usercancreate = true; //$user->rights->city->creer;
-$usercandelete = true; //$user->rights->city->supprimer;
+$usercanread = $user->rights->bookticket->city->read;
+$usercancreate = $user->rights->bookticket->city->write;
+$usercandelete = $user->rights->bookticket->city->delete;
 
 $parameters = array('id'=>$id, 'objcanvas'=>$objcanvas);
 
@@ -128,7 +128,7 @@ if (empty($reshook))
 		if (!$error)
 		{
 			$object->label                 = GETPOST('label', $label_security_check);
-			$object->labelshort                 = GETPOST('labelshort');
+			$object->labelshort            = GETPOST('labelshort');
 
 			// Fill array 'array_options' with data from add form
 			if (!$error)
@@ -358,7 +358,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label', $label_security_check)).'"></td></tr>';
 
 		// Labelshort
-		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
+		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
 
 		print '</table>';
 
