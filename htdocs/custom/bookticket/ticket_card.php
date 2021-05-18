@@ -502,6 +502,36 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
 			print '<td><input name="travel" class="maxwidth250" value="'.$object->travel.'">';
 			print '</td></tr>';
+			$travelsrecords = new Travel($db);
+
+			$filter = array();
+			$filter['t.status'] = 1;
+
+			$result = $travelsrecords->fetchAll('', '', 0, 0, $filter);
+			if ($result < 0) {
+				dol_print_error($db);
+				return -1;
+			} else {
+				$travel .= '<select class="flat" name="fk_travel">';
+				if (empty($travelsrecords->records))
+				{
+					$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				}else{
+					foreach ($travelsrecords->records as $lines)
+					{
+						$return .= '<option value="';
+						$return .= $lines->rowid;
+						$return .= '"';
+						$return .= '>';
+						$return .= $langs->trans($lines->ref);
+						$return .= '</option>';
+					}
+				}
+
+				$travel .= '</select>';
+
+				print $travel;
+			}
 
 			// ship
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
@@ -549,6 +579,21 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// email
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Email").'</td>';
 			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object->email.'">';
+			print '</td></tr>';
+
+			// accompagne
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
+			print '<td><input type="checkbox" name="accompagne" class="maxwidth50" '.($object->accompagne == 1) ? 'checked' : '' .' >';
+			print '</td></tr>';
+
+			// nom_enfant
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
+			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
+			print '</td></tr>';
+
+			// age_enfant
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
+			print '<td><input name="age_enfant" class="maxwidth50" value="'.$object->age_enfant.'">';
 			print '</td></tr>';
 
 
@@ -671,6 +716,21 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// email
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Email").'</td>';
 			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object->email.'">';
+			print '</td></tr>';
+
+			// accompagne
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
+			print '<td><input type="checkbox" name="accompagne" class="maxwidth50" '.($object->accompagne == 1) ? 'checked' : '' .' >';
+			print '</td></tr>';
+
+			// nom_enfant
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
+			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
+			print '</td></tr>';
+
+			// age_enfant
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
+			print '<td><input name="age_enfant" class="maxwidth50" value="'.$object->age_enfant.'">';
 			print '</td></tr>';
 
 			print '</table>';
