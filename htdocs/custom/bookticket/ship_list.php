@@ -98,7 +98,7 @@ $arrayfields = array(
 	's.nbre_vip'=>array('label'=>$langs->trans("NbreVip"), 'checked'=>1,  'position'=>52),
 	's.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>53),
 	's.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>54),
-	's.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
+	's.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
 	's.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
 
@@ -124,17 +124,15 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 	$search_ref = "";
 	$search_label = "";
 	$search_labelshort = "";
-	$search_finished = '';
-						// There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
-
+	$search_finished = ''; // There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
 	$search_array_options = array();
 }
 
 // Mass actions
 $objectclass = 'Ship';
 
-$permissiontoread = $user->rights->{$rightskey}->lire;
-$permissiontodelete = $user->rights->{$rightskey}->supprimer;
+$permissiontoread = $user->rights->bookticket->{$rightskey}->read;
+$permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
 $uploaddir = $conf->product->dir_output;
 include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
@@ -155,7 +153,6 @@ $sql .= ' s.date_creation, s.tms as date_update';
 // Add fields from hooks
 $parameters = array();
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ship as s';
-
 $sql .= ' WHERE s.entity IN ('.getEntity('ship').')';
 
 if ($search_ref)     $sql .= natural_search('s.ref', $search_ref);
@@ -175,7 +172,6 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 }
 
 $sql .= $db->plimit($limit + 1, $offset);
-
 $resql = $db->query($sql);
 
 if ($resql)
@@ -193,16 +189,14 @@ if ($resql)
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Ships|FR:Module_Ships|ES:M&oacute;dulo_Productos';
-
-	//die('je fonctionne bien !');
+	$helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
 
 	// Displays ship removal confirmation
-	if (GETPOST('delprod')) {
-		setEventMessages($langs->trans("ShipDeleted", GETPOST('delprod')), null, 'mesgs');
+	if (GETPOST('delship')) {
+		setEventMessages($langs->trans("ShipDeleted", GETPOST('delship')), null, 'mesgs');
 	}
 
 	$param = '';
@@ -224,10 +218,10 @@ if ($resql)
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 	$newcardbutton = '';
-	$perm = $user->rights->ship->creer;
+	$perm = $user->rights->bookticket->ship->write;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
-	$newcardbutton .= dolGetButtonTitle($langs->trans('NewShip'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create&type=0', '', $perm, $params);
+	$newcardbutton .= dolGetButtonTitle($langs->trans('NewShip'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create', '', $perm, $params);
 	$label = 'NewShip';
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post" name="formulaire">';
@@ -317,7 +311,7 @@ if ($resql)
 	}
 
 	// Date creation
-	if (!empty($arrayfields['s.datec']['checked']))
+	if (!empty($arrayfields['s.date_creation']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -351,8 +345,8 @@ if ($resql)
 	if (!empty($arrayfields['s.nbre_aff']['checked']))  print_liste_field_titre($arrayfields['s.nbre_aff']['label'], $_SERVER['PHP_SELF'], 's.nbre_aff', '', $param, '', $sortfield, $sortorder, 'center ');
 	if (!empty($arrayfields['s.nbre_eco']['checked']))  print_liste_field_titre($arrayfields['s.nbre_eco']['label'], $_SERVER['PHP_SELF'], 's.nbre_eco', '', $param, '', $sortfield, $sortorder, 'center ');
 
-	if (!empty($arrayfields['s.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['s.datec']['label'], $_SERVER["PHP_SELF"], "s.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['s.date_creation']['checked'])) {
+		print_liste_field_titre($arrayfields['s.date_creation']['label'], $_SERVER["PHP_SELF"], "s.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	if (!empty($arrayfields['s.tms']['checked'])) {
 		print_liste_field_titre($arrayfields['s.tms']['label'], $_SERVER["PHP_SELF"], "s.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
@@ -386,16 +380,16 @@ if ($resql)
 			}
 		}*/
 
-		$product_static->id = $obj->rowid;
-		$product_static->ref = $obj->ref;
-		$product_static->label = $obj->label;
+		$ship_static->id = $obj->rowid;
+		$ship_static->ref = $obj->ref;
+		$ship_static->label = $obj->label;
 		print '<tr class="oddeven">';
 
 		// Ref
 		if (!empty($arrayfields['s.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
-			print $product_static->getNomUrl(1);
+			print $ship_static->getNomUrl(1);
 			print "</td>\n";
 			if (!$i) $totalarray['nbfield']++;
 		}
@@ -445,7 +439,7 @@ if ($resql)
 
 
 		// Date creation
-		if (!empty($arrayfields['s.datec']['checked']))
+		if (!empty($arrayfields['s.date_creation']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');

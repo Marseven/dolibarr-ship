@@ -81,8 +81,6 @@ if ($id > 0 || !empty($ref))
 	}
 }
 
-$modulepart = 'ship';
-
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = !empty($object->canvas) ? $object->canvas : GETPOST("canvas");
 $objcanvas = null;
@@ -94,7 +92,7 @@ if (!empty($canvas))
 }
 
 // Security check
-//$result = restrictedArea($user, 'produit|service', $fieldvalue, 'ship&ship', '', '', $fieldtype);
+//$result = restrictedArea($user, 'bookticket');
 
 /*
  * Actions
@@ -102,9 +100,9 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = true; //$user->rights->ship->lire;
-$usercancreate = true; //$user->rights->ship->creer;
-$usercandelete = true; //$user->rights->ship->supprimer;
+$usercanread = $user->rights->bookticket->ship->read;
+$usercancreate = $user->rights->bookticket->ship->write;
+$usercandelete = $user->rights->bookticket->ship->delete;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
@@ -186,8 +184,8 @@ if ($action == 'update' && $usercancreate)
 
 			$object->ref                    = $ref;
 			$object->label                  = GETPOST('label', $label_security_check);
-			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-			$object->nbre_place             	 = GETPOST('nbre_place');
+			$object->labelshort             = GETPOST('labelshort');
+			$object->nbre_place             = GETPOST('nbre_place');
 			$object->nbre_vip             	 = GETPOST('nbre_vip');
 			$object->nbre_aff             	 = GETPOST('nbre_aff');
 			$object->nbre_eco             	 = GETPOST('nbre_eco');
@@ -295,7 +293,7 @@ if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
 
 	if ($result > 0)
 	{
-		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?type='.$object->type.'&delprod='.urlencode($object->ref));
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?delship='.urlencode($object->ref));
 		exit;
 	} else {
 		setEventMessages($langs->trans($object->error), null, 'errors');
@@ -321,7 +319,7 @@ $title = $langs->trans('ShipCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->label, 16);
 $title = $langs->trans('Ship')." ".$shortlabel." - ".$langs->trans('Card');
-$helpurl = 'EN:Module_ships|FR:Module_Produits|ES:M&oacute;dulo_shipos';
+$helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
 llxHeader('', $title, $helpurl);
 
@@ -403,22 +401,22 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Nbre_place
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'"> Place(s)';
 			print '</td></tr>';
 
 			// Nbre_vip
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
+			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'"> Place(s)';
 			print '</td></tr>';
 
 			// Nbre_aff
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
+			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'"> Place(s)';
 			print '</td></tr>';
 
 			// Nbre_eco
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
+			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'"> Place(s)';
 			print '</td></tr>';
 
 
@@ -481,22 +479,22 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Nbre_place
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'">';
+			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'"> Place(s)';
 			print '</td></tr>';
 
 			// Nbre_vip
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
-			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'">';
+			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'"> Place(s)';
 			print '</td></tr>';
 
 			// Nbre_aff
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
-			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'">';
+			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'"> Place(s)';
 			print '</td></tr>';
 
 			// Nbre_eco
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
-			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'">';
+			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'"> Place(s)';
 			print '</td></tr>';
 
 			print '</table>';
@@ -575,7 +573,6 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 		'text' => $langs->trans("ConfirmClone"),
 		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
 		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentship"), 'value' => 1),
-		array('type' => 'checkbox', 'name' => 'clone_categories', 'label' => $langs->trans("CloneCategoriesship"), 'value' => 1),
 	);
 
 
