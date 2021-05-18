@@ -103,8 +103,8 @@ if (!empty($canvas))
 if ($cancel) $action = '';
 
 $usercanread = $user->rights->bookticket->classe->read;
-$usercancreate = $user->rightsbookticket->classe->write;
-$usercandelete = $user->rightsbookticket->classe->delete;
+$usercancreate = $user->rights->bookticket->classe->write;
+$usercandelete = $user->rights->bookticket->classe->delete;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
