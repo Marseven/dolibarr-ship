@@ -149,7 +149,7 @@ class Ticket extends CommonObject
 	/**
 	 * @var int ID
 	 */
-	public $fk_user_creat;
+	public $fk_user_author;
 
 	/**
 	 * @var int ID
