@@ -135,7 +135,7 @@ if (empty($reshook))
 			{
 				$id = $object->create($user);
 			}
-			die;
+
 			if ($id > 0)
 			{
 				if (!empty($backtopage))
