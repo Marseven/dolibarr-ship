@@ -24,13 +24,16 @@
 
 // Load Dolibarr environment
 $res=0;
+
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
 if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+
 // Try main.inc.php into web root detected using web root calculated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
 while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
 if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
 if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+
 // Try main.inc.php using relative path
 if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
 if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
@@ -41,7 +44,6 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
 // Load translation files required by the page
@@ -100,17 +102,16 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = true; //$user->rights->classe->lire;
-$usercancreate = true; //$user->rights->classe->creer;
-$usercandelete = true; //$user->rights->classe->supprimer;
+$usercanread = $user->rights->bookticket->classe->read;
+$usercancreate = $user->rightsbookticket->classe->write;
+$usercandelete = $user->rightsbookticket->classe->delete;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
 // Actions to build doc
-$upload_dir = $conf->classe->dir_output;
+$upload_dir = $conf->bookticket->dir_output;
 $permissiontoadd = $usercancreate;
 include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
-
 include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 
@@ -136,11 +137,11 @@ if ($action == 'add' && $usercancreate)
 	{
 		$object->ref                   = $ref;
 		$object->label                 = GETPOST('label', $label_security_check);
-		$object->labelshort                 = GETPOST('labelshort');
-		$object->prix_standard             	 = GETPOST('prix_standard');
-		$object->prix_enfant             	 = GETPOST('prix_enfant');
-		$object->prix_enf_stand             	 = GETPOST('prix_enf_stand');
-		$object->kilo_bagage             	 = GETPOST('kilo_bagage');
+		$object->labelshort            = GETPOST('labelshort');
+		$object->prix_standard         = GETPOST('prix_standard');
+		$object->prix_enfant           = GETPOST('prix_enfant');
+		$object->prix_enf_stand        = GETPOST('prix_enf_stand');
+		$object->kilo_bagage           = GETPOST('kilo_bagage');
 
 
 		// Fill array 'array_options' with data from add form
@@ -182,11 +183,11 @@ if ($action == 'update' && $usercancreate)
 
 			$object->ref                    = $ref;
 			$object->label                  = GETPOST('label', $label_security_check);
-			$object->labelshort                 = GETPOST('labelshort', $label_security_check);
-			$object->prix_standard             	 = GETPOST('prix_standard');
-			$object->prix_enfant             	 = GETPOST('prix_enfant');
-			$object->prix_enf_stand             	 = GETPOST('prix_enf_stand');
-			$object->kilo_bagage             	 = GETPOST('kilo_bagage');
+			$object->labelshort             = GETPOST('labelshort');
+			$object->prix_standard          = GETPOST('prix_standard');
+			$object->prix_enfant            = GETPOST('prix_enfant');
+			$object->prix_enf_stand         = GETPOST('prix_enf_stand');
+			$object->kilo_bagage            = GETPOST('kilo_bagage');
 
 			if (!$error && $object->check())
 			{
@@ -291,7 +292,7 @@ if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
 
 	if ($result > 0)
 	{
-		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/classe_list.php?type='.$object->type.'&delprod='.urlencode($object->ref));
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/classe_list.php?delclasse='.urlencode($object->ref));
 		exit;
 	} else {
 		setEventMessages($langs->trans($object->error), null, 'errors');
@@ -317,7 +318,7 @@ $title = $langs->trans('ClasseCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->label, 16);
 $title = $langs->trans('Classe')." ".$shortlabel." - ".$langs->trans('Card');
-$helpurl = 'EN:Module_Classes|FR:Module_Produits|ES:M&oacute;dulo_Classeos';
+$helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
 llxHeader('', $title, $helpurl);
 
@@ -388,7 +389,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label', $label_security_check)).'"></td></tr>';
 
 		// Labelshort
-		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
+		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
 
 		print '</table>';
 
@@ -398,22 +399,22 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// prix_standard
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixStandard").'</td>';
-			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'">';
+			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfant").'</td>';
-			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'">';
+			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enf_stand
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfStand").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'">';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'"> FCFA';
 			print '</td></tr>';
 
 			// kilo_bagage
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("KiloBagage").'</td>';
-			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'">';
+			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'"> Kg';
 			print '</td></tr>';
 
 
@@ -476,22 +477,22 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// prix_standard
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixStandard").'</td>';
-			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'">';
+			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfant").'</td>';
-			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'">';
+			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enf_stand
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfStand").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'">';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'"> FCFA';
 			print '</td></tr>';
 
 			// kilo_bagage
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("KiloBagage").'</td>';
-			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'">';
+			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'"> Kg';
 			print '</td></tr>';
 
 			print '</table>';
@@ -570,7 +571,6 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 		'text' => $langs->trans("ConfirmClone"),
 		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
 		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentClasse"), 'value' => 1),
-		array('type' => 'checkbox', 'name' => 'clone_categories', 'label' => $langs->trans("CloneCategoriesClasse"), 'value' => 1),
 	);
 
 
@@ -712,5 +712,6 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 }
 
 // End of page
+
 llxFooter();
 $db->close();

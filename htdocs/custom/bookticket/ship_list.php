@@ -157,7 +157,7 @@ $sql .= ' WHERE s.entity IN ('.getEntity('ship').')';
 
 if ($search_ref)     $sql .= natural_search('s.ref', $search_ref);
 if ($search_label)   $sql .= natural_search('s.label', $search_label);
-if ($search_labelshort) $sql .= natural_search('s.barcode', $search_labelshort);
+if ($search_labelshort) $sql .= natural_search('s.labelshort', $search_labelshort);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))

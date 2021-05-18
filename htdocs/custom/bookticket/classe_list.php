@@ -97,7 +97,7 @@ $arrayfields = array(
 	'c.prix_enfant'=>array('label'=>$langs->trans("PrixEnfant"), 'checked'=>1,  'position'=>52),
 	'c.prix_enf_stand'=>array('label'=>$langs->trans("PrixEnfStand"), 'checked'=>1,  'position'=>53),
 	'c.kilo_bagage'=>array('label'=>$langs->trans("KiloBagage"), 'checked'=>1,  'position'=>54),
-	'c.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
+	'c.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
 	'c.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
 
@@ -131,9 +131,9 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 // Mass actions
 $objectclass = 'Classe';
 
-$permissiontoread = $user->rights->{$rightskey}->lire;
-$permissiontodelete = $user->rights->{$rightskey}->supprimer;
-$uploaddir = $conf->product->dir_output;
+$permissiontoread = $user->rights->bookticket->{$rightskey}->read;
+$permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
+$uploaddir = $conf->bookticket->dir_output;
 include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
 
@@ -157,7 +157,7 @@ $sql .= ' WHERE c.entity IN ('.getEntity('classe').')';
 
 if ($search_ref)     $sql .= natural_search('c.ref', $search_ref);
 if ($search_label)   $sql .= natural_search('c.label', $search_label);
-if ($search_labelshort) $sql .= natural_search('c.barcode', $search_labelshort);
+if ($search_labelshort) $sql .= natural_search('c.labelshort', $search_labelshort);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -172,7 +172,6 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 }
 
 $sql .= $db->plimit($limit + 1, $offset);
-
 $resql = $db->query($sql);
 
 if ($resql)
@@ -190,14 +189,14 @@ if ($resql)
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Classes|FR:Module_Classes|ES:M&oacute;dulo_Productos';
+	$helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
 
 	// Displays classe removal confirmation
-	if (GETPOST('delprod')) {
-		setEventMessages($langs->trans("ClasseDeleted", GETPOST('delprod')), null, 'mesgs');
+	if (GETPOST('delclasse')) {
+		setEventMessages($langs->trans("ClasseDeleted", GETPOST('delclasse')), null, 'mesgs');
 	}
 
 	$param = '';
@@ -277,7 +276,7 @@ if ($resql)
 	if (!empty($arrayfields['c.labelshort']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_labeshortl" size="12" value="'.dol_escape_htmltag($search_labelshort).'">';
+		print '<input class="flat" type="text" name="search_labelshort" size="12" value="'.dol_escape_htmltag($search_labelshort).'">';
 		print '</td>';
 	}
 
@@ -312,7 +311,7 @@ if ($resql)
 	}
 
 	// Date creation
-	if (!empty($arrayfields['c.datec']['checked']))
+	if (!empty($arrayfields['c.date_creation']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -346,8 +345,8 @@ if ($resql)
 	if (!empty($arrayfields['c.prix_enf_stand']['checked']))  print_liste_field_titre($arrayfields['c.prix_enf_stand']['label'], $_SERVER['PHP_SELF'], 'c.prix_enf_stand', '', $param, '', $sortfield, $sortorder, 'center ');
 	if (!empty($arrayfields['c.kilo_bagage']['checked']))  print_liste_field_titre($arrayfields['c.kilo_bagage']['label'], $_SERVER['PHP_SELF'], 'c.kilo_bagage', '', $param, '', $sortfield, $sortorder, 'center ');
 
-	if (!empty($arrayfields['c.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['c.datec']['label'], $_SERVER["PHP_SELF"], "c.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['c.date_creation']['checked'])) {
+		print_liste_field_titre($arrayfields['c.date_creation']['label'], $_SERVER["PHP_SELF"], "c.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	if (!empty($arrayfields['c.tms']['checked'])) {
 		print_liste_field_titre($arrayfields['c.tms']['label'], $_SERVER["PHP_SELF"], "c.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
@@ -381,16 +380,16 @@ if ($resql)
 			}
 		}*/
 
-		$product_static->id = $obj->rowid;
-		$product_static->ref = $obj->ref;
-		$product_static->label = $obj->label;
+		$classe_static->id = $obj->rowid;
+		$classe_static->ref = $obj->ref;
+		$proclasse_staticduct_static->label = $obj->label;
 		print '<tr class="oddeven">';
 
 		// Ref
 		if (!empty($arrayfields['c.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
-			print $product_static->getNomUrl(1);
+			print $classe_static->getNomUrl(1);
 			print "</td>\n";
 			if (!$i) $totalarray['nbfield']++;
 		}
@@ -440,7 +439,7 @@ if ($resql)
 
 
 		// Date creation
-		if (!empty($arrayfields['c.datec']['checked']))
+		if (!empty($arrayfields['c.date_creation']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
