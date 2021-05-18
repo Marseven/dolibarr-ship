@@ -44,6 +44,7 @@ if (!$res && file_exists("../../../main.inc.php")) $res = @include "../../../mai
 if (!$res) die("Include of main fails");
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT.'/core/class/html.formother.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("bookticket@bookticket"));
@@ -113,10 +114,6 @@ $langs->loadLangs(array('bookticket'));
 if ($user->rights->bookticket->read)
 {
 	$object = new stdClass();
-	$parameters = array();
-	$action = '';
-	$reshook = $hookmanager->executeHooks('addStatisticLine', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
-	$boxstatFromHook = $hookmanager->resPrint;
 
 	if (empty($reshook))
 	{
