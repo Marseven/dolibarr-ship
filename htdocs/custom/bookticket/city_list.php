@@ -94,7 +94,7 @@ $arrayfields = array(
 	'c.rowid'=>array('label'=>$langs->trans("ID"), 'checked'=>1),
 	'c.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
 	'c.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
-	'c.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
+	'c.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
 	'c.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>1, 'position'=>500),
 );
 
@@ -130,7 +130,7 @@ $objectclass = 'City';
 
 $permissiontoread = $user->rights->bookticket->{$rightskey}->read;
 $permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
-$uploaddir = $conf->product->dir_output;
+$uploaddir = $conf->bookticket->dir_output;
 include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
 
@@ -153,7 +153,7 @@ $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_city as c';
 $sql .= ' WHERE c.entity IN ('.getEntity('city').')';
 
 if ($search_label)   $sql .= natural_search('c.label', $search_label);
-if ($search_labelshort) $sql .= natural_search('c.barcode', $search_labelshort);
+if ($search_labelshort) $sql .= natural_search('c.labelshort', $search_labelshort);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -186,7 +186,7 @@ if ($resql)
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Citys|FR:Module_Citys|ES:M&oacute;dulo_Productos';
+	$helpurl = 'EN:Module_BookTicket|FR:Module_BookTicket|ES:M&oacute;dulo_BookTicket';
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
@@ -266,13 +266,13 @@ if ($resql)
 	if (!empty($arrayfields['c.labelshort']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_labeshortl" size="12" value="'.dol_escape_htmltag($search_label).'">';
+		print '<input class="flat" type="text" name="search_labeshortl" size="12" value="'.dol_escape_htmltag($search_labelshort).'">';
 		print '</td>';
 	}
 
 
 	// Date creation
-	if (!empty($arrayfields['c.datec']['checked']))
+	if (!empty($arrayfields['c.date_creation']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -299,8 +299,8 @@ if ($resql)
 		print_liste_field_titre($arrayfields['c.labelshort']['label'], $_SERVER["PHP_SELF"], "c.labelshort", "", $param, "", $sortfield, $sortorder);
 	}
 
-	if (!empty($arrayfields['c.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['c.datec']['label'], $_SERVER["PHP_SELF"], "c.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['c.date_creation']['checked'])) {
+		print_liste_field_titre($arrayfields['c.date_creation']['label'], $_SERVER["PHP_SELF"], "c.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	if (!empty($arrayfields['c.tms']['checked'])) {
 		print_liste_field_titre($arrayfields['c.tms']['label'], $_SERVER["PHP_SELF"], "c.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
@@ -334,9 +334,9 @@ if ($resql)
 			}
 		}*/
 
-		$product_static->id = $obj->rowid;
-		$product_static->ref = $obj->ref;
-		$product_static->label = $obj->label;
+		$city_static->id = $obj->rowid;
+		$city_static->ref = $obj->ref;
+		$city_static->label = $obj->label;
 		print '<tr class="oddeven">';
 
 
@@ -355,7 +355,7 @@ if ($resql)
 		}
 
 		// Date creation
-		if (!empty($arrayfields['c.datec']['checked']))
+		if (!empty($arrayfields['c.date_creation']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');

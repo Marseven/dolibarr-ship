@@ -168,7 +168,7 @@ if (empty($reshook))
 				$object->oldcopy = clone $object;
 
 				$object->label                  = GETPOST('label', $label_security_check);
-				$object->labelshort                 = GETPOST('labelshort');
+				$object->labelshort             = GETPOST('labelshort');
 
 				if (!$error && $object->check())
 				{
@@ -268,7 +268,7 @@ if (empty($reshook))
 
 		if ($result > 0)
 		{
-			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/city_list.php?type='.$object->type.'&delcity='.urlencode($object->rowid));
+			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/city_list.php?delcity='.urlencode($object->rowid));
 			exit;
 		} else {
 			setEventMessages($langs->trans($object->error), null, 'errors');
