@@ -29,7 +29,7 @@ create table llx_bookticket_travel
   date_creation             datetime,                    
   tms                       timestamp,                   
   import_key                varchar(32),                 
-  status                    smallint,
+  status                    smallint DEFAULT 1,
   fk_user_creat             integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
   active                    tinyint      DEFAULT 1  NOT NULL

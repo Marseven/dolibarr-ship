@@ -134,8 +134,6 @@ if (empty($reshook))
 			if (!$error)
 			{
 				$id = $object->create($user);
-				print_r($object->error);
-				var_dump($id);
 			}
 			die;
 			if ($id > 0)

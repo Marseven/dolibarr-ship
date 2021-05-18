@@ -26,7 +26,7 @@ create table llx_bookticket_ticket
   date_creation             datetime,                    
   tms                       timestamp,                   
   import_key                varchar(32),                 
-  status                    smallint,
+  status                    smallint DEFAULT 1,
   fk_ship                   integer      DEFAULT NULL,
   fk_passenger              integer      DEFAULT NULL,
   fk_travel                 integer      DEFAULT NULL,
