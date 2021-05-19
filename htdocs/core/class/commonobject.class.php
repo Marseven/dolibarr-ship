@@ -7744,7 +7744,7 @@ abstract class CommonObject
 		}
 
 		if ($error) return -1;
-		var_dump($error);
+		
 		$this->db->begin();
 
 		if (!$error)
@@ -7754,6 +7754,8 @@ abstract class CommonObject
 			$sql .= ' VALUES ('.implode(", ", $values).')';
 
 			$res = $this->db->query($sql);
+			var_dump($sql);
+			var_dump($res);
 			var_dump($this->db->lasterror());die;
 			if ($res === false) {
 				$error++;
