@@ -133,7 +133,7 @@ if ($resql)
 		}
 	}
 }
-
+print_r($shiprecords);
 $cityrecords = [];
 $sql_city = 'SELECT DISTINCT c.rowid, c.label, c.labelshort, c.entity,';
 $sql_city .= ' c.date_creation, c.tms as date_update';
@@ -158,6 +158,8 @@ if ($resql_city)
 		}
 	}
 }
+
+print_r($cityrecords);die;
 
 // Actions to build doc
 $upload_dir = $conf->travel->dir_output;
@@ -450,7 +452,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				$ship .= $line->rowid;
 				$ship .= '"';
 				$ship .= '>';
-				$ship .= $lang->trans($line->label);
+				$ship .= $line->label;
 				$ship .= '</option>';
 			}
 		}
@@ -483,7 +485,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$city_depart .= $lines->rowid;
 					$city_depart .= '"';
 					$city_depart .= '>';
-					$city_depart .= $langs->trans($lines->label);
+					$city_depart .= $lines->label;
 					$city_depart .= '</option>';
 				}
 			}
@@ -508,7 +510,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$city_arrive .= $lines->rowid;
 					$city_arrive .= '"';
 					$city_arrive .= '>';
-					$city_arrive .= $langs->trans($lines->label);
+					$city_arrive .= $lines->label;
 					$city_arrive .= '</option>';
 				}
 			}
