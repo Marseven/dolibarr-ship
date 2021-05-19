@@ -117,7 +117,7 @@ $arrayfields = array(
 	't.ship'=>array('label'=>$langs->trans("Ship"), 'checked'=>1, 'position'=>52),
 	't.classe'=>array('label'=>$langs->trans('Classe'), 'checked'=>1, 'position'=>20),
 	't.passenger'=>array('label'=>$langs->trans("Passenger"), 'checked'=>1, 'position'=>52),
-	't.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
+	't.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
 	't.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
 
@@ -161,8 +161,8 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 // Mass actions
 $objectclass = 'Travel';
 
-$permissiontoread = $user->rights->bookticket->{$rightskey}->lire;
-$permissiontodelete = $user->rights->bookticket->{$rightskey}->supprimer;
+$permissiontoread = $user->rights->bookticket->{$rightskey}->read;
+$permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
 $uploaddir = $conf->bookticket->dir_output;
 include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
@@ -185,7 +185,7 @@ $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_ship = tr.
 $sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
-if ($search_passenger)   $sql .= natural_search('t.label', $search_passenger);
+if ($search_passenger)   $sql .= natural_search('t.passenger', $search_passenger);
 if ($search_barcode) $sql .= natural_search('t.barcode', $search_barcode);
 $sql .= $db->order($sortfield, $sortorder);
 
@@ -276,7 +276,7 @@ if ($resql)
 	$topicmail = "Information";
 	$modelmail = "ticket";
 	$objecttmp = new Ticket($db);
-	$trackid = 'ship'.$object->id;
+	$trackid = 'ticket'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 
@@ -374,8 +374,9 @@ if ($resql)
 	}
 
 	if (!empty($arrayfields['t.classe']['checked']))  		print_liste_field_titre($arrayfields['t.classe']['label'], $_SERVER['PHP_SELF'], 't.classe', '', $param, '', $sortfield, $sortorder, 'center ');
+
 	if (!empty($arrayfields['t.date_creation']['checked'])) {
-		print_liste_field_titre($arrayfields['t.datec']['label'], $_SERVER["PHP_SELF"], "t.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+		print_liste_field_titre($arrayfields['t.date_creation']['label'], $_SERVER["PHP_SELF"], "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	if (!empty($arrayfields['t.tms']['checked'])) {
 		print_liste_field_titre($arrayfields['t.tms']['label'], $_SERVER["PHP_SELF"], "t.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
@@ -384,7 +385,7 @@ if ($resql)
 	print "</tr>\n";
 
 
-	$ship_static = new Ship($db);
+	$ticket_static = new Ticket($db);
 
 	$i = 0;
 	$totalarray = array();
@@ -423,10 +424,10 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Label
+		// Passenger
 		if (!empty($arrayfields['t.passenger']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passeneger).'">'.$obj->passenger.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'">'.$obj->passenger.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
