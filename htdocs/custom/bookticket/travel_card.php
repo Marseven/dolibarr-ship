@@ -386,7 +386,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		$filter = array();
 		$filter['s.status'] = 1;
 		$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
-		print_r($result);
+
+		var_dump($result);die;
+
 		if ($result < 0) {
 			dol_print_error($db);
 			return -1;
