@@ -108,7 +108,7 @@ $usercandelete = $user->rights->bookticket->travel->delete;
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
 $shiprecords = [];
-$sql_ship = "SELECT DISTINCT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
+$sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
 $sql_ship .= " s.entity,";
 $sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
 $sql_city .= ' WHERE s.entity IN ('.getEntity('ship').')';
@@ -133,7 +133,7 @@ if ($resql)
 }
 
 $cityrecords = [];
-$sql_city = 'SELECT DISTINCT c.rowid, c.label, c.labelshort, c.entity,';
+$sql_city = 'SELECT c.rowid, c.label, c.labelshort, c.entity,';
 $sql_city .= ' c.date_creation, c.tms as date_update';
 $sql_city .= ' FROM '.MAIN_DB_PREFIX.'bookticket_city as c';
 $sql_city .= ' WHERE c.entity IN ('.getEntity('city').')';
@@ -470,11 +470,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
 
 			$city_depart = '<td><select class="flat" name="lieu_depart">';
-			if (empty($citysrecords->records))
+			if (empty($cityrecords))
 			{
 				$city_depart .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			}else{
-				foreach ($citysrecords->records as $lines)
+				foreach ($cityrecords as $lines)
 				{
 					$city_depart .= '<option value="';
 					$city_depart .= $lines->rowid;
@@ -495,11 +495,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
 
 			$city_arrive = '<td><select class="flat" name="lieu_arrive">';
-			if (empty($citysrecords->records))
+			if (empty($cityrecords))
 			{
 				$city_arrive .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			}else{
-				foreach ($citysrecords->records as $lines)
+				foreach ($cityrecords as $lines)
 				{
 					$city_arrive .= '<option value="';
 					$city_arrive .= $lines->rowid;
