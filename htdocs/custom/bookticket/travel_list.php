@@ -143,7 +143,7 @@ $title = $langs->trans("Travels");
 $texte = $langs->trans("Travels");
 
 
-$sql = 'SELECT DISTINCT t.rowid, t.ref, t.jour_heure, t.lieu_depart, t.lieu_arrive, s.label as ship, t.entity,';
+$sql = 'SELECT DISTINCT t.rowid, t.ref, t.jour, t.heure, t.lieu_depart, t.lieu_arrive, s.label as ship, t.entity,';
 $sql .= ' t.date_creation, t.tms as date_update';
 
 // Add fields from hooks

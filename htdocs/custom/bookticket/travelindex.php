@@ -178,7 +178,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 if ($user->rights->bookticket->travel->read)
 {
 	$max = 15;
-	$sql = "SELECT t.rowid, t.ref, t.jour_heure, t.lieu_depart,  t.lieu_arrive, s.label as ship,";
+	$sql = "SELECT t.rowid, t.ref, t.jour, t.heure, t.lieu_depart,  t.lieu_arrive, s.label as ship,";
 	$sql .= " t.entity,";
 	$sql .= " t.tms as datem";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_travel as t";

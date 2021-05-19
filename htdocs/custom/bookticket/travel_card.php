@@ -427,8 +427,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '</td></tr>';
 
-		// Jour_heure
-		print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3">';
+		// Jour
+		print '<tr><td class="fieldrequired">'.$langs->trans("Jour").'</td><td colspan="3">';
+        print $form->selectDate($datep, 'ap', 1, 1, 1, "action", 1, 2, 0, 'jour_heure');
+		print '</td></tr>';
+
+		// Heure
+		print '<tr><td class="fieldrequired">'.$langs->trans("Heure").'</td><td colspan="3">';
         print $form->selectDate($datep, 'ap', 1, 1, 1, "action", 1, 2, 0, 'jour_heure');
 		print '</td></tr>';
 
@@ -567,8 +572,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
 
-			// Jour_heure
-			print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour_heure).'"></td></tr>';
+			// Jour
+			print '<tr><td class="fieldrequired">'.$langs->trans("Jour").'</td><td colspan="3"><input name="jour" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour).'"></td></tr>';
+
+			// heure
+			print '<tr><td class="fieldrequired">'.$langs->trans("Heure").'</td><td colspan="3"><input name="heure" type="time" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->heure).'"></td></tr>';
 
 			// Ship
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';

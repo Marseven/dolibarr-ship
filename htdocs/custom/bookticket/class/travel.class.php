@@ -104,7 +104,8 @@ class Travel extends CommonObject
 		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'lieu_depart'   => array('type'=>'varchar(255)', 'label'=>'Lieu arrive', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'lieu_arrive'   => array('type'=>'varchar(255)', 'label'=>'Lieu de depart', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'jour_heure' 	=> array('type'=>'datetime', 'label'=>'Jout et Heure', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
+		'jour' 			=> array('type'=>'date', 'label'=>'Jour', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
+		'heure' 		=> array('type'=>'time', 'label'=>'Heure', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'fk_ship' 		=> array('type'=>'integer:Ship:ship/class/ship.class.php', 'label'=>'Le bateau', 'picto'=>'ship', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'ship.rowid'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
@@ -140,9 +141,14 @@ class Travel extends CommonObject
 	public $lieu_arrive;
 
 	/**
-	 * @var integer|string jour_heure
+	 * @var integer|string jour
 	 */
-	public $jour_heure;
+	public $jour;
+
+	/**
+	 * @var integer|string heure
+	 */
+	public $heure;
 
 	/**
 	 * @var int ID

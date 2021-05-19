@@ -21,7 +21,8 @@ create table llx_bookticket_travel
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   ref                       varchar(128) DEFAULT 0 NOT NULL,
-  jour_heure                datetime NOT NULL,
+  jour                      date NOT NULL,
+  hour                      time NOT NULL,
   lieu_depart				        varchar(255) DEFAULT NULL,
   lieu_arrive				        varchar(255) DEFAULT NULL,
   fk_ship				            integer DEFAULT NULL,
