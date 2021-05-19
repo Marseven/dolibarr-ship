@@ -386,7 +386,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		$filter = array();
 		$filter['s.status'] = 1;
 		$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
-
 		var_dump($result);die;
 
 		if ($result < 0) {
@@ -412,8 +411,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$ship .= '</select>';
 
 			print $ship;
+
+			print '</td>';
 		}
-		print '</td></tr>';
+		print '</tr>';
 
 		print '</table>';
 
