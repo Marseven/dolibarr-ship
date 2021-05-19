@@ -571,7 +571,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$classesrecords = new Classe($db);
 
 			$filter = array();
-			$filter['t.status'] = 1;
+			$filter['c.status'] = 1;
 			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
@@ -645,12 +645,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// nom_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'"> ANS';
+			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
 			print '</td></tr>';
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'">';
+			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'"> ANS';
 			print '</td></tr>';
 
 
@@ -801,7 +801,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$classesrecords = new Classe($db);
 
 			$filter = array();
-			$filter['t.status'] = 1;
+			$filter['c.status'] = 1;
 			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
