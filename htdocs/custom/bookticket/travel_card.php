@@ -380,58 +380,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</td></tr>';
 
 		// Jour_heure
-		//print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3"><input name="jour_heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('jour_heure', $jour_heure_security_check)).'"></td></tr>';
-        if (!empty($conf->use_javascript_ajax))
-		{
-			print "\n".'<script type="text/javascript">';
-			print '$(document).ready(function () {
-						function setdatefields()
-						{
-							if ($("#fullday:checked").val() == null) {
-								$(".fulldaystarthour").removeAttr("disabled");
-								$(".fulldaystartmin").removeAttr("disabled");
-								$(".fulldayendhour").removeAttr("disabled");
-								$(".fulldayendmin").removeAttr("disabled");
-								$("#p2").removeAttr("disabled");
-							} else {
-								$(".fulldaystarthour").prop("disabled", true).val("00");
-								$(".fulldaystartmin").prop("disabled", true).val("00");
-								$(".fulldayendhour").prop("disabled", true).val("23");
-								$(".fulldayendmin").prop("disabled", true).val("59");
-								$("#p2").removeAttr("disabled");
-							}
-						}
-						$("#fullday").change(function() {
-							console.log("setdatefields");
-							setdatefields();
-						});
-						$("#selectcomplete").change(function() {
-							if ($("#selectcomplete").val() == 100)
-							{
-								if ($("#doneby").val() <= 0) $("#doneby").val(\''.$user->id.'\');
-							}
-							if ($("#selectcomplete").val() == 0)
-							{
-								$("#doneby").val(-1);
-							}
-						});
-
-						$("#aphour,#apmin").change(function() {
-							if ($("#actioncode").val() == \'AC_RDV\') {
-								console.log("Start date was changed, we modify end date "+(parseInt($("#aphour").val()))+" "+$("#apmin").val()+" -> "+("00" + (parseInt($("#aphour").val()) + 1)).substr(-2,2));
-								$("#p2hour").val(("00" + (parseInt($("#aphour").val()) + 1)).substr(-2,2));
-								$("#p2min").val($("#apmin").val());
-								$("#p2day").val($("#apday").val());
-								$("#p2month").val($("#apmonth").val());
-								$("#p2year").val($("#apyear").val());
-								$("#p2").val($("#ap").val());
-							}
-						});
-						setdatefields();
-				})';
-			print '</script>'."\n";
-		}
-		print $form->selectDate($datep, 'ap', 1, 1, 1, "action", 1, 2, 0, 'fulldaystart');
+		print '<tr><td class="fieldrequired">'.$langs->trans("JourHeure").'</td><td colspan="3">';
+        print $form->selectDate($datep, 'ap', 1, 1, 1, "action", 1, 2, 0, 'jour_heure');
+		print '</td></tr>';
 
 
 		// Ship
@@ -463,8 +414,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 
 			$ship .= '</select>';
-
-			var_dump($ship);
 
 			print '</td>';
 		}
