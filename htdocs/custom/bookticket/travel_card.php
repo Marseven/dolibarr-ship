@@ -125,14 +125,12 @@ if ($resql)
 			$obj = $db->fetch_object($resql_ship);
 			if ($obj)
 			{
-
 				$shiprecords[$i] = $obj;
 			}
 			$i++;
 		}
 	}
 }
-print_r($shiprecords);
 
 $cityrecords = [];
 $sql_city = 'SELECT DISTINCT c.rowid, c.label, c.labelshort, c.entity,';
@@ -151,15 +149,12 @@ if ($resql_city)
 			$obj = $db->fetch_object($resql_city);
 			if ($obj)
 			{
-
 				$cityrecords[$i] = $obj;
 			}
 			$i++;
 		}
 	}
 }
-
-print_r($cityrecords);die;
 
 // Actions to build doc
 $upload_dir = $conf->travel->dir_output;
