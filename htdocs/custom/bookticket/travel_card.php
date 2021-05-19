@@ -434,7 +434,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		// Heure
 		print '<tr><td class="fieldrequired">'.$langs->trans("Heure").'</td><td colspan="3">';
-        print '<input name="heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->heure).'">';
+        print '<input name="heure" type="time" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->heure).'">';
 		print '</td></tr>';
 
 
