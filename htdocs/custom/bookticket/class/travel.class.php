@@ -102,10 +102,10 @@ class Travel extends CommonObject
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
 		'ref'           => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
 		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'lieu_depart'         => array('type'=>'varchar(255)', 'label'=>'Lieu arrive', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'lieu_arrive'         => array('type'=>'varchar(255)', 'label'=>'Lieu de depart', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'jour_heure' => array('type'=>'datetime', 'label'=>'Jout et Heure', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
-		'fk_ship' => array('type'=>'integer:Ship:ship/class/ship.class.php', 'label'=>'Le bateau', 'picto'=>'ship', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'ship.rowid'),
+		'lieu_depart'   => array('type'=>'varchar(255)', 'label'=>'Lieu arrive', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'lieu_arrive'   => array('type'=>'varchar(255)', 'label'=>'Lieu de depart', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'jour_heure' 	=> array('type'=>'datetime', 'label'=>'Jout et Heure', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
+		'fk_ship' 		=> array('type'=>'integer:Ship:ship/class/ship.class.php', 'label'=>'Le bateau', 'picto'=>'ship', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'ship.rowid'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
 		'fk_user_creat' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
@@ -143,6 +143,12 @@ class Travel extends CommonObject
 	 * @var integer|string jour_heure
 	 */
 	public $jour_heure;
+
+	/**
+	 * @var int ID
+	 */
+	public $fk_ship;
+
 
 	/**
 	 * @var int Status
@@ -424,7 +430,10 @@ class Travel extends CommonObject
 			}
 			$this->db->free($resql);
 
+			var_dump($records);die;
+
 			return $records;
+
 		} else {
 			$this->errors[] = 'Error '.$this->db->lasterror();
 			dol_syslog(__METHOD__.' '.join(',', $this->errors), LOG_ERR);
