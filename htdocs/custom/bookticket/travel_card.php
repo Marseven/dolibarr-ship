@@ -398,17 +398,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			return -1;
 		} else {
 			$ship = '<td><select class="flat" name="fk_ship">';
-			if (empty($shipsrecords->records))
+			if (empty($shipsrecords->lines))
 			{
 				$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			}else{
-				foreach ($shipsrecords->records as $lines)
+				foreach ($shipsrecords->lines as $line)
 				{
 					$ship .= '<option value="';
-					$ship .= $lines->rowid;
+					$ship .= $line->rowid;
 					$ship .= '"';
 					$ship .= '>';
-					$ship .= $langs->trans($lines->label);
+					$ship .= $lang->trans($line->label);
 					$ship .= '</option>';
 				}
 			}
