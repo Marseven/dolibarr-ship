@@ -439,6 +439,7 @@ class Ship extends CommonObject
 				$i++;
 			}
 			$this->db->free($resql);
+
 			return $records;
 		} else {
 			$this->errors[] = 'Error '.$this->db->lasterror();

@@ -390,7 +390,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		$shipsrecords = new Ship($db);
 
 		$filter = array();
-		$filter['status'] = 1;
+		//$filter['status'] = 1;
 		$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
 
 		if ($result < 0) {
@@ -430,7 +430,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$citysrecords = new City($db);
 
 			$filter = array();
-			$filter['status'] = 1;
+			//$filter['status'] = 1;
 			$result = $citysrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
@@ -546,7 +546,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$shipsrecords = new Ship($db);
 
 			$filter = array();
-			$filter['status'] = 1;
+			//$filter['status'] = 1;
 			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {

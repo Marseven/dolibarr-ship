@@ -409,7 +409,7 @@ class City extends CommonObject
 				$i++;
 			}
 			$this->db->free($resql);
-			var_dump($records);die;
+
 			return $records;
 		} else {
 			$this->errors[] = 'Error '.$this->db->lasterror();
