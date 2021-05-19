@@ -218,7 +218,7 @@ if ($resql)
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 	$newcardbutton = '';
-	$perm = $user->rights->classe->creer;
+	$perm = $user->rights->bookticket->classe->write;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewClasse'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/classe_card.php?action=create&type=0', '', $perm, $params);

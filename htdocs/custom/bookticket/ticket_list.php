@@ -253,7 +253,7 @@ if ($resql)
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 	$newcardbutton = '';
-	$perm = $user->rights->ship->creer;
+	$perm = $user->rights->bookticket->ticket->write;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewTicket'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create&type=0', '', $perm, $params);
