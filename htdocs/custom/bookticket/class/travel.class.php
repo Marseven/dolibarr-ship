@@ -430,8 +430,6 @@ class Travel extends CommonObject
 			}
 			$this->db->free($resql);
 
-			var_dump($records);die;
-
 			return $records;
 
 		} else {
