@@ -108,11 +108,10 @@ $usercandelete = $user->rights->bookticket->travel->delete;
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
 $shiprecords = [];
-$sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
+$sql_ship = "SELECT DISTINCT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
 $sql_ship .= " s.entity,";
-$sql_ship .= " s.tms as datem";
 $sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
-$sql_ship .= $db->order("s.tms", "DESC");
+$sql_city .= ' WHERE s.entity IN ('.getEntity('ship').')';
 
 $resql_ship =$db->query($sql_ship);
 if ($resql)
@@ -134,6 +133,7 @@ if ($resql)
 	}
 }
 print_r($shiprecords);
+
 $cityrecords = [];
 $sql_city = 'SELECT DISTINCT c.rowid, c.label, c.labelshort, c.entity,';
 $sql_city .= ' c.date_creation, c.tms as date_update';
