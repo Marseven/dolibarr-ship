@@ -165,7 +165,7 @@ if ($resql_classe)
 $travelrecords = [];
 $sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.entity,';
 $sql_travel .= ' t.date_creation, t.tms as date_update';
-$sql_travel .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as c';
+$sql_travel .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
 $sql_travel .= ' WHERE t.entity IN ('.getEntity('travel').')';
 $resql_travel =$db->query($sql_travel);
 if ($resql_travel)
@@ -180,6 +180,30 @@ if ($resql_travel)
 			if ($obj)
 			{
 				$travelrecords[$i] = $obj;
+			}
+			$i++;
+		}
+	}
+}
+
+$passengerrecords = [];
+$sql_passenger = 'SELECT p.rowid, p.nom, p.prenom, p.entity,';
+$sql_passenger .= ' p.date_creation, p.tms as date_update';
+$sql_passenger .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
+$sql_passenger .= ' WHERE p.entity IN ('.getEntity('passenger').')';
+$resql_passenger =$db->query($sql_passenger);
+if ($resql_passenger)
+{
+	$num = $db->num_rows($resql_passenger);
+	$i = 0;
+	if ($num)
+	{
+		while ($i < $num)
+		{
+			$obj = $db->fetch_object($resql_passenger);
+			if ($obj)
+			{
+				$passengerrecords[$i] = $obj;
 			}
 			$i++;
 		}
