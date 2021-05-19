@@ -26,7 +26,7 @@ create table llx_bookticket_passenger
   adresse				            varchar(255) DEFAULT NULL,
   telephone				          varchar(255) DEFAULT NULL,
   email				              varchar(255) DEFAULT NULL,
-  accompagne				        smallint DEFAULT NULL,
+  accompagne				        varchar(10) DEFAULT NULL,
   nom_enfant				        varchar(255) DEFAULT NULL,
   age_enfant				        varchar(255) DEFAULT NULL,
   entity                    integer default 1,                    

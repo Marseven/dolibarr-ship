@@ -288,22 +288,21 @@ if (empty($reshook))
 			$object->fk_ship             	 = GETPOST('fk_ship');
 			$object->fk_classe             	 = GETPOST('fk_classe');
 
-			var_dump(GETPOST('new_passenger'));die;
-			if(GETPOST('new_passenger') == 0){
+			if(GETPOST('new_passenger') == 'off'){
 				$object->fk_passenger            = GETPOST('fk_passenger');
 			}else{
 				$object_passenger->nom             	 = GETPOST('nom');
-				$object_passenger->prenom             	 = GETPOST('prenom');
+				$object_passenger->prenom            = GETPOST('prenom');
 				$object_passenger->age             	 = GETPOST('age');
-				$object_passenger->adresse             	 = GETPOST('adresse');
-				$object_passenger->telephone             	 = GETPOST('telephone');
-				$object_passenger->email             	 = GETPOST('email');
-				$object_passenger->accompagne             	 = GETPOST('accompgane');
-				$object_passenger->nom_enfant             	 = GETPOST('nom_enfant');
-				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
+				$object_passenger->adresse           = GETPOST('adresse');
+				$object_passenger->telephone         = GETPOST('telephone');
+				$object_passenger->email             = GETPOST('email');
+				$object_passenger->accompagne        = GETPOST('accompagne');
+				$object_passenger->nom_enfant        = GETPOST('nom_enfant');
+				$object_passenger->age_enfant        = GETPOST('age_enfant');
 
 				$id_passenger = $object_passenger->create($user);
-				die;
+
 				$object->fk_passenger = $id_passenger;
 			}
 
