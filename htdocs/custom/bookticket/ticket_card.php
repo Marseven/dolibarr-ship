@@ -304,7 +304,7 @@ if (empty($reshook))
 				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
 
 				$id_passenger = $object_passenger->create($user);
-
+				die;
 				$object->fk_passenger = $id_passenger;
 			}
 
@@ -358,7 +358,7 @@ if (empty($reshook))
 				$object_passenger->adresse             	 = GETPOST('adresse');
 				$object_passenger->telephone             	 = GETPOST('telephone');
 				$object_passenger->email             	 = GETPOST('email');
-				$object_passenger->accompagne             	 = GETPOST('accompgane');
+				$object_passenger->accompagne             	 = GETPOST('accompagne');
 				$object_passenger->nom_enfant             	 = GETPOST('nom_enfant');
 				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
 
