@@ -714,7 +714,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$passenger = '<td><select class="flat" name="fk_passenger">';
 			if (empty($passengerrecords))
 			{
-				$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			}else{
 				foreach ($passengerrecords as $lines)
 				{
