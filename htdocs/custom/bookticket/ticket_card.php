@@ -67,6 +67,7 @@ $socid = GETPOST('socid', 'int');
 if (!empty($user->socid)) $socid = $user->socid;
 
 $object = new Ticket($db);
+$object_passenger = new Passenger($db);
 
 if ($id > 0 || !empty($ref))
 {
@@ -101,9 +102,10 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = true; //$user->rights->ticket->lire;
-$usercancreate = true; //$user->rights->ticket->creer;
-$usercandelete = true; //$user->rights->ticket->supprimer;
+$usercanread = $user->rights->bookticket->ticket->read;
+$usercancreate = $user->rights->bookticket->ticket->write;
+$usercandelete = $user->rights->bookticket->ticket->delete;
+
 $createbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->creer_advance)) $createbarcode = 0;
 
@@ -111,11 +113,85 @@ $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
+$shiprecords = [];
+$sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
+$sql_ship .= " s.entity";
+$sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
+$sql_ship .= ' WHERE s.entity IN ('.getEntity('ship').')';
+
+$resql_ship =$db->query($sql_ship);
+if ($resql_ship)
+{
+	$num = $db->num_rows($resql_ship);
+	$i = 0;
+	if ($num)
+	{
+		while ($i < $num)
+		{
+			$obj = $db->fetch_object($resql_ship);
+			if ($obj)
+			{
+				$shiprecords[$i] = $obj;
+			}
+			$i++;
+		}
+	}
+}
+
+$classerecords = [];
+$sql_classe = 'SELECT c.rowid, c.label, c.labelshort, c.entity,';
+$sql_classe .= ' c.date_creation, c.tms as date_update';
+$sql_classe .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
+$sql_classe .= ' WHERE c.entity IN ('.getEntity('classe').')';
+$resql_classe =$db->query($sql_classe);
+if ($resql_classe)
+{
+	$num = $db->num_rows($resql_classe);
+	$i = 0;
+	if ($num)
+	{
+		while ($i < $num)
+		{
+			$obj = $db->fetch_object($resql_classe);
+			if ($obj)
+			{
+				$classerecords[$i] = $obj;
+			}
+			$i++;
+		}
+	}
+}
+
+$travelrecords = [];
+$sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.entity,';
+$sql_travel .= ' t.date_creation, t.tms as date_update';
+$sql_travel .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as c';
+$sql_travel .= ' WHERE t.entity IN ('.getEntity('travel').')';
+$resql_travel =$db->query($sql_travel);
+if ($resql_travel)
+{
+	$num = $db->num_rows($resql_travel);
+	$i = 0;
+	if ($num)
+	{
+		while ($i < $num)
+		{
+			$obj = $db->fetch_object($resql_travel);
+			if ($obj)
+			{
+				$travelrecords[$i] = $obj;
+			}
+			$i++;
+		}
+	}
+}
+
+
 if (empty($reshook))
 {
 
 	// Actions to build doc
-	$upload_dir = $conf->ticket->dir_output;
+	$upload_dir = $conf->bookticket->dir_output;
 	$permissiontoadd = $usercancreate;
 	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 
@@ -186,10 +262,28 @@ if (empty($reshook))
 			$object->barcode_type_coder     = $stdobject->barcode_type_coder;
 			$object->barcode_type_label     = $stdobject->barcode_type_label;
 
-			$object->travel             	 = GETPOST('travel');
-			$object->ship             	 = GETPOST('ship');
-			$object->classe             	 = GETPOST('classe');
-			$object->passenger             	 = GETPOST('passenger');
+			$object->fk_travel             	 = GETPOST('fk_travel');
+			$object->fk_ship             	 = GETPOST('fk_ship');
+			$object->fk_classe             	 = GETPOST('fk_classe');
+
+			if(GETPOST('new_passenger') == 0){
+				$object->fk_passenger            = GETPOST('fk_passenger');
+			}else{
+				$object_passenger->nom             	 = GETPOST('nom');
+				$object_passenger->prenom             	 = GETPOST('prenom');
+				$object_passenger->age             	 = GETPOST('age');
+				$object_passenger->adresse             	 = GETPOST('adresse');
+				$object_passenger->telephone             	 = GETPOST('telephone');
+				$object_passenger->email             	 = GETPOST('email');
+				$object_passenger->accompagne             	 = GETPOST('accompgane');
+				$object_passenger->nom_enfant             	 = GETPOST('nom_enfant');
+				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
+
+				$id_passenger = $object_passenger->create($user);
+
+				$object->fk_passenger = $id_passenger;
+			}
+
 
 
 			if (!$error)
@@ -229,10 +323,20 @@ if (empty($reshook))
 				$object->oldcopy = clone $object;
 
 				$object->ref                    = $ref;
-				$object->travel             	 = GETPOST('travel');
-				$object->ship             	 = GETPOST('ship');
-				$object->classe             	 = GETPOST('classe');
-				$object->passenger             	 = GETPOST('passenger');
+				$object->fk_travel             	 = GETPOST('fk_travel');
+				$object->fk_ship             	 = GETPOST('fk_ship');
+				$object->fk_classe             	 = GETPOST('fk_classe');
+				$object->fk_passenger             	 = GETPOST('fk_passenger');
+
+				$object_passenger->nom             	 = GETPOST('nom');
+				$object_passenger->prenom             	 = GETPOST('prenom');
+				$object_passenger->age             	 = GETPOST('age');
+				$object_passenger->adresse             	 = GETPOST('adresse');
+				$object_passenger->telephone             	 = GETPOST('telephone');
+				$object_passenger->email             	 = GETPOST('email');
+				$object_passenger->accompagne             	 = GETPOST('accompgane');
+				$object_passenger->nom_enfant             	 = GETPOST('nom_enfant');
+				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
 
 
 				$object->barcode_type = GETPOST('fk_barcode_type');
@@ -254,7 +358,7 @@ if (empty($reshook))
 
 				if (!$error && $object->check())
 				{
-					if ($object->update($object->id, $user) > 0)
+					if ($object->update($object->id, $user) > 0 && $object_passenger->update($object_passenger->id, $user) > 0)
 					{
 						$action = 'view';
 					} else {
@@ -499,104 +603,77 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// travel
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-			$travelsrecords = new Travel($db);
 
-			$filter = array();
-			$filter['status'] = 1;
-			$result = $travelsrecords->fetchAll('', '', 0, 0, $filter);
-
-			if ($result < 0) {
-				dol_print_error($db);
-				return -1;
-			} else {
-				$travel = '<td><select class="flat" name="fk_travel">';
-				if (empty($travelsrecords->records))
+			$travel = '<td><select class="flat" name="fk_travel">';
+			if (empty($travelrecords))
+			{
+				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($travelrecords as $lines)
 				{
-					$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-				}else{
-					foreach ($travelsrecords->records as $lines)
-					{
-						$travel .= '<option value="';
-						$travel .= $lines->rowid;
-						$travel .= '"';
-						$travel .= '>';
-						$travel .= $langs->trans($lines->ref);
-						$travel .= '</option>';
-					}
+					$travel .= '<option value="';
+					$travel .= $lines->rowid;
+					$travel .= '"';
+					$travel .= '>';
+					$travel .= $langs->trans($lines->ref);
+					$travel .= '</option>';
 				}
-
-				$travel .= '</select>';
-
-				print $travel;
 			}
+
+			$travel .= '</select>';
+
+			print $travel;
+
 			print '</td></tr>';
 
 			// ship
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
-			$shipsrecords = new Ship($db);
 
-			$filter = array();
-			$filter['status'] = 1;
-			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
-
-			if ($result < 0) {
-				dol_print_error($db);
-				return -1;
-			} else {
-				$ship = '<td><select class="flat" name="fk_ship">';
-				if (empty($shipsrecords->records))
+			$ship = '<td><select class="flat" name="fk_ship">';
+			if (empty($shiprecords))
+			{
+				$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($shiprecords as $lines)
 				{
-					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-				}else{
-					foreach ($shipsrecords->records as $lines)
-					{
-						$ship .= '<option value="';
-						$ship .= $lines->rowid;
-						$ship .= '"';
-						$ship .= '>';
-						$ship .= $langs->trans($lines->label);
-						$ship .= '</option>';
-					}
+					$ship .= '<option value="';
+					$ship .= $lines->rowid;
+					$ship .= '"';
+					$ship .= '>';
+					$ship .= $langs->trans($lines->label);
+					$ship .= '</option>';
 				}
-
-				$ship .= '</select>';
-
-				print $ship;
 			}
+
+			$ship .= '</select>';
+
+			print $ship;
+
 			print '</td></tr>';
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
-			$classesrecords = new Classe($db);
 
-			$filter = array();
-			$filter['status'] = 1;
-			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
-
-			if ($result < 0) {
-				dol_print_error($db);
-				return -1;
-			} else {
-				$classe = '<td><select class="flat" name="fk_classe">';
-				if (empty($classesrecords->records))
+			$classe = '<td><select class="flat" name="fk_classe">';
+			if (empty($classerecords))
+			{
+				$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($classerecords as $lines)
 				{
-					$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-				}else{
-					foreach ($classesrecords->records as $lines)
-					{
-						$classe .= '<option value="';
-						$classe .= $lines->rowid;
-						$classe .= '"';
-						$classe .= '>';
-						$classe .= $langs->trans($lines->label);
-						$classe .= '</option>';
-					}
+					$classe .= '<option value="';
+					$classe .= $lines->rowid;
+					$classe .= '"';
+					$classe .= '>';
+					$classe .= $langs->trans($lines->label);
+					$classe .= '</option>';
 				}
-
-				$classe .= '</select>';
-
-				print $classe;
 			}
+
+			$classe .= '</select>';
+
+			print $classe;
+
 			print '</td></tr>';
 
 		print '</table>';
@@ -605,51 +682,81 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<table class="border centpercent">';
 
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("InformationPassager").'</td></tr>';
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
+
+			// passenger
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+
+			$passenger = '<td><select class="flat" name="fk_passenger">';
+			if (empty($passengerrecords))
+			{
+				$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($passengerrecords as $lines)
+				{
+					$passenger .= '<option value="';
+					$passenger .= $lines->rowid;
+					$passenger .= '"';
+					$passenger .= '>';
+					$passenger .= $langs->trans($lines->nom).' '. $langs->trans($lines->prenom);
+					$passenger .= '</option>';
+				}
+			}
+
+			$passenger .= '</select>';
+
+			print $passenger;
+
+			print '</td></tr>';
+
+			// new_passenger
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NouveauPassager").'</td>';
+			print '<td><input type="checkbox" name="new_passenger" >';
+			print '</td></tr>';
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$object->nom.'">';
+			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
 			print '</td></tr>';
 
 			// prenom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Prenom").'</td>';
-			print '<td><input name="prenom" class="maxwidth300" value="'.$object->prenom.'">';
+			print '<td><input name="prenom" class="maxwidth300" value="'.$object_passenger->prenom.'">';
 			print '</td></tr>';
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'"> ANS';
+			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object_passenger->age.'"> ANS';
 			print '</td></tr>';
 
 			// adresse
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Adresse").'</td>';
-			print '<td><input name="adresse" class="maxwidth300" value="'.$object->adresse.'">';
+			print '<td><input name="adresse" class="maxwidth300" value="'.$object_passenger->adresse.'">';
 			print '</td></tr>';
 
 			// telephone
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Telephone").'</td>';
-			print '<td><input name="telephone" class="maxwidth300" value="'.$object->telephone.'">';
+			print '<td><input name="telephone" class="maxwidth300" value="'.$object_passenger->telephone.'">';
 			print '</td></tr>';
 
 			// email
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Email").'</td>';
-			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object->email.'">';
+			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object_passenger->email.'">';
 			print '</td></tr>';
 
 			// accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == 1 ? 'checked="checked"' : '').'>';
+			print '<td><input type="checkbox" name="accompagne"'.($object_passenger->accompagne == 1 ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
 
 			// nom_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
+			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object_passenger->nom_enfant.'">';
 			print '</td></tr>';
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'"> ANS';
+			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object_passenger->age_enfant.'"> ANS';
 			print '</td></tr>';
 
 
@@ -729,151 +836,126 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// travel
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-			$travelsrecords = new Travel($db);
 
-			$filter = array();
-			$filter['status'] = 1;
-			$result = $travelsrecords->fetchAll('', '', 0, 0, $filter);
-
-			if ($result < 0) {
-				dol_print_error($db);
-				return -1;
-			} else {
-				$travel = '<td><select class="flat" name="fk_travel">';
-				if (empty($travelsrecords->records))
+			$travel = '<td><select class="flat" name="fk_travel">';
+			if (empty($travelrecords))
+			{
+				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($travelrecords as $lines)
 				{
-					$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-				}else{
-					foreach ($travelsrecords->records as $lines)
-					{
-						$travel .= '<option value="';
-						$travel .= $lines->rowid;
-						$travel .= '"';
-						$travel .= '>';
-						$travel .= $langs->trans($lines->ref);
-						$travel .= '</option>';
-					}
+					$travel .= '<option value="';
+					$travel .= $lines->rowid;
+					$travel .= '"';
+					$travel .= '>';
+					$travel .= $langs->trans($lines->ref);
+					$travel .= '</option>';
 				}
-
-				$travel .= '</select>';
-
-				print $travel;
 			}
+
+			$travel .= '</select>';
+
+			print $travel;
+
 			print '</td></tr>';
 
 			// ship
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
-			$shipsrecords = new Ship($db);
-
-			$filter = array();
-			$filter['status'] = 1;
-			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
-
-			if ($result < 0) {
-				dol_print_error($db);
-				return -1;
-			} else {
-				$ship = '<td><select class="flat" name="fk_ship">';
-				if (empty($shipsrecords->records))
+			$ship = '<td><select class="flat" name="fk_ship">';
+			if (empty($shiprecords))
+			{
+				$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($shiprecords as $lines)
 				{
-					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-				}else{
-					foreach ($shipsrecords->records as $lines)
-					{
-						$ship .= '<option value="';
-						$ship .= $lines->rowid;
-						$ship .= '"';
-						$ship .= '>';
-						$ship .= $langs->trans($lines->label);
-						$ship .= '</option>';
-					}
+					$ship .= '<option value="';
+					$ship .= $lines->rowid;
+					$ship .= '"';
+					$ship .= '>';
+					$ship .= $langs->trans($lines->label);
+					$ship .= '</option>';
 				}
-
-				$ship .= '</select>';
-
-				print $ship;
 			}
+
+			$ship .= '</select>';
+
+			print $ship;
+
 			print '</td></tr>';
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
-			$classesrecords = new Classe($db);
 
-			$filter = array();
-			$filter['status'] = 1;
-			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
-
-			if ($result < 0) {
-				dol_print_error($db);
-				return -1;
-			} else {
-				$classe = '<td><select class="flat" name="fk_classe">';
-				if (empty($classesrecords->records))
+			$classe = '<td><select class="flat" name="fk_classe">';
+			if (empty($classerecords))
+			{
+				$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($classerecords as $lines)
 				{
-					$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-				}else{
-					foreach ($classesrecords->records as $lines)
-					{
-						$classe .= '<option value="';
-						$classe .= $lines->rowid;
-						$classe .= '"';
-						$classe .= '>';
-						$classe .= $langs->trans($lines->label);
-						$classe .= '</option>';
-					}
+					$classe .= '<option value="';
+					$classe .= $lines->rowid;
+					$classe .= '"';
+					$classe .= '>';
+					$classe .= $langs->trans($lines->label);
+					$classe .= '</option>';
 				}
-
-				$classe .= '</select>';
-
-				print $classe;
 			}
+
+			$classe .= '</select>';
+
+			print $classe;
+
 			print '</td></tr>';
 
-			print '<tr><td class="titlefieldcreate"><h3>'.$langs->trans("InformationPassager").'</h3></td></tr>';
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
+
+			// fk_passenger
+			print '<td><input name="fk_passenger" type="hidden" value="'.$object_passenger->id.'">';
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$object->nom.'">';
+			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
 			print '</td></tr>';
 
 			// prenom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Prenom").'</td>';
-			print '<td><input name="prenom" class="maxwidth300" value="'.$object->prenom.'">';
+			print '<td><input name="prenom" class="maxwidth300" value="'.$object_passenger->prenom.'">';
 			print '</td></tr>';
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'"> ANS';
+			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object_passenger->age.'"> ANS';
 			print '</td></tr>';
 
 			// adresse
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Adresse").'</td>';
-			print '<td><input name="adresse" class="maxwidth300" value="'.$object->adresse.'">';
+			print '<td><input name="adresse" class="maxwidth300" value="'.$object_passenger->adresse.'">';
 			print '</td></tr>';
 
 			// telephone
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Telephone").'</td>';
-			print '<td><input name="telephone" class="maxwidth300" value="'.$object->telephone.'">';
+			print '<td><input name="telephone" class="maxwidth300" value="'.$object_passenger->telephone.'">';
 			print '</td></tr>';
 
 			// email
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Email").'</td>';
-			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object->email.'">';
+			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object_passenger->email.'">';
 			print '</td></tr>';
 
 			// accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == 1 ? 'checked="checked"' : '').'>';
+			print '<td><input type="checkbox" name="accompagne"'.($object_passenger->accompagne == 1 ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
 
 			// nom_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
+			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object_passenger->nom_enfant.'">';
 			print '</td></tr>';
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'"> ANS';
+			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object_passenger->age_enfant.'"> ANS';
 			print '</td></tr>';
 
 			print '</table>';

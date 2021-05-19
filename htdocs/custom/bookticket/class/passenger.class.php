@@ -107,7 +107,10 @@ class Passenger extends CommonObject
 		'telephone'         => array('type'=>'varchar(255)', 'label'=>'Téléphone', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'email'         => array('type'=>'varchar(255)', 'label'=>'Email', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'age'           => array('type'=>'integer', 'label'=>'Age', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
-		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'accompagne'        => array('type'=>'integer', 'label'=>'Accompagne', 'enabled'=>1, 'visible'=>1, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),'age'           => array('type'=>'integer', 'label'=>'Age', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
+		'nom_enfant'         => array('type'=>'varchar(255)', 'label'=>'NomEnfant', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'age_enfant'           => array('type'=>'integer', 'label'=>'AgeEnfant', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
+		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),'age'           => array('type'=>'integer', 'label'=>'Age', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
 		'fk_user_author' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
@@ -156,6 +159,21 @@ class Passenger extends CommonObject
 	 * @var int age
 	 */
 	public $age;
+
+	/**
+	 * @var int accompagne
+	 */
+	public $accompagne;
+
+	/**
+	 * @var string nom_enfant
+	 */
+	public $nom_enfant;
+
+	/**
+	 * @var int age_enfant
+	 */
+	public $age_enfant;
 
 	/**
 	 * @var int Status

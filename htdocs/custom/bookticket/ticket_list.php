@@ -161,9 +161,9 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 // Mass actions
 $objectclass = 'Travel';
 
-$permissiontoread = $user->rights->{$rightskey}->lire;
-$permissiontodelete = $user->rights->{$rightskey}->supprimer;
-$uploaddir = $conf->product->dir_output;
+$permissiontoread = $user->rights->bookticket->{$rightskey}->lire;
+$permissiontodelete = $user->rights->bookticket->{$rightskey}->supprimer;
+$uploaddir = $conf->bookticket->dir_output;
 include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
 
@@ -185,7 +185,7 @@ $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_ship = tr.
 $sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
-if ($search_label)   $sql .= natural_search('t.label', $search_label);
+if ($search_passenger)   $sql .= natural_search('t.label', $search_passenger);
 if ($search_barcode) $sql .= natural_search('t.barcode', $search_barcode);
 $sql .= $db->order($sortfield, $sortorder);
 
