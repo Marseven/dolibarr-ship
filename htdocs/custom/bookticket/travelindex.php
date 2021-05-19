@@ -63,8 +63,6 @@ $helpurl = '';
 $transAreaType = $langs->trans("TravelArea");
 $helpurl = 'EN:Module_Travel|FR:Module_Produits|ES:M&oacute;dulo_Productos';
 
-$user->rights->travel->lire = true;
-
 llxHeader("", $langs->trans("travel"), $helpurl);
 
 $linkback = "";
@@ -77,7 +75,7 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useless due to the global search combo
 {
 	// Search contract
-	if (!empty($conf->travel->enabled) && $user->rights->travel->lire)
+	if ($user->rights->bookticket->travel->read)
 	{
 		$listofsearchfields['search_travel'] = array('text'=>'travel');
 	}
@@ -108,7 +106,7 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 /*
  * Number of Travel
  */
-if ($user->rights->travel->lire)
+if ($user->rights->bookticket->travel->read)
 {
 	$prodser = array();
 	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
@@ -177,7 +175,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Latest modified travel
  */
-if ($user->rights->travel->lire)
+if ($user->rights->bookticket->travel->read)
 {
 	$max = 15;
 	$sql = "SELECT t.rowid, t.ref, t.jour_heure, t.lieu_depart,  t.lieu_arrive, s.label as ship,";

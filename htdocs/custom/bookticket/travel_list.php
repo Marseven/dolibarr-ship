@@ -127,9 +127,9 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 // Mass actions
 $objectclass = 'Travel';
 
-$permissiontoread = $user->rights->{$rightskey}->lire;
-$permissiontodelete = $user->rights->{$rightskey}->supprimer;
-$uploaddir = $conf->product->dir_output;
+$permissiontoread = $user->rights->bookticket->{$rightskey}->read;
+$permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
+$uploaddir = $conf->bookticket->dir_output;
 include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
 
@@ -187,7 +187,7 @@ if ($resql)
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Travels|FR:Module_Travels|ES:M&oacute;dulo_Productos';
+	$helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
@@ -294,7 +294,7 @@ if ($resql)
 	}
 
 	// Date creation
-	if (!empty($arrayfields['t.datec']['checked']))
+	if (!empty($arrayfields['t.date_creation']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -326,8 +326,8 @@ if ($resql)
 	if (!empty($arrayfields['t.lieu_depart']['checked']))  print_liste_field_titre($arrayfields['t.lieu_depart']['label'], $_SERVER['PHP_SELF'], 't.lieu_depart', '', $param, '', $sortfield, $sortorder, 'center ');
 	if (!empty($arrayfields['t.lieu_arrive']['checked']))  print_liste_field_titre($arrayfields['t.lieu_arrive']['label'], $_SERVER['PHP_SELF'], 't.lieu_arrive', '', $param, '', $sortfield, $sortorder, 'center ');
 
-	if (!empty($arrayfields['t.datec']['checked'])) {
-		print_liste_field_titre($arrayfields['t.datec']['label'], $_SERVER["PHP_SELF"], "t.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	if (!empty($arrayfields['t.date_creation']['checked'])) {
+		print_liste_field_titre($arrayfields['t.date_creation']['label'], $_SERVER["PHP_SELF"], "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	if (!empty($arrayfields['t.tms']['checked'])) {
 		print_liste_field_titre($arrayfields['t.tms']['label'], $_SERVER["PHP_SELF"], "t.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
@@ -361,16 +361,16 @@ if ($resql)
 			}
 		}*/
 
-		$product_static->id = $obj->rowid;
-		$product_static->ref = $obj->ref;
-		$product_static->jour_heure = $obj->jour_heure;
+		$travel_static->id = $obj->rowid;
+		$travel_static->ref = $obj->ref;
+		$travel_static->jour_heure = $obj->jour_heure;
 		print '<tr class="oddeven">';
 
 		// Ref
 		if (!empty($arrayfields['t.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
-			print $product_static->getNomUrl(1);
+			print $travel_static->getNomUrl(1);
 			print "</td>\n";
 			if (!$i) $totalarray['nbfield']++;
 		}
@@ -404,7 +404,7 @@ if ($resql)
 		}
 
 		// Date creation
-		if (!empty($arrayfields['t.datec']['checked']))
+		if (!empty($arrayfields['t.date_creation']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
