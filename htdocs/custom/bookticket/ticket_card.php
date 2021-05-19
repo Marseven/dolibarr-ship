@@ -265,9 +265,7 @@ if (empty($reshook))
 
 		if (!$error)
 		{
-			$units = GETPOST('units', 'int');
-
-            $object->ref                   = $ref;
+			$object->ref                   = $ref;
 
 			$object->barcode_type          = GETPOST('fk_barcode_type');
 			$object->barcode = GETPOST('barcode');
@@ -290,6 +288,7 @@ if (empty($reshook))
 			$object->fk_ship             	 = GETPOST('fk_ship');
 			$object->fk_classe             	 = GETPOST('fk_classe');
 
+			var_dump(GETPOST('new_passenger'));die;
 			if(GETPOST('new_passenger') == 0){
 				$object->fk_passenger            = GETPOST('fk_passenger');
 			}else{

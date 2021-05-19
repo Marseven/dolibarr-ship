@@ -27,12 +27,11 @@ create table llx_bookticket_ticket
   date_creation             datetime,                    
   tms                       timestamp,                   
   import_key                varchar(32),                 
-  status                    smallint DEFAULT 1,
+  status                    smallint DEFAULT 1 NOT NULL,
   fk_ship                   integer      DEFAULT NULL,
   fk_passenger              integer      DEFAULT NULL,
   fk_travel                 integer      DEFAULT NULL,
   fk_classe                 integer      DEFAULT NULL, 
   fk_user_creat             integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
-  active                    tinyint      DEFAULT 1  NOT NULL
 )ENGINE=innodb;
