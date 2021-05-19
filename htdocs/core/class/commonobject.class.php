@@ -7744,7 +7744,7 @@ abstract class CommonObject
 		}
 
 		if ($error) return -1;
-
+		var_dump($error);
 		$this->db->begin();
 
 		if (!$error)
