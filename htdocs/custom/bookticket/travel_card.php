@@ -168,12 +168,6 @@ if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
 
-	if (!GETPOST('jopur_heure', $jour_heure_security_check))
-	{
-		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('JourHeure')), null, 'errors');
-		$action = "create";
-		$error++;
-	}
 	if (empty($ref))
 	{
 		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
@@ -184,7 +178,8 @@ if ($action == 'add' && $usercancreate)
 	if (!$error)
 	{
 		$object->ref                   = $ref;
-		$object->jour_heure            = GETPOST('jour_heure', $jour_heure_security_check);
+		$object->jour            = GETPOST('jour');
+		$object->heure            = GETPOST('heure');
 		$object->fk_ship               = GETPOST('fk_ship');
 		$object->lieu_depart           = GETPOST('lieu_depart');
 		$object->lieu_arrive           = GETPOST('lieu_arrive');
@@ -228,7 +223,8 @@ if ($action == 'update' && $usercancreate)
 			$object->oldcopy = clone $object;
 
 			$object->ref                    = $ref;
-			$object->jour_heure             = GETPOST('jour_heure', $jour_heure_security_check);
+			$object->jour             = GETPOST('jour');
+			$object->heure             = GETPOST('heure');
 			$object->fk_ship                = GETPOST('fk_ship');
 			$object->lieu_depart            = GETPOST('lieu_depart');
 			$object->lieu_arrive            = GETPOST('lieu_arrive');
