@@ -47,7 +47,6 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
 // Load translation files required by the page
@@ -578,10 +577,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				dol_print_error($db);
 				return -1;
 			} else {
-				$ship = '<td><select class="flat" name="fk_classe">';
+				$classe = '<td><select class="flat" name="fk_classe">';
 				if (empty($classesrecords->records))
 				{
-					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+					$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 				}else{
 					foreach ($classesrecords->records as $lines)
 					{
@@ -808,10 +807,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				dol_print_error($db);
 				return -1;
 			} else {
-				$ship = '<td><select class="flat" name="fk_classe">';
+				$classe = '<td><select class="flat" name="fk_classe">';
 				if (empty($classesrecords->records))
 				{
-					$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+					$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 				}else{
 					foreach ($classesrecords->records as $lines)
 					{
