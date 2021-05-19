@@ -503,7 +503,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$travelsrecords = new Travel($db);
 
 			$filter = array();
-			$filter['t.status'] = 1;
+			$filter['status'] = 1;
 			$result = $travelsrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
@@ -537,7 +537,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$shipsrecords = new Ship($db);
 
 			$filter = array();
-			$filter['t.status'] = 1;
+			$filter['status'] = 1;
 			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
@@ -571,7 +571,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$classesrecords = new Classe($db);
 
 			$filter = array();
-			$filter['c.status'] = 1;
+			$filter['status'] = 1;
 			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
@@ -733,7 +733,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$travelsrecords = new Travel($db);
 
 			$filter = array();
-			$filter['t.status'] = 1;
+			$filter['status'] = 1;
 			$result = $travelsrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
@@ -767,7 +767,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$shipsrecords = new Ship($db);
 
 			$filter = array();
-			$filter['t.status'] = 1;
+			$filter['status'] = 1;
 			$result = $shipsrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
@@ -801,7 +801,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$classesrecords = new Classe($db);
 
 			$filter = array();
-			$filter['c.status'] = 1;
+			$filter['status'] = 1;
 			$result = $classesrecords->fetchAll('', '', 0, 0, $filter);
 
 			if ($result < 0) {
