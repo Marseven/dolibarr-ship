@@ -429,12 +429,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		// Jour
 		print '<tr><td class="fieldrequired">'.$langs->trans("Jour").'</td><td colspan="3">';
-        print $form->selectDate($datep, 'ap', 1, 1, 1, "action", 1, 2, 0, 'jour_heure');
+        print '<input name="jour" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour).'">';
 		print '</td></tr>';
 
 		// Heure
 		print '<tr><td class="fieldrequired">'.$langs->trans("Heure").'</td><td colspan="3">';
-        print $form->selectDate($datep, 'ap', 1, 1, 1, "action", 1, 2, 0, 'jour_heure');
+        print '<input name="heure" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->heure).'">';
 		print '</td></tr>';
 
 
