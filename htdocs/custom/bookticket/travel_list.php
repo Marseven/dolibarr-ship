@@ -215,7 +215,7 @@ if ($resql)
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 	$newcardbutton = '';
-	$perm = $user->rights->travel->creer;
+	$perm = $user->rights->bookticket->travel->creer;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewTravel'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/travel_card.php?action=create&type=0', '', $perm, $params);
