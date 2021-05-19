@@ -109,7 +109,7 @@ $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
 $shiprecords = [];
 $sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
-$sql_ship .= " s.entity,";
+$sql_ship .= " s.entity";
 $sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
 $sql_city .= ' WHERE s.entity IN ('.getEntity('ship').')';
 
