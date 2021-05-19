@@ -126,6 +126,11 @@ class Ticket extends CommonObject
 	public $ref;
 
 	/**
+	 * @var string model_pdf
+	 */
+	public $model_pdf;
+
+	/**
 	 * @var int Entity
 	 */
 	public $entity;
