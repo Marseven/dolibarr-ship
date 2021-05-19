@@ -81,7 +81,7 @@ if (empty($action)) $action = 'list';
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
 	't.ref'=>"Ref",
-	't.jour_heure'=>"TravelJourHeure",
+	't.jour'=>"TravelJour",
 	't.ship'=>"TravelShip",
 );
 
@@ -90,7 +90,8 @@ $fieldstosearchall = array(
 // Definition of fields for lists
 $arrayfields = array(
 	't.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
-	't.jour_heure'=>array('label'=>$langs->trans("JourHeure"), 'checked'=>1, 'position'=>10),
+	't.jour'=>array('label'=>$langs->trans("Jour"), 'checked'=>1, 'position'=>10),
+	't.heure'=>array('label'=>$langs->trans("Heure"), 'checked'=>1, 'position'=>10),
 	't.ship'=>array('label'=>$langs->trans("Ship"), 'checked'=>1, 'position'=>20),
 	't.lieu_depart'=>array('label'=>$langs->trans('LieuDepart'), 'checked'=>1,  'position'=>30),
 	't.lieu_arrive'=>array('label'=>$langs->trans("LieuArrive"), 'checked'=>1,  'position'=>52),
@@ -118,7 +119,7 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 {
 	$sall = "";
 	$search_ref = "";
-	$search_jour_heure = "";
+	$search_jour = "";
 	$search_ship = "";
 	$search_finished = ''; // There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
 	$search_array_options = array();
@@ -153,7 +154,7 @@ $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowi
 $sql .= ' WHERE t.entity IN ('.getEntity('travel').')';
 
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
-if ($search_jour_heure)   $sql .= natural_search('t.jour_heure', $search_jour_heure);
+if ($search_jour)   $sql .= natural_search('t.jour', $search_jour);
 if ($search_ship) $sql .= natural_search('t.ship', $search_ship);
 
 $nbtotalofrecords = '';
@@ -201,7 +202,7 @@ if ($resql)
 	if ($limit > 0 && $limit != $conf->liste_limit) $param .= '&limit='.urlencode($limit);
 	if ($sall) $param .= "&sall=".urlencode($sall);
 	if ($search_ref) $param = "&search_ref=".urlencode($search_ref);
-	if ($search_jour_heure) $param .= "&search_jour_heure=".urlencode($search_jour_heure);
+	if ($search_jour) $param .= "&search_jour=".urlencode($search_jour);
 	if ($search_ship) $param .= "&search_ship=".urlencode($search_ship);
 
 	// List of mass actions available
@@ -263,10 +264,17 @@ if ($resql)
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['t.jour_heure']['checked']))
+	if (!empty($arrayfields['t.jour']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="datetime" name="search_jour_heure" size="12" value="'.dol_escape_htmltag($search_jour_heure).'">';
+		print '<input class="flat" type="date" name="search_jour" size="12" value="'.dol_escape_htmltag($search_jour).'">';
+		print '</td>';
+	}
+
+	if (!empty($arrayfields['t.heure']['checked']))
+	{
+		print '<td class="liste_titre left">';
+		//print '<input class="flat" type="datetime" name="search_jour" size="12" value="'.dol_escape_htmltag($search_jour).'">';
 		print '</td>';
 	}
 
@@ -316,8 +324,11 @@ if ($resql)
 	if (!empty($arrayfields['t.ref']['checked'])) {
 		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['t.jour_heure']['checked'])) {
-		print_liste_field_titre($arrayfields['t.jour_heure']['label'], $_SERVER["PHP_SELF"], "t.jour_heure", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.jour']['checked'])) {
+		print_liste_field_titre($arrayfields['t.jour']['label'], $_SERVER["PHP_SELF"], "t.jour", "", $param, "", $sortfield, $sortorder);
+	}
+	if (!empty($arrayfields['t.heure']['checked'])) {
+		print_liste_field_titre($arrayfields['t.heure']['label'], $_SERVER["PHP_SELF"], "t.heure", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['t.ship']['checked'])) {
 		print_liste_field_titre($arrayfields['t.ship']['label'], $_SERVER["PHP_SELF"], "t.ship", "", $param, "", $sortfield, $sortorder);
@@ -363,7 +374,7 @@ if ($resql)
 
 		$travel_static->id = $obj->rowid;
 		$travel_static->ref = $obj->ref;
-		$travel_static->jour_heure = $obj->jour_heure;
+		$travel_static->jour = $obj->jour;
 		print '<tr class="oddeven">';
 
 		// Ref
@@ -375,10 +386,17 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Jour_heure
-		if (!empty($arrayfields['t.jour_heure']['checked']))
+		// Jour
+		if (!empty($arrayfields['t.jour']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->jour_heure).'">'.$obj->jour_heure.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->jour).'">'.$obj->jour.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// Heure
+		if (!empty($arrayfields['t.heure']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.$obj->heure.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
