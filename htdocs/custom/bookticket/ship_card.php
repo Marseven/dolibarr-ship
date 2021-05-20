@@ -585,19 +585,28 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</td>';
 				print '</tr>';
 
+				// Other attributes
+				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
+				print '</tbody>';
+				print '</table>'."\n";
 
+				print '</div>';
+				print '<div class="fichehalfright">';
+				print '<div class="ficheaddleft">';
+
+				print '<div class="underbanner clearboth"></div>';
 
 				// Info workflow
 				print '<table class="border tableforfield centpercent">'."\n";
 				print '<tbody>';
 
-				if (!empty($object->fk_user_create))
+				if (!empty($object->fk_user_creat))
 				{
 					$userCreate = new User($db);
-					$userCreate->fetch($object->fk_user_create);
+					$userCreate->fetch($object->fk_user_creat);
 					print '<tr>';
-					print '<td class="titlefield">'.$langs->trans('RequestByCP').'</td>';
+					print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
 					print '<td>'.$userCreate->getNomUrl(-1).'</td>';
 					print '</tr>';
 				}
@@ -631,7 +640,7 @@ $formconfirm = '';
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
 	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
 {
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("Deleteship"), $langs->trans("ConfirmDeleteship"), "confirm_delete", '', 0, "action-delete");
+	$formconfirm = $form->formconfirm("ship_card.php?id=".$object->id, $langs->trans("Deleteship"), $langs->trans("ConfirmDeleteship"), "confirm_delete", '', 0, "action-delete");
 }
 
 // Clone confirmation
@@ -678,8 +687,9 @@ if ($action != 'create' && $action != 'edit')
 				}
 			}
 		}
-		$object_is_used = $object->isObjectUsed($object->id);
 
+		$object_is_used = $object->isObjectUsed($object->id);
+		var_dump($object_is_used);die;
 		if ($usercandelete)
 		{
 			if (empty($object_is_used) && (!isset($object->no_button_delete) || $object->no_button_delete <> 1))
