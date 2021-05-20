@@ -1064,7 +1064,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					print '&nbsp;<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 					print '</form>';
 				} else {
-					print $object->barcode;
+					print $obj->barcode;
 				}
 				print '</td></tr>'."\n";
 			}
