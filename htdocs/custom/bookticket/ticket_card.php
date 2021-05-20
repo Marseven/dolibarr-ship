@@ -983,6 +983,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
+
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
 			$sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as classe, tr.ref as travel, t.entity';
@@ -994,8 +995,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 			$sql .= ' WHERE t.rowid IN ('.$object->id.')';
 			$resql = $db->query($sql);
+
 			$obj = $db->fetch_object($resql);
 			var_dump($obj);die;
+
 			$head = ticket_prepare_head($obj);
 			$titre = $langs->trans("CardTicket");
 			$picto = 'Ticket';
@@ -1007,9 +1010,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$shownav = 1;
 			if ($user->socid && !in_array('ticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
-
-
-			dol_banner_tab($obj, 'ref', $linkback, $shownav, 'ref');
+			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
 			print '<div class="fichecenter">';
 				print '<div class="fichehalfleft">';
