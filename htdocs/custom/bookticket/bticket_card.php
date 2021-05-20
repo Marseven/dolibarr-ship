@@ -787,10 +787,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
 		{
-
 			$sql_p = 'SELECT DISTINCT p.rowid, p.nom, p.prenom, p.age, p.adresse,  p.telephone, p.email, p.accompagne,  p.nom_enfant,  p.age_enfant, p.entity';
 			$sql_p .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
-			$sql_t .= ' WHERE p.entity IN ('.getEntity('passenger').')';
+			$sql_p .= ' WHERE p.entity IN ('.getEntity('passenger').')';
 			$sql_p .= ' AND p.rowid IN ('.$object->fk_passenger.')';
 			$resql_p = $db->query($sql_p);
 			$obj_p = $db->fetch_object($resql_p);
