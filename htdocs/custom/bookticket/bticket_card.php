@@ -963,7 +963,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			print '<td><input type="checkbox" name="accompagne"'.($obj_p->accompagne == "on" ? 'checked="checked"' : '').'>';
+			print '<td><input type="checkbox" name="accompagne"'.($obj_p->accompagne == "on" ? 'checked' : '').'>';
 			print '</td></tr>';
 
 			// nom_enfant
