@@ -527,16 +527,16 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$head = ticket_prepare_head($object);
 			$titre = $langs->trans("CardPassenger");
-			$picto = 'Ticket';
+			$picto = 'Passenger';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
 			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
-			if ($user->socid && !in_array('ticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
+			if ($user->socid && !in_array('passenger', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
-			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
+			dol_banner_tab($object, 'rowid', $linkback, $shownav, 'rowid');
 
 				print '<div class="fichecenter">';
 				print '<div class="fichehalfleft">';
@@ -814,7 +814,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 
 	$modulepart = 'bookticket';
 
-	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
+	//print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
 	$somethingshown = $formfile->numoffiles;
 
 	print '</div><div class="fichehalfright"><div class="ficheaddleft">';

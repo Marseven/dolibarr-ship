@@ -995,7 +995,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql .= ' WHERE t.rowid IN ('.$object->id.')';
 			$resql = $db->query($sql);
 			$obj = $db->fetch_object($resql);
-
+			var_dump($obj);die;
 			$head = ticket_prepare_head($obj);
 			$titre = $langs->trans("CardTicket");
 			$picto = 'Ticket';
@@ -1088,7 +1088,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td>';
 				$htmlhelp = $langs->trans('TravelHelp');
-				$htmlhelp .= '<br>'.$langs->trans("TravelHelp");
 				print $form->textwithpicto($langs->trans('Travel'), $htmlhelp);
 				print '</td>';
 				print '<td>';
@@ -1100,7 +1099,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td>';
 				$htmlhelp = $langs->trans('ShipHelp');
-				$htmlhelp .= '<br>'.$langs->trans("ShipHelp");
 				print $form->textwithpicto($langs->trans('Ship'), $htmlhelp);
 				print '</td>';
 				print '<td>';
@@ -1112,7 +1110,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td>';
 				$htmlhelp = $langs->trans('ClasseHelp');
-				$htmlhelp .= '<br>'.$langs->trans("CalsseHelp");
 				print $form->textwithpicto($langs->trans('Classe'), $htmlhelp);
 				print '</td>';
 				print '<td>';
@@ -1123,8 +1120,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				// Prix
 				print '<tr>';
 				print '<td>';
-				$htmlhelp = $langs->trans('Prix');
-				$htmlhelp .= '<br>'.$langs->trans("PrixHelp");
+				$htmlhelp = $langs->trans('PrixHelp');
 				print $form->textwithpicto($langs->trans('Prix'), $htmlhelp);
 				print '</td>';
 				print '<td>';
@@ -1325,7 +1321,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 
 	$modulepart = "bookticket";
 
-	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
+	//print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
 	$somethingshown = $formfile->numoffiles;
 
 	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
