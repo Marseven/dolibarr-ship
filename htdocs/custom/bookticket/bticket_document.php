@@ -88,7 +88,7 @@ if (!$sortfield) $sortfield = "name";
 //if (! $sortfield) $sortfield="position_name";
 
 // Initialize technical objects
-$object = new Ticket($db);
+$object = new Bticket($db);
 $diroutputmassaction = $conf->bookticket->dir_output.'/temp/massgeneration/'.$user->id;
 
 // Load object
@@ -101,7 +101,7 @@ if ($id > 0 || !empty($ref)) $upload_dir = $conf->bookticket->multidir_output[$o
 //if ($user->socid > 0) $socid = $user->socid;
 //$result = restrictedArea($user, 'bookticket', $object->id);
 
-$permissiontoadd = $user->rights->bookticket->ticket->write; // Used by the include of actions_addupdatedelete.inc.php
+$permissiontoadd = $user->rights->bookticket->bticket->write; // Used by the include of actions_addupdatedelete.inc.php
 
 
 
@@ -206,9 +206,9 @@ if ($object->id)
 	print dol_get_fiche_end();
 
 	$modulepart = 'bookticket';
-	$permission = $user->rights->bookticket->ticket->write;
+	$permission = $user->rights->bookticket->bticket->write;
 	//$permission = 1;
-	$permtoedit = $user->rights->bookticket->ticket->write;
+	$permtoedit = $user->rights->bookticket->bticket->write;
 	//$permtoedit = 1;
 	$param = '&id='.$object->id;
 
