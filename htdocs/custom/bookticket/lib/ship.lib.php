@@ -60,7 +60,7 @@ function ship_prepare_head($object)
 		$nbNote = 0;
 		if (!empty($object->note_private)) $nbNote++;
 		if (!empty($object->note_public)) $nbNote++;
-		$head[$h][0] = DOL_URL_ROOT.'/ship/note.php?id='.$object->id;
+		$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/ship_note.php?id='.$object->id;
 		$head[$h][1] = $langs->trans('Notes');
 		if ($nbNote > 0) $head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbNote.'</span>';
 		$head[$h][2] = 'note';

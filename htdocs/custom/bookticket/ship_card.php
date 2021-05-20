@@ -506,7 +506,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ship_list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
 			if ($user->socid && !in_array('ship', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
@@ -515,24 +515,106 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 
 			print '<div class="fichecenter">';
-			print '<div class="fichehalfleft">';
+				print '<div class="fichehalfleft">';
+				print '<div class="underbanner clearboth"></div>';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				print '<table class="border tableforfield centpercent">';
+				print '<tbody>';
+
+				// Label
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Label").'</td>';
+				print '<td>';
+				print $object->label;
+				print '</td></tr>';
+
+				// Labelshort
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Labelshort").'</td>';
+				print '<td>';
+				print $object->labelshort;
+				print '</td></tr>';
 
 
-			print '</table>';
-			print '</div>';
-			print '<div class="fichehalfright"><div class="ficheaddleft">';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				// NbrePlace
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbrePlaceHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbrePlaceHelp");
+				print $form->textwithpicto($langs->trans('NbrePlace'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_place;
+				print '</td>';
+				print '</tr>';
 
-			print "</table>\n";
-			print '</div>';
+				// NbreVip
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbreVipHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbreVipHelp");
+				print $form->textwithpicto($langs->trans('NbreVip'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_vip;
+				print '</td>';
+				print '</tr>';
 
-			print '</div></div>';
-			print '<div style="clear:both"></div>';
+				// NbreAff
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbreAffHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbreAffHelp");
+				print $form->textwithpicto($langs->trans('NbreAff'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_aff;
+				print '</td>';
+				print '</tr>';
+
+				// NbreEco
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbreEcoHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbreEcoHelp");
+				print $form->textwithpicto($langs->trans('NbreEco'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_eco;
+				print '</td>';
+				print '</tr>';
+
+
+
+
+				// Info workflow
+				print '<table class="border tableforfield centpercent">'."\n";
+				print '<tbody>';
+
+				if (!empty($object->fk_user_create))
+				{
+					$userCreate = new User($db);
+					$userCreate->fetch($object->fk_user_create);
+					print '<tr>';
+					print '<td class="titlefield">'.$langs->trans('RequestByCP').'</td>';
+					print '<td>'.$userCreate->getNomUrl(-1).'</td>';
+					print '</tr>';
+				}
+
+				print '<tr>';
+				print '<td>'.$langs->trans('DateCreation').'</td>';
+				print '<td>'.dol_print_date($object->date_create, 'dayhour', 'tzuser').'</td>';
+				print '</tr>';
+
+				print '</tbody>';
+				print '</table>';
+
+				print '</div>';
+				print '</div>';
+				print '</div>';
+
+				print '<div class="clearboth"></div>';
 
 			print dol_get_fiche_end();
 		}
