@@ -18,7 +18,7 @@
 
 /**
  *  \file       htdocs/custom/bookticket/ship_document.php
- *  \ingroup    mymodule
+ *  \ingroup    bookticket
  *  \brief      Tab for documents linked to Ship
  */
 
@@ -62,11 +62,11 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-dol_include_once('/mymodule/class/ship.class.php');
-dol_include_once('/mymodule/lib/mymodule_ship.lib.php');
+dol_include_once('/bookticket/class/ship.class.php');
+dol_include_once('/bookticket/lib/bookticket_ship.lib.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("mymodule@mymodule", "companies", "other", "mails"));
+$langs->loadLangs(array("bookticket@bookticket", "companies", "other", "mails"));
 
 
 $action = GETPOST('action', 'aZ09');
@@ -91,20 +91,18 @@ if (!$sortfield) $sortfield = "name";
 $object = new Ship($db);
 $diroutputmassaction = $conf->bookticket->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('shipdocument', 'globalcard')); // Note that conf->hooks_modules contains array
-// Fetch optionals attributes and labels
-$extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
-if ($id > 0 || !empty($ref)) $upload_dir = $conf->mymodule->multidir_output[$object->entity ? $object->entity : $conf->entity]."/ship/".get_exdir(0, 0, 0, 1, $object);
+if ($id > 0 || !empty($ref)) $upload_dir = $conf->bookticket->multidir_output[$object->entity ? $object->entity : $conf->entity]."/ship/".get_exdir(0, 0, 0, 1, $object);
 
 // Security check - Protection if external user
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
-//$result = restrictedArea($user, 'mymodule', $object->id);
+//$result = restrictedArea($user, 'bookticket', $object->id);
 
-$permissiontoadd = $user->rights->mymodule->ship->write; // Used by the include of actions_addupdatedelete.inc.php
+$permissiontoadd = $user->rights->bookticket->ship->write; // Used by the include of actions_addupdatedelete.inc.php
 
 
 
@@ -146,7 +144,7 @@ if ($object->id)
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/mymodule/ship_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/bookticket/ship_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
