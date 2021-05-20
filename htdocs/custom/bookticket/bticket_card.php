@@ -795,6 +795,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql_p = $db->query($sql_p);
 			$obj_p = $db->fetch_object($resql_p);
 
+			var_dump($obj_p); die;
+
 			//WYSIWYG Editor
 			require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
@@ -818,7 +820,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="canvas" value="'.$object->canvas.'">';
 
 			$head = bticket_prepare_head($object);
-			$titre = $langs->trans("CardTicket".$object->type);
+			$titre = $langs->trans("CardTicket");
 			$picto =  'bticket';
 			print dol_get_fiche_head($head, 'card', $titre, 0, $picto);
 
@@ -925,10 +927,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
+			print '<hr>';
 
-			// fk_passenger
-			print '<td><input name="fk_passenger" type="hidden" value="'.$object->fk_passenger.'">';
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
@@ -974,6 +975,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
 			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$obj_p->age_enfant.'"> ANS';
 			print '</td></tr>';
+
+			// fk_passenger
+			print '<td><input name="fk_passenger" type="hidden" value="'.$object->fk_passenger.'">';
 
 			print '</table>';
 
