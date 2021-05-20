@@ -116,7 +116,7 @@ $arrayfields = array(
 	't.travel'=>array('label'=>$langs->trans('Travel'), 'checked'=>1, 'position'=>20),
 	't.ship'=>array('label'=>$langs->trans("Ship"), 'checked'=>1, 'position'=>52),
 	't.classe'=>array('label'=>$langs->trans('Classe'), 'checked'=>1, 'position'=>20),
-	't.passenger'=>array('label'=>$langs->trans("Passenger"), 'checked'=>1, 'position'=>52),
+	'passenger'=>array('label'=>$langs->trans("Passenger"), 'checked'=>1, 'position'=>52),
 	't.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
 	't.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
@@ -185,7 +185,7 @@ $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = t
 $sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
-if ($search_passenger)   $sql .= natural_search('t.passenger', $search_passenger);
+if ($search_passenger)   $sql .= natural_search('passenger', $search_passenger);
 if ($search_barcode) $sql .= natural_search('t.barcode', $search_barcode);
 $sql .= $db->order($sortfield, $sortorder);
 
@@ -301,7 +301,7 @@ if ($resql)
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['t.passenger']['checked']))
+	if (!empty($arrayfields['passenger']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_label" size="12" value="'.dol_escape_htmltag($search_passenger).'">';
@@ -361,7 +361,7 @@ if ($resql)
 		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['passenger']['checked'])) {
-		print_liste_field_titre($arrayfields['t.passenger']['label'], $_SERVER["PHP_SELF"], "passenger", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['passenger']['label'], $_SERVER["PHP_SELF"], "passenger", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['t.barcode']['checked'])) {
 		print_liste_field_titre($arrayfields['t.barcode']['label'], $_SERVER["PHP_SELF"], "t.barcode", "", $param, "", $sortfield, $sortorder);
@@ -408,7 +408,7 @@ if ($resql)
 		}
 
 		// Passenger
-		if (!empty($arrayfields['t.passenger']['checked']))
+		if (!empty($arrayfields['passenger']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.dol_buildpath('/bookticket/passenger_card.php', 1).'?id='.$obj->fk_passenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
 			if (!$i) $totalarray['nbfield']++;
