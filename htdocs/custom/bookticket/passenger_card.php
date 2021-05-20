@@ -42,11 +42,8 @@ if (! $res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ticket.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/ticket.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/passenger.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
@@ -73,12 +70,12 @@ if ($id > 0 || !empty($ref))
 {
 	$result = $object->fetch($id, $ref);
 
-	if (!empty($conf->ticket->enabled)) $upload_dir = $conf->ticket->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ticket').dol_sanitizeFileName($object->ref);
-	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'ticket').dol_sanitizeFileName($object->ref);
+	if (!empty($conf->passenger->enabled)) $upload_dir = $conf->passenger->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'passenger').dol_sanitizeFileName($object->ref);
+	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'passenger').dol_sanitizeFileName($object->ref);
 
-	if (!empty($conf->global->TICKET_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
+	if (!empty($conf->global->PASSENGER_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
 	{
-		if (!empty($conf->ticket->enabled)) $upload_dirold = $conf->ticket->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
+		if (!empty($conf->passenger->enabled)) $upload_dirold = $conf->passenger->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 		else $upload_dirold = $conf->service->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 	}
 }
@@ -90,11 +87,11 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('ticket', 'card', $canvas);
+	$objcanvas->getCanvas('passenger', 'card', $canvas);
 }
 
 // Security check
-//$result = restrictedArea($user, 'ticket');
+//$result = restrictedArea($user, 'passenger');
 
 /*
  * Actions
@@ -199,7 +196,7 @@ if ($action == 'update' && $usercancreate)
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans("ErrorTicketBadRefOrLabel"), null, 'errors');
+				else setEventMessages($langs->trans("ErrorpassengerBadRefOrLabel"), null, 'errors');
 				$action = 'edit';
 			}
 		}
@@ -237,14 +234,14 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 				} else {
 					$id = $originalId;
 
-					if ($object->error == 'ErrorTicketAlreadyExists')
+					if ($object->error == 'ErrorpassengerAlreadyExists')
 					{
 						$db->rollback();
 
 						$refalreadyexists++;
 						$action = "";
 
-						$mesg = $langs->trans("ErrorTicketAlreadyExists", $object->ref);
+						$mesg = $langs->trans("ErrorpassengerAlreadyExists", $object->ref);
 						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
 						setEventMessages($mesg, null, 'errors');
 						$object->fetch($id);
@@ -278,7 +275,7 @@ if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
 
 	if ($result > 0)
 	{
-		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?type='.$object->type.'&delticket='.urlencode($object->ref));
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?delpassenger='.urlencode($object->ref));
 		exit;
 	} else {
 		setEventMessages($langs->trans($object->error), null, 'errors');
@@ -312,7 +309,6 @@ $form = new Form($db);
 $formfile = new FormFile($db);
 $formcompany = new FormCompany($db);
 
-// Load object modBarCodeTicket
 $res = 0;
 
 if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
@@ -321,7 +317,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	if (empty($object->error) && $id)
 	{
-		$object = new Ticket($db);
+		$object = new Passenger($db);
 		$result = $object->fetch($id);
 		if ($result <= 0) dol_print_error('', $object->error);
 	}
@@ -350,15 +346,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add">';
 		print '<input type="hidden" name="type" value="'.$type.'">'."\n";
-		if (!empty($modCodeTicket->code_auto))
-			print '<input type="hidden" name="code_auto" value="1">';
-		if (!empty($modBarCodeTicket->code_auto))
-			print '<input type="hidden" name="barcode_auto" value="1">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
 
-		$picto = 'ticket';
-		$title = $langs->trans("NewTicket");
+		$picto = 'passenger';
+		$title = $langs->trans("Newpassenger");
 
 		$linkback = "";
 		print load_fiche_titre($title, $linkback, $picto);
@@ -525,7 +517,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$head = ticket_prepare_head($object);
+			$head = passenger_prepare_head($object);
 			$titre = $langs->trans("CardPassenger");
 			$picto = 'Passenger';
 
@@ -664,16 +656,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	}
 }
 
-$tmpcode = '';
-if (!empty($modCodeTicket->code_auto)) $tmpcode = $modCodeTicket->getNextValue($object);
-
 $formconfirm = '';
 
-// Confirm delete Ticket
+// Confirm delete Passenger
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
 	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
 {
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeleteTicket"), $langs->trans("ConfirmDeleteTicket"), "confirm_delete", '', 0, "action-delete");
+	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeletePassenger"), $langs->trans("ConfirmDeletePassenger"), "confirm_delete", '', 0, "action-delete");
 }
 
 // Clone confirmation
@@ -684,18 +673,13 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 	$formquestionclone = array(
 		'text' => $langs->trans("ConfirmClone"),
 		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentTicket"), 'value' => 1),
+		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentPassenger"), 'value' => 1),
 	);
 
 
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneTicket', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
+	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmClonePassenger', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
 }
 
-// Call Hook formConfirm
-$parameters = array('formConfirm' => $formconfirm, 'object' => $object);
-$reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-if (empty($reshook)) $formconfirm .= $hookmanager->resPrint;
-elseif ($reshook > 0) $formconfirm = $hookmanager->resPrint;
 
 // Print form confirm
 print $formconfirm;
@@ -739,7 +723,7 @@ if ($action != 'create' && $action != 'edit')
 					print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 				}
 			} else {
-				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("TicketIsUsed").'">'.$langs->trans("Delete").'</a>';
+				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("PassengerIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}
 		} else {
 			print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans("Delete").'</a>';
@@ -803,10 +787,10 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	// Documents
 	$objectref = dol_sanitizeFileName($object->ref);
 	$relativepath = $comref.'/'.$objectref.'.pdf';
-	if (!empty($conf->ticket->multidir_output[$object->entity])) {
-		$filedir = $conf->ticket->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
+	if (!empty($conf->passenger->multidir_output[$object->entity])) {
+		$filedir = $conf->passenger->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
 	} else {
-		$filedir = $conf->ticket->dir_output.'/'.$objectref;
+		$filedir = $conf->passenger->dir_output.'/'.$objectref;
 	}
 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 	$genallowed = $usercanread;
@@ -821,7 +805,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 
 	$MAXEVENT = 10;
 
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_agenda.php?id='.$object->id.'">';
+	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/passenger_agenda.php?id='.$object->id.'">';
 	$morehtmlright .= $langs->trans("SeeAll");
 	$morehtmlright .= '</a>';
 

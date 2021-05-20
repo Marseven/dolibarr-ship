@@ -393,23 +393,6 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 
-		// Multilangs
-		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
-		{
-			$sql = "SELECT label";
-			$sql .= " FROM ".MAIN_DB_PREFIX."ticket_lang";
-			$sql .= " WHERE fk_ticket=".$obj->rowid;
-			$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
-			$sql .= " LIMIT 1";
-
-			$result = $db->query($sql);
-			if ($result)
-			{
-				$objtp = $db->fetch_object($result);
-				if (!empty($objtp->label)) $obj->label = $objtp->label;
-			}
-		}
-
 		$ticket_static->id = $obj->rowid;
 		$ticket_static->ref = $obj->ref;
 		$ticket_static->passenger = $obj->passenger;
@@ -427,7 +410,7 @@ if ($resql)
 		// Passenger
 		if (!empty($arrayfields['t.passenger']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.DOL_URL_ROOT.'/custom/bookticket/passenger_card.php?id='.$object->fk_passenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.dol_buildpath('/bookticket/passenger_card.php', 1).'?id='.$obj->fk_passenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
