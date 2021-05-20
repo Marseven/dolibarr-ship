@@ -116,7 +116,7 @@ if ($id > 0 || !empty($ref))
 {
 	$object->fetch_thirdparty();
 
-	$head = ticket_prepare_head($object);
+	$head = bticket_prepare_head($object);
 
 	print dol_get_fiche_head($head, 'note', $langs->trans("Ticket"), -1, $object->picto);
 

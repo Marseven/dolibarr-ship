@@ -129,9 +129,9 @@ if ($object->id)
 	/*
 	 * Show tabs
 	 */
-	$head = ticket_prepare_head($object);
+	$head = bticket_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'document', $langs->trans("Ticket"), -1, $picto);
+	print dol_get_fiche_head($head, 'document', $langs->trans("BTicket"), -1, $picto);
 
 
 	// Build file list
