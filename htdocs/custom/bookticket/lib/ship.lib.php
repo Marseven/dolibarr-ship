@@ -54,7 +54,7 @@ function ship_prepare_head($object)
 	// $this->tabs = array('entity:-tabname);   												to remove a tab
 	complete_head_from_modules($conf, $langs, $object, $head, $h, 'ship');
 
-	// Notes
+	/* Notes
 	if (empty($conf->global->MAIN_DISABLE_NOTES_TAB))
 	{
 		$nbNote = 0;
@@ -65,7 +65,7 @@ function ship_prepare_head($object)
 		if ($nbNote > 0) $head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbNote.'</span>';
 		$head[$h][2] = 'note';
 		$h++;
-	}
+	}*/
 
 	// Attachments
 	require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
@@ -85,7 +85,7 @@ function ship_prepare_head($object)
 
 	complete_head_from_modules($conf, $langs, $object, $head, $h, 'ship', 'remove');
 
-	// Log
+	/* Log
 	$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/ship_agenda.php?id='.$object->id;
 	$head[$h][1] = $langs->trans("Events");
 	if (!empty($conf->agenda->enabled) && (!empty($user->rights->agenda->myactions->read) || !empty($user->rights->agenda->allactions->read)))
@@ -94,7 +94,7 @@ function ship_prepare_head($object)
 		$head[$h][1] .= $langs->trans("Agenda");
 	}
 	$head[$h][2] = 'agenda';
-	$h++;
+	$h++;*/
 
 	return $head;
 }

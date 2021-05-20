@@ -750,8 +750,6 @@ if ($object->id && ($action == '' || $action == 'view') && $object->status)
 	}
 }
 
-
-
 // End of page
 llxFooter();
 $db->close();
