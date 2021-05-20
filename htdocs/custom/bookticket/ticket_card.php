@@ -986,20 +986,18 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as classe, tr.ref as travel, t.entity';
-			$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
-			$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
-			$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
-			$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
-			$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
-			$sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
-			$sql .= ' WHERE t.rowid IN ('.$object->id.')';
-			$resql = $db->query($sql);
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as classe, tr.ref as travel, t.entity';
+			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+			$sql_t .= ' WHERE t.entity IN ('.getEntity('ticket').')';
+			$sql_t .= ' WHERE t.rowid IN ('.$object->id.')';
+			$resql_t = $db->query($sql_t);
+			$obj = $db->fetch_object($resql_t);
 
-			$obj = $db->fetch_object($resql);
-			var_dump($obj);die;
-
-			$head = ticket_prepare_head($obj);
+			$head = ticket_prepare_head($object);
 			$titre = $langs->trans("CardTicket");
 			$picto = 'Ticket';
 
