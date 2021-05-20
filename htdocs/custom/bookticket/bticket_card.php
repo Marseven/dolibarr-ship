@@ -1011,161 +1011,161 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
 			print '<div class="fichecenter">';
-				print '<div class="fichehalfleft">';
-				print '<div class="underbanner clearboth"></div>';
+			print '<div class="fichehalfleft">';
+			print '<div class="underbanner clearboth"></div>';
 
-				print '<table class="border tableforfield centpercent">';
-				print '<tbody>';
+			print '<table class="border tableforfield centpercent">';
+			print '<tbody>';
 
-				/*if ($showbarcode)
+			if ($showbarcode)
+			{
+				// Barcode type
+				print '<tr><td class="nowrap">';
+				print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
+				print $langs->trans("BarcodeType");
+				print '</td>';
+				if (($action != 'editbarcodetype') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcodetype&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
+				print '</tr></table>';
+				print '</td><td colspan="2">';
+				if ($action == 'editbarcodetype' || $action == 'editbarcode')
 				{
-					// Barcode type
-					print '<tr><td class="nowrap">';
-					print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-					print $langs->trans("BarcodeType");
-					print '</td>';
-					if (($action != 'editbarcodetype') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcodetype&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
-					print '</tr></table>';
-					print '</td><td colspan="2">';
-					if ($action == 'editbarcodetype' || $action == 'editbarcode')
-					{
-						require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
-						$formbarcode = new FormBarCode($db);
-					}
-					if ($action == 'editbarcodetype')
-					{
-						print $formbarcode->formBarcodeType($_SERVER['PHP_SELF'].'?id='.$object->id, $object->barcode_type, 'fk_barcode_type');
-					} else {
-						$object->fetch_barcode();
-						print $object->barcode_type_label ? $object->barcode_type_label : ($object->barcode ? '<div class="warning">'.$langs->trans("SetDefaultBarcodeType").'<div>' : '');
-					}
-					print '</td></tr>'."\n";
-
-					// Barcode value
-					print '<tr><td class="nowrap">';
-					print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-					print $langs->trans("BarcodeValue");
-					print '</td>';
-					if (($action != 'editbarcode') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcode&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
-					print '</tr></table>';
-					print '</td><td colspan="2">';
-					if ($action == 'editbarcode')
-					{
-						$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-						if (empty($tmpcode) && !empty($modBarCodeTicket->code_auto)) $tmpcode = $modBarCodeTicket->getNextValue($object);
-
-						print '<form method="post" action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'">';
-						print '<input type="hidden" name="token" value="'.newToken().'">';
-						print '<input type="hidden" name="action" value="setbarcode">';
-						print '<input type="hidden" name="barcode_type_code" value="'.$object->barcode_type_code.'">';
-						print '<input size="40" class="maxwidthonsmartphone" type="text" name="barcode" value="'.$tmpcode.'">';
-						print '&nbsp;<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
-						print '</form>';
-					} else {
-						print $object->barcode;
-					}
-					print '</td></tr>'."\n";
-				}*/
-
-				// Ref
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Ref").'</td>';
-				print '<td>';
-				print $object->ref;
-				print '</td></tr>';
-
-				// Passenger
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Passenger").'</td>';
-				print '<td>';
-				print $object->passenger;
-				print '</td></tr>';
-
-
-
-				// Travel
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('TravelHelp');
-				print $form->textwithpicto($langs->trans('Travel'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->travel;
-				print '</td>';
-				print '</tr>';
-
-				// Ship
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('ShipHelp');
-				print $form->textwithpicto($langs->trans('Ship'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->ship;
-				print '</td>';
-				print '</tr>';
-
-				// Classe
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('ClasseHelp');
-				print $form->textwithpicto($langs->trans('Classe'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->classe;
-				print '</td>';
-				print '</tr>';
-
-				// Prix
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('PrixHelp');
-				print $form->textwithpicto($langs->trans('Prix'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->price.' FCFA';
-				print '</td>';
-				print '</tr>';
-
-				// Other attributes
-				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
-
-				print '</tbody>';
-				print '</table>'."\n";
-
-				print '</div>';
-				print '<div class="fichehalfright">';
-				print '<div class="ficheaddleft">';
-
-				print '<div class="underbanner clearboth"></div>';
-
-				// Info workflow
-				print '<table class="border tableforfield centpercent">'."\n";
-				print '<tbody>';
-
-				if (!empty($object->fk_user_creat))
-				{
-					$userCreate = new User($db);
-					$userCreate->fetch($object->fk_user_creat);
-					print '<tr>';
-					print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
-					print '<td>'.$userCreate->getNomUrl(-1).'</td>';
-					print '</tr>';
+					require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
+					$formbarcode = new FormBarCode($db);
 				}
+				if ($action == 'editbarcodetype')
+				{
+					print $formbarcode->formBarcodeType($_SERVER['PHP_SELF'].'?id='.$object->id, $object->barcode_type, 'fk_barcode_type');
+				} else {
+					$object->fetch_barcode();
+					print $object->barcode_type_label ? $object->barcode_type_label : ($object->barcode ? '<div class="warning">'.$langs->trans("SetDefaultBarcodeType").'<div>' : '');
+				}
+				print '</td></tr>'."\n";
 
+				// Barcode value
+				print '<tr><td class="nowrap">';
+				print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
+				print $langs->trans("BarcodeValue");
+				print '</td>';
+				if (($action != 'editbarcode') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcode&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
+				print '</tr></table>';
+				print '</td><td colspan="2">';
+				if ($action == 'editbarcode')
+				{
+					$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
+					if (empty($tmpcode) && !empty($modBarCodeTicket->code_auto)) $tmpcode = $modBarCodeTicket->getNextValue($object);
+
+					print '<form method="post" action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'">';
+					print '<input type="hidden" name="token" value="'.newToken().'">';
+					print '<input type="hidden" name="action" value="setbarcode">';
+					print '<input type="hidden" name="barcode_type_code" value="'.$object->barcode_type_code.'">';
+					print '<input size="40" class="maxwidthonsmartphone" type="text" name="barcode" value="'.$tmpcode.'">';
+					print '&nbsp;<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+					print '</form>';
+				} else {
+					print $object->barcode;
+				}
+				print '</td></tr>'."\n";
+			}
+
+			// Ref
+			print '<tr>';
+			print '<td class="titlefield">'.$langs->trans("Ref").'</td>';
+			print '<td>';
+			print $object->ref;
+			print '</td></tr>';
+
+			// Passenger
+			print '<tr>';
+			print '<td class="titlefield">'.$langs->trans("Passenger").'</td>';
+			print '<td>';
+			print $object->passenger;
+			print '</td></tr>';
+
+
+
+			// Travel
+			print '<tr>';
+			print '<td>';
+			$htmlhelp = $langs->trans('TravelHelp');
+			print $form->textwithpicto($langs->trans('Travel'), $htmlhelp);
+			print '</td>';
+			print '<td>';
+			print $object->travel;
+			print '</td>';
+			print '</tr>';
+
+			// Ship
+			print '<tr>';
+			print '<td>';
+			$htmlhelp = $langs->trans('ShipHelp');
+			print $form->textwithpicto($langs->trans('Ship'), $htmlhelp);
+			print '</td>';
+			print '<td>';
+			print $object->ship;
+			print '</td>';
+			print '</tr>';
+
+			// Classe
+			print '<tr>';
+			print '<td>';
+			$htmlhelp = $langs->trans('ClasseHelp');
+			print $form->textwithpicto($langs->trans('Classe'), $htmlhelp);
+			print '</td>';
+			print '<td>';
+			print $object->classe;
+			print '</td>';
+			print '</tr>';
+
+			// Prix
+			print '<tr>';
+			print '<td>';
+			$htmlhelp = $langs->trans('PrixHelp');
+			print $form->textwithpicto($langs->trans('Prix'), $htmlhelp);
+			print '</td>';
+			print '<td>';
+			print $object->price.' FCFA';
+			print '</td>';
+			print '</tr>';
+
+			// Other attributes
+			include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+
+			print '</tbody>';
+			print '</table>'."\n";
+
+			print '</div>';
+			print '<div class="fichehalfright">';
+			print '<div class="ficheaddleft">';
+
+			print '<div class="underbanner clearboth"></div>';
+
+			// Info workflow
+			print '<table class="border tableforfield centpercent">'."\n";
+			print '<tbody>';
+
+			if (!empty($object->fk_user_creat))
+			{
+				$userCreate = new User($db);
+				$userCreate->fetch($object->fk_user_creat);
 				print '<tr>';
-				print '<td>'.$langs->trans('DateCreation').'</td>';
-				print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
+				print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
+				print '<td>'.$userCreate->getNomUrl(-1).'</td>';
 				print '</tr>';
+			}
 
-				print '</tbody>';
-				print '</table>';
+			print '<tr>';
+			print '<td>'.$langs->trans('DateCreation').'</td>';
+			print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
+			print '</tr>';
 
-				print '</div>';
-				print '</div>';
-				print '</div>';
+			print '</tbody>';
+			print '</table>';
 
-				print '<div class="clearboth"></div>';
+			print '</div>';
+			print '</div>';
+			print '</div>';
+
+			print '<div class="clearboth"></div>';
 
 			print dol_get_fiche_end();
 		}
