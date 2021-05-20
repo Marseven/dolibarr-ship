@@ -308,17 +308,17 @@ class modBookTicket extends DolibarrModules
 		//ticket
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
 		$this->rights[$r][1] = 'Read ticket of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'ticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][4] = 'bticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
 		$this->rights[$r][1] = 'Create/Update ticket of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'ticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][4] = 'bticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
 		$this->rights[$r][1] = 'Delete ticket of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'ticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][4] = 'bticket'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
@@ -405,7 +405,7 @@ class modBookTicket extends DolibarrModules
 			'titre'=>'Ticket',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'ticket',
-			'url'=>'/bookticket/ticketindex.php',
+			'url'=>'/bookticket/bticketindex.php',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
@@ -421,7 +421,7 @@ class modBookTicket extends DolibarrModules
 			'titre'=>'List Ticket',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_ticket_list',
-			'url'=>'/bookticket/ticket_list.php',
+			'url'=>'/bookticket/bticket_list.php',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
@@ -437,7 +437,7 @@ class modBookTicket extends DolibarrModules
 			'titre'=>'Add Ticket',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_ticket_new',
-			'url'=>'/bookticket/ticket_card.php?action=create',
+			'url'=>'/bookticket/bticket_card.php?action=create',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
