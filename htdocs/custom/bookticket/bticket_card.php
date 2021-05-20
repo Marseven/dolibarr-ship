@@ -1073,14 +1073,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr>';
 			print '<td class="titlefield">'.$langs->trans("Ref").'</td>';
 			print '<td>';
-			print $object->ref;
+			print $obj->ref;
 			print '</td></tr>';
 
 			// Passenger
 			print '<tr>';
 			print '<td class="titlefield">'.$langs->trans("Passenger").'</td>';
 			print '<td>';
-			print $object->passenger;
+			print $obj->passenger;
 			print '</td></tr>';
 
 
@@ -1092,7 +1092,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Travel'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->travel;
+			print $obj->travel;
 			print '</td>';
 			print '</tr>';
 
@@ -1103,7 +1103,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Ship'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->ship;
+			print $obj->ship;
 			print '</td>';
 			print '</tr>';
 
@@ -1114,7 +1114,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Classe'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->classe;
+			print $obj->classe;
 			print '</td>';
 			print '</tr>';
 
@@ -1125,7 +1125,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Prix'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->price.' FCFA';
+			print $obj->prix.' FCFA';
 			print '</td>';
 			print '</tr>';
 
