@@ -79,9 +79,7 @@ $backtopage = GETPOST('backtopage', 'alpha');
 $object = new Bticket($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->bookticket->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('ticketnote', 'globalcard')); // Note that conf->hooks_modules contains array
-// Fetch optionals attributes and labels
-$extrafields->fetch_name_optionals_label($object->table_element);
+$hookmanager->initHooks(array('bticketnote', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Security check - Protection if external user
 //if ($user->socid > 0) accessforbidden();
