@@ -993,7 +993,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
-			$sql_t .= ' WHERE t.rowid IN ('.$object->id.')';
+			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
 
