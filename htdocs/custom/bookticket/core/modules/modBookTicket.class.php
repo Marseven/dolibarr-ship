@@ -409,8 +409,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->ticket->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->bticket->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -425,8 +425,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->ticket->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->bticket->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -441,8 +441,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->ticket->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->bticket->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -458,8 +458,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->travel->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->travel->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -474,8 +474,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->travel->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->travel->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -490,8 +490,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->travel->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->travel->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -507,8 +507,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->city->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->city->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -523,8 +523,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->city->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->city->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -541,8 +541,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->ship->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->ship->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -557,8 +557,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->ship->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->ship->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -573,8 +573,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->ship->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->ship->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -590,8 +590,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->classe->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->classe->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -606,8 +606,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->classe->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->classe->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -622,8 +622,8 @@ class modBookTicket extends DolibarrModules
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
-			//'perms'=>'$user->rights->bookticket->classe->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->classe->write',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
