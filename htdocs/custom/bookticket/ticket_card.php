@@ -1207,11 +1207,6 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneTicket', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
 }
 
-// Call Hook formConfirm
-$parameters = array('formConfirm' => $formconfirm, 'object' => $object);
-$reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-if (empty($reshook)) $formconfirm .= $hookmanager->resPrint;
-elseif ($reshook > 0) $formconfirm = $hookmanager->resPrint;
 
 // Print form confirm
 print $formconfirm;
@@ -1243,11 +1238,10 @@ if ($action != 'create' && $action != 'edit')
 				}
 			}
 		}
-		$object_is_used = $object->isObjectUsed($object->id);
 
 		if ($usercandelete)
 		{
-			if (empty($object_is_used) && (!isset($object->no_button_delete) || $object->no_button_delete <> 1))
+			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
 			{
 				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
 				{
