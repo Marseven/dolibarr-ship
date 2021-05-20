@@ -63,7 +63,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 dol_include_once('/bookticket/class/ship.class.php');
-dol_include_once('/bookticket/lib/bookticket_ship.lib.php');
+dol_include_once('/bookticket/lib/ship.lib.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("bookticket@bookticket", "companies", "other", "mails"));
@@ -90,7 +90,6 @@ if (!$sortfield) $sortfield = "name";
 // Initialize technical objects
 $object = new Ship($db);
 $diroutputmassaction = $conf->bookticket->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('shipdocument', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
@@ -121,6 +120,7 @@ $form = new Form($db);
 
 $title = $langs->trans("Ship").' - '.$langs->trans("Files");
 $help_url = '';
+$picto = "ship";
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
 
@@ -129,9 +129,9 @@ if ($object->id)
 	/*
 	 * Show tabs
 	 */
-	$head = shipPrepareHead($object);
+	$head = ship_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'document', $langs->trans("Ship"), -1, $object->picto);
+	print dol_get_fiche_head($head, 'document', $langs->trans("Ship"), -1, $picto);
 
 
 	// Build file list
