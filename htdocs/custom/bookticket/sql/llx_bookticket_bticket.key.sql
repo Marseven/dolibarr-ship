@@ -15,7 +15,7 @@
 -- along with this program. If not, see <http://www.gnu.org/licenses/>.
 -- ===========================================================================
 
-ALTER TABLE llx_bookticket_ticket ADD CONSTRAINT fk_ticket_fk_ship FOREIGN KEY (fk_ship) REFERENCES llx_bookticket_ship (rowid);
-ALTER TABLE llx_bookticket_ticket ADD CONSTRAINT fk_ticket_fk_passenger FOREIGN KEY (fk_passenger) REFERENCES llx_bookticket_passenger (rowid);
-ALTER TABLE llx_bookticket_ticket ADD CONSTRAINT fk_ticket_fk_classe FOREIGN KEY (fk_classe) REFERENCES llx_bookticket_classe (rowid);
-ALTER TABLE llx_bookticket_ticket ADD CONSTRAINT fk_ticket_fk_travel FOREIGN KEY (fk_travel) REFERENCES llx_bookticket_travel (rowid);
+ALTER TABLE llx_bookticket_bticket ADD CONSTRAINT fk_ticket_fk_ship FOREIGN KEY (fk_ship) REFERENCES llx_bookticket_ship (rowid);
+ALTER TABLE llx_bookticket_bticket ADD CONSTRAINT fk_ticket_fk_passenger FOREIGN KEY (fk_passenger) REFERENCES llx_bookticket_passenger (rowid);
+ALTER TABLE llx_bookticket_bticket ADD CONSTRAINT fk_ticket_fk_classe FOREIGN KEY (fk_classe) REFERENCES llx_bookticket_classe (rowid);
+ALTER TABLE llx_bookticket_bticket ADD CONSTRAINT fk_ticket_fk_travel FOREIGN KEY (fk_travel) REFERENCES llx_bookticket_travel (rowid);

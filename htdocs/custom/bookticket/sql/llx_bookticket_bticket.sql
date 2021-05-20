@@ -17,7 +17,7 @@
 -- Table of 'ticket' for bookticket module
 -- ============================================================================
 
-create table llx_bookticket_ticket
+create table llx_bookticket_bticket
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   ref                       varchar(128) DEFAULT 0 NOT NULL,

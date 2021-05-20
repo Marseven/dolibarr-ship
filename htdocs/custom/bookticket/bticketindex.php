@@ -16,9 +16,9 @@
  */
 
 /**
- *	\file       bookticket/ticketindex.php
+ *	\file       bookticket/bticketindex.php
  *	\ingroup    bookticket
- *	\brief      Home page of ticket left menu
+ *	\brief      Home page of bticket left menu
  */
 
 
@@ -40,7 +40,7 @@ if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main
 if (! $res) die("Include of main fails");
 
 
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ticket.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.php';
 
@@ -48,28 +48,28 @@ require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.
 //$result = restrictedArea($user, 'produit|service|expedition');
 
 // Load translation files required by the page
-$langs->loadLangs('ticket');
+$langs->loadLangs('bticket');
 
 
-$ticket_static = new Ticket($db);
+$bticket_static = new Bticket($db);
 
 
 /*
  * View
  */
 
-$transAreaType = $langs->trans("TicketArea");
+$transAreaType = $langs->trans("BticketArea");
 
 $helpurl = '';
-$transAreaType = $langs->trans("TicketArea");
+$transAreaType = $langs->trans("BticketArea");
 $helpurl = 'EN:Module_Ticket|FR:Module_Ticket|ES:M&oacute;dulo_Ticket';
 
-$user->rights->ticket->lire = true;
+$user->rights->bticket->lire = true;
 
-llxHeader("", $langs->trans("Ticket"), $helpurl);
+llxHeader("", $langs->trans("Bticket"), $helpurl);
 
 $linkback = "";
-print load_fiche_titre($transAreaType, $linkback, 'ticket');
+print load_fiche_titre($transAreaType, $linkback, 'bticket');
 
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
@@ -78,9 +78,9 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useless due to the global search combo
 {
 	// Search contract
-	if ($user->rights->ticket->lire)
+	if ($user->rights->bticket->lire)
 	{
-		$listofsearchfields['search_ticket'] = array('text'=>'Ticket');
+		$listofsearchfields['search_bticket'] = array('text'=>'Ticket');
 	}
 
 	if (count($listofsearchfields))
@@ -107,17 +107,17 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 }
 
 /*
- * Number of Ticket
+ * Number of bticket
  */
-if ($user->rights->ticket->lire)
+if ($user->rights->bticket->lire)
 {
 	$prodser = array();
 	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
 	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
 
 	$sql = "SELECT COUNT(t.rowid) as total";
-	$sql .= " FROM ".MAIN_DB_PREFIX."ticket as t";
-	//$sql .= ' WHERE t.entity IN ('.getEntity($ticket_static->element, 1).')';
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as t";
+	//$sql .= ' WHERE t.entity IN ('.getEntity($bticket_static->element, 1).')';
 	// Add where from hooks
 	$parameters = array();
 
@@ -178,18 +178,18 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Latest modified ticket
  */
-if ($user->rights->bookticket->ticket->read)
+if ($user->rights->bookticket->bticket->read)
 {
 	$max = 15;
 	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as travel,";
 	$sql .= " t.entity,";
 	$sql .= " t.tms as datem";
-	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_ticket as t";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as t";
 	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
 	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
 	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_ship = tr.rowid";
-	//$sql .= " WHERE p.entity IN (".getEntity($ticket_static->element, 1).")";
+	//$sql .= " WHERE p.entity IN (".getEntity($bticket_static->element, 1).")";
 	// Add where from hooks
 
 	$parameters = array();
@@ -216,26 +216,26 @@ if ($user->rights->bookticket->ticket->read)
 			if (empty($conf->global->PRODUIT_MULTIPRICES)) $colnb++;
 
 			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
-			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
 			print '</tr>';
 
 			while ($i < $num)
 			{
 				$objp = $db->fetch_object($result);
 
-				$ticket_static->id = $objp->rowid;
-				$ticket_static->ref = $objp->ref;
-				$ticket_static->ship = $objp->ship;
-				$ticket_static->passenger = $objp->passenger;
-				$ticket_static->travel = $objp->travel;
-				$ticket_static->classe = $objp->classe;
-				$ticket_static->entity = $objp->entity;
+				$bticket_static->id = $objp->rowid;
+				$bticket_static->ref = $objp->ref;
+				$bticket_static->ship = $objp->ship;
+				$bticket_static->passenger = $objp->passenger;
+				$bticket_static->travel = $objp->travel;
+				$bticket_static->classe = $objp->classe;
+				$bticket_static->entity = $objp->entity;
 
 				//Multilangs
 				if (!empty($conf->global->MAIN_MULTILANGS))
 				{
 					$sql = "SELECT label";
-					$sql .= " FROM ".MAIN_DB_PREFIX."ticket_lang";
+					$sql .= " FROM ".MAIN_DB_PREFIX."bticket_lang";
 					$sql .= " WHERE fk_product=".$objp->rowid;
 					$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
 
@@ -250,7 +250,7 @@ if ($user->rights->bookticket->ticket->read)
 
 				print '<tr class="oddeven">';
 				print '<td class="nowrap">';
-				print $ticket_static->getNomUrl(1, '', 16);
+				print $bticket_static->getNomUrl(1, '', 16);
 				print "</td>\n";
 				print '<td>'.dol_trunc($objp->travel, 32).'</td>';
 				print "<td>";
@@ -258,10 +258,10 @@ if ($user->rights->bookticket->ticket->read)
 				print "</td>";
 
 				print '<td class="right nowrap width25"><span class="statusrefsell">';
-				print $ticket_static->LibStatut($objp->passenger, 3, 0);
+				print $bticket_static->LibStatut($objp->passenger, 3, 0);
 				print "</span></td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $ticket_static->LibStatut($objp->classe, 3, 1);
+				print $bticket_static->LibStatut($objp->classe, 3, 1);
 				print "</span></td>";
 				print "</tr>\n";
 				$i++;

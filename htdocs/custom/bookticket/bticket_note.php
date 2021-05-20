@@ -58,8 +58,8 @@ if (!$res && file_exists("../../main.inc.php")) $res = @include "../../main.inc.
 if (!$res && file_exists("../../../main.inc.php")) $res = @include "../../../main.inc.php";
 if (!$res) die("Include of main fails");
 
-dol_include_once('/bookticket/class/ticket.class.php');
-dol_include_once('/bookticket/lib/ticket.lib.php');
+dol_include_once('/bookticket/class/bticket.class.php');
+dol_include_once('/bookticket/lib/bticket.lib.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("bookticket@bookticket"));
@@ -72,7 +72,7 @@ $cancel     = GETPOST('cancel', 'aZ09');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 // Initialize technical objects
-$object = new Ticket($db);
+$object = new Bticket($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->bookticket->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('ticketnote', 'globalcard')); // Note that conf->hooks_modules contains array
@@ -88,8 +88,8 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) $upload_dir = $conf->bookticket->multidir_output[$object->entity]."/".$object->id;
 
-$permissionnote = $user->rights->bookticket->ticket->write; // Used by the include of actions_setnotes.inc.php
-$permissiontoadd = $user->rights->bookticket->ticket->write; // Used by the include of actions_addupdatedelete.inc.php
+$permissionnote = $user->rights->bookticket->bticket->write; // Used by the include of actions_setnotes.inc.php
+$permissiontoadd = $user->rights->bookticket->bticket->write; // Used by the include of actions_addupdatedelete.inc.php
 
 
 

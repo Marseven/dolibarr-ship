@@ -62,8 +62,8 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-dol_include_once('/bookticket/class/ticket.class.php');
-dol_include_once('/bookticket/lib/ticket.lib.php');
+dol_include_once('/bookticket/class/bticket.class.php');
+dol_include_once('/bookticket/lib/bticket.lib.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("bookticket@bookticket", "companies", "other", "mails"));
@@ -144,7 +144,7 @@ if ($object->id)
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/bookticket/ticket_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/bookticket/bticket_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
@@ -213,7 +213,7 @@ if ($object->id)
 	$param = '&id='.$object->id;
 
 	//$relativepathwithnofile='ticket/' . dol_sanitizeFileName($object->id).'/';
-	$relativepathwithnofile = 'ticket/'.dol_sanitizeFileName($object->ref).'/';
+	$relativepathwithnofile = 'bticket/'.dol_sanitizeFileName($object->ref).'/';
 
 	include_once DOL_DOCUMENT_ROOT.'/core/tpl/document_actions_post_headers.tpl.php';
 } else {

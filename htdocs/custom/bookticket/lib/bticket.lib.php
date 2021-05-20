@@ -22,28 +22,28 @@
  */
 
 /**
- *	\file       htdocs/core/lib/ticket.lib.php
+ *	\file       htdocs/core/lib/bticket.lib.php
  *	\brief      Ensemble de fonctions de base pour le module produit et service
- * 	\ingroup	ticket
+ * 	\ingroup	bticket
  */
 
 /**
  * Prepare array with list of tabs
  *
- * @param  Ticket	$object		Object related to tabs
+ * @param  Bticket	$object		Object related to tabs
  * @return  array				Array of tabs to show
  */
-function ticket_prepare_head($object)
+function bticket_prepare_head($object)
 {
 	global $db, $langs, $conf, $user;
 	$langs->load("bookticket");
 
-	$label = $langs->trans('Ticket');
+	$label = $langs->trans('Bticket');
 
 	$h = 0;
 	$head = array();
 
-	$head[$h][0] = DOL_URL_ROOT."/custom/bookticket/ticket_card.php?id=".$object->id;
+	$head[$h][0] = DOL_URL_ROOT."/custom/bookticket/bticket_card.php?id=".$object->id;
 	$head[$h][1] = $label;
 	$head[$h][2] = 'card';
 	$h++;
@@ -52,7 +52,7 @@ function ticket_prepare_head($object)
 	// Entries must be declared in modules descriptor with line
 	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
 	// $this->tabs = array('entity:-tabname);   												to remove a tab
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'ticket');
+	complete_head_from_modules($conf, $langs, $object, $head, $h, 'bticket');
 
 	// Notes
 	if (empty($conf->global->MAIN_DISABLE_NOTES_TAB))
@@ -60,7 +60,7 @@ function ticket_prepare_head($object)
 		$nbNote = 0;
 		if (!empty($object->note_private)) $nbNote++;
 		if (!empty($object->note_public)) $nbNote++;
-		$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/ticket_note.php?id='.$object->id;
+		$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/bticket_note.php?id='.$object->id;
 		$head[$h][1] = $langs->trans('Notes');
 		if ($nbNote > 0) $head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbNote.'</span>';
 		$head[$h][2] = 'note';
@@ -77,13 +77,13 @@ function ticket_prepare_head($object)
 		$nbFiles += count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
 	}
 	$nbLinks = Link::count($db, $object->element, $object->id);
-	$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/ticket_document.php?id='.$object->id;
+	$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/bticket_document.php?id='.$object->id;
 	$head[$h][1] = $langs->trans('Documents');
 	if (($nbFiles + $nbLinks) > 0) $head[$h][1] .= '<span class="badge marginleftonlyshort">'.($nbFiles + $nbLinks).'</span>';
 	$head[$h][2] = 'documents';
 	$h++;
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'ticket', 'remove');
+	complete_head_from_modules($conf, $langs, $object, $head, $h, 'bticket', 'remove');
 
 	/* Log
 	$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/ticket_agenda.php?id='.$object->id;
@@ -112,7 +112,7 @@ function ticket_admin_prepare_head()
 	$h = 0;
 	$head = array();
 
-	$head[$h][0] = DOL_URL_ROOT."/custom/bookticket/admin/ticket.php";
+	$head[$h][0] = DOL_URL_ROOT."/custom/bookticket/admin/bticket.php";
 	$head[$h][1] = $langs->trans('Parameters');
 	$head[$h][2] = 'general';
 	$h++;
@@ -121,9 +121,9 @@ function ticket_admin_prepare_head()
 	// Entries must be declared in modules descriptor with line
 	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
 	// $this->tabs = array('entity:-tabname);   												to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'ticket_admin');
+	complete_head_from_modules($conf, $langs, null, $head, $h, 'bticket_admin');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'ticket_admin', 'remove');
+	complete_head_from_modules($conf, $langs, null, $head, $h, 'bticket_admin', 'remove');
 
 	return $head;
 }

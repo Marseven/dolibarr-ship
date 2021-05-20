@@ -40,7 +40,7 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ticket.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
@@ -79,7 +79,7 @@ if (!$sortorder) $sortorder = "ASC";
 $contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'ticketlist';
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$object = new Ticket($db);
+$object = new Bticket($db);
 $form = new Form($db);
 
 if (empty($action)) $action = 'list';
@@ -91,7 +91,7 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('ship', 'list', $canvas);
+	$objcanvas->getCanvas('bticket', 'list', $canvas);
 }
 
 // Security check
@@ -100,7 +100,7 @@ if (!empty($canvas))
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
 	't.ref'=>"Ref",
-	't.passenger'=>"Passenger",
+	'passenger'=>"Passenger",
 );
 
 if (!empty($conf->barcode->enabled)) {
@@ -139,7 +139,7 @@ if (!GETPOST('confirmmassaction', 'alpha') && $massaction != 'presend' && $massa
 
 $parameters = array();
 
-$rightskey = 'ticket';
+$rightskey = 'bticket';
 
 // Selection of new fields
 include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
@@ -177,7 +177,7 @@ $texte = $langs->trans("Tickets");
 
 
 $sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger, p.prenom as prenom,  c.label as classe, tr.ref as travel, t.entity, fk_passenger';
-$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
@@ -215,7 +215,7 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 		$id = $obj->rowid;
-		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/ship_card.php?id='.$id);
+		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?id='.$id);
 		exit;
 	}
 
@@ -248,12 +248,12 @@ if ($resql)
 		//'builddoc'=>$langs->trans("PDFMerge"),
 		//'presend'=>$langs->trans("SendByMail"),
 	);
-	if ($user->rights->{$rightskey}->supprimer) $arrayofmassactions['predelete'] = "<span class='fa fa-trash paddingrightonly'></span>".$langs->trans("Delete");
+	if ($user->rights->bookticket->{$rightskey}->delete) $arrayofmassactions['predelete'] = "<span class='fa fa-trash paddingrightonly'></span>".$langs->trans("Delete");
 	if (in_array($massaction, array('presend', 'predelete'))) $arrayofmassactions = array();
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 	$newcardbutton = '';
-	$perm = $user->rights->bookticket->ticket->write;
+	$perm = $user->rights->bookticket->bticket->write;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewTicket'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/ship_card.php?action=create&type=0', '', $perm, $params);
@@ -269,14 +269,14 @@ if ($resql)
 	//print '<input type="hidden" name="page" value="'.$page.'">';
 	print '<input type="hidden" name="type" value="'.$type.'">';
 
-	$picto = 'ticket';
+	$picto = 'bticket';
 
 	print_barre_liste($texte, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 	$topicmail = "Information";
-	$modelmail = "ticket";
-	$objecttmp = new Ticket($db);
-	$trackid = 'ticket'.$object->id;
+	$modelmail = "bticket";
+	$objecttmp = new Bticket($db);
+	$trackid = 'bticket'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 
@@ -360,8 +360,8 @@ if ($resql)
 	if (!empty($arrayfields['t.ref']['checked'])) {
 		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['t.passenger']['checked'])) {
-		print_liste_field_titre($arrayfields['t.passenger']['label'], $_SERVER["PHP_SELF"], "t.passenger", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['passenger']['checked'])) {
+		print_liste_field_titre($arrayfields['t.passenger']['label'], $_SERVER["PHP_SELF"], "passenger", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['t.barcode']['checked'])) {
 		print_liste_field_titre($arrayfields['t.barcode']['label'], $_SERVER["PHP_SELF"], "t.barcode", "", $param, "", $sortfield, $sortorder);
@@ -385,7 +385,7 @@ if ($resql)
 	print "</tr>\n";
 
 
-	$ticket_static = new Ticket($db);
+	$ticket_static = new Bticket($db);
 
 	$i = 0;
 	$totalarray = array();
