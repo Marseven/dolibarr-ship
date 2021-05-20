@@ -986,7 +986,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as classe, tr.ref as travel, t.entity';
+			/*$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as classe, tr.ref as travel, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -995,7 +995,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 			$sql_t .= ' WHERE t.rowid IN ('.$object->id.')';
 			$resql_t = $db->query($sql_t);
-			$obj = $db->fetch_object($resql_t);
+			$obj = $db->fetch_object($resql_t);*/
 
 			$head = ticket_prepare_head($object);
 			$titre = $langs->trans("CardTicket");
@@ -1071,14 +1071,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("Ref").'</td>';
 				print '<td>';
-				print $obj->ref;
+				print $object->ref;
 				print '</td></tr>';
 
 				// Passenger
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("Passenger").'</td>';
 				print '<td>';
-				print $obj->passenger;
+				print $object->passenger;
 				print '</td></tr>';
 
 
@@ -1090,7 +1090,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('Travel'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $obj->travel;
+				print $object->travel;
 				print '</td>';
 				print '</tr>';
 
@@ -1101,7 +1101,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('Ship'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $obj->ship;
+				print $object->ship;
 				print '</td>';
 				print '</tr>';
 
@@ -1112,7 +1112,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('Classe'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $obj->classe;
+				print $object->classe;
 				print '</td>';
 				print '</tr>';
 
@@ -1123,7 +1123,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('Prix'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $obj->price.' FCFA';
+				print $object->price.' FCFA';
 				print '</td>';
 				print '</tr>';
 
