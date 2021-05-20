@@ -688,11 +688,9 @@ if ($action != 'create' && $action != 'edit')
 			}
 		}
 
-		$object_is_used = $object->isObjectUsed($object->id);
-		var_dump($object_is_used);die;
 		if ($usercandelete)
 		{
-			if (empty($object_is_used) && (!isset($object->no_button_delete) || $object->no_button_delete <> 1))
+			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
 			{
 				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
 				{
