@@ -178,10 +178,10 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Latest modified ticket
  */
-if (!empty($conf->product->enabled) && $user->rights->ticket->lire)
+if ($user->rights->bookticket->ticket->read)
 {
 	$max = 15;
-	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as voyage,";
+	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as travel,";
 	$sql .= " t.entity,";
 	$sql .= " t.tms as datem";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_ticket as t";

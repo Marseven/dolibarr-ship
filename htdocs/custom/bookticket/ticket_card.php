@@ -985,17 +985,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$head = ticket_prepare_head($object);
-			$titre = $langs->trans("CardTicket");
-			$picto = 'Ticket';
-
-			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
-
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
-
-			$shownav = 1;
-			if ($user->socid && !in_array('ticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
-
 			$sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as classe, tr.ref as travel, t.entity';
 			$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
 			$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
@@ -1007,7 +996,20 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql = $db->query($sql);
 			$obj = $db->fetch_object($resql);
 
-			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
+			$head = ticket_prepare_head($obj);
+			$titre = $langs->trans("CardTicket");
+			$picto = 'Ticket';
+
+			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
+
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+
+			$shownav = 1;
+			if ($user->socid && !in_array('ticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
+
+
+
+			dol_banner_tab($obj, 'ref', $linkback, $shownav, 'ref');
 
 			print '<div class="fichecenter">';
 				print '<div class="fichehalfleft">';
