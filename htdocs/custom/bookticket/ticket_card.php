@@ -982,9 +982,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
-			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
+			//$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
+			//if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
 			/*$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as classe, tr.ref as travel, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
@@ -999,7 +999,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$head = ticket_prepare_head($object);
 			$titre = $langs->trans("CardTicket");
-			$picto = 'Ticket';
+			$picto = 'ticket';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
