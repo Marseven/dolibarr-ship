@@ -42,6 +42,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/city.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/travel.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
@@ -270,18 +271,6 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 				$id = $object->create($user);
 				if ($id > 0)
 				{
-					if (GETPOST('clone_composition'))
-					{
-						$result = $object->clone_associations($originalId, $id);
-
-						if ($result < 1)
-						{
-							$db->rollback();
-							setEventMessages($langs->trans('ErrorTravelClone'), null, 'errors');
-							header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
-							exit;
-						}
-					}
 
 					$db->commit();
 					$db->close();

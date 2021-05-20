@@ -215,6 +215,27 @@ class Ticket extends CommonObject
 	}
 
 	/**
+	 *    Check that ref and label are ok
+	 *
+	 * @return int         >1 if OK, <=0 if KO
+	 */
+	public function check()
+	{
+		$this->ref = dol_sanitizeFileName(stripslashes($this->ref));
+
+		$err = 0;
+		if (dol_strlen(trim($this->ref)) == 0) {
+			$err++;
+		}
+
+		if ($err > 0) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
 	 * Create object into database
 	 *
 	 * @param  User $user      User that creates
@@ -1020,6 +1041,41 @@ class Ticket extends CommonObject
 		$this->db->commit();
 
 		return $error;
+	}
+
+	/**
+	 *  Check barcode
+	 *
+	 * @param  string $valuetotest Value to test
+	 * @param  string $typefortest Type of barcode (ISBN, EAN, ...)
+	 * @return int                        0 if OK
+	 *                                     -1 ErrorBadBarCodeSyntax
+	 *                                     -2 ErrorBarCodeRequired
+	 *                                     -3 ErrorBarCodeAlreadyUsed
+	 */
+	public function check_barcode($valuetotest, $typefortest)
+	{
+		// phpcs:enable
+		global $conf;
+		if (!empty($conf->barcode->enabled) && !empty($conf->global->BARCODE_PRODUCT_ADDON_NUM)) {
+			$module = strtolower($conf->global->BARCODE_PRODUCT_ADDON_NUM);
+
+			$dirsociete = array_merge(array('/core/modules/barcode/'), $conf->modules_parts['barcode']);
+			foreach ($dirsociete as $dirroot)
+			{
+				$res = dol_include_once($dirroot.$module.'.php');
+				if ($res) { break;
+				}
+			}
+
+			$mod = new $module();
+
+			dol_syslog(get_class($this)."::check_barcode value=".$valuetotest." type=".$typefortest." module=".$module);
+			$result = $mod->verif($this->db, $valuetotest, $this, 0, $typefortest);
+			return $result;
+		} else {
+			return 0;
+		}
 	}
 }
 

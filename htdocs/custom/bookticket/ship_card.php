@@ -40,6 +40,7 @@ if (! $res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/ship.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
@@ -231,18 +232,6 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 				$id = $object->create($user);
 				if ($id > 0)
 				{
-					if (GETPOST('clone_composition'))
-					{
-						$result = $object->clone_associations($originalId, $id);
-
-						if ($result < 1)
-						{
-							$db->rollback();
-							setEventMessages($langs->trans('ErrorshipClone'), null, 'errors');
-							header("Location: ".$_SERVER["PHP_SELF"]."?id=".$originalId);
-							exit;
-						}
-					}
 
 					$db->commit();
 					$db->close();
@@ -461,10 +450,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="canvas" value="'.$object->canvas.'">';
 
 			$head = ship_prepare_head($object);
-			$titre = $langs->trans("Cardship".$object->type);
+			$titre = $langs->trans("Cardship".$object->label);
 			$picto =  'ship';
 			print dol_get_fiche_head($head, 'card', $titre, 0, $picto);
-
 
 			print '<table class="border allwidth">';
 

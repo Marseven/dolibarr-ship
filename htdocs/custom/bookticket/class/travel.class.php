@@ -235,6 +235,27 @@ class Travel extends CommonObject
 	}
 
 	/**
+	 *    Check that ref and label are ok
+	 *
+	 * @return int         >1 if OK, <=0 if KO
+	 */
+	public function check()
+	{
+		$this->ref = dol_sanitizeFileName(stripslashes($this->ref));
+
+		$err = 0;
+		if (dol_strlen(trim($this->ref)) == 0) {
+			$err++;
+		}
+
+		if ($err > 0) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
 	 * Create object into database
 	 *
 	 * @param  User $user      User that creates
