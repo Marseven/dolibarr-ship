@@ -794,7 +794,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql_p = $db->query($sql_p);
 			$obj_p = $db->fetch_object($resql_p);
 
-			var_dump($object); die;
+			//var_dump($object); die;
 
 			//WYSIWYG Editor
 			require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
