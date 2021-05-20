@@ -1017,7 +1017,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<table class="border tableforfield centpercent">';
 				print '<tbody>';
 
-				if ($showbarcode)
+				/*if ($showbarcode)
 				{
 					// Barcode type
 					print '<tr><td class="nowrap">';
@@ -1065,7 +1065,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 						print $object->barcode;
 					}
 					print '</td></tr>'."\n";
-				}
+				}*/
 
 				// Ref
 				print '<tr>';
@@ -1176,7 +1176,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 }
 
 $tmpcode = '';
-if (!empty($modCodeTicket->code_auto)) $tmpcode = $modCodeTicket->getNextValue($object);
 
 $formconfirm = '';
 

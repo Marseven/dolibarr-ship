@@ -176,7 +176,7 @@ $title = $langs->trans("Tickets");
 $texte = $langs->trans("Tickets");
 
 
-$sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger, p.prenom as prenom, p.rowid as idpassenger,  c.label as classe, tr.ref as travel, t.entity';
+$sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger, p.prenom as prenom,  c.label as classe, tr.ref as travel, t.entity, fk_passenger';
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_ticket as t';
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -427,7 +427,7 @@ if ($resql)
 		// Passenger
 		if (!empty($arrayfields['t.passenger']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.DOL_URL_ROOT.'/custom/bookticket/passenger_card.php?id='.$object->idpassenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.DOL_URL_ROOT.'/custom/bookticket/passenger_card.php?id='.$object->fk_passenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
