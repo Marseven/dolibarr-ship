@@ -997,7 +997,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
 
-			var_dump($obj); die;
+			//var_dump($obj); die;
 
 			$head = bticket_prepare_head($object);
 			$titre = $langs->trans("CardTicket");
