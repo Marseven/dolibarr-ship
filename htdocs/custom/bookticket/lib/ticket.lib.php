@@ -85,7 +85,7 @@ function ticket_prepare_head($object)
 
 	complete_head_from_modules($conf, $langs, $object, $head, $h, 'ticket', 'remove');
 
-	// Log
+	/* Log
 	$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/ticket_agenda.php?id='.$object->id;
 	$head[$h][1] = $langs->trans("Events");
 	if (!empty($conf->agenda->enabled) && (!empty($user->rights->agenda->myactions->read) || !empty($user->rights->agenda->allactions->read)))
@@ -94,7 +94,7 @@ function ticket_prepare_head($object)
 		$head[$h][1] .= $langs->trans("Agenda");
 	}
 	$head[$h][2] = 'agenda';
-	$h++;
+	$h++;*/
 
 	return $head;
 }

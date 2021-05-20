@@ -120,7 +120,7 @@ $form = new Form($db);
 
 $title = $langs->trans("Ship").' - '.$langs->trans("Files");
 $help_url = '';
-$picto = "ship";
+$picto = "document";
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
 

@@ -419,7 +419,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 			$head = city_prepare_head($object);
-			$titre = $langs->trans("CardCity".$object->type);
+			$titre = $langs->trans("CardCity");
 			$picto = 'city';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
@@ -429,28 +429,70 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$shownav = 1;
 			if ($user->socid && !in_array('city', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
-			//dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
+			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
 
 			print '<div class="fichecenter">';
-			print '<div class="fichehalfleft">';
+				print '<div class="fichehalfleft">';
+				print '<div class="underbanner clearboth"></div>';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				print '<table class="border tableforfield centpercent">';
+				print '<tbody>';
+
+				// Label
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Label").'</td>';
+				print '<td>';
+				print $object->label;
+				print '</td></tr>';
+
+				// Labelshort
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Labelshort").'</td>';
+				print '<td>';
+				print $object->labelshort;
+				print '</td></tr>';
 
 
-			print '</table>';
-			print '</div>';
-			print '<div class="fichehalfright"><div class="ficheaddleft">';
+				// Other attributes
+				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				print '</tbody>';
+				print '</table>'."\n";
 
-			print "</table>\n";
-			print '</div>';
+				print '</div>';
+				print '<div class="fichehalfright">';
+				print '<div class="ficheaddleft">';
 
-			print '</div></div>';
-			print '<div style="clear:both"></div>';
+				print '<div class="underbanner clearboth"></div>';
+
+				// Info workflow
+				print '<table class="border tableforfield centpercent">'."\n";
+				print '<tbody>';
+
+				if (!empty($object->fk_user_creat))
+				{
+					$userCreate = new User($db);
+					$userCreate->fetch($object->fk_user_creat);
+					print '<tr>';
+					print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
+					print '<td>'.$userCreate->getNomUrl(-1).'</td>';
+					print '</tr>';
+				}
+
+				print '<tr>';
+				print '<td>'.$langs->trans('DateCreation').'</td>';
+				print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
+				print '</tr>';
+
+				print '</tbody>';
+				print '</table>';
+
+				print '</div>';
+				print '</div>';
+				print '</div>';
+
+				print '<div class="clearboth"></div>';
 
 			print dol_get_fiche_end();
 		}
@@ -587,29 +629,6 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 {
 	print '<div class="fichecenter"><div class="fichehalfleft">';
 	print '<a name="builddoc"></a>'; // ancre
-
-	// Documents
-	$objectrowid = dol_sanitizeFileName($object->rowid);
-	$relativepath = $comrowid.'/'.$objectrowid.'.pdf';
-	if (!empty($conf->city->multidir_output[$object->entity])) {
-		$filedir = $conf->city->multidir_output[$object->entity].'/'.$objectrowid; //Check repertories of current entities
-	} else {
-		$filedir = $conf->city->dir_output.'/'.$objectrowid;
-	}
-	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-	$genallowed = $usercanread;
-	$delallowed = $usercancreate;
-
-	print $formfile->showdocuments($modulepart, $object->rowid, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
-	$somethingshown = $formfile->numoffiles;
-
-	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-
-	$MAXEVENT = 10;
-
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/city_agenda.php?id='.$object->id.'">';
-	$morehtmlright .= $langs->trans("SeeAll");
-	$morehtmlright .= '</a>';
 
 	// List of actions on element
 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';

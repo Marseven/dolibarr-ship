@@ -501,7 +501,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 			$head = ship_prepare_head($object);
-			$titre = $langs->trans("Cardship".$object->type);
+			$titre = $langs->trans("CardShip");
 			$picto = 'ship';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
@@ -748,6 +748,23 @@ if ($object->id && ($action == '' || $action == 'view') && $object->status)
 
 		print '</form>';
 	}
+}
+
+/*
+ * Documents generes
+ */
+
+if ($action != 'create' && $action != 'edit' && $action != 'delete')
+{
+	print '<div class="fichecenter"><div class="fichehalfleft">';
+	print '<a name="builddoc"></a>'; // ancre
+
+	// List of actions on element
+	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
+	$formactions = new FormActions($db);
+	$somethingshown = $formactions->showactions($object, 'ship', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for ship
+
+	print '</div></div></div>';
 }
 
 // End of page

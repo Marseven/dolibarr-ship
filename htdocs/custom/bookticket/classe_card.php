@@ -500,7 +500,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 			$head = classe_prepare_head($object);
-			$titre = $langs->trans("CardClasse".$object->type);
+			$titre = $langs->trans("CardClasse");
 			$picto = 'classe';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
@@ -514,24 +514,111 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 
 			print '<div class="fichecenter">';
-			print '<div class="fichehalfleft">';
+				print '<div class="fichehalfleft">';
+				print '<div class="underbanner clearboth"></div>';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				print '<table class="border tableforfield centpercent">';
+				print '<tbody>';
+
+				// Label
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Label").'</td>';
+				print '<td>';
+				print $object->label;
+				print '</td></tr>';
+
+				// Labelshort
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Labelshort").'</td>';
+				print '<td>';
+				print $object->labelshort;
+				print '</td></tr>';
 
 
-			print '</table>';
-			print '</div>';
-			print '<div class="fichehalfright"><div class="ficheaddleft">';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				// prix_standard
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('PrixStandardHelp');
+				print $form->textwithpicto($langs->trans('PrixStandard'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->prix_standard;
+				print '</td>';
+				print '</tr>';
 
-			print "</table>\n";
-			print '</div>';
+				// prix_enfant
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('PrixEnfantHelp');
+				print $form->textwithpicto($langs->trans('PrixEnfant'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->prix_enfant;
+				print '</td>';
+				print '</tr>';
 
-			print '</div></div>';
-			print '<div style="clear:both"></div>';
+				// prix_enf_stand
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('PrixEnfStandHelp');
+				print $form->textwithpicto($langs->trans('PrixEnfStand'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->prix_enf_stand;
+				print '</td>';
+				print '</tr>';
+
+				// kilo_bagage
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('KiloBagageHelp');
+				print $form->textwithpicto($langs->trans('KiloBagage'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->kilo_bagage;
+				print '</td>';
+				print '</tr>';
+
+				// Other attributes
+				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+
+				print '</tbody>';
+				print '</table>'."\n";
+
+				print '</div>';
+				print '<div class="fichehalfright">';
+				print '<div class="ficheaddleft">';
+
+				print '<div class="underbanner clearboth"></div>';
+
+				// Info workflow
+				print '<table class="border tableforfield centpercent">'."\n";
+				print '<tbody>';
+
+				if (!empty($object->fk_user_creat))
+				{
+					$userCreate = new User($db);
+					$userCreate->fetch($object->fk_user_creat);
+					print '<tr>';
+					print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
+					print '<td>'.$userCreate->getNomUrl(-1).'</td>';
+					print '</tr>';
+				}
+
+				print '<tr>';
+				print '<td>'.$langs->trans('DateCreation').'</td>';
+				print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
+				print '</tr>';
+
+				print '</tbody>';
+				print '</table>';
+
+				print '</div>';
+				print '</div>';
+				print '</div>';
+
+				print '<div class="clearboth"></div>';
 
 			print dol_get_fiche_end();
 		}
@@ -668,29 +755,6 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 {
 	print '<div class="fichecenter"><div class="fichehalfleft">';
 	print '<a name="builddoc"></a>'; // ancre
-
-	// Documents
-	$objectref = dol_sanitizeFileName($object->ref);
-	$relativepath = $comref.'/'.$objectref.'.pdf';
-	if (!empty($conf->classe->multidir_output[$object->entity])) {
-		$filedir = $conf->classe->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
-	} else {
-		$filedir = $conf->classe->dir_output.'/'.$objectref;
-	}
-	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-	$genallowed = $usercanread;
-	$delallowed = $usercancreate;
-
-	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
-	$somethingshown = $formfile->numoffiles;
-
-	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-
-	$MAXEVENT = 10;
-
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/classe_agenda.php?id='.$object->id.'">';
-	$morehtmlright .= $langs->trans("SeeAll");
-	$morehtmlright .= '</a>';
 
 	// List of actions on element
 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';

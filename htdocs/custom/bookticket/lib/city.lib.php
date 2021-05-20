@@ -54,7 +54,7 @@ function city_prepare_head($object)
 	// $this->tabs = array('entity:-tabname);   												to remove a tab
 	complete_head_from_modules($conf, $langs, $object, $head, $h, 'city');
 
-	// Notes
+	/* Notes
 	if (empty($conf->global->MAIN_DISABLE_NOTES_TAB))
 	{
 		$nbNote = 0;
@@ -94,7 +94,7 @@ function city_prepare_head($object)
 		$head[$h][1] .= $langs->trans("Agenda");
 	}
 	$head[$h][2] = 'agenda';
-	$h++;
+	$h++;*/
 
 	return $head;
 }

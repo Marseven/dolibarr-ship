@@ -185,6 +185,14 @@ if ($action == 'add' && $usercancreate)
 		$object->lieu_depart           = GETPOST('lieu_depart');
 		$object->lieu_arrive           = GETPOST('lieu_arrive');
 
+		$object_ship = new Ship($db);
+		$result = $object_ship->fetch($object->fk_ship);
+
+		$object->nbre_place             = $result->nbre_place;
+		$object->nbre_vip             	 = $result->nbre_vip;
+		$object->nbre_aff             	 = $result->nbre_aff;
+		$object->nbre_eco             	 = $result->nbre_eco;
+
 
 		// Fill array 'array_options' with data from add form
 		if (!$error)
@@ -654,7 +662,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 			$head = travel_prepare_head($object);
-			$titre = $langs->trans("Cardtravel".$object->type);
+			$titre = $langs->trans("CardTravel");
 			$picto = 'travel';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
@@ -668,24 +676,137 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 
 			print '<div class="fichecenter">';
-			print '<div class="fichehalfleft">';
+				print '<div class="fichehalfleft">';
+				print '<div class="underbanner clearboth"></div>';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				print '<table class="border tableforfield centpercent">';
+				print '<tbody>';
+
+				// Ref
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Label").'</td>';
+				print '<td>';
+				print $object->ref;
+				print '</td></tr>';
+
+				// Jour
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Jour").'</td>';
+				print '<td>';
+				print $object->jour;
+				print '</td></tr>';
+
+				// heure
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Heure").'</td>';
+				print '<td>';
+				print $object->heure;
+				print '</td></tr>';
 
 
-			print '</table>';
-			print '</div>';
-			print '<div class="fichehalfright"><div class="ficheaddleft">';
+				// LieuDepart
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("LieuDepart").'</td>';
+				print '<td>';
+				print $object->lieu_depart;
+				print '</td></tr>';
 
-			print '<div class="underbanner clearboth"></div>';
-			print '<table class="border tableforfield" width="100%">';
+				// LieuArrive
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("LieuArrive").'</td>';
+				print '<td>';
+				print $object->lieu_arrive;
+				print '</td></tr>';
 
-			print "</table>\n";
-			print '</div>';
 
-			print '</div></div>';
-			print '<div style="clear:both"></div>';
+
+				// NbrePlace
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbrePlaceHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbrePlaceHelp");
+				print $form->textwithpicto($langs->trans('NbrePlace'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_place;
+				print '</td>';
+				print '</tr>';
+
+				// NbreVip
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbreVipHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbreVipHelp");
+				print $form->textwithpicto($langs->trans('NbreVip'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_vip;
+				print '</td>';
+				print '</tr>';
+
+				// NbreAff
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbreAffHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbreAffHelp");
+				print $form->textwithpicto($langs->trans('NbreAff'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_aff;
+				print '</td>';
+				print '</tr>';
+
+				// NbreEco
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('NbreEcoHelp');
+				$htmlhelp .= '<br>'.$langs->trans("NbreEcoHelp");
+				print $form->textwithpicto($langs->trans('NbreEco'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->nbre_eco;
+				print '</td>';
+				print '</tr>';
+
+				// Other attributes
+				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+
+				print '</tbody>';
+				print '</table>'."\n";
+
+				print '</div>';
+				print '<div class="fichehalfright">';
+				print '<div class="ficheaddleft">';
+
+				print '<div class="underbanner clearboth"></div>';
+
+				// Info workflow
+				print '<table class="border tableforfield centpercent">'."\n";
+				print '<tbody>';
+
+				if (!empty($object->fk_user_creat))
+				{
+					$userCreate = new User($db);
+					$userCreate->fetch($object->fk_user_creat);
+					print '<tr>';
+					print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
+					print '<td>'.$userCreate->getNomUrl(-1).'</td>';
+					print '</tr>';
+				}
+
+				print '<tr>';
+				print '<td>'.$langs->trans('DateCreation').'</td>';
+				print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
+				print '</tr>';
+
+				print '</tbody>';
+				print '</table>';
+
+				print '</div>';
+				print '</div>';
+				print '</div>';
+
+				print '<div class="clearboth"></div>';
 
 			print dol_get_fiche_end();
 		}
@@ -833,6 +954,8 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 	$genallowed = $usercanread;
 	$delallowed = $usercancreate;
+
+	$modulepart = "bookticket";
 
 	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
 	$somethingshown = $formfile->numoffiles;
