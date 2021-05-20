@@ -787,6 +787,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
 		{
+
+			$sql_p = 'SELECT DISTINCT p.rowid, p.nom, p.prenom, p.age, p.adresse,  p.telephone, p.email, p.accompagne,  p.nom_enfant,  p.age_enfant, p.entity';
+			$sql_p .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
+			$sql_t .= ' WHERE p.entity IN ('.getEntity('passenger').')';
+			$sql_p .= ' AND p.rowid IN ('.$object->fk_passenger.')';
+			$resql_p = $db->query($sql_p);
+			$obj_p = $db->fetch_object($resql_p);
+
 			//WYSIWYG Editor
 			require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
@@ -796,7 +804,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
                         	document.formprod.action.value="edit";
                         	document.formprod.submit();
                         });
-		});';
+				});';
 				print '</script>'."\n";
 
 
@@ -920,51 +928,51 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
 			// fk_passenger
-			print '<td><input name="fk_passenger" type="hidden" value="'.$object_passenger->id.'">';
+			print '<td><input name="fk_passenger" type="hidden" value="'.$object->fk_passenger.'">';
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
+			print '<td><input name="nom" class="maxwidth300" value="'.$obj_p->nom.'">';
 			print '</td></tr>';
 
 			// prenom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Prenom").'</td>';
-			print '<td><input name="prenom" class="maxwidth300" value="'.$object_passenger->prenom.'">';
+			print '<td><input name="prenom" class="maxwidth300" value="'.$obj_p->prenom.'">';
 			print '</td></tr>';
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object_passenger->age.'"> ANS';
+			print '<td><input name="age" type="number" class="maxwidth50" value="'.$obj_p->age.'"> ANS';
 			print '</td></tr>';
 
 			// adresse
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Adresse").'</td>';
-			print '<td><input name="adresse" class="maxwidth300" value="'.$object_passenger->adresse.'">';
+			print '<td><input name="adresse" class="maxwidth300" value="'.$obj_p->adresse.'">';
 			print '</td></tr>';
 
 			// telephone
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Telephone").'</td>';
-			print '<td><input name="telephone" class="maxwidth300" value="'.$object_passenger->telephone.'">';
+			print '<td><input name="telephone" class="maxwidth300" value="'.$obj_p->telephone.'">';
 			print '</td></tr>';
 
 			// email
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Email").'</td>';
-			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object_passenger->email.'">';
+			print '<td><input name="email" type="email" class="maxwidth300" value="'.$obj_p->email.'">';
 			print '</td></tr>';
 
 			// accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			print '<td><input type="checkbox" name="accompagne"'.($object_passenger->accompagne == 1 ? 'checked="checked"' : '').'>';
+			print '<td><input type="checkbox" name="accompagne"'.($obj_p->accompagne == "on" ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
 
 			// nom_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object_passenger->nom_enfant.'">';
+			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$obj_p->nom_enfant.'">';
 			print '</td></tr>';
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object_passenger->age_enfant.'"> ANS';
+			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$obj_p->age_enfant.'"> ANS';
 			print '</td></tr>';
 
 			print '</table>';
