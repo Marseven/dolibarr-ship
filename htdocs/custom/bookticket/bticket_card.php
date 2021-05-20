@@ -997,7 +997,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
 
-			$head = bticket_prepare_head($object);
+			$head = bticket_prepare_head($obj);
 			$titre = $langs->trans("CardTicket");
 			$picto = 'bticket';
 
@@ -1008,7 +1008,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$shownav = 1;
 			if ($user->socid && !in_array('bticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
-			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
+			dol_banner_tab($obj, 'ref', $linkback, $shownav, 'ref');
 
 			print '<div class="fichecenter">';
 			print '<div class="fichehalfleft">';
@@ -1071,14 +1071,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr>';
 			print '<td class="titlefield">'.$langs->trans("Ref").'</td>';
 			print '<td>';
-			print $object->ref;
+			print $obj->ref;
 			print '</td></tr>';
 
 			// Passenger
 			print '<tr>';
 			print '<td class="titlefield">'.$langs->trans("Passenger").'</td>';
 			print '<td>';
-			print $object->passenger;
+			print $obj->passenger;
 			print '</td></tr>';
 
 
@@ -1090,7 +1090,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Travel'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->travel;
+			print $obj->travel;
 			print '</td>';
 			print '</tr>';
 
@@ -1101,7 +1101,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Ship'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->ship;
+			print $obj->ship;
 			print '</td>';
 			print '</tr>';
 
@@ -1112,7 +1112,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Classe'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->classe;
+			print $obj->classe;
 			print '</td>';
 			print '</tr>';
 
@@ -1123,7 +1123,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Prix'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->price.' FCFA';
+			print $obj->price.' FCFA';
 			print '</td>';
 			print '</tr>';
 
