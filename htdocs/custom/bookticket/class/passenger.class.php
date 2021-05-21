@@ -64,9 +64,26 @@ class Passenger extends CommonObject
 	public $picto = 'passenger@bookticket';
 
 
+	/**
+	 * Draft status
+	 */
 	const STATUS_DRAFT = 0;
+	/**
+	 * Validated status
+	 */
 	const STATUS_VALIDATED = 1;
-	const STATUS_CANCELED = 9;
+	/**
+	 * Approved
+	 */
+	const STATUS_APPROVED = 2;
+	/**
+	 * Canceled
+	 */
+	const STATUS_CANCELED = 3;
+	/**
+	 * Refused
+	 */
+	const STATUS_REFUSED = 4;
 
 
 	/**

@@ -64,9 +64,26 @@ class Bticket extends CommonObject
 	public $picto = 'bticket@bookticket';
 
 
+	/**
+	 * Draft status
+	 */
 	const STATUS_DRAFT = 0;
+	/**
+	 * Validated status
+	 */
 	const STATUS_VALIDATED = 1;
-	const STATUS_CANCELED = 9;
+	/**
+	 * Approved
+	 */
+	const STATUS_APPROVED = 2;
+	/**
+	 * Canceled
+	 */
+	const STATUS_CANCELED = 3;
+	/**
+	 * Refused
+	 */
+	const STATUS_REFUSED = 4;
 
 
 	/**
@@ -109,6 +126,7 @@ class Bticket extends CommonObject
 		'fk_travel' => array('type'=>'integer:Travel:travel/class/travel.class.php', 'label'=>'Le voyage', 'picto'=>'travel', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'travel.rowid'),
 		'fk_classe' => array('type'=>'integer:Classe:classe/class/classe.class.php', 'label'=>'La classe', 'picto'=>'classe', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'classe.rowid'),
 		'fk_agence' => array('type'=>'integer:Classe:classe/class/agence.class.php', 'label'=>'Agence', 'picto'=>'classe', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'agence.rowid'),
+		'fk_valideur' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserValidor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.fk_user'),
 		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
@@ -150,6 +168,11 @@ class Bticket extends CommonObject
 	 */
 	public $entity;
 
+
+	/**
+	 * @var int ID
+	 */
+	public $fk_valideur;
 
 	/**
 	 * @var int Status

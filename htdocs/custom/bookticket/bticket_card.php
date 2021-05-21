@@ -468,6 +468,9 @@ if (empty($reshook))
 				$object->barcode_type_coder     = $stdobject->barcode_type_coder;
 				$object->barcode_type_label     = $stdobject->barcode_type_label;
 
+				$object->fk_valideur = $user->fk_user;
+
+
 				if (!$error && $object->check())
 				{
 					if ($object->update($object->id, $user) > 0 && $object_passenger->update($object_passenger->id, $user) > 0)
@@ -1376,6 +1379,12 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 // Print form confirm
 print $formconfirm;
 
+// Si validation de la demande
+if ($action == 'valid')
+{
+	print $form->formconfirm($_SERVER["PHP_SELF"]."?id=".$object->id, $langs->trans("TitleValidCP"), $langs->trans("ConfirmValidCP"), "confirm_valid", '', 1, 1);
+}
+
 /* ************************************************************************** */
 /*                                                                            */
 /* Barre d'action                                                             */
@@ -1401,6 +1410,24 @@ if ($action != 'create' && $action != 'edit')
 				} else {
 					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
 				}
+			}
+		}
+
+		if ($user->id == $object->fk_valideur)
+		{
+			if (!isset($object->no_button_validate) || $object->no_button_validate <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Va").'</a>';
+		}
+
+		if ($usercancreate && $object->statut == Bticket::STATUS_DRAFT)		// If draft
+		{
+			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=sendToValidate" class="butAction">'.$langs->trans("Validate").'</a>';
+		}
+		if ($object->statut == Bticket::STATUS_VALIDATED)	// If validated
+		{
+			if ($user->id == $object->fk_valideur)
+			{
+				print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
+				print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=refuse" class="butAction">'.$langs->trans("ActionRefuseCP").'</a>';
 			}
 		}
 
