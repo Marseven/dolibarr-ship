@@ -188,10 +188,10 @@ if ($action == 'add' && $usercancreate)
 		$object_ship = new Ship($db);
 		$result = $object_ship->fetch($object->fk_ship);
 
-		$object->nbre_place             = $result->nbre_place;
-		$object->nbre_vip             	 = $result->nbre_vip;
-		$object->nbre_aff             	 = $result->nbre_aff;
-		$object->nbre_eco             	 = $result->nbre_eco;
+		$object->nbre_place             = $object_ship->nbre_place;
+		$object->nbre_vip             	 = $object_ship->nbre_vip;
+		$object->nbre_aff             	 = $object_ship->nbre_aff;
+		$object->nbre_eco             	 = $object_ship->nbre_eco;
 
 
 		// Fill array 'array_options' with data from add form
