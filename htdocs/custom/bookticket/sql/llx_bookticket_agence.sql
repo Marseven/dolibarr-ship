@@ -14,25 +14,20 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program. If not, see <https://www.gnu.org/licenses/>.
 --
--- Table of 'ticket' for bookticket module
+-- Table of 'city' for accountancy expert module
 -- ============================================================================
 
-create table llx_bookticket_bticket
+create table llx_bookticket_agence
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
-  ref                       varchar(128) DEFAULT 0 NOT NULL,
-  barcode                   varchar(128) DEFAULT 0 NOT NULL,
-  model_pdf                 varchar(255) DEFAULT NULL,
+  label                     varchar(255) NOT NULL,
+  labelshort				        varchar(255) DEFAULT NULL,
+  ville				              varchar(255) DEFAULT NULL,
   entity                    integer default 1,                    
   date_creation             datetime,                    
   tms                       timestamp,                   
   import_key                varchar(32),                 
   status                    smallint DEFAULT 1 NOT NULL,
-  fk_ship                   integer      DEFAULT NULL,
-  fk_passenger              integer      DEFAULT NULL,
-  fk_travel                 integer      DEFAULT NULL,
-  fk_classe                 integer      DEFAULT NULL,
-  fk_agence                 integer      DEFAULT NULL, 
   fk_user_creat             integer      DEFAULT NULL,
-  fk_user_modif             integer      DEFAULT NULL,
+  fk_user_modif             integer      DEFAULT NULL
 )ENGINE=innodb;

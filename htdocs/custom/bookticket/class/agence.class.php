@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2021 Mebodo Aristide <mebodoaristide@gmail.com>
+ * Copyright (C) ---Put here your own copyright and developer email---
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,20 +17,19 @@
  */
 
 /**
- * \file        htdocs/custom/bookticket/class/bticket.class.php
- * \ingroup     bookticket
- * \brief       This file is a CRUD class file for Bticket (Create/Read/Update/Delete)
+ * \file        htdocs/modulebuilder/template/class/agence.class.php
+ * \ingroup     booticket
+ * \brief       This file is a CRUD class file for agence (Create/Read/Update/Delete)
  */
 
 // Put here all includes required by your class file
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 /**
- * Class for Bticket
+ * Class for Agence
  */
-class Bticket extends CommonObject
+class Agence extends CommonObject
 {
 	/**
 	 * @var string ID of module.
@@ -40,12 +39,12 @@ class Bticket extends CommonObject
 	/**
 	 * @var string ID to identify managed object.
 	 */
-	public $element = 'bticket';
+	public $element = 'agence';
 
 	/**
 	 * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.
 	 */
-	public $table_element = 'bookticket_bticket';
+	public $table_element = 'bookticket_agence';
 
 	/**
 	 * @var int  Does this object support multicompany module ?
@@ -59,9 +58,9 @@ class Bticket extends CommonObject
 	public $isextrafieldmanaged = 1;
 
 	/**
-	 * @var string String with name of icon for ticket. Must be the part after the 'object_' into object_ticket.png
+	 * @var string String with name of icon for agence. Must be the part after the 'object_' into object_agence.png
 	 */
-	public $picto = 'bticket@bookticket';
+	public $picto = 'agence@bookticket';
 
 
 	const STATUS_DRAFT = 0;
@@ -101,19 +100,14 @@ class Bticket extends CommonObject
 	 */
 	public $fields = array(
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
-		'ref'           => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
-		'fk_ship' => array('type'=>'integer:Ship:ship/class/ship.class.php', 'label'=>'Le bateau', 'picto'=>'ship', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'ship.rowid'),
-		'fk_passenger' => array('type'=>'integer:Passenger:passenger/class/passenger.class.php', 'label'=>'Le passager', 'picto'=>'passenger', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'passenger.rowid'),
-		'fk_travel' => array('type'=>'integer:Travel:travel/class/travel.class.php', 'label'=>'Le voyage', 'picto'=>'travel', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'travel.rowid'),
-		'fk_classe' => array('type'=>'integer:Classe:classe/class/classe.class.php', 'label'=>'La classe', 'picto'=>'classe', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'classe.rowid'),
-		'fk_agence' => array('type'=>'integer:Classe:classe/class/agence.class.php', 'label'=>'Agence', 'picto'=>'classe', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'agence.rowid'),
+		'label'         => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'labelshort'    => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
 		'fk_user_creat' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
 		'fk_user_modif' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserModif', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=>-1, 'position'=>511),
 		'import_key'    => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>1, 'visible'=>-2, 'notnull'=>-1, 'index'=>0, 'position'=>1000),
-		'model_pdf' 	=> array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>1, 'visible'=>0, 'notnull'=>-1, 'position'=>1010),
 		'status'        => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>1, 'visible'=>1, 'notnull'=> 1, 'default'=>0, 'index'=>1, 'position'=>1000, 'arrayofkeyval'=>array(0=>'Draft', 1=>'Validated', 9=>'Canceled')),
 	);
 
@@ -123,20 +117,19 @@ class Bticket extends CommonObject
 	public $rowid;
 
 	/**
-	 * @var string Ref
-	 */
-	public $ref;
-
-	/**
-	 * @var string model_pdf
-	 */
-	public $model_pdf;
-
-	/**
 	 * @var int Entity
 	 */
 	public $entity;
 
+	/**
+	 * @var string label
+	 */
+	public $label;
+
+	/**
+	 * @var string labelshort
+	 */
+	public $labelshort;
 
 	/**
 	 * @var int Status
@@ -167,8 +160,8 @@ class Bticket extends CommonObject
 	 * @var string import_key
 	 */
 	public $import_key;
-	// END MODULEBUILDER PROPERTIES
 
+	// END MODULEBUILDER PROPERTIES
 
 	/**
 	 * Constructor
@@ -185,7 +178,7 @@ class Bticket extends CommonObject
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->bookticket->bticket->read) {
+		/*if ($user->rights->booticket->agence->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -225,7 +218,8 @@ class Bticket extends CommonObject
 		$this->ref = dol_sanitizeFileName(stripslashes($this->ref));
 
 		$err = 0;
-		if (dol_strlen(trim($this->ref)) == 0) {
+
+		if (dol_strlen(trim($this->label)) == 0) {
 			$err++;
 		}
 
@@ -281,7 +275,7 @@ class Bticket extends CommonObject
 
 		// Clear fields
 		if (property_exists($object, 'ref')) $object->ref = empty($this->fields['ref']['default']) ? "Copy_Of_".$object->ref : $this->fields['ref']['default'];
-		//if (property_exists($object, 'label')) $object->label = empty($this->fields['label']['default']) ? $langs->trans("CopyOf")." ".$object->label : $this->fields['label']['default'];
+		if (property_exists($object, 'label')) $object->label = empty($this->fields['label']['default']) ? $langs->trans("CopyOf")." ".$object->label : $this->fields['label']['default'];
 		if (property_exists($object, 'status')) { $object->status = self::STATUS_DRAFT; }
 		if (property_exists($object, 'date_creation')) { $object->date_creation = dol_now(); }
 		if (property_exists($object, 'date_modification')) { $object->date_modification = null; }
@@ -390,14 +384,14 @@ class Bticket extends CommonObject
 
 		$sql = 'SELECT ';
 		$sql .= $this->getFieldList();
-		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as t';
-		if (isset($this->ismultientitymanaged) && $this->ismultientitymanaged == 1) $sql .= ' WHERE t.entity IN ('.getEntity($this->table_element).')';
+		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as c';
+		if (isset($this->ismultientitymanaged) && $this->ismultientitymanaged == 1) $sql .= ' WHERE c.entity IN ('.getEntity($this->table_element).')';
 		else $sql .= ' WHERE 1 = 1';
 		// Manage filter
 		$sqlwhere = array();
 		if (count($filter) > 0) {
 			foreach ($filter as $key => $value) {
-				if ($key == 't.rowid') {
+				if ($key == 'c.rowid') {
 					$sqlwhere[] = $key.'='.$value;
 				} elseif (in_array($this->fields[$key]['type'], array('date', 'datetime', 'timestamp'))) {
 					$sqlwhere[] = $key.' = \''.$this->db->idate($value).'\'';
@@ -514,8 +508,8 @@ class Bticket extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bticket->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bticket->bticket_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->agence->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->agence->agence_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -556,7 +550,7 @@ class Bticket extends CommonObject
 			if (!$error && !$notrigger)
 			{
 				// Call trigger
-				$result = $this->call_trigger('BTICKET_VALIDATE', $user);
+				$result = $this->call_trigger('AGENCE_VALIDATE', $user);
 				if ($result < 0) $error++;
 				// End call triggers
 			}
@@ -570,16 +564,16 @@ class Bticket extends CommonObject
 			if (preg_match('/^[\(]?PROV/i', $this->ref))
 			{
 				// Now we rename also files into index
-				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'ticket/".$this->db->escape($this->newref)."'";
-				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'bticket/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
+				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'agence/".$this->db->escape($this->newref)."'";
+				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'agence/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
 				$resql = $this->db->query($sql);
 				if (!$resql) { $error++; $this->error = $this->db->lasterror(); }
 
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->bookticket->dir_output.'/bticket/'.$oldref;
-				$dirdest = $conf->bookticket->dir_output.'/bticket/'.$newref;
+				$dirsource = $conf->booticket->dir_output.'/agence/'.$oldref;
+				$dirdest = $conf->booticket->dir_output.'/agence/'.$newref;
 				if (!$error && file_exists($dirsource))
 				{
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
@@ -588,7 +582,7 @@ class Bticket extends CommonObject
 					{
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/bticket/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->booticket->dir_output.'/agence/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry)
 						{
 							$dirsource = $fileentry['name'];
@@ -635,14 +629,14 @@ class Bticket extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->booticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'BTICKET_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'AGENCE_UNVALIDATE');
 	}
 
 	/**
@@ -660,14 +654,14 @@ class Bticket extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->booticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'BTICKET_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'AGENCE_CANCEL');
 	}
 
 	/**
@@ -685,14 +679,14 @@ class Bticket extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->bookticket_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->booticket->booticket_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'BTICKET_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'AGENCE_REOPEN');
 	}
 
 	/**
@@ -713,14 +707,14 @@ class Bticket extends CommonObject
 
 		$result = '';
 
-		$label = img_picto('', $this->picto).' <u>'.$langs->trans("BTicket").'</u>';
+		$label = img_picto('', $this->picto).' <u>'.$langs->trans("Agence").'</u>';
 		if (isset($this->status)) {
 			$label .= ' '.$this->getLibStatut(5);
 		}
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/bookticket/bticket_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/booticket/agence_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink')
 		{
@@ -735,7 +729,7 @@ class Bticket extends CommonObject
 		{
 			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
 			{
-				$label = $langs->trans("ShowTicket");
+				$label = $langs->trans("ShowAgence");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
 			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
@@ -781,7 +775,7 @@ class Bticket extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('bticketdao'));
+		$hookmanager->initHooks(array('agencedao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) $result = $hookmanager->resPrint;
@@ -815,7 +809,7 @@ class Bticket extends CommonObject
 		if (empty($this->labelStatus) || empty($this->labelStatusShort))
 		{
 			global $langs;
-			//$langs->load("bookticket@bookticket");
+			//$langs->load("booticket@booticket");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
 			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Enabled');
 			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Disabled');
@@ -902,8 +896,8 @@ class Bticket extends CommonObject
 	{
 		$this->lines = array();
 
-		$objectline = new BticketLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_bticket = '.$this->id));
+		$objectline = new AgenceLine($this->db);
+		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_agence = '.$this->id));
 
 		if (is_numeric($result))
 		{
@@ -924,24 +918,24 @@ class Bticket extends CommonObject
 	public function getNextNumRef()
 	{
 		global $langs, $conf;
-		$langs->load("bookticket@bookticket");
+		$langs->load("booticket@booticket");
 
-		if (empty($conf->global->BOOKTICKET_BTICKET_ADDON)) {
-			$conf->global->BOOKTICKET_BTICKET_ADDON = 'mod_bticket_standard';
+		if (empty($conf->global->BOOKTICKET_AGENCE_ADDON)) {
+			$conf->global->BOOKTICKET_AGENCE_ADDON = 'mod_agence_standard';
 		}
 
-		if (!empty($conf->global->BOOKTICKET_BTICKET_ADDON))
+		if (!empty($conf->global->BOOKTICKET_AGENCE_ADDON))
 		{
 			$mybool = false;
 
-			$file = $conf->global->BOOKTICKET_BTICKET_ADDON.".php";
-			$classname = $conf->global->BOOKTICKET_BTICKET_ADDON;
+			$file = $conf->global->BOOKTICKET_AGENCE_ADDON.".php";
+			$classname = $conf->global->BOOKTICKET_AGENCE_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 			foreach ($dirmodels as $reldir)
 			{
-				$dir = dol_buildpath($reldir."core/modules/bookticket/");
+				$dir = dol_buildpath($reldir."core/modules/booticket/");
 
 				// Load file with numbering class (if found)
 				$mybool |= @include_once $dir.$file;
@@ -993,19 +987,19 @@ class Bticket extends CommonObject
 		$result = 0;
 		$includedocgeneration = 0;
 
-		$langs->load("bookticket@bookticket");
+		$langs->load("booticket@booticket");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_ticket';
+			$modele = 'standard_agence';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->BTICKET_ADDON_PDF)) {
-				$modele = $conf->global->BTICKET_ADDON_PDF;
+			} elseif (!empty($conf->global->AGENCE_ADDON_PDF)) {
+				$modele = $conf->global->AGENCE_ADDON_PDF;
 			}
 		}
 
-		$modelpath = "core/modules/bookticket/doc/";
+		$modelpath = "core/modules/booticket/doc/";
 
 		if ($includedocgeneration && !empty($modele)) {
 			$result = $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref, $moreparams);
@@ -1043,53 +1037,18 @@ class Bticket extends CommonObject
 
 		return $error;
 	}
-
-	/**
-	 *  Check barcode
-	 *
-	 * @param  string $valuetotest Value to test
-	 * @param  string $typefortest Type of barcode (ISBN, EAN, ...)
-	 * @return int                        0 if OK
-	 *                                     -1 ErrorBadBarCodeSyntax
-	 *                                     -2 ErrorBarCodeRequired
-	 *                                     -3 ErrorBarCodeAlreadyUsed
-	 */
-	public function check_barcode($valuetotest, $typefortest)
-	{
-		// phpcs:enable
-		global $conf;
-		if (!empty($conf->barcode->enabled) && !empty($conf->global->BARCODE_PRODUCT_ADDON_NUM)) {
-			$module = strtolower($conf->global->BARCODE_PRODUCT_ADDON_NUM);
-
-			$dirsociete = array_merge(array('/core/modules/barcode/'), $conf->modules_parts['barcode']);
-			foreach ($dirsociete as $dirroot)
-			{
-				$res = dol_include_once($dirroot.$module.'.php');
-				if ($res) { break;
-				}
-			}
-
-			$mod = new $module();
-
-			dol_syslog(get_class($this)."::check_barcode value=".$valuetotest." type=".$typefortest." module=".$module);
-			$result = $mod->verif($this->db, $valuetotest, $this, 0, $typefortest);
-			return $result;
-		} else {
-			return 0;
-		}
-	}
 }
 
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 
 /**
- * Class TicketLine. You can also remove this and generate a CRUD class for lines objects.
+ * Class AgenceLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class BticketLine extends CommonObjectLine
+class AgenceLine extends CommonObjectLine
 {
-	// To complete with content of an object TicketLine
-	// We should have a field rowid, fk_bticket and position
+	// To complete with content of an object AgenceLine
+	// We should have a field rowid, fk_agence and position
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes

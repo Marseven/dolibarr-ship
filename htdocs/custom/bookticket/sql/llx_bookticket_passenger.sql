@@ -20,6 +20,7 @@
 create table llx_bookticket_passenger
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
+  ref                       varchar(128) DEFAULT 0 NOT NULL,
   nom				                varchar(255) DEFAULT NULL,
   prenom				            varchar(255) DEFAULT NULL,
   age				                integer DEFAULT NULL,

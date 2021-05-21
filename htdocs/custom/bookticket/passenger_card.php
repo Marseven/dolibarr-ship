@@ -128,9 +128,10 @@ if ($action == 'add' && $usercancreate)
 	{
 
 
-		$object->nom             	 = GETPOST('nom');
+		$object->ref               = $ref;
+		$object->nom               = GETPOST('nom');
 		$object->prenom            = GETPOST('prenom');
-		$object->age             	 = GETPOST('age');
+		$object->age               = GETPOST('age');
 		$object->adresse           = GETPOST('adresse');
 		$object->telephone         = GETPOST('telephone');
 		$object->email             = GETPOST('email');
@@ -174,6 +175,7 @@ if ($action == 'update' && $usercancreate)
 		{
 			$object->oldcopy = clone $object;
 
+			$object->ref                    = $ref;
 			$object->nom             	 = GETPOST('nom');
 			$object->prenom             	 = GETPOST('prenom');
 			$object->age             	 = GETPOST('age');
@@ -361,6 +363,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
+			// Ref
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
+
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
 			print '<td><input name="nom" class="maxwidth300" value="'.$object->nom.'">';
@@ -454,6 +459,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<table class="border allwidth">';
 
+			// Ref
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
+
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
 			print '<td><input name="nom" class="maxwidth300" value="'.$object->nom.'">';
@@ -536,6 +544,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 				print '<table class="border tableforfield centpercent">';
 				print '<tbody>';
+
+				// ref
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("PieceIdentite").'</td>';
+				print '<td>';
+				print $object->ref;
+				print '</td></tr>';
 
 				// nom
 				print '<tr>';

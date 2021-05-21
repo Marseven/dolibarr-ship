@@ -292,6 +292,7 @@ if (empty($reshook))
 			if(GETPOST('new_passenger') == 'off'){
 				$object->fk_passenger            = GETPOST('fk_passenger');
 			}else{
+				$object_passenger->ref             	 = GETPOST('pref');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom            = GETPOST('prenom');
 				$object_passenger->age             	 = GETPOST('age');
@@ -351,6 +352,7 @@ if (empty($reshook))
 				$object->fk_classe             	 = GETPOST('fk_classe');
 				$object->fk_passenger             	 = GETPOST('fk_passenger');
 
+				$object_passenger->ref             	 = GETPOST('pref');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom             	 = GETPOST('prenom');
 				$object_passenger->age             	 = GETPOST('age');
@@ -723,6 +725,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input type="checkbox" name="new_passenger" >';
 			print '</td></tr>';
 
+			// Ref
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object_passenger->ref).'"></td></tr>';
+
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
 			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
@@ -931,6 +936,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
+			// Ref
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($obj_p->ref).'"></td></tr>';
+
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
 			print '<td><input name="nom" class="maxwidth300" value="'.$obj_p->nom.'">';
@@ -998,7 +1006,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger,  c.label as classe, c.prix_standard as prix, tr.ref as travel, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, c.prix_standard as prix, tr.ref as travel, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -1092,7 +1100,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr>';
 			print '<td class="titlefield">'.$langs->trans("Passenger").'</td>';
 			print '<td>';
-			print $obj->passenger;
+			print $obj->nom.' '.$obj->prenom;
 			print '</td></tr>';
 
 
