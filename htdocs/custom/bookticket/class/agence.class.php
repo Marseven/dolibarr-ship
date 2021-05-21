@@ -133,6 +133,11 @@ class Agence extends CommonObject
 	public $labelshort;
 
 	/**
+	 * @var string ville
+	 */
+	public $ville;
+
+	/**
 	 * @var int Status
 	 */
 	public $status;
