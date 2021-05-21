@@ -36,5 +36,5 @@ create table llx_bookticket_bticket
   fk_agence                 integer      DEFAULT NULL, 
   fk_barcode_type           integer      DEFAULT NULL,
   fk_user_creat             integer      DEFAULT NULL,
-  fk_user_modif             integer      DEFAULT NULL,
+  fk_user_modif             integer      DEFAULT NULL
 )ENGINE=innodb;
