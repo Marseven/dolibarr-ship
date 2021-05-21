@@ -41,6 +41,9 @@ global $langs, $user;
 // Libraries
 require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
 require_once '../lib/bookticket.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
+require_once '../class/bticket.class.php';
+require_once '../lib/bticket.lib.php';
 //require_once "../class/myclass.class.php";
 
 // Translations
@@ -56,7 +59,7 @@ $backtopage = GETPOST('backtopage', 'alpha');
 $value = GETPOST('value', 'alpha');
 $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scan_dir', 'alpha');
-$type = 'myobject';
+$type = 'bticket';
 
 $arrayofparameters = array(
 	'BOOKTICKET_MYPARAM1'=>array('css'=>'minwidth200', 'enabled'=>1),
@@ -261,11 +264,11 @@ if ($action == 'edit')
 
 $moduledir = 'bookticket';
 $myTmpObjects = array();
-$myTmpObjects['MyObject'] = array('includerefgeneration'=>0, 'includedocgeneration'=>0);
+$myTmpObjects['Bticket'] = array('includerefgeneration'=>0, 'includedocgeneration'=>0);
 
 
 foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
-	if ($myTmpObjectKey == 'MyObject') continue;
+	if ($myTmpObjectKey == 'Bticket') continue;
 	if ($myTmpObjectArray['includerefgeneration']) {
 		/*
 		 * Orders Numbering model
