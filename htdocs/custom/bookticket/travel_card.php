@@ -693,7 +693,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("Jour").'</td>';
 				print '<td>';
-				print $object->jour;
+				print dol_print_date($object->jour, 'dayhour', 'tzuser');
 				print '</td></tr>';
 
 				// heure

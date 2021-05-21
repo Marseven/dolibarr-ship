@@ -106,6 +106,10 @@ class Travel extends CommonObject
 		'lieu_arrive'   => array('type'=>'varchar(255)', 'label'=>'Lieu de depart', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'jour' 			=> array('type'=>'date', 'label'=>'Jour', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'heure' 		=> array('type'=>'time', 'label'=>'Heure', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
+		'nbre_place'        => array('type'=>'integer', 'label'=>'Nombre de place', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'nbre_vip'        => array('type'=>'integer', 'label'=>'Nombre de place VIP', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'nbre_eco'        => array('type'=>'integer', 'label'=>'Nombre de place Eco', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'nbre_aff'        => array('type'=>'integer', 'label'=>'Nombre de place Affaire', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'fk_ship' 		=> array('type'=>'integer:Ship:ship/class/ship.class.php', 'label'=>'Le bateau', 'picto'=>'ship', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'ship.rowid'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
@@ -149,6 +153,26 @@ class Travel extends CommonObject
 	 * @var integer|string heure
 	 */
 	public $heure;
+
+	/**
+	 * @var int nbre_place
+	 */
+	public $nbre_place;
+
+	/**
+	 * @var int nbre_vip
+	 */
+	public $nbre_vip;
+
+	/**
+	 * @var int nbre_aff
+	 */
+	public $nbre_aff;
+
+	/**
+	 * @var int nbre_eco
+	 */
+	public $nbre_eco;
 
 	/**
 	 * @var int ID
