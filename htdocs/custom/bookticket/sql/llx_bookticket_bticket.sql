@@ -29,7 +29,7 @@ create table llx_bookticket_bticket
   tms                       timestamp,                   
   import_key                varchar(32),                 
   status                    smallint DEFAULT 1 NOT NULL,
-  fk_valideur                   integer      DEFAULT NULL,
+  fk_valideur               integer      DEFAULT NULL,
   fk_ship                   integer      DEFAULT NULL,
   fk_passenger              integer      DEFAULT NULL,
   fk_travel                 integer      DEFAULT NULL,
