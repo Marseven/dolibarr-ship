@@ -683,6 +683,11 @@ if ($action != 'create' && $action != 'edit')
 			}
 		}
 
+		if ($usercancreate && $object->status == Bticket::STATUS_DRAFT)		// If draft
+		{
+			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
+		}
+
 		if ($usercandelete)
 		{
 			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)

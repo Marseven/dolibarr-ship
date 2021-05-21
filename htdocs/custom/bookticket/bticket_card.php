@@ -1428,15 +1428,11 @@ if ($action != 'create' && $action != 'edit')
 			}
 		}
 
-		if ($user->id == $object->fk_valideur)
-		{
-			if (!isset($object->no_button_validate) || $object->no_button_validate <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Va").'</a>';
-		}
-
 		if ($usercancreate && $object->status == Bticket::STATUS_DRAFT)		// If draft
 		{
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=sendToValidate" class="butAction">'.$langs->trans("Validate").'</a>';
 		}
+
 		if ($object->status == Bticket::STATUS_VALIDATED)	// If validated
 		{
 			if ($user->id == $object->fk_valideur)
