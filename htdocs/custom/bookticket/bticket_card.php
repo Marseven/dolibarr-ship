@@ -1604,7 +1604,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	$genallowed = $usercanread;
 	$delallowed = $usercancreate;
 
-	$modulepart = "bookticket";
+	$modulepart = 'propal';
 
 	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
 	$somethingshown = $formfile->numoffiles;
