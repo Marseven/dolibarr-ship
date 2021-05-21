@@ -163,6 +163,30 @@ if ($resql_classe)
 	}
 }
 
+$agencerecords = [];
+$sql_agence = 'SELECT a.rowid, a.label, a.labelshort, a.ville, a.entity,';
+$sql_agence .= ' a.date_creation, a.tms as date_update';
+$sql_agence .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence as a';
+$sql_agence .= ' WHERE a.entity IN ('.getEntity('agence').')';
+$resql_agence =$db->query($sql_agence);
+if ($resql_agence)
+{
+	$num = $db->num_rows($resql_agence);
+	$i = 0;
+	if ($num)
+	{
+		while ($i < $num)
+		{
+			$obj = $db->fetch_object($resql_agence);
+			if ($obj)
+			{
+				$agencerecords[$i] = $obj;
+			}
+			$i++;
+		}
+	}
+}
+
 $travelrecords = [];
 $sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.entity,';
 $sql_travel .= ' t.date_creation, t.tms as date_update';
@@ -288,6 +312,7 @@ if (empty($reshook))
 			$object->fk_travel             	 = GETPOST('fk_travel');
 			$object->fk_ship             	 = GETPOST('fk_ship');
 			$object->fk_classe             	 = GETPOST('fk_classe');
+			$object->fk_agence             	 = GETPOST('fk_agence');
 
 			if(GETPOST('new_passenger') == 'off'){
 				$object->fk_passenger            = GETPOST('fk_passenger');
@@ -350,6 +375,7 @@ if (empty($reshook))
 				$object->fk_travel             	 = GETPOST('fk_travel');
 				$object->fk_ship             	 = GETPOST('fk_ship');
 				$object->fk_classe             	 = GETPOST('fk_classe');
+				$object->fk_agence             	 = GETPOST('fk_agence');
 				$object->fk_passenger             	 = GETPOST('fk_passenger');
 
 				$object_passenger->ref             	 = GETPOST('pref');
@@ -687,6 +713,31 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
+			// agence
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Agence").'</td>';
+
+			$agence = '<td><select class="flat" name="fk_agence">';
+			if (empty($agencerecords))
+			{
+				$agence .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($agencerecords as $lines)
+				{
+					$agence .= '<option value="';
+					$agence .= $lines->rowid;
+					$agence .= '"';
+					$agence .= '>';
+					$agence .= $langs->trans($lines->label);
+					$agence .= '</option>';
+				}
+			}
+
+			$agence .= '</select>';
+
+			print $agence;
+
+			print '</td></tr>';
+
 		print '</table>';
 
 		print '<hr>';
@@ -932,6 +983,31 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
+			// agence
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Agence").'</td>';
+
+			$agence = '<td><select class="flat" name="fk_agence">';
+			if (empty($agencerecords))
+			{
+				$agence .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($agencerecords as $lines)
+				{
+					$agence .= '<option value="';
+					$agence .= $lines->rowid;
+					$agence .= '"';
+					$agence .= '>';
+					$agence .= $langs->trans($lines->label);
+					$agence .= '</option>';
+				}
+			}
+
+			$agence .= '</select>';
+
+			print $agence;
+
+			print '</td></tr>';
+
 			print '<hr>';
 
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
@@ -1006,12 +1082,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, c.prix_standard as prix, tr.ref as travel, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, c.prix_standard as prix, tr.ref as travel, a.label as agence, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
 			$resql_t = $db->query($sql_t);
@@ -1135,6 +1212,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td>';
 			print '<td>';
 			print $obj->classe;
+			print '</td>';
+			print '</tr>';
+
+			// Agence
+			print '<tr>';
+			print '<td>';
+			$htmlhelp = $langs->trans('AgenceHelp');
+			print $form->textwithpicto($langs->trans('Agence'), $htmlhelp);
+			print '</td>';
+			print '<td>';
+			print $obj->agence;
 			print '</td>';
 			print '</tr>';
 
