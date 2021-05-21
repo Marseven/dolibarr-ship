@@ -1595,32 +1595,30 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	// Documents
 	$objectref = dol_sanitizeFileName($object->ref);
 	$relativepath = $comref.'/'.$objectref.'.pdf';
-	if (!empty($conf->bticket->multidir_output[$object->entity])) {
-		$filedir = DOL_URL_ROOT.'/custom/bookticket/doc/'.$objectref; //$conf->bticket->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
+	if (!empty($conf->product->multidir_output[$object->entity])) {
+		$filedir = $conf->product->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
 	} else {
-		$filedir = DOL_URL_ROOT.'/custom/bookticket/doc/'.$objectref; //$conf->bticket->dir_output.'/'.$objectref;
+		$filedir = $conf->product->dir_output.'/'.$objectref;
 	}
 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 	$genallowed = $usercanread;
 	$delallowed = $usercancreate;
 
-	$modulepart = 'propal';
-
-	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
+	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
 	$somethingshown = $formfile->numoffiles;
 
 	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
 	$MAXEVENT = 10;
 
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_agenda.php?id='.$object->id.'">';
+	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/product/agenda.php?id='.$object->id.'">';
 	$morehtmlright .= $langs->trans("SeeAll");
 	$morehtmlright .= '</a>';
 
 	// List of actions on element
 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
 	$formactions = new FormActions($db);
-	$somethingshown = $formactions->showactions($object, 'bticket', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for ticket
+	$somethingshown = $formactions->showactions($object, 'product', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for product
 
 	print '</div></div></div>';
 }
