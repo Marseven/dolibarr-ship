@@ -688,7 +688,7 @@ if ($action != 'create' && $action != 'edit')
 			}
 		}
 
-		if ($usercancreate && $object->status == Bticket::STATUS_DRAFT)		// If draft
+		if ($usercancreate && $object->status == Ship::STATUS_DRAFT)		// If draft
 		{
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
 		}
