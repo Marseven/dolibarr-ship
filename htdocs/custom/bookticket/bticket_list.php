@@ -45,6 +45,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs('bookticket');
@@ -159,7 +160,7 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 }
 
 // Mass actions
-$objectclass = 'Travel';
+$objectclass = 'Bticket';
 
 $permissiontoread = $user->rights->bookticket->{$rightskey}->read;
 $permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
