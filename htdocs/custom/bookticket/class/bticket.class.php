@@ -1032,16 +1032,16 @@ class Bticket extends CommonObject
 		$langs->load("bookticket@bookticket");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_ticket';
+			$modele = 'bticket';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->BTICKET_ADDON_PDF)) {
-				$modele = $conf->global->BTICKET_ADDON_PDF;
+			} elseif (!empty($conf->BTICKET_ADDON_PDF)) {
+				$modele = $conf->BTICKET_ADDON_PDF;
 			}
 		}
 
-		$modelpath = "core/modules/bookticket/doc/";
+		$modelpath = "custom/bookticket/doc/";
 
 		if ($includedocgeneration && !empty($modele)) {
 			$result = $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref, $moreparams);

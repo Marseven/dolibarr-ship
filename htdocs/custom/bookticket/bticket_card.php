@@ -870,6 +870,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
+			// Template to use by default
+			print '<tr>';
+			print '<td>'.$langs->trans("DefaultModel").'</td>';
+			print '<td>';
+			$liste = ModelePDFPropales::liste_modeles($db);
+			$preselected = ($conf->global->PROPALE_ADDON_PDF_ODT_DEFAULT ? $conf->global->PROPALE_ADDON_PDF_ODT_DEFAULT : $conf->global->PROPALE_ADDON_PDF);
+			print $form->selectarray('model_pdf', $liste, $preselected, 0, 0, 0, '', 0, 0, 0, '', '', 1);
+			print "</td></tr>";
+
 		print '</table>';
 
 		print '<hr>';
@@ -1586,17 +1595,17 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	$objectref = dol_sanitizeFileName($object->ref);
 	$relativepath = $comref.'/'.$objectref.'.pdf';
 	if (!empty($conf->bticket->multidir_output[$object->entity])) {
-		$filedir = $conf->bticket->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
+		$filedir = //$conf->bticket->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
 	} else {
-		$filedir = $conf->bticket->dir_output.'/'.$objectref;
+		$filedir = DOL_URL_ROOT.'/custom/bookticket/doc/'.$objectref; //$conf->bticket->dir_output.'/'.$objectref;
 	}
 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 	$genallowed = $usercanread;
 	$delallowed = $usercancreate;
 
-	$modulepart = "bookticket";
+	$modulepart = "bticket";
 
-	//print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
+	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
 	$somethingshown = $formfile->numoffiles;
 
 	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
