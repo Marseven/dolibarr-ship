@@ -22,6 +22,7 @@ create table llx_bookticket_bticket
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   ref                       varchar(128) DEFAULT 0 NOT NULL,
   barcode                   varchar(128) DEFAULT 0 NOT NULL,
+  prix                      float DEFAULT NULL,
   model_pdf                 varchar(255) DEFAULT NULL,
   entity                    integer default 1,                    
   date_creation             datetime,                    
@@ -33,6 +34,7 @@ create table llx_bookticket_bticket
   fk_travel                 integer      DEFAULT NULL,
   fk_classe                 integer      DEFAULT NULL,
   fk_agence                 integer      DEFAULT NULL, 
+  fk_barcode_type           integer      DEFAULT NULL,
   fk_user_creat             integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
 )ENGINE=innodb;

@@ -333,7 +333,40 @@ if (empty($reshook))
 				$object->fk_passenger = $id_passenger;
 			}
 
+			$sql_prix = 'SELECT c.rowid, c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.entity,';
+			$sql_prix .= ' c.date_creation, c.tms as date_update';
+			$sql_prix .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
+			$sql_prix .= ' WHERE c.entity IN ('.getEntity('classe').')';
+			$sql_prix .= ' AND c.rowid IN ('.$object->fk_classe.')';
+			$resql_prix =$db->query($sql_prix);
+			$obj_prix = $db->fetch_object($resql_prix);
 
+			if(GETPOST('age') > 13){
+				$object->prix = $obj_prix->prix_standard;
+			}elseif(GETPOST('age') <= 13 && GETPOST('age') >= 5){
+				$object->prix = $obj_prix->prix_enfant;
+			}elseif(GETPOST('age') < 5 && GETPOST('age') >= 0){
+				$object->prix = $obj_prix->prix_enfant;
+			}else{
+				$error++;
+				$mesg = 'Age passager renseigne invalide ';
+				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+			}
+
+			if(GETPOST('accompagne') == 'on'){
+
+				if(GETPOST('age_enfant') > 13){
+					$error++;
+					$mesg = 'Age enfant passager renseigne superieur ';
+					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+				}elseif(GETPOST('age_enfant') <= 13 && GETPOST('age_enfant') >= 0){
+					$object->prix = $obj_prix->prix_enf_stand;
+				}else{
+					$error++;
+					$mesg = 'Age enfant accompagne renseigne invalide ';
+					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+				}
+			}
 
 			if (!$error)
 			{
@@ -388,6 +421,33 @@ if (empty($reshook))
 				$object_passenger->accompagne             	 = GETPOST('accompagne');
 				$object_passenger->nom_enfant             	 = GETPOST('nom_enfant');
 				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
+
+				if(GETPOST('age') > 13){
+					$object->prix = $obj_prix->prix_standard;
+				}elseif(GETPOST('age') <= 13 && GETPOST('age') >= 5){
+					$object->prix = $obj_prix->prix_enfant;
+				}elseif(GETPOST('age') < 5 && GETPOST('age') >= 0){
+					$object->prix = $obj_prix->prix_enfant;
+				}else{
+					$error++;
+					$mesg = 'Age passager renseigne invalide ';
+					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+				}
+
+				if(GETPOST('accompagne') == 'on'){
+
+					if(GETPOST('age_enfant') > 13){
+						$error++;
+						$mesg = 'Age enfant passager renseigne superieur ';
+						setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+					}elseif(GETPOST('age_enfant') <= 13 && GETPOST('age_enfant') >= 0){
+						$object->prix = $obj_prix->prix_enf_stand;
+					}else{
+						$error++;
+						$mesg = 'Age enfant accompagne renseigne invalide ';
+						setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+					}
+				}
 
 
 				$object->barcode_type = GETPOST('fk_barcode_type');
