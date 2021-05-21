@@ -1329,14 +1329,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Approver
 			if (!empty($object->fk_valideur)) {
+				$userValidate = new User($db);
+				$userValidate->fetch($object->fk_valideur);
 				print '<tr>';
 				print '<td class="titlefield">';
 				if ($object->status == Bticket::STATUS_APPROVED || $object->status == Bticket::STATUS_CANCELED) print $langs->trans('ApprovedBy');
 				else print $langs->trans('ReviewedByCP');
 				print '</td>';
 				print '<td>';
-				$include_user = $object->fetch_user_approver_bticket($object->fk_valideur);
-				print $include_user->getNomUrl(-1);
+				print $userValidate->getNomUrl(-1);
 				print '</td>';
 				print '</tr>';
 			}

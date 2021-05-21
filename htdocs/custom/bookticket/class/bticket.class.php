@@ -1114,20 +1114,6 @@ class Bticket extends CommonObject
 			return 0;
 		}
 	}
-
-	/**
-	 * Return list of people with permission to validate leave requests.
-	 * Search for permission "approve leave requests"
-	 *
-	 * @return  array       Array of user ids
-	 */
-	public function fetch_user_approver_bticket($id)
-	{
-		// phpcs:enable
-		$users_validator = new User($this->db);
-		$result = $users_validator->fetch($id);
-		return $result;
-	}
 }
 
 
