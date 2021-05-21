@@ -1054,6 +1054,46 @@ class City extends CommonObject
 
 		return $error;
 	}
+
+	/**
+	 *	Approve leave request
+	 *
+	 *  @param	User	$user        	User that approve
+	 *  @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *  @return int         			<0 if KO, >0 if OK
+	 */
+	public function approve($user = null, $notrigger = 0)
+	{
+		global $conf, $langs;
+		$error = 0;
+
+		// Update request
+		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_city SET";
+		$sql .= " status = '".self::STATUS_APPROVED."',";
+		$sql .= " WHERE rowid= ".$this->id;
+
+		$this->db->begin();
+
+		$resql = $this->db->query($sql);
+		if (!$resql) {
+			$error++; $this->errors[] = "Error ".$this->db->lasterror();
+		}
+
+		// Commit or rollback
+		if ($error)
+		{
+			foreach ($this->errors as $errmsg)
+			{
+				dol_syslog(get_class($this)."::approve ".$errmsg, LOG_ERR);
+				$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
+			}
+			$this->db->rollback();
+			return -1 * $error;
+		} else {
+			$this->db->commit();
+			return 1;
+		}
+	}
 }
 
 

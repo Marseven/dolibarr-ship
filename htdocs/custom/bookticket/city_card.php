@@ -190,6 +190,38 @@ if (empty($reshook))
 		}
 	}
 
+	//Approve
+	if($action == 'valid' && $usercancreate){
+
+		$object->fetch($id);
+
+		// If status is waiting approval and approver is also user
+		if ($object->status == City::STATUS_DRAFT && $user->id == $object->fk_valideur)
+		{
+			$object->status = City::STATUS_APPROVED;
+
+			$db->begin();
+
+			$verif = $object->approve($user);
+			if ($verif <= 0)
+			{
+				setEventMessages($object->error, $object->errors, 'errors');
+				$error++;
+			}
+
+			if (!$error)
+			{
+				$db->commit();
+
+			   	header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
+			   	exit;
+			} else {
+				$db->rollback();
+				$action = '';
+			}
+		}
+	}
+
 	// Action clone object
 	if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
 	if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)

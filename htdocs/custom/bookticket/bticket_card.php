@@ -369,6 +369,8 @@ if (empty($reshook))
 				}
 			}
 
+			$object->status = Bticket::STATUS_APPROVED;
+
 			if (!$error)
 			{
 				$id = $object->create($user);
@@ -470,6 +472,8 @@ if (empty($reshook))
 
 				$object->fk_valideur = $user->fk_user;
 
+				$object->status = Bticket::STATUS_VALIDATED;
+
 
 				if (!$error && $object->check())
 				{
@@ -486,6 +490,70 @@ if (empty($reshook))
 					else setEventMessages($langs->trans("ErrorBticketBadRefOrLabel"), null, 'errors');
 					$action = 'edit';
 				}
+			}
+		}
+	}
+
+	//Approve
+	if($action == 'valid' && $usercancreate){
+
+		$object->fetch($id);
+
+		// If status is waiting approval and approver is also user
+		if ($object->status == Bticket::STATUS_VALIDATED && $user->id == $object->fk_valideur)
+		{
+			$object->status = Bticket::STATUS_APPROVED;
+
+			$db->begin();
+
+			$verif = $object->approve($user);
+			if ($verif <= 0)
+			{
+				setEventMessages($object->error, $object->errors, 'errors');
+				$error++;
+			}
+
+			if (!$error)
+			{
+				$db->commit();
+
+			   	header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
+			   	exit;
+			} else {
+				$db->rollback();
+				$action = '';
+			}
+		}
+	}
+
+	//Refuse
+	if($action == 'refuse' && $usercancreate){
+
+		$object->fetch($id);
+
+		// If status is waiting approval and approver is also user
+		if ($object->status == Bticket::STATUS_VALIDATED && $user->id == $object->fk_valideur)
+		{
+			$object->status = Bticket::STATUS_REFUSED;
+
+			$db->begin();
+
+			$verif = $object->approve($user);
+			if ($verif <= 0)
+			{
+				setEventMessages($object->error, $object->errors, 'errors');
+				$error++;
+			}
+
+			if (!$error)
+			{
+				$db->commit();
+
+			   	header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
+			   	exit;
+			} else {
+				$db->rollback();
+				$action = '';
 			}
 		}
 	}
@@ -1428,10 +1496,10 @@ if ($action != 'create' && $action != 'edit')
 			}
 		}
 
-		if ($usercancreate && $object->status == Bticket::STATUS_DRAFT)		// If draft
+		/*if ($usercancreate && $object->status == Bticket::STATUS_DRAFT)		// If draft
 		{
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=sendToValidate" class="butAction">'.$langs->trans("Validate").'</a>';
-		}
+		}*/
 
 		if ($object->status == Bticket::STATUS_VALIDATED)	// If validated
 		{
