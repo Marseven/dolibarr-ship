@@ -790,47 +790,6 @@ if ($object->id && ($action == '' || $action == 'view') && $object->status)
 }
 
 
-/*
- * Documents generes
- */
-
-if ($action != 'create' && $action != 'edit' && $action != 'delete')
-{
-	print '<div class="fichecenter"><div class="fichehalfleft">';
-	print '<a name="builddoc"></a>'; // ancre
-
-	// Documents
-	$objectref = dol_sanitizeFileName($object->ref);
-	$relativepath = $comref.'/'.$objectref.'.pdf';
-	if (!empty($conf->passenger->multidir_output[$object->entity])) {
-		$filedir = $conf->passenger->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
-	} else {
-		$filedir = $conf->passenger->dir_output.'/'.$objectref;
-	}
-	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-	$genallowed = $usercanread;
-	$delallowed = $usercancreate;
-
-	$modulepart = 'bookticket';
-
-	//print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
-	$somethingshown = $formfile->numoffiles;
-
-	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-
-	$MAXEVENT = 10;
-
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/passenger_agenda.php?id='.$object->id.'">';
-	$morehtmlright .= $langs->trans("SeeAll");
-	$morehtmlright .= '</a>';
-
-	// List of actions on element
-	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
-	$formactions = new FormActions($db);
-	$somethingshown = $formactions->showactions($object, 'passenger', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for passenger
-
-	print '</div></div></div>';
-}
 
 // End of page
 llxFooter();

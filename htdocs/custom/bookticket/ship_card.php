@@ -787,23 +787,6 @@ if ($object->id && ($action == '' || $action == 'view') && $object->status)
 	}
 }
 
-/*
- * Documents generes
- */
-
-if ($action != 'create' && $action != 'edit' && $action != 'delete')
-{
-	print '<div class="fichecenter"><div class="fichehalfleft">';
-	print '<a name="builddoc"></a>'; // ancre
-
-	// List of actions on element
-	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
-	$formactions = new FormActions($db);
-	$somethingshown = $formactions->showactions($object, 'ship', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for ship
-
-	print '</div></div></div>';
-}
-
 // End of page
 llxFooter();
 $db->close();

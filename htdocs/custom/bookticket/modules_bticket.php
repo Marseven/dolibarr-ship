@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // Requis
 /**
  *	Classe mere des modeles de propale
  */
-abstract class ModelePDFPropales extends CommonDocGenerator
+abstract class ModelePDFBticket extends CommonDocGenerator
 {
 	/**
 	 * @var string Error code (or message)
@@ -55,7 +55,7 @@ abstract class ModelePDFPropales extends CommonDocGenerator
 		// phpcs:enable
 		global $conf;
 
-		$type = 'propal';
+		$type = 'bticket';
 		$liste = array();
 
 		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -94,7 +94,7 @@ abstract class ModeleNumRefPropales
 	public function info()
 	{
 		global $langs;
-		$langs->load("propale");
+		$langs->load("bookticket");
 		return $langs->trans("NoDescription");
 	}
 
@@ -106,7 +106,7 @@ abstract class ModeleNumRefPropales
 	public function getExample()
 	{
 		global $langs;
-		$langs->load("propale");
+		$langs->load("bookticket");
 		return $langs->trans("NoExample");
 	}
 
