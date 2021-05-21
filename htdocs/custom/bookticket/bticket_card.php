@@ -1327,6 +1327,20 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</tr>';
 			}
 
+			// Approver
+			if (!empty($object->fk_valideur)) {
+				print '<tr>';
+				print '<td class="titlefield">';
+				if ($object->status == Bticket::STATUS_APPROVED || $object->status == Bticket::STATUS_CANCELED) print $langs->trans('ApprovedBy');
+				else print $langs->trans('ReviewedByCP');
+				print '</td>';
+				print '<td>';
+				$include_user = $object->fetch_user_approver_bticket($object->fk_valideur);
+				print $include_user->getNomUrl(-1);
+				print '</td>';
+				print '</tr>';
+			}
+
 			print '<tr>';
 			print '<td>'.$langs->trans('DateCreation').'</td>';
 			print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
@@ -1418,11 +1432,11 @@ if ($action != 'create' && $action != 'edit')
 			if (!isset($object->no_button_validate) || $object->no_button_validate <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Va").'</a>';
 		}
 
-		if ($usercancreate && $object->statut == Bticket::STATUS_DRAFT)		// If draft
+		if ($usercancreate && $object->status == Bticket::STATUS_DRAFT)		// If draft
 		{
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=sendToValidate" class="butAction">'.$langs->trans("Validate").'</a>';
 		}
-		if ($object->statut == Bticket::STATUS_VALIDATED)	// If validated
+		if ($object->status == Bticket::STATUS_VALIDATED)	// If validated
 		{
 			if ($user->id == $object->fk_valideur)
 			{
