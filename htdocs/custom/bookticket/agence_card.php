@@ -42,7 +42,6 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/agence.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 
 // Load translation files required by the page
@@ -130,6 +129,7 @@ if (empty($reshook))
 		{
 			$object->label                 = GETPOST('label', $label_security_check);
 			$object->labelshort            = GETPOST('labelshort');
+			$object->ville             = GETPOST('ville');
 
 			// Fill array 'array_options' with data from add form
 			if (!$error)
@@ -170,6 +170,7 @@ if (empty($reshook))
 
 				$object->label                  = GETPOST('label', $label_security_check);
 				$object->labelshort             = GETPOST('labelshort');
+				$object->ville             = GETPOST('ville');
 
 				if (!$error && $object->check())
 				{
@@ -349,6 +350,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Labelshort
 		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
 
+		// Ville
+		print '<tr><td class="fieldrequired">'.$langs->trans("Ville").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->ville).'"></td></tr>';
+
 		print '</table>';
 
 		print dol_get_fiche_end();
@@ -403,6 +407,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Labelshort
 			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'"></td></tr>';
 
+			// Ville
+			print '<tr><td class="fieldrequired">'.$langs->trans("Ville").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->ville).'"></td></tr>';
+
 			print '</table>';
 
 			print '<br>';
@@ -451,6 +458,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<td class="titlefield">'.$langs->trans("Labelshort").'</td>';
 				print '<td>';
 				print $object->labelshort;
+				print '</td></tr>';
+
+				// Ville
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Ville").'</td>';
+				print '<td>';
+				print $object->ville;
 				print '</td></tr>';
 
 

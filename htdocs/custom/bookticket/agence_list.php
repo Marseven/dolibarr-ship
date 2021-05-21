@@ -307,7 +307,7 @@ if ($resql)
 	}
 
 	if (!empty($arrayfields['a.ville']['checked'])) {
-		print_liste_field_titre($arrayfields['c.ville']['label'], $_SERVER["PHP_SELF"], "c.ville", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['a.ville']['label'], $_SERVER["PHP_SELF"], "a.ville", "", $param, "", $sortfield, $sortorder);
 	}
 
 	if (!empty($arrayfields['a.date_creation']['checked'])) {
