@@ -1595,7 +1595,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete')
 	$objectref = dol_sanitizeFileName($object->ref);
 	$relativepath = $comref.'/'.$objectref.'.pdf';
 	if (!empty($conf->bticket->multidir_output[$object->entity])) {
-		$filedir = //$conf->bticket->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
+		$filedir = DOL_URL_ROOT.'/custom/bookticket/doc/'.$objectref; //$conf->bticket->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
 	} else {
 		$filedir = DOL_URL_ROOT.'/custom/bookticket/doc/'.$objectref; //$conf->bticket->dir_output.'/'.$objectref;
 	}
