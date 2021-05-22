@@ -28,7 +28,7 @@
 /**
  *	\file       htdocs/core/modules/propale/doc/pdf_bookticket_ocean.modules.php
  *	\ingroup    propale
- *	\brief      File of Class to generate PDF proposal with Ocean template
+ *	\brief      File of Class to generate PDF Bticket with Ocean template
  */
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
 
 
 /**
- *	Class to generate PDF proposal Ocean
+ *	Class to generate PDF Bticket Ocean
  */
 class pdf_ocean extends ModelePDFBticket
 {
@@ -287,10 +287,10 @@ class pdf_ocean extends ModelePDFBticket
 
 		$conf->bticket->multidir_output[$conf->entity] = DOL_DOCUMENT_ROOT.'/custom/bookticket/doc/output';
 
-		if (true)
+		if ($conf->bticket->multidir_output[$conf->entity])
 		{
 			//$object->fetch_thirdparty();
-
+			die;
 			$deja_regle = 0;
 
 			// Definition of $dir and $file
@@ -349,10 +349,10 @@ class pdf_ocean extends ModelePDFBticket
 				$pdf->SetDrawColor(128, 128, 128);
 
 				$pdf->SetTitle($outputlangs->convToOutputCharset($object->ref));
-				$pdf->SetSubject($outputlangs->transnoentities("PdfCommercialProposalTitle"));
+				$pdf->SetSubject($outputlangs->transnoentities("PdfCommercialBticketTitle"));
 				$pdf->SetCreator("Dolibarr ".DOL_VERSION);
 				$pdf->SetAuthor($outputlangs->convToOutputCharset($user->getFullName($outputlangs)));
-				$pdf->SetKeyWords($outputlangs->convToOutputCharset($object->ref)." ".$outputlangs->transnoentities("PdfCommercialProposalTitle")." ".$outputlangs->convToOutputCharset($object->thirdparty->name));
+				$pdf->SetKeyWords($outputlangs->convToOutputCharset($object->ref)." ".$outputlangs->transnoentities("PdfCommercialBticketTitle")." ".$outputlangs->convToOutputCharset($object->thirdparty->name));
 				if (!empty($conf->global->MAIN_DISABLE_PDF_COMPRESSION)) $pdf->SetCompression(false);
 
 				$pdf->SetMargins($this->marge_gauche, $this->marge_haute, $this->marge_droite); // Left, Top, Right
@@ -383,7 +383,7 @@ class pdf_ocean extends ModelePDFBticket
 				$pagenb++;
 
 				$heightforinfotot = 40; // Height reserved to output the info and total part
-				$heightforsignature = empty($conf->global->PROPAL_DISABLE_SIGNATURE) ? (pdfGetHeightForHtmlContent($pdf, $outputlangs->transnoentities("ProposalCustomerSignature")) + 10) : 0;
+				$heightforsignature = empty($conf->global->PROPAL_DISABLE_SIGNATURE) ? (pdfGetHeightForHtmlContent($pdf, $outputlangs->transnoentities("BticketCustomerSignature")) + 10) : 0;
 				$heightforfreetext = (isset($conf->global->MAIN_PDF_FREETEXT_HEIGHT) ? $conf->global->MAIN_PDF_FREETEXT_HEIGHT : 5); // Height reserved to output the free text on last page
 				$heightforfooter = $this->marge_basse + 8; // Height reserved to output the footer (value include bottom margin)
 				if (!empty($conf->global->MAIN_GENERATE_DOCUMENTS_SHOW_FOOT_DETAILS)) $heightforfooter += 6;
@@ -831,7 +831,7 @@ class pdf_ocean extends ModelePDFBticket
 	 *  Show payments table
 	 *
 	 *  @param	TCPDF		$pdf            Object PDF
-	 *  @param  Propal		$object         Object proposal
+	 *  @param  Propal		$object         Object Bticket
 	 *  @param  int			$posy           Position y in PDF
 	 *  @param  Translate	$outputlangs    Object langs for output
 	 *  @return int             			<0 if KO, >0 if OK
@@ -903,7 +903,7 @@ class pdf_ocean extends ModelePDFBticket
 		}
 
 		// Show payments conditions
-		if (empty($conf->global->PROPOSAL_PDF_HIDE_PAYMENTTERM) && ($object->cond_reglement_code || $object->cond_reglement))
+		if (empty($conf->global->BTICKET_PDF_HIDE_PAYMENTTERM) && ($object->cond_reglement_code || $object->cond_reglement))
 		{
 			$pdf->SetFont('', 'B', $default_font_size - 2);
 			$pdf->SetXY($this->marge_gauche, $posy);
@@ -919,10 +919,10 @@ class pdf_ocean extends ModelePDFBticket
 			$posy = $pdf->GetY() + 3;
 		}
 
-		if (empty($conf->global->PROPOSAL_PDF_HIDE_PAYMENTMODE))
+		if (empty($conf->global->BTICKET_PDF_HIDE_PAYMENTMODE))
 		{
 			// Check a payment mode is defined
-			/* Not required on a proposal
+			/* Not required on a Bticket
 			if (empty($object->mode_reglement_code)
 			&& ! $conf->global->FACTURE_CHQ_NUMBER
 			&& ! $conf->global->FACTURE_RIB_NUMBER)
@@ -1349,7 +1349,7 @@ class pdf_ocean extends ModelePDFBticket
 			$pdf->MultiCell(108, 2, $outputlangs->transnoentities("Designation"), '', 'L');
 		}
 
-		if (!empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
+		if (!empty($conf->global->MAIN_GENERATE_BTICKETS_WITH_PICTURE))
 		{
 			$pdf->line($this->posxpicture - 1, $tab_top, $this->posxpicture - 1, $tab_top + $tab_height);
 			if (empty($hidetop))
@@ -1480,7 +1480,7 @@ class pdf_ocean extends ModelePDFBticket
 		$pdf->SetFont('', 'B', $default_font_size + 3);
 		$pdf->SetXY($posx, $posy);
 		$pdf->SetTextColor(0, 0, 60);
-		$title = $outputlangs->transnoentities("PdfCommercialProposalTitle");
+		$title = $outputlangs->transnoentities("PdfCommercialBticketTitle");
 		$pdf->MultiCell(100, 4, $title, '', 'R');
 
 		$pdf->SetFont('', 'B', $default_font_size);
@@ -1573,7 +1573,7 @@ class pdf_ocean extends ModelePDFBticket
 		{
 			// Sender properties
 			$carac_emetteur = '';
-		 	// Add internal contact of proposal if defined
+		 	// Add internal contact of Bticket if defined
 			$arrayidcontact = $object->getIdContact('internal', 'SALESREPFOLL');
 		 	if (count($arrayidcontact) > 0)
 		 	{
@@ -1677,7 +1677,7 @@ class pdf_ocean extends ModelePDFBticket
 	{
 		global $conf;
 		$showdetails = empty($conf->global->MAIN_GENERATE_DOCUMENTS_SHOW_FOOT_DETAILS) ? 0 : $conf->global->MAIN_GENERATE_DOCUMENTS_SHOW_FOOT_DETAILS;
-		return pdf_pagefoot($pdf, $outputlangs, 'PROPOSAL_FREE_TEXT', $this->emetteur, $this->marge_basse, $this->marge_gauche, $this->page_hauteur, $object, $showdetails, $hidefreetext);
+		return pdf_pagefoot($pdf, $outputlangs, 'BTICKET_FREE_TEXT', $this->emetteur, $this->marge_basse, $this->marge_gauche, $this->page_hauteur, $object, $showdetails, $hidefreetext);
 	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore
@@ -1707,7 +1707,7 @@ class pdf_ocean extends ModelePDFBticket
 		$pdf->SetFillColor(255, 255, 255);
 		$pdf->SetXY($posx, $tab_top + 0);
 		$pdf->SetFont('', '', $default_font_size - 2);
-		$pdf->MultiCell($largcol, $tab_hl, $outputlangs->transnoentities("ProposalCustomerSignature"), 0, 'L', 1);
+		$pdf->MultiCell($largcol, $tab_hl, $outputlangs->transnoentities("BticketCustomerSignature"), 0, 'L', 1);
 
 		$pdf->SetXY($posx, $tab_top + $tab_hl);
 		$pdf->MultiCell($largcol, $tab_hl * 3, '', 1, 'R');
