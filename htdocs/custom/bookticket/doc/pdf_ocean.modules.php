@@ -419,7 +419,7 @@ class pdf_ocean extends ModelePDFBticket
 						$tab_top = $nexY + 6;
 					}
 				}
-
+				die('je suis ici');
 				// Affiche notes
 				$notetoshow = empty($object->note_public) ? '' : $object->note_public;
 				if (!empty($conf->global->MAIN_ADD_SALE_REP_SIGNATURE_IN_NOTE))
@@ -470,7 +470,7 @@ class pdf_ocean extends ModelePDFBticket
 				$iniY = $tab_top + 7;
 				$curY = $tab_top + 7;
 				$nexY = $tab_top + 7;
-				die('je suis ici');
+
 				// Loop on each lines
 				for ($i = 0; $i < $nblines; $i++)
 				{
