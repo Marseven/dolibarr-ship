@@ -302,11 +302,11 @@ clearstatcache();
 
 foreach ($dirmodels as $reldir)
 {
-	foreach (array('', '/doc') as $valdir)
+	foreach (array('/doc') as $valdir)
 	{
 		$realpath = $reldir."custom/bookticket".$valdir;
 		$dir = dol_buildpath($realpath);
-
+		var_dump($dir)
 		if (is_dir($dir))
 		{
 			$handle = opendir($dir);
@@ -321,6 +321,7 @@ foreach ($dirmodels as $reldir)
 
 				foreach ($filelist as $file)
 				{
+					var_dump($file);die;
 					if (preg_match('/\.modules\.php$/i', $file) && preg_match('/^(pdf_|doc_)/', $file))
 					{
 						if (file_exists($dir.'/'.$file))
