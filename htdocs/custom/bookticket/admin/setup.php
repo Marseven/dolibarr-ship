@@ -123,7 +123,7 @@ if ($action == 'updateMask') {
 		require_once $file;
 
 		$module = new $classname($db);
-		var_dump($tmpobject);
+		var_dump($module->write_file($tmpobject, $langs));
 		die;
 		if ($module->write_file($tmpobject, $langs) > 0)
 		{
