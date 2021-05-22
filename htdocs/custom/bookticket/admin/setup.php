@@ -106,7 +106,7 @@ if ($action == 'updateMask') {
 	// Search template files
 	$file = ''; $classname = ''; $filefound = 0;
 	$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
-
+	var_dump($dirmodels);
 	foreach ($dirmodels as $reldir)
 	{
 		$file = dol_buildpath($reldir."custom/bookticket/doc/pdf_".$modele.".modules.php", 0);
