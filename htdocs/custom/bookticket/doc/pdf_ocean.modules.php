@@ -226,10 +226,10 @@ class pdf_ocean extends ModelePDFBticket
 		$outputlangs->loadLangs(array("main", "dict", "companies", "bookticket"));
 
 		$nblines = count($object->lines);
-		die;
+
 		// Loop on each lines to detect if there is at least one image to show
 		$realpatharray = array();
-		if (!empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
+		if (!empty($conf->global->MAIN_GENERATE_BTICKETS_WITH_PICTURE))
 		{
 			$objphoto = new Bticket($this->db);
 
@@ -284,8 +284,9 @@ class pdf_ocean extends ModelePDFBticket
 		}
 
 		if (count($realpatharray) == 0) $this->posxpicture = $this->posxtva;
-
-		if ($conf->propal->multidir_output[$conf->entity])
+		var_dump($conf->bticket->multidir_output[$conf->entity]);
+		die;
+		if ($conf->bticket->multidir_output[$conf->entity])
 		{
 			$object->fetch_thirdparty();
 
