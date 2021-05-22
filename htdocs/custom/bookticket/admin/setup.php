@@ -287,7 +287,6 @@ if ($resql)
 } else {
 	dol_print_error($db);
 }
-var_dump($def);die;
 
 print "<table class=\"noborder\" width=\"100%\">\n";
 print "<tr class=\"liste_titre\">\n";
