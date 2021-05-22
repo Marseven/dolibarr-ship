@@ -389,7 +389,7 @@ class pdf_ocean extends ModelePDFBticket
 				$heightforfooter = $this->marge_basse + 8; // Height reserved to output the footer (value include bottom margin)
 				if (!empty($conf->global->MAIN_GENERATE_DOCUMENTS_SHOW_FOOT_DETAILS)) $heightforfooter += 6;
 				//print $heightforinfotot + $heightforsignature + $heightforfreetext + $heightforfooter;exit;
-				die;
+
 				$top_shift = $this->_pagehead($pdf, $object, 1, $outputlangs);
 				$pdf->SetFont('', '', $default_font_size - 1);
 				$pdf->MultiCell(0, 3, ''); // Set interline to 3
@@ -470,7 +470,7 @@ class pdf_ocean extends ModelePDFBticket
 				$iniY = $tab_top + 7;
 				$curY = $tab_top + 7;
 				$nexY = $tab_top + 7;
-
+				die('je suis ici');
 				// Loop on each lines
 				for ($i = 0; $i < $nblines; $i++)
 				{
