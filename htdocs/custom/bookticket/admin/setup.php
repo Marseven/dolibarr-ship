@@ -302,11 +302,11 @@ clearstatcache();
 
 foreach ($dirmodels as $reldir)
 {
-	foreach (array('/doc') as $valdir)
+	foreach (array('/doc', '') as $valdir)
 	{
 		$realpath = $reldir."custom/bookticket".$valdir;
 		$dir = dol_buildpath($realpath);
-		var_dump($dir)
+		var_dump($dir);
 		if (is_dir($dir))
 		{
 			$handle = opendir($dir);
