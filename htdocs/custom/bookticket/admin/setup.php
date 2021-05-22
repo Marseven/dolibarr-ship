@@ -328,8 +328,7 @@ foreach ($dirmodels as $reldir)
 						{
 							$name = substr($file, 4, dol_strlen($file) - 16);
 							$classname = substr($file, 0, dol_strlen($file) - 12);
-							var_dump($name);
-							var_dump($classname);die;
+
 							require_once $dir.'/'.$file;
 							$module = new $classname($db);
 
