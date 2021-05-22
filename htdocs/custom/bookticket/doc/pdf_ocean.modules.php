@@ -1571,7 +1571,7 @@ class pdf_ocean extends ModelePDFBticket
 		{
 			$top_shift = $pdf->getY() - $current_y;
 		}
-		die('je suis ici');
+
 		if ($showaddress)
 		{
 			// Sender properties
@@ -1663,6 +1663,8 @@ class pdf_ocean extends ModelePDFBticket
 		}
 
 		$pdf->SetTextColor(0, 0, 0);
+		var_dump($top_shift);
+		die('je suis ici');
 		return $top_shift;
 	}
 
