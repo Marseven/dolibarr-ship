@@ -26,21 +26,21 @@
  */
 
 /**
- *	\file       htdocs/core/modules/propale/doc/pdf_azur.modules.php
+ *	\file       htdocs/core/modules/propale/doc/pdf_bookticket_ocean.modules.php
  *	\ingroup    propale
- *	\brief      File of Class to generate PDF proposal with Azur template
+ *	\brief      File of Class to generate PDF proposal with Ocean template
  */
-require_once DOL_DOCUMENT_ROOT.'/core/modules/propale/modules_propale.php';
-require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
 
 
 /**
- *	Class to generate PDF proposal Azur
+ *	Class to generate PDF proposal Ocean
  */
-class pdf_azur extends ModelePDFPropales
+class pdf_bticket_ocean extends ModelePDFBticket
 {
 	/**
 	 * @var DoliDb Database handler
@@ -134,8 +134,8 @@ class pdf_azur extends ModelePDFPropales
 		$langs->loadLangs(array("main", "bills"));
 
 		$this->db = $db;
-		$this->name = "azur";
-		$this->description = $langs->trans('DocModelAzurDescription');
+		$this->name = "ocean";
+		$this->description = $langs->trans('DocModelOceanDescription');
 		$this->update_main_doc_field = 1; // Save the name of generated file as the main doc when generating a doc with this template
 
 		// Dimension page
