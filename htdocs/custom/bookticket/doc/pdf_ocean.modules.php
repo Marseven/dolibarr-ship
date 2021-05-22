@@ -1632,7 +1632,7 @@ class pdf_ocean extends ModelePDFBticket
 				$thirdparty = $object->thirdparty;
 			}
 
-			//$carac_client_name = pdfBuildThirdpartyName($thirdparty, $outputlangs);
+			$carac_client_name = pdfBuildThirdpartyName($thirdparty, $outputlangs);
 
 			$carac_client = pdf_build_address($outputlangs, $this->emetteur, $object->thirdparty, ($usecontact ? $object->contact : ''), $usecontact, 'target', $object);
 			var_dump($top_shift);
