@@ -231,7 +231,7 @@ class pdf_ocean extends ModelePDFBticket
 		if (!empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
 		{
 			$objphoto = new Bticket($this->db);
-			var_dump($objphoto);die;
+
 			for ($i = 0; $i < $nblines; $i++)
 			{
 				if (empty($object->lines[$i]->fk_travel)) continue;
