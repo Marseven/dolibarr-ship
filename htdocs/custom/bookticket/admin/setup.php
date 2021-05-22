@@ -306,7 +306,6 @@ foreach ($dirmodels as $reldir)
 	{
 		$realpath = $reldir."custom/bookticket".$valdir;
 		$dir = dol_buildpath($realpath);
-		//var_dump($dir);die;
 
 		if (is_dir($dir))
 		{
