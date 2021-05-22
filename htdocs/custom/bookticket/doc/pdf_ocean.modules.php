@@ -1614,8 +1614,7 @@ class pdf_ocean extends ModelePDFBticket
 			$pdf->SetFont('', '', $default_font_size - 1);
 			$pdf->MultiCell(80, 4, $carac_emetteur, 0, 'L');
 
-			var_dump($top_shift);
-			die('je suis ici');
+
 
 			// If CUSTOMER contact defined, we use it
 			$usecontact = false;
@@ -1636,7 +1635,8 @@ class pdf_ocean extends ModelePDFBticket
 			$carac_client_name = pdfBuildThirdpartyName($thirdparty, $outputlangs);
 
 			$carac_client = pdf_build_address($outputlangs, $this->emetteur, $object->thirdparty, ($usecontact ? $object->contact : ''), $usecontact, 'target', $object);
-
+			var_dump($top_shift);
+			die('je suis ici');
 			// Show recipient
 			$widthrecbox = 100;
 			if ($this->page_largeur < 210) $widthrecbox = 84; // To work with US executive format
