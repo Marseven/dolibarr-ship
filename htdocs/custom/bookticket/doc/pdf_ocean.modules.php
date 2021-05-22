@@ -222,7 +222,7 @@ class pdf_ocean extends ModelePDFBticket
 		if (!empty($conf->global->MAIN_USE_FPDF)) $outputlangs->charset_output = 'ISO-8859-1';
 
 		// Load traductions files required by page
-		$outputlangs->loadLangs(array("main", "dict", "companies", "bills", "propal", "products"));
+		$outputlangs->loadLangs(array("main", "dict", "companies", "bills", "propal", "bookticket"));
 
 		$nblines = count($object->lines);
 
@@ -230,15 +230,15 @@ class pdf_ocean extends ModelePDFBticket
 		$realpatharray = array();
 		if (!empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
 		{
-			$objphoto = new Product($this->db);
+			$objphoto = new Bticket($this->db);
 
 			for ($i = 0; $i < $nblines; $i++)
 			{
-				if (empty($object->lines[$i]->fk_product)) continue;
+				if (empty($object->lines[$i]->fk_travel)) continue;
 
-				$objphoto->fetch($object->lines[$i]->fk_product);
+				$objphoto->fetch($object->lines[$i]->fk_travel);
 				//var_dump($objphoto->ref);exit;
-				if (!empty($conf->global->PRODUCT_USE_OLD_PATH_FOR_PHOTO))
+				if (!empty($conf->global->BTICKET_USE_OLD_PATH_FOR_PHOTO))
 				{
 					$pdir[0] = get_exdir($objphoto->id, 2, 0, 0, $objphoto, 'product').$objphoto->id."/photos/";
 					$pdir[1] = get_exdir(0, 0, 0, 0, $objphoto, 'product').dol_sanitizeFileName($objphoto->ref).'/';
