@@ -211,7 +211,7 @@ print dol_get_fiche_head($head, 'settings', '', -1, "bookticket@bookticket");
 echo '<span class="opacitymedium">'.$langs->trans("BookTicketSetupPage").'</span><br><br>';
 
 
-if ($action == 'edit')
+/*if ($action == 'edit')
 {
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -259,7 +259,7 @@ if ($action == 'edit')
 	} else {
 		print '<br>'.$langs->trans("NothingToSetup");
 	}
-}
+}*/
 
 /*
  * Document templates generators
@@ -287,7 +287,7 @@ if ($resql)
 } else {
 	dol_print_error($db);
 }
-
+var_dump($def);die;
 
 print "<table class=\"noborder\" width=\"100%\">\n";
 print "<tr class=\"liste_titre\">\n";
