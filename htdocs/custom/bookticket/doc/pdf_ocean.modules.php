@@ -40,7 +40,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
 /**
  *	Class to generate PDF proposal Ocean
  */
-class pdf_bticket_ocean extends ModelePDFBticket
+class pdf_ocean extends ModelePDFBticket
 {
 	/**
 	 * @var DoliDb Database handler
