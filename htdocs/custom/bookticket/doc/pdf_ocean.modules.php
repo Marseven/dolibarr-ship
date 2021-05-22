@@ -1614,6 +1614,8 @@ class pdf_ocean extends ModelePDFBticket
 			$pdf->SetFont('', '', $default_font_size - 1);
 			$pdf->MultiCell(80, 4, $carac_emetteur, 0, 'L');
 
+			var_dump($top_shift);
+			die('je suis ici');
 
 			// If CUSTOMER contact defined, we use it
 			$usecontact = false;
@@ -1663,8 +1665,7 @@ class pdf_ocean extends ModelePDFBticket
 		}
 
 		$pdf->SetTextColor(0, 0, 0);
-		var_dump($top_shift);
-		die('je suis ici');
+
 		return $top_shift;
 	}
 
