@@ -306,7 +306,7 @@ foreach ($dirmodels as $reldir)
 	{
 		$realpath = $reldir."custom/bookticket".$valdir;
 		$dir = dol_buildpath($realpath);
-		var_dump($dir);
+
 		if (is_dir($dir))
 		{
 			$handle = opendir($dir);
@@ -321,14 +321,15 @@ foreach ($dirmodels as $reldir)
 
 				foreach ($filelist as $file)
 				{
-					var_dump($file);die;
+
 					if (preg_match('/\.modules\.php$/i', $file) && preg_match('/^(pdf_|doc_)/', $file))
 					{
 						if (file_exists($dir.'/'.$file))
 						{
 							$name = substr($file, 4, dol_strlen($file) - 16);
 							$classname = substr($file, 0, dol_strlen($file) - 12);
-
+							var_dump($name);
+							var_dump($classname);die;
 							require_once $dir.'/'.$file;
 							$module = new $classname($db);
 
