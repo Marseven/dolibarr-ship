@@ -290,7 +290,7 @@ class pdf_ocean extends ModelePDFBticket
 		if ($conf->bticket->multidir_output[$conf->entity])
 		{
 			//$object->fetch_thirdparty();
-			die;
+
 			$deja_regle = 0;
 
 			// Definition of $dir and $file
@@ -312,7 +312,7 @@ class pdf_ocean extends ModelePDFBticket
 					return 0;
 				}
 			}
-
+			die;
 			if (file_exists($dir))
 			{
 				// Add pdfgeneration hook
