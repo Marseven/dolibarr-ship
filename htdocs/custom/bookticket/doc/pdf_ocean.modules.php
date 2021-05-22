@@ -389,8 +389,9 @@ class pdf_ocean extends ModelePDFBticket
 				$heightforfooter = $this->marge_basse + 8; // Height reserved to output the footer (value include bottom margin)
 				if (!empty($conf->global->MAIN_GENERATE_DOCUMENTS_SHOW_FOOT_DETAILS)) $heightforfooter += 6;
 				//print $heightforinfotot + $heightforsignature + $heightforfreetext + $heightforfooter;exit;
-				die('je suis ici');
+
 				$top_shift = $this->_pagehead($pdf, $object, 1, $outputlangs);
+				die('je suis ici');
 				$pdf->SetFont('', '', $default_font_size - 1);
 				$pdf->MultiCell(0, 3, ''); // Set interline to 3
 				$pdf->SetTextColor(0, 0, 0);
@@ -1430,16 +1431,16 @@ class pdf_ocean extends ModelePDFBticket
 		global $conf, $langs;
 
 		// Load traductions files required by page
-		$outputlangs->loadLangs(array("main", "propal", "companies", "bills"));
+		$outputlangs->loadLangs(array("main", "propal", "companies", "bookticket"));
 
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
 
 		pdf_pagehead($pdf, $outputlangs, $this->page_hauteur);
 
 		//  Show Draft Watermark
-		if ($object->statut == 0 && (!empty($conf->global->PROPALE_DRAFT_WATERMARK)))
+		if ($object->status == 0)
 		{
-			pdf_watermark($pdf, $outputlangs, $this->page_hauteur, $this->page_largeur, 'mm', $conf->global->PROPALE_DRAFT_WATERMARK);
+			pdf_watermark($pdf, $outputlangs, $this->page_hauteur, $this->page_largeur, 'mm', "DRAFT");
 		}
 
 		$pdf->SetTextColor(0, 0, 60);
