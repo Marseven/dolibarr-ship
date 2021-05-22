@@ -284,8 +284,8 @@ class pdf_ocean extends ModelePDFBticket
 		}
 
 		if (count($realpatharray) == 0) $this->posxpicture = $this->posxtva;
-		var_dump($conf->bticket->multidir_output[$conf->entity]);
-		die;
+		$conf->bticket->multidir_output[$conf->entity] = DOL_DOCUMENT_ROOT.'/custom/bookticket/doc/output';
+
 		if ($conf->bticket->multidir_output[$conf->entity])
 		{
 			$object->fetch_thirdparty();

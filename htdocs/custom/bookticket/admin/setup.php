@@ -417,6 +417,21 @@ foreach ($dirmodels as $reldir)
 
 print '</table>';
 
+
+/*
+ *  Directory
+ */
+print '<br>';
+print load_fiche_titre($langs->trans("PathToDocuments"), '', '');
+
+print "<table class=\"noborder\" width=\"100%\">\n";
+print "<tr class=\"liste_titre\">\n";
+print "  <td>".$langs->trans("Name")."</td>\n";
+print "  <td>".$langs->trans("Value")."</td>\n";
+print "</tr>\n";
+print "<tr class=\"oddeven\">\n  <td width=\"140\">".$langs->trans("PathDirectory")."</td>\n  <td>".$conf->bticket->multidir_output[$conf->entity]."</td>\n</tr>\n";
+print "</table>\n<br>";
+
 if (empty($setupnotempty)) {
 	print '<br>'.$langs->trans("NothingToSetup");
 }

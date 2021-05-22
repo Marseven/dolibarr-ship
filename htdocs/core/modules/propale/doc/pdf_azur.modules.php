@@ -283,8 +283,7 @@ class pdf_azur extends ModelePDFPropales
 		}
 
 		if (count($realpatharray) == 0) $this->posxpicture = $this->posxtva;
-		var_dump($conf->propal->multidir_output[$conf->entity]);
-		die;
+		
 		if ($conf->propal->multidir_output[$conf->entity])
 		{
 			$object->fetch_thirdparty();
