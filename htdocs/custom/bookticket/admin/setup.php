@@ -122,9 +122,8 @@ if ($action == 'updateMask') {
 	{
 		require_once $file;
 
-		$module = new pdf_ocean($db);
-		var_dump($module->write_file($tmpobject, $langs));
-		die;
+		$module = new $classname($db);
+
 		if ($module->write_file($tmpobject, $langs) > 0)
 		{
 			header("Location: ".DOL_URL_ROOT."/document.php?modulepart=".strtolower($tmpobjectkey)."&file=SPECIMEN.pdf");
