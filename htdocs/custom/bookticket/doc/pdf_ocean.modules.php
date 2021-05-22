@@ -1436,7 +1436,7 @@ class pdf_ocean extends ModelePDFBticket
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
 
 		pdf_pagehead($pdf, $outputlangs, $this->page_hauteur);
-
+		die('je suis ici');
 		//  Show Draft Watermark
 		if ($object->status == 0)
 		{
