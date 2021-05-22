@@ -287,7 +287,7 @@ class pdf_ocean extends ModelePDFBticket
 
 		$conf->bticket->multidir_output[$conf->entity] = DOL_DOCUMENT_ROOT.'/custom/bookticket/doc/output';
 
-		if ($conf->bticket->multidir_output[$conf->entity])
+		if (true)
 		{
 			//$object->fetch_thirdparty();
 
