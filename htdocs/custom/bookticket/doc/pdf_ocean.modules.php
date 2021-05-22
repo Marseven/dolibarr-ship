@@ -131,7 +131,7 @@ class pdf_ocean extends ModelePDFBticket
 		global $conf, $langs, $mysoc;
 
 		// Translations
-		$langs->loadLangs(array("main", "bills"));
+		$langs->loadLangs(array("main", "bookticket"));
 
 		$this->db = $db;
 		$this->name = "ocean";
@@ -222,7 +222,7 @@ class pdf_ocean extends ModelePDFBticket
 		if (!empty($conf->global->MAIN_USE_FPDF)) $outputlangs->charset_output = 'ISO-8859-1';
 
 		// Load traductions files required by page
-		$outputlangs->loadLangs(array("main", "dict", "companies", "bills", "propal", "bookticket"));
+		$outputlangs->loadLangs(array("main", "dict", "companies", "bookticket"));
 
 		$nblines = count($object->lines);
 
@@ -231,7 +231,7 @@ class pdf_ocean extends ModelePDFBticket
 		if (!empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
 		{
 			$objphoto = new Bticket($this->db);
-
+			var_dump($objphoto);die;
 			for ($i = 0; $i < $nblines; $i++)
 			{
 				if (empty($object->lines[$i]->fk_travel)) continue;
