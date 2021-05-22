@@ -40,10 +40,10 @@ global $langs, $user;
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
-require_once '../lib/bookticket.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bookticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
-require_once '../class/bticket.class.php';
-require_once '../lib/bticket.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 //require_once "../class/myclass.class.php";
 
 // Translations
@@ -121,10 +121,10 @@ if ($action == 'updateMask') {
 	if ($filefound)
 	{
 		require_once $file;
-
-		$module = new $classname($db);
 		var_dump($tmpobject);
-		var_dump($module);die;
+		die;
+		$module = new $classname($db);
+
 		if ($module->write_file($tmpobject, $langs) > 0)
 		{
 			header("Location: ".DOL_URL_ROOT."/document.php?modulepart=".strtolower($tmpobjectkey)."&file=SPECIMEN.pdf");
