@@ -122,7 +122,7 @@ if ($action == 'updateMask') {
 	{
 		require_once $file;
 
-		$module = new $classname($db);
+		$module = new pdf_ocean($db);
 		var_dump($module->write_file($tmpobject, $langs));
 		die;
 		if ($module->write_file($tmpobject, $langs) > 0)
