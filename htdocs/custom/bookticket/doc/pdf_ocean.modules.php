@@ -312,7 +312,7 @@ class pdf_ocean extends ModelePDFBticket
 					return 0;
 				}
 			}
-			die;
+
 			if (file_exists($dir))
 			{
 				// Add pdfgeneration hook
@@ -337,6 +337,7 @@ class pdf_ocean extends ModelePDFBticket
 					$pdf->setPrintFooter(false);
 				}
 				$pdf->SetFont(pdf_getPDFFont($outputlangs));
+				die;
 				// Set path to the background PDF File
 				if (!empty($conf->global->MAIN_ADD_PDF_BACKGROUND))
 				{
