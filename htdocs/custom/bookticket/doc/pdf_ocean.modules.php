@@ -214,7 +214,7 @@ class pdf_ocean extends ModelePDFBticket
 	 */
 	public function write_file($object, $outputlangs, $srctemplatepath = '', $hidedetails = 0, $hidedesc = 0, $hideref = 0)
 	{
-		die;
+
 		// phpcs:enable
 		global $user, $langs, $conf, $mysoc, $db, $hookmanager, $nblines;
 
@@ -226,7 +226,7 @@ class pdf_ocean extends ModelePDFBticket
 		$outputlangs->loadLangs(array("main", "dict", "companies", "bookticket"));
 
 		$nblines = count($object->lines);
-
+		die;
 		// Loop on each lines to detect if there is at least one image to show
 		$realpatharray = array();
 		if (!empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
