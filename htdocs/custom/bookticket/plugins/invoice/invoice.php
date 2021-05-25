@@ -1,7 +1,5 @@
 <?php
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/fpdf/fpdf.php';
-define('EURO', chr(128) );
-define('EURO_VAL', 6.55957 );
 
 // Xavier Nicolay 2004
 // Version 1.02
@@ -142,11 +140,11 @@ function addSociete( $nom, $adresse )
 	$y1 = 43;
 	//Positionnement en bas
 	$this->SetXY( $x1, $y1 );
-	$this->SetFont('Arial','B',12);
+	$this->SetFont('Arial','C',12);
 	$length = $this->GetStringWidth( $nom );
 	$this->Cell( $length, 2, $nom);
 	$this->SetXY( $x1, $y1 + 4 );
-	$this->SetFont('Arial','',10);
+	$this->SetFont('Arial','C',10);
 	$length = $this->GetStringWidth( $adresse );
 	//Coordonn�es de la soci�t�
 	$lignes = $this->sizeOfText( $adresse, $length) ;
@@ -168,7 +166,7 @@ function fact_dev( $libelle, $num )
 
     while ( $loop == 0 )
     {
-       $this->SetFont( "Arial", "B", $szfont );
+       $this->SetFont( "Arial", "C", $szfont );
        $sz = $this->GetStringWidth( $texte );
        if ( ($r1+$sz) > $r2 )
           $szfont --;
