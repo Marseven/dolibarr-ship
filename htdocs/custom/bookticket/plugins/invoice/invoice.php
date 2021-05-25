@@ -332,7 +332,7 @@ function addCols( $tab )
 	$r1  = 10;
 	$r2  = $this->w - ($r1 * 2) ;
 	$y1  = 100;
-	$y2  = $this->h - 70 - $y1;
+	$y2  = $this->h - 100 - $y1;
 	$this->SetXY( $r1, $y1 );
 	$this->Rect( $r1, $y1, $r2, $y2, "D");
 	$this->Line( $r1, $y1+6, $r1+$r2, $y1+6);

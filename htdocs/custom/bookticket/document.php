@@ -115,15 +115,6 @@ $line = array( "REFERENCE"    => "REF1",
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
-$line = array( "REFERENCE"    => "REF2",
-			"DESIGNATION"  => "Câble RS232",
-			"QUANTITE"     => "1",
-			"P.U. HT"      => "10.00",
-			"MONTANT H.T." => "60.00",
-			"TVA"          => "1" );
-$size = $pdf->addLine( $y, $line );
-$y   += $size + 2;
-
 //$pdf->addCadreTVAs();
 
 $tot_prods = array( array ( "px_unit" => 600, "qte" => 1, "tva" => 1 ),
