@@ -1,5 +1,5 @@
 <?php
-require('../fpdf/fpdf.php');
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/fpdf/fpdf.php';
 define('EURO', chr(128) );
 define('EURO_VAL', 6.55957 );
 
