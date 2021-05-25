@@ -103,7 +103,7 @@ $cols=array( "REFERENCE"    => "L",
 $pdf->addLineFormat( $cols);
 $pdf->addLineFormat($cols);
 
-$y    = 109;
+$y    = 50;
 $line = array( "REFERENCE"    => "REF1",
 			"DESIGNATION"  => "Carte Mère MSI 6378\n" .
 								"Processeur AMD 1Ghz\n" .
@@ -144,7 +144,7 @@ $params  = array( "RemiseGlobale" => 1,
 					"accompte_percent" => 15,    // pourcentage d'acompte (TTC)
 				"Remarque" => "Avec un acompte, svp..." );
 
-$pdf->addTVAs( $params, $tab_tva, $tot_prods);
+//$pdf->addTVAs( $params, $tab_tva, $tot_prods);
 
 $pdf->addReference("Devis ... du ....");
 
