@@ -140,6 +140,8 @@ function addSociete( $nom, $adresse )
 {
 	$x1 = 10;
 	$y1 = 43;
+	$nom = utf8_decode($nom);
+	$adresse = utf8_decode($adresse);
 	//Positionnement en bas
 	$this->SetXY( $x1, $y1 );
 	$this->SetFont('Arial','B',12);
@@ -255,6 +257,7 @@ function addClientAdresse( $adresse )
 	$r1     = $this->w - 80;
 	$r2     = $r1 + 68;
 	$y1     = 40;
+	$adresse = utf8_decode($adresse);
 	$this->SetXY( $r1, $y1);
 	$this->MultiCell( 60, 4, $adresse);
 }
@@ -267,6 +270,7 @@ function addReglement( $mode )
 	$y1  = 80;
 	$y2  = $y1+10;
 	$mid = $y1 + (($y2-$y1) / 2);
+	$mode = utf8_decode($mode);
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2-$r1)/2 -5 , $y1+1 );
@@ -313,16 +317,17 @@ function addNumTVA($tva)
 	$this->Cell(40, 5, $tva, '', '', "C");
 }
 
-function addReference($ref)
+function addNote($ref)
 {
 	$this->SetFont( "Arial", "", 10);
-	$length = $this->GetStringWidth( "R�f�rences : " . $ref );
+	$ref = utf8_decode($ref);
+	$length = $this->GetStringWidth( $ref );
 	$r1  = 10;
 	$r2  = $r1 + $length;
 	$y1  = 92;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
-	$this->Cell($length,4, "R�f�rences : " . $ref);
+	$this->Cell($length,4, $ref);
 }
 
 function addCols( $tab )
@@ -419,241 +424,59 @@ function addRemarque($remarque)
 	$this->Cell($length,4, "Remarque : " . $remarque);
 }
 
+function addCondition($note)
+{
+	$this->SetFont( "Arial", "", 10);
+	$length = $this->GetStringWidth($note );
+	$r1  = 10;
+	$r2  = $r1 + $length;
+	$y1  = $this->h - 100;
+	$y2  = $y1+5;
+	$this->SetXY( $r1 , $y1 );
+	$this->Cell($length,4, $note);
+}
+
 function addCadreTVAs()
 {
 	$this->SetFont( "Arial", "B", 8);
 	$r1  = 10;
 	$r2  = $r1 + 120;
-	$y1  = $this->h - 120;
+	$y1  = $this->h - 150;
 	$y2  = $y1+20;
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $y1+4, $r2, $y1+4);
-	$this->Line( $r1+5,  $y1+4, $r1+5, $y2); // avant BASES HT
+	$this->Line( $r1+5,  $y1+4, $r1+5, $y2); // avant TARIF
 	$this->Line( $r1+27, $y1, $r1+27, $y2);  // avant REMISE
-	$this->Line( $r1+43, $y1, $r1+43, $y2);  // avant MT TVA
-	$this->Line( $r1+63, $y1, $r1+63, $y2);  // avant % TVA
-	$this->Line( $r1+75, $y1, $r1+75, $y2);  // avant PORT
-	$this->Line( $r1+91, $y1, $r1+91, $y2);  // avant TOTAUX
+	$this->Line( $r1+43, $y1, $r1+43, $y2);  // avant PENALITE
+	$this->Line( $r1+63, $y1, $r1+63, $y2);  // avant TOTAUX
 	$this->SetXY( $r1+9, $y1);
-	$this->Cell(10,4, "BASES HT");
+	$this->Cell(10,4, "TARIF");
 	$this->SetX( $r1+29 );
 	$this->Cell(10,4, "REMISE");
 	$this->SetX( $r1+48 );
-	$this->Cell(10,4, "MT TVA");
+	$this->Cell(10,4, "PENALITE");
 	$this->SetX( $r1+63 );
-	$this->Cell(10,4, "% TVA");
-	$this->SetX( $r1+78 );
-	$this->Cell(10,4, "PORT");
-	$this->SetX( $r1+100 );
 	$this->Cell(10,4, "TOTAUX");
+	$this->SetX( $r1+78 );
 	$this->SetFont( "Arial", "B", 6);
-	$this->SetXY( $r1+93, $y2 - 8 );
-	$this->Cell(6,0, "H.T.   :");
-	$this->SetXY( $r1+93, $y2 - 3 );
-	$this->Cell(6,0, "T.V.A. :");
 }
 
-function addCadreEurosFrancs()
-{
-	$r1  = $this->w - 70;
-	$r2  = $r1 + 60;
-	$y1  = $this->h - 40;
-	$y2  = $y1+20;
-	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
-	$this->Line( $r1+20,  $y1, $r1+20, $y2); // avant EUROS
-	$this->Line( $r1+20, $y1+4, $r2, $y1+4); // Sous Euros & Francs
-	$this->Line( $r1+38,  $y1, $r1+38, $y2); // Entre Euros & Francs
-	$this->SetFont( "Arial", "B", 8);
-	$this->SetXY( $r1+22, $y1 );
-	$this->Cell(15,4, "EUROS", 0, 0, "C");
-	$this->SetFont( "Arial", "", 8);
-	$this->SetXY( $r1+42, $y1 );
-	$this->Cell(15,4, "FRANCS", 0, 0, "C");
-	$this->SetFont( "Arial", "B", 6);
-	$this->SetXY( $r1, $y1+5 );
-	$this->Cell(20,4, "TOTAL TTC", 0, 0, "C");
-	$this->SetXY( $r1, $y1+10 );
-	$this->Cell(20,4, "ACOMPTE", 0, 0, "C");
-	$this->SetXY( $r1, $y1+15 );
-	$this->Cell(20,4, "NET A PAYER", 0, 0, "C");
-}
-
-// remplit les cadres TVA / Totaux et la remarque
-// params  = array( "RemiseGlobale" => [0|1],
-//                      "remise_tva"     => [1|2...],  // {la remise s'applique sur ce code TVA}
-//                      "remise"         => value,     // {montant de la remise}
-//                      "remise_percent" => percent,   // {pourcentage de remise sur ce montant de TVA}
-//                  "FraisPort"     => [0|1],
-//                      "portTTC"        => value,     // montant des frais de ports TTC
-//                                                     // par defaut la TVA = 19.6 %
-//                      "portHT"         => value,     // montant des frais de ports HT
-//                      "portTVA"        => tva_value, // valeur de la TVA a appliquer sur le montant HT
-//                  "AccompteExige" => [0|1],
-//                      "accompte"         => value    // montant de l'acompte (TTC)
-//                      "accompte_percent" => percent  // pourcentage d'acompte (TTC)
-//                  "Remarque" => "texte"              // texte
-// tab_tva = array( "1"       => 19.6,
-//                  "2"       => 5.5, ... );
-// invoice = array( "px_unit" => value,
-//                  "qte"     => qte,
-//                  "tva"     => code_tva );
 function addTVAs( $params, $tab_tva, $invoice )
 {
 	$this->SetFont('Arial','',8);
-
-	reset ($invoice);
-	$px = array();
-	while ( list( $k, $prod) = each( $invoice ) )
-	{
-		$tva = $prod["tva"];
-		@ $px[$tva] += $prod["qte"] * $prod["px_unit"];
-	}
 
 	$prix     = array();
 	$totalHT  = 0;
 	$totalTTC = 0;
 	$totalTVA = 0;
-	$y = $this->h - 120;
+	$y = $this->h - 110;
 	reset ($px);
 	natsort( $px );
-	while ( list($code_tva, $articleHT) = each( $px ) )
-	{
-		$tva = $tab_tva[$code_tva];
-		$this->SetXY(17, $y);
-		$this->Cell( 19,4, sprintf("%0.2F", $articleHT),'', '','R' );
-		if ( $params["RemiseGlobale"]==1 )
-		{
-			if ( $params["remise_tva"] == $code_tva )
-			{
-				$this->SetXY( 37.5, $y );
-				if ($params["remise"] > 0 )
-				{
-					if ( is_int( $params["remise"] ) )
-						$l_remise = $param["remise"];
-					else
-						$l_remise = sprintf ("%0.2F", $params["remise"]);
-					$this->Cell( 14.5,4, $l_remise, '', '', 'R' );
-					$articleHT -= $params["remise"];
-				}
-				else if ( $params["remise_percent"] > 0 )
-				{
-					$rp = $params["remise_percent"];
-					if ( $rp > 1 )
-						$rp /= 100;
-					$rabais = $articleHT * $rp;
-					$articleHT -= $rabais;
-					if ( is_int($rabais) )
-						$l_remise = $rabais;
-					else
-						$l_remise = sprintf ("%0.2F", $rabais);
-					$this->Cell( 14.5,4, $l_remise, '', '', 'R' );
-				}
-				else
-					$this->Cell( 14.5,4, "ErrorRem", '', '', 'R' );
-			}
-		}
-		$totalHT += $articleHT;
-		$totalTTC += $articleHT * ( 1 + $tva/100 );
-		$tmp_tva = $articleHT * $tva/100;
-		$a_tva[ $code_tva ] = $tmp_tva;
-		$totalTVA += $tmp_tva;
-		$this->SetXY(11, $y);
-		$this->Cell( 5,4, $code_tva);
-		$this->SetXY(53, $y);
-		$this->Cell( 19,4, sprintf("%0.2F",$tmp_tva),'', '' ,'R');
-		$this->SetXY(74, $y);
-		$this->Cell( 10,4, sprintf("%0.2F",$tva) ,'', '', 'R');
-		$y+=4;
-	}
-
-	if ( $params["FraisPort"] == 1 )
-	{
-		if ( $params["portTTC"] > 0 )
-		{
-			$pTTC = sprintf("%0.2F", $params["portTTC"]);
-			$pHT  = sprintf("%0.2F", $pTTC / 1.196);
-			$pTVA = sprintf("%0.2F", $pHT * 0.196);
-			$this->SetFont('Arial','',6);
-			$this->SetXY(85, 261 );
-			$this->Cell( 6 ,4, "HT : ", '', '', '');
-			$this->SetXY(92, 261 );
-			$this->Cell( 9 ,4, $pHT, '', '', 'R');
-			$this->SetXY(85, 265 );
-			$this->Cell( 6 ,4, "TVA : ", '', '', '');
-			$this->SetXY(92, 265 );
-			$this->Cell( 9 ,4, $pTVA, '', '', 'R');
-			$this->SetXY(85, 269 );
-			$this->Cell( 6 ,4, "TTC : ", '', '', '');
-			$this->SetXY(92, 269 );
-			$this->Cell( 9 ,4, $pTTC, '', '', 'R');
-			$this->SetFont('Arial','',8);
-			$totalHT += $pHT;
-			$totalTVA += $pTVA;
-			$totalTTC += $pTTC;
-		}
-		else if ( $params["portHT"] > 0 )
-		{
-			$pHT  = sprintf("%0.2F", $params["portHT"]);
-			$pTVA = sprintf("%0.2F", $params["portTVA"] * $pHT / 100 );
-			$pTTC = sprintf("%0.2F", $pHT + $pTVA);
-			$this->SetFont('Arial','',6);
-			$this->SetXY(85, 261 );
-			$this->Cell( 6 ,4, "HT : ", '', '', '');
-			$this->SetXY(92, 261 );
-			$this->Cell( 9 ,4, $pHT, '', '', 'R');
-			$this->SetXY(85, 265 );
-			$this->Cell( 6 ,4, "TVA : ", '', '', '');
-			$this->SetXY(92, 265 );
-			$this->Cell( 9 ,4, $pTVA, '', '', 'R');
-			$this->SetXY(85, 269 );
-			$this->Cell( 6 ,4, "TTC : ", '', '', '');
-			$this->SetXY(92, 269 );
-			$this->Cell( 9 ,4, $pTTC, '', '', 'R');
-			$this->SetFont('Arial','',8);
-			$totalHT += $pHT;
-			$totalTVA += $pTVA;
-			$totalTTC += $pTTC;
-		}
-	}
 
 	$this->SetXY(114,266.4);
 	$this->Cell(15,4, sprintf("%0.2F", $totalHT), '', '', 'R' );
 	$this->SetXY(114,271.4);
 	$this->Cell(15,4, sprintf("%0.2F", $totalTVA), '', '', 'R' );
-
-	$params["totalHT"] = $totalHT;
-	$params["TVA"] = $totalTVA;
-	$accompteTTC=0;
-	if ( $params["AccompteExige"] == 1 )
-	{
-		if ( $params["accompte"] > 0 )
-		{
-			$accompteTTC=sprintf ("%.2F", $params["accompte"]);
-			if ( strlen ($params["Remarque"]) == 0 )
-				$this->addRemarque( "Accompte de $accompteTTC Euros exig� � la commande.");
-			else
-				$this->addRemarque( $params["Remarque"] );
-		}
-		else if ( $params["accompte_percent"] > 0 )
-		{
-			$percent = $params["accompte_percent"];
-			if ( $percent > 1 )
-				$percent /= 100;
-			$accompteTTC=sprintf("%.2F", $totalTTC * $percent);
-			$percent100 = $percent * 100;
-			if ( strlen ($params["Remarque"]) == 0 )
-				$this->addRemarque( "Accompte de $percent100 % (soit $accompteTTC Euros) exig� � la commande." );
-			else
-				$this->addRemarque( $params["Remarque"] );
-		}
-		else
-			$this->addRemarque( "Dr�le d'acompte !!! " . $params["Remarque"]);
-	}
-	else
-	{
-		if ( strlen ($params["Remarque"]) > 0 )
-			$this->addRemarque( $params["Remarque"] );
-	}
 
 }
 

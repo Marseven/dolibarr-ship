@@ -71,7 +71,7 @@ $pdf->fact_dev( "Billet ", "REF" );
 
 //$pdf->temporaire( "Devis temporaire" );
 
-$pdf->addDate( "03/12/2003");
+$pdf->addDate( "03/12/2021");
 
 //$pdf->addClient("CL01");
 
@@ -81,37 +81,44 @@ $pdf->addClientAdresse("Ste\nM. XXXX\n3ème étage\n33, rue d'ailleurs\n75000 PA
 
 $pdf->addReglement("Chèque à réception de facture");
 
-$pdf->addEcheance("03/12/2003");
+$pdf->addEcheance("03/12/2021");
 
 //$pdf->addNumTVA("FR888777666");
 
-$pdf->addReference("Devis ... du ....");
+$pdf->addNote("Devis ... du ....");
 
-$cols=array( "REFERENCE"    => 23,
-			"DESIGNATION"  => 78,
-			"QUANTITE"     => 22,
-			"P.U. HT"      => 26,
-			"MONTANT H.T." => 30,
-			"TVA"          => 11 );
+$cols=array( "REF"    => 23,
+			 "Date"  => 78,
+			 "Heure"  => 78,
+			 "De"     => 22,
+			 "Vers"      => 26,
+			 "Classe" => 30,
+			 "Détails"          => 11,
+			 "Bagage"          => 11,
+			 "statut"          => 11 );
 $pdf->addCols( $cols);
-$cols=array( "REFERENCE"    => "L",
-			"DESIGNATION"  => "L",
-			"QUANTITE"     => "C",
-			"P.U. HT"      => "R",
-			"MONTANT H.T." => "R",
-			"TVA"          => "C" );
+$cols=array( "REF"    => "L",
+			 "Date"  => "L",
+			 "Heure"     => "C",
+			 "De"      => "R",
+			 "Vers" => "R",
+			 "Classe"          => "C",
+			 "Détails"          => "C",
+			 "Bagage"          => "C",
+			 "Statut"          => "C" );
 //$pdf->addLineFormat( $cols);
 $pdf->addLineFormat($cols);
 
 $y    = 109;
-$line = array( "REFERENCE"    => "REF1",
-			"DESIGNATION"  => "Carte Mère MSI 6378\n" .
-								"Processeur AMD 1Ghz\n" .
-								"128Mo SDRAM, 30 Go Disque, CD-ROM, Floppy, Carte vidéo",
-			"QUANTITE"     => "1",
-			"P.U. HT"      => "600.00",
-			"MONTANT H.T." => "600.00",
-			"TVA"          => "1" );
+$line = array(  "REF"    => "L",
+				"Date"  => "L",
+				"Heure"     => "C",
+				"De"      => "R",
+				"Vers" => "R",
+				"Classe"          => "C",
+				"Détails"          => "C",
+				"Bagage"          => "C",
+				"Statut"          => "C"  );
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
@@ -137,7 +144,7 @@ $params  = array( "RemiseGlobale" => 1,
 
 $pdf->addTVAs( $params, $tab_tva, $tot_prods);
 
-$pdf->addReference("Devis ... du ....");
+$pdf->addCondition("Devis ... du ....");
 
 $pdf->Output('D', 'test.pdf', true);
 
