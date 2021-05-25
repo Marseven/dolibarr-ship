@@ -169,7 +169,7 @@ function fact_dev( $libelle, $num )
 
     while ( $loop == 0 )
     {
-       $this->SetFont( "Arial", "C", $szfont );
+       $this->SetFont( "Arial", "B", $szfont );
        $sz = $this->GetStringWidth( $texte );
        if ( ($r1+$sz) > $r2 )
           $szfont --;
