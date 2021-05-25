@@ -93,14 +93,14 @@ $cols=array( "REFERENCE"    => 23,
 			"P.U. HT"      => 26,
 			"MONTANT H.T." => 30,
 			"TVA"          => 11 );
-$pdf->addCols( $cols);
+//$pdf->addCols( $cols);
 $cols=array( "REFERENCE"    => "L",
 			"DESIGNATION"  => "L",
 			"QUANTITE"     => "C",
 			"P.U. HT"      => "R",
 			"MONTANT H.T." => "R",
 			"TVA"          => "C" );
-$pdf->addLineFormat( $cols);
+//$pdf->addLineFormat( $cols);
 $pdf->addLineFormat($cols);
 
 $y    = 109;
@@ -124,7 +124,7 @@ $line = array( "REFERENCE"    => "REF2",
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
-$pdf->addCadreTVAs();
+//$pdf->addCadreTVAs();
 
 $tot_prods = array( array ( "px_unit" => 600, "qte" => 1, "tva" => 1 ),
 					array ( "px_unit" =>  10, "qte" => 1, "tva" => 1 ));
@@ -148,6 +148,5 @@ $params  = array( "RemiseGlobale" => 1,
 
 $pdf->addReference("Devis ... du ....");
 
-//$pdf->addCadreEurosFrancs();
 $pdf->Output('D', 'test.pdf', true);
 
