@@ -1319,7 +1319,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	$pdf->addCadreEurosFrancs();
 	$pdf->Output();
 
-			die;
+			die('ici');
 
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 
