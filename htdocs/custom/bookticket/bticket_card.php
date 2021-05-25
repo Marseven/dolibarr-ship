@@ -1317,7 +1317,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$pdf->addTVAs( $params, $tab_tva, $tot_prods);
 			$pdf->addCadreEurosFrancs();
-			die("ici");
+			//die("ici");
 			$pdf->Output();
 
 			die('imprimé');
