@@ -332,7 +332,7 @@ function addCols( $tab )
 	$r1  = 10;
 	$r2  = $this->w - ($r1 * 2) ;
 	$y1  = 100;
-	$y2  = $this->h - 120 - $y1;
+	$y2  = $this->h - 180 - $y1;
 	$this->SetXY( $r1, $y1 );
 	$this->Rect( $r1, $y1, $r2, $y2, "D");
 	$this->Line( $r1, $y1+6, $r1+$r2, $y1+6);
@@ -513,7 +513,7 @@ function addTVAs( $params, $tab_tva, $invoice )
 	$totalHT  = 0;
 	$totalTTC = 0;
 	$totalTVA = 0;
-	$y = 261;
+	$y = $this->h - 120;
 	reset ($px);
 	natsort( $px );
 	while ( list($code_tva, $articleHT) = each( $px ) )
