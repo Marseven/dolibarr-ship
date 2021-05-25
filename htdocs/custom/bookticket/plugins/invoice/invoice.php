@@ -449,6 +449,7 @@ function addCadrePrice()
 	$this->Line( $r1+25, $y1, $r1+25, $y2);  // avant REMISE
 	$this->Line( $r1+50, $y1, $r1+50, $y2);  // avant PENALITE
 	$this->Line( $r1+70, $y1, $r1+70, $y2);  // avant TOTAUX
+	$this->SetXY( $r1+9, $y1);
 	$this->Cell(10,4, "TARIF");
 	$this->SetX( $r1+30 );
 	$this->Cell(10,4, "REMISE");
@@ -457,7 +458,6 @@ function addCadrePrice()
 	$this->SetX( $r1+70 );
 	$this->Cell(10,4, "TOTAUX");
 	$this->SetX( $r1+85 );
-	$this->SetFont( "Arial", "B", 6);
 }
 
 function addPrice()
