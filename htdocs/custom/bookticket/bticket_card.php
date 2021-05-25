@@ -51,6 +51,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/doc/pdf_ocean.modules.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bookticket', 'other'));
@@ -1220,6 +1221,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
+
+			write_pdf(); die;
+
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
