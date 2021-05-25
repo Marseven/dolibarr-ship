@@ -115,7 +115,7 @@ $line = array( "REFERENCE"    => "REF1",
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
-//$pdf->addCadreTVAs();
+$pdf->addCadreTVAs();
 
 $tot_prods = array( array ( "px_unit" => 600, "qte" => 1, "tva" => 1 ),
 					array ( "px_unit" =>  10, "qte" => 1, "tva" => 1 ));
@@ -135,7 +135,7 @@ $params  = array( "RemiseGlobale" => 1,
 					"accompte_percent" => 15,    // pourcentage d'acompte (TTC)
 				"Remarque" => "Avec un acompte, svp..." );
 
-//$pdf->addTVAs( $params, $tab_tva, $tot_prods);
+$pdf->addTVAs( $params, $tab_tva, $tot_prods);
 
 $pdf->addReference("Devis ... du ....");
 
