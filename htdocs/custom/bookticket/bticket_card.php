@@ -1301,7 +1301,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$pdf->addCadreEurosFrancs();
 			//die("ici");
 			var_dump($pdf);
-			$pdf->Output('/doc/output/test.pdf');
+			$pdf->Output('D','/doc/output/test.pdf');
 
 			die('imprimé');
 
