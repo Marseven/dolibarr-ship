@@ -135,5 +135,5 @@ $params  = array( "RemiseGlobale" => 1,
 
 $pdf->addTVAs( $params, $tab_tva, $tot_prods);
 $pdf->addCadreEurosFrancs();
-$pdf->Output('D', DOL_DOCUMENT_ROOT.'/custom/bookticket/doc/output/test.pdf');
+$pdf->Output('D', 'test.pdf', true);
 
