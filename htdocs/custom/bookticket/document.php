@@ -94,8 +94,8 @@ $cols=array( "REF"    	=> 20,
 			 "Vers"     => 30,
 			 "Classe" 	=> 15,
 			 "Détails"  => 35,
-			 "Bagage"   => 10,
-			 "statut"   => 20 );
+			 "Bg"   => 10,
+			 "St"   => 20 );
 $pdf->addCols( $cols);
 $cols=array( "REF"   	 => "L",
 			 "Date"  	 => "L",
@@ -104,8 +104,8 @@ $cols=array( "REF"   	 => "L",
 			 "Vers" 	 => "R",
 			 "Classe"    => "C",
 			 "Détails"   => "C",
-			 "Bagage"    => "C",
-			 "Statut"    => "C" );
+			 "Bg"    => "C",
+			 "St"    => "C" );
 //$pdf->addLineFormat( $cols);
 $pdf->addLineFormat($cols);
 
@@ -117,8 +117,8 @@ $line = array(  "REF"   	=> "L",
 				"Vers" 	 	=> "R",
 				"Classe"    => "C",
 				"Détails"   => "C",
-				"Bagage"    => "C",
-				"Statut"    => "C"  );
+				"Bg"    => "C",
+				"St"    => "C"  );
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
