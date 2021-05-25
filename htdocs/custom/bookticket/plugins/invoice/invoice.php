@@ -162,7 +162,7 @@ function fact_dev( $libelle, $num )
     $y2  = $y1 + 2;
     $mid = ($r1 + $r2 ) / 2;
 
-    $texte  = $libelle . " EN " . EURO . " N° : " . $num;
+    $texte  = $libelle . " N° : " . $num;
     $szfont = 12;
     $loop   = 0;
 

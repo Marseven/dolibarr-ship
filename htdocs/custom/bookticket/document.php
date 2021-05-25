@@ -60,22 +60,33 @@ require DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
 
 $pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 $pdf->AddPage();
+
 $pdf->addSociete( "MaSociete",
 				"MonAdresse\n" .
 				"75000 PARIS\n".
-				"R.C.S. PARIS B 000 000 007\n" .
-				"Capital : 18000 " . EURO );
-$pdf->fact_dev( "Devis ", "TEMPO" );
-$pdf->temporaire( "Devis temporaire" );
-$pdf->addDate( "03/12/2003");
-$pdf->addClient("CL01");
+				"R.C.S. PARIS B 000 000 007\n" );
 
-$pdf->addPageNumber("1");
+
+$pdf->fact_dev( "Billet ", "REF" );
+
+//$pdf->temporaire( "Devis temporaire" );
+
+$pdf->addDate( "03/12/2003");
+
+//$pdf->addClient("CL01");
+
+//$pdf->addPageNumber("1");
+
 $pdf->addClientAdresse("Ste\nM. XXXX\n3ème étage\n33, rue d'ailleurs\n75000 PARIS");
+
 $pdf->addReglement("Chèque à réception de facture");
+
 $pdf->addEcheance("03/12/2003");
-$pdf->addNumTVA("FR888777666");
+
+//$pdf->addNumTVA("FR888777666");
+
 $pdf->addReference("Devis ... du ....");
+
 $cols=array( "REFERENCE"    => 23,
 			"DESIGNATION"  => 78,
 			"QUANTITE"     => 22,
@@ -134,6 +145,9 @@ $params  = array( "RemiseGlobale" => 1,
 				"Remarque" => "Avec un acompte, svp..." );
 
 $pdf->addTVAs( $params, $tab_tva, $tot_prods);
-$pdf->addCadreEurosFrancs();
+
+$pdf->addReference("Devis ... du ....");
+
+//$pdf->addCadreEurosFrancs();
 $pdf->Output('D', 'test.pdf', true);
 
