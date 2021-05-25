@@ -444,11 +444,11 @@ function addCadrePrice()
 	$y1  = $this->h - 150;
 	$y2  = $y1+20;
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
+	$this->Line( $r1, $y1+4, $r2, $y1+4);
 	$this->Line( $r1+5,  $y1+4, $r1+5, $y2); // avant TARIF
 	$this->Line( $r1+25, $y1, $r1+25, $y2);  // avant REMISE
 	$this->Line( $r1+50, $y1, $r1+50, $y2);  // avant PENALITE
 	$this->Line( $r1+70, $y1, $r1+70, $y2);  // avant TOTAUX
-	$this->SetXY( $r1+9, $y1);
 	$this->Cell(10,4, "TARIF");
 	$this->SetX( $r1+30 );
 	$this->Cell(10,4, "REMISE");
