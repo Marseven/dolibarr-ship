@@ -1222,8 +1222,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 
-die("ici");
 			$pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
+			die("ici");
 			$pdf->AddPage();
 			$pdf->addSociete( "MaSociete",
 							"MonAdresse\n" .
