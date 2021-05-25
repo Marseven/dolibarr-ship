@@ -65,7 +65,7 @@ function bookticketAdminPrepareHead()
 	return $head;
 }
 
-/*function bticketPrint(){
+function bticketPrint(){
 
 
 	require DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
@@ -148,4 +148,4 @@ function bookticketAdminPrepareHead()
 	$pdf->addTVAs( $params, $tab_tva, $tot_prods);
 	$pdf->addCadreEurosFrancs();
 	$pdf->Output('D', DOL_DOCUMENT_ROOT.'/custom/bookticket/doc/output/test.pdf');
-}*/
+}
