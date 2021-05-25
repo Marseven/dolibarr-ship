@@ -436,7 +436,7 @@ function addCondition($note)
 	$this->Cell($length,4, $note);
 }
 
-function addCadreTVAs()
+function addCadrePrice()
 {
 	$this->SetFont( "Arial", "B", 8);
 	$r1  = 10;
@@ -446,37 +446,24 @@ function addCadreTVAs()
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $y1+4, $r2, $y1+4);
 	$this->Line( $r1+5,  $y1+4, $r1+5, $y2); // avant TARIF
-	$this->Line( $r1+27, $y1, $r1+27, $y2);  // avant REMISE
-	$this->Line( $r1+43, $y1, $r1+43, $y2);  // avant PENALITE
-	$this->Line( $r1+63, $y1, $r1+63, $y2);  // avant TOTAUX
+	$this->Line( $r1+25, $y1, $r1+25, $y2);  // avant REMISE
+	$this->Line( $r1+50, $y1, $r1+50, $y2);  // avant PENALITE
+	$this->Line( $r1+70, $y1, $r1+70, $y2);  // avant TOTAUX
 	$this->SetXY( $r1+9, $y1);
 	$this->Cell(10,4, "TARIF");
-	$this->SetX( $r1+29 );
+	$this->SetX( $r1+30 );
 	$this->Cell(10,4, "REMISE");
-	$this->SetX( $r1+48 );
+	$this->SetX( $r1+50 );
 	$this->Cell(10,4, "PENALITE");
-	$this->SetX( $r1+63 );
+	$this->SetX( $r1+70 );
 	$this->Cell(10,4, "TOTAUX");
-	$this->SetX( $r1+78 );
+	$this->SetX( $r1+85 );
 	$this->SetFont( "Arial", "B", 6);
 }
 
-function addTVAs( $params, $tab_tva, $invoice )
+function addPrice( $params, $tab_tva, $invoice )
 {
 	$this->SetFont('Arial','',8);
-
-	$prix     = array();
-	$totalHT  = 0;
-	$totalTTC = 0;
-	$totalTVA = 0;
-	$y = $this->h - 110;
-	reset ($px);
-	natsort( $px );
-
-	$this->SetXY(114,266.4);
-	$this->Cell(15,4, sprintf("%0.2F", $totalHT), '', '', 'R' );
-	$this->SetXY(114,271.4);
-	$this->Cell(15,4, sprintf("%0.2F", $totalTVA), '', '', 'R' );
 
 }
 

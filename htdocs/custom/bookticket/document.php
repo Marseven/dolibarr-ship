@@ -87,62 +87,44 @@ $pdf->addEcheance("03/12/2021");
 
 $pdf->addNote("Devis ... du ....");
 
-$cols=array( "REF"    => 23,
-			 "Date"  => 78,
-			 "Heure"  => 78,
-			 "De"     => 22,
-			 "Vers"      => 26,
-			 "Classe" => 30,
-			 "Détails"          => 11,
-			 "Bagage"          => 11,
-			 "statut"          => 11 );
+$cols=array( "REF"    	=> 20,
+			 "Date"  	=> 20,
+			 "Heure"  	=> 20,
+			 "De"     	=> 30,
+			 "Vers"     => 30,
+			 "Classe" 	=> 15,
+			 "Détails"  => 35,
+			 "Bagage"   => 10,
+			 "statut"   => 20 );
 $pdf->addCols( $cols);
-$cols=array( "REF"    => "L",
-			 "Date"  => "L",
+$cols=array( "REF"   	 => "L",
+			 "Date"  	 => "L",
 			 "Heure"     => "C",
-			 "De"      => "R",
-			 "Vers" => "R",
-			 "Classe"          => "C",
-			 "Détails"          => "C",
-			 "Bagage"          => "C",
-			 "Statut"          => "C" );
+			 "De"     	 => "R",
+			 "Vers" 	 => "R",
+			 "Classe"    => "C",
+			 "Détails"   => "C",
+			 "Bagage"    => "C",
+			 "Statut"    => "C" );
 //$pdf->addLineFormat( $cols);
 $pdf->addLineFormat($cols);
 
 $y    = 109;
-$line = array(  "REF"    => "L",
-				"Date"  => "L",
+$line = array(  "REF"   	=> "L",
+				"Date"  	=> "L",
 				"Heure"     => "C",
-				"De"      => "R",
-				"Vers" => "R",
-				"Classe"          => "C",
-				"Détails"          => "C",
-				"Bagage"          => "C",
-				"Statut"          => "C"  );
+				"De"     	=> "R",
+				"Vers" 	 	=> "R",
+				"Classe"    => "C",
+				"Détails"   => "C",
+				"Bagage"    => "C",
+				"Statut"    => "C"  );
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
-$pdf->addCadreTVAs();
+$pdf->addCadrePrice();
 
-$tot_prods = array( array ( "px_unit" => 600, "qte" => 1, "tva" => 1 ),
-					array ( "px_unit" =>  10, "qte" => 1, "tva" => 1 ));
-$tab_tva = array( "1"       => 19.6,
-				"2"       => 5.5);
-$params  = array( "RemiseGlobale" => 1,
-					"remise_tva"     => 1,       // {la remise s'applique sur ce code TVA}
-					"remise"         => 0,       // {montant de la remise}
-					"remise_percent" => 10,      // {pourcentage de remise sur ce montant de TVA}
-				"FraisPort"     => 1,
-					"portTTC"        => 10,      // montant des frais de ports TTC
-												// par defaut la TVA = 19.6 %
-					"portHT"         => 0,       // montant des frais de ports HT
-					"portTVA"        => 19.6,    // valeur de la TVA a appliquer sur le montant HT
-				"AccompteExige" => 1,
-					"accompte"         => 0,     // montant de l'acompte (TTC)
-					"accompte_percent" => 15,    // pourcentage d'acompte (TTC)
-				"Remarque" => "Avec un acompte, svp..." );
-
-$pdf->addTVAs( $params, $tab_tva, $tot_prods);
+$pdf->addPrice( $params, $tab_tva, $tot_prods);
 
 $pdf->addCondition("Devis ... du ....");
 
