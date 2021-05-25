@@ -1233,7 +1233,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$pdf->temporaire( "Devis temporaire" );
 			$pdf->addDate( "03/12/2003");
 			$pdf->addClient("CL01");
-			die("ici");
+
 			$pdf->addPageNumber("1");
 			$pdf->addClientAdresse("Ste\nM. XXXX\n3ème étage\n33, rue d'ailleurs\n75000 PARIS");
 			$pdf->addReglement("Chèque à réception de facture");
@@ -1317,6 +1317,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$pdf->addTVAs( $params, $tab_tva, $tot_prods);
 			$pdf->addCadreEurosFrancs();
+			die("ici");
 			$pdf->Output();
 
 			die('imprimé');
