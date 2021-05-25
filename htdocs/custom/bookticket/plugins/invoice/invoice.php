@@ -139,7 +139,7 @@ function sizeOfText( $texte, $largeur )
 function addSociete( $nom, $adresse )
 {
 	$x1 = 10;
-	$y1 = 40;
+	$y1 = 43;
 	//Positionnement en bas
 	$this->SetXY( $x1, $y1 );
 	$this->SetFont('Arial','B',12);
@@ -162,7 +162,7 @@ function fact_dev( $libelle, $num )
     $y2  = $y1 + 2;
     $mid = ($r1 + $r2 ) / 2;
 
-    $texte  = $libelle . " N° : " . $num;
+    $texte  = utf8_decode($libelle) . " N° : " . utf8_decode($num);
     $szfont = 12;
     $loop   = 0;
 
