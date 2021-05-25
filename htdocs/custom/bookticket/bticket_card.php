@@ -1223,7 +1223,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Fiche en mode visu
 
 			$pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
-			die("ici");
 			$pdf->AddPage();
 			$pdf->addSociete( "MaSociete",
 							"MonAdresse\n" .
@@ -1234,9 +1233,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$pdf->temporaire( "Devis temporaire" );
 			$pdf->addDate( "03/12/2003");
 			$pdf->addClient("CL01");
+			die("ici");
 			$pdf->addPageNumber("1");
-			$pdf->addClientAdresse("Ste\nM. XXXX\n3�me �tage\n33, rue d'ailleurs\n75000 PARIS");
-			$pdf->addReglement("Ch�que � r�ception de facture");
+			$pdf->addClientAdresse("Ste\nM. XXXX\n3ème étage\n33, rue d'ailleurs\n75000 PARIS");
+			$pdf->addReglement("Chèque à réception de facture");
 			$pdf->addEcheance("03/12/2003");
 			$pdf->addNumTVA("FR888777666");
 			$pdf->addReference("Devis ... du ....");
@@ -1258,9 +1258,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$y    = 109;
 			$line = array( "REFERENCE"    => "REF1",
-						"DESIGNATION"  => "Carte M�re MSI 6378\n" .
+						"DESIGNATION"  => "Carte Mère MSI 6378\n" .
 											"Processeur AMD 1Ghz\n" .
-											"128Mo SDRAM, 30 Go Disque, CD-ROM, Floppy, Carte vid�o",
+											"128Mo SDRAM, 30 Go Disque, CD-ROM, Floppy, Carte vidéo",
 						"QUANTITE"     => "1",
 						"P.U. HT"      => "600.00",
 						"MONTANT H.T." => "600.00",
@@ -1269,7 +1269,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$y   += $size + 2;
 
 			$line = array( "REFERENCE"    => "REF2",
-						"DESIGNATION"  => "C�ble RS232",
+						"DESIGNATION"  => "Câble RS232",
 						"QUANTITE"     => "1",
 						"P.U. HT"      => "10.00",
 						"MONTANT H.T." => "60.00",
