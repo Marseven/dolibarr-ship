@@ -424,7 +424,7 @@ function addCadreTVAs()
 	$this->SetFont( "Arial", "B", 8);
 	$r1  = 10;
 	$r2  = $r1 + 120;
-	$y1  = $this->h - 40;
+	$y1  = $this->h - 120;
 	$y2  = $y1+20;
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $y1+4, $r2, $y1+4);
@@ -654,22 +654,7 @@ function addTVAs( $params, $tab_tva, $invoice )
 		if ( strlen ($params["Remarque"]) > 0 )
 			$this->addRemarque( $params["Remarque"] );
 	}
-	$re  = $this->w - 50;
-	$rf  = $this->w - 29;
-	$y1  = $this->h - 40;
-	$this->SetFont( "Arial", "", 8);
-	$this->SetXY( $re, $y1+5 );
-	$this->Cell( 17,4, sprintf("%0.2F", $totalTTC), '', '', 'R');
-	$this->SetXY( $re, $y1+10 );
-	$this->Cell( 17,4, sprintf("%0.2F", $accompteTTC), '', '', 'R');
-	$this->SetXY( $re, $y1+14.8 );
-	$this->Cell( 17,4, sprintf("%0.2F", $totalTTC - $accompteTTC), '', '', 'R');
-	$this->SetXY( $rf, $y1+5 );
-	$this->Cell( 17,4, sprintf("%0.2F", $totalTTC * EURO_VAL), '', '', 'R');
-	$this->SetXY( $rf, $y1+10 );
-	$this->Cell( 17,4, sprintf("%0.2F", $accompteTTC * EURO_VAL), '', '', 'R');
-	$this->SetXY( $rf, $y1+14.8 );
-	$this->Cell( 17,4, sprintf("%0.2F", ($totalTTC - $accompteTTC) * EURO_VAL), '', '', 'R');
+
 }
 
 // add a watermark (temporary estimate, DUPLICATA...)
