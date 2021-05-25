@@ -444,7 +444,6 @@ function addCadrePrice()
 	$y1  = $this->h - 150;
 	$y2  = $y1+20;
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
-	$this->Line( $r1, $y1+4, $r2, $y1+4);
 	$this->Line( $r1+5,  $y1+4, $r1+5, $y2); // avant TARIF
 	$this->Line( $r1+25, $y1, $r1+25, $y2);  // avant REMISE
 	$this->Line( $r1+50, $y1, $r1+50, $y2);  // avant PENALITE
@@ -461,7 +460,7 @@ function addCadrePrice()
 	$this->SetFont( "Arial", "B", 6);
 }
 
-function addPrice( $params, $tab_tva, $invoice )
+function addPrice()
 {
 	$this->SetFont('Arial','',8);
 

@@ -95,7 +95,7 @@ $cols=array( "REF"    	=> 20,
 			 "Classe" 	=> 15,
 			 "Détails"  => 35,
 			 "Bg"   => 10,
-			 "St"   => 20 );
+			 "St"   => 10 );
 $pdf->addCols( $cols);
 $cols=array( "REF"   	 => "L",
 			 "Date"  	 => "L",
