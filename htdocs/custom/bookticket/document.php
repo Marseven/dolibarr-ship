@@ -93,7 +93,7 @@ $cols=array( "REFERENCE"    => 23,
 			"P.U. HT"      => 26,
 			"MONTANT H.T." => 30,
 			"TVA"          => 11 );
-//$pdf->addCols( $cols);
+$pdf->addCols( $cols);
 $cols=array( "REFERENCE"    => "L",
 			"DESIGNATION"  => "L",
 			"QUANTITE"     => "C",
