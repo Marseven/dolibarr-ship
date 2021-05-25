@@ -103,7 +103,7 @@ $cols=array( "REFERENCE"    => "L",
 $pdf->addLineFormat( $cols);
 $pdf->addLineFormat($cols);
 
-$y    = 50;
+$y    = 109;
 $line = array( "REFERENCE"    => "REF1",
 			"DESIGNATION"  => "Carte Mère MSI 6378\n" .
 								"Processeur AMD 1Ghz\n" .
