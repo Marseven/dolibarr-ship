@@ -1279,24 +1279,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$pdf->addCadreTVAs();
 
-			// invoice = array( "px_unit" => value,
-			//                  "qte"     => qte,
-			//                  "tva"     => code_tva );
-			// tab_tva = array( "1"       => 19.6,
-			//                  "2"       => 5.5, ... );
-			// params  = array( "RemiseGlobale" => [0|1],
-			//                      "remise_tva"     => [1|2...],  // {la remise s'applique sur ce code TVA}
-			//                      "remise"         => value,     // {montant de la remise}
-			//                      "remise_percent" => percent,   // {pourcentage de remise sur ce montant de TVA}
-			//                  "FraisPort"     => [0|1],
-			//                      "portTTC"        => value,     // montant des frais de ports TTC
-			//                                                     // par defaut la TVA = 19.6 %
-			//                      "portHT"         => value,     // montant des frais de ports HT
-			//                      "portTVA"        => tva_value, // valeur de la TVA a appliquer sur le montant HT
-			//                  "AccompteExige" => [0|1],
-			//                      "accompte"         => value    // montant de l'acompte (TTC)
-			//                      "accompte_percent" => percent  // pourcentage d'acompte (TTC)
-			//                  "Remarque" => "texte"              // texte
 			$tot_prods = array( array ( "px_unit" => 600, "qte" => 1, "tva" => 1 ),
 								array ( "px_unit" =>  10, "qte" => 1, "tva" => 1 ));
 			$tab_tva = array( "1"       => 19.6,
@@ -1318,7 +1300,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$pdf->addTVAs( $params, $tab_tva, $tot_prods);
 			$pdf->addCadreEurosFrancs();
 			//die("ici");
-			$pdf->Output();
+			$pdf->Output('/doc/test.pdf');
 
 			die('imprimé');
 
