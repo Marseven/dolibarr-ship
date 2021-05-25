@@ -60,7 +60,7 @@ require DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
 
 $pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 $pdf->AddPage();
-$pdf->Image('https://scontent.flbv3-1.fna.fbcdn.net/v/t1.6435-9/106546007_102528998198590_1329607126375330977_n.jpg?_nc_cat=109&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeESD4AUHxYuWbwNQCJcP5rwsKiMV3agQSmwqIxXdqBBKZgRIrrRn9aTnMErxWCGxWifedc9uFgzPznxQiLqCjkB&_nc_ohc=rxYTfhOpR7UAX9gvnPx&_nc_pt=1&_nc_ht=scontent.flbv3-1.fna&oh=84ed6ca0f378c51ed86f3f6c89a244d5&oe=60D3F7B0',60,30,90,0,'PNG');
+$pdf->Image('img/DVM.jpg', 10, 10, 80, 55);
 $pdf->addSociete( "MaSociete",
 				"MonAdresse\n" .
 				"75000 PARIS\n".
