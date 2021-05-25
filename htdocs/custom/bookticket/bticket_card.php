@@ -1300,10 +1300,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$pdf->addTVAs( $params, $tab_tva, $tot_prods);
 			$pdf->addCadreEurosFrancs();
 			//die("ici");
-			var_dump($pdf);
+			//var_dump($pdf);
 			$pdf->Output('D', DOL_DOCUMENT_ROOT.'/custom/bookticket/doc/output/test.pdf');
 
-			die('imprimé');
+			//die('imprimé');
 
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 
