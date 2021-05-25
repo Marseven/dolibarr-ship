@@ -60,7 +60,7 @@ require DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
 
 $pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 $pdf->AddPage();
-$pdf->Image('img/DVM.jpg', 10, 10, 20, 20);
+$pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
 $pdf->addSociete( "MaSociete",
 				"MonAdresse\n" .
 				"75000 PARIS\n".

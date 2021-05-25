@@ -178,7 +178,7 @@ function fact_dev( $libelle, $num )
 
     $this->SetLineWidth(0.1);
     $this->SetFillColor(192);
-    $this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 2.5, 'DF');
+    $this->Rect($r1, $y1, ($r2 - $r1), $y2);
     $this->SetXY( $r1+1, $y1+2);
     $this->Cell($r2-$r1 -1,5, $texte, 0, 0, "C" );
 }
@@ -204,7 +204,7 @@ function addDate( $date )
 	$y1  = 17;
 	$y2  = $y1 ;
 	$mid = $y1 + ($y2 / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), $y2);
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2-$r1)/2 - 5, $y1+3 );
 	$this->SetFont( "Arial", "B", 10);
@@ -221,7 +221,7 @@ function addClient( $ref )
 	$y1  = 17;
 	$y2  = $y1;
 	$mid = $y1 + ($y2 / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), $y2);
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2-$r1)/2 - 5, $y1+3 );
 	$this->SetFont( "Arial", "B", 10);
@@ -238,7 +238,7 @@ function addPageNumber( $page )
 	$y1  = 17;
 	$y2  = $y1;
 	$mid = $y1 + ($y2 / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), $y2);
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2-$r1)/2 - 5, $y1+3 );
 	$this->SetFont( "Arial", "B", 10);
@@ -266,7 +266,7 @@ function addReglement( $mode )
 	$y1  = 80;
 	$y2  = $y1+10;
 	$mid = $y1 + (($y2-$y1) / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2-$r1)/2 -5 , $y1+1 );
 	$this->SetFont( "Arial", "B", 10);
@@ -284,7 +284,7 @@ function addEcheance( $date )
 	$y1  = 80;
 	$y2  = $y1+10;
 	$mid = $y1 + (($y2-$y1) / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2 - $r1)/2 - 5 , $y1+1 );
 	$this->SetFont( "Arial", "B", 10);
@@ -303,7 +303,7 @@ function addNumTVA($tva)
 	$y1  = 80;
 	$y2  = $y1+10;
 	$mid = $y1 + (($y2-$y1) / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + 16 , $y1+1 );
 	$this->Cell(40, 4, "TVA Intracommunautaire", '', '', "C");
@@ -425,7 +425,7 @@ function addCadreTVAs()
 	$r2  = $r1 + 120;
 	$y1  = $this->h - 40;
 	$y2  = $y1+20;
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $y1+4, $r2, $y1+4);
 	$this->Line( $r1+5,  $y1+4, $r1+5, $y2); // avant BASES HT
 	$this->Line( $r1+27, $y1, $r1+27, $y2);  // avant REMISE
@@ -458,7 +458,7 @@ function addCadreEurosFrancs()
 	$r2  = $r1 + 60;
 	$y1  = $this->h - 40;
 	$y2  = $y1+20;
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
+	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1+20,  $y1, $r1+20, $y2); // avant EUROS
 	$this->Line( $r1+20, $y1+4, $r2, $y1+4); // Sous Euros & Francs
 	$this->Line( $r1+38,  $y1, $r1+38, $y2); // Entre Euros & Francs
