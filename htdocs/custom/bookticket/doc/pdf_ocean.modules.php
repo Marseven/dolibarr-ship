@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
 
 
-function write_pdf($travel = NULL, $passager = NULL, $soc = NULL){
+function write_pdf(){
 	$pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 	$pdf->AddPage();
 	$pdf->addSociete( "MaSociete",
