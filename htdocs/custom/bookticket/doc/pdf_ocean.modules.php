@@ -39,6 +39,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
 
 
 function write_pdf(){
+	die('ici');
 	$pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 	$pdf->AddPage();
 	$pdf->addSociete( "MaSociete",
