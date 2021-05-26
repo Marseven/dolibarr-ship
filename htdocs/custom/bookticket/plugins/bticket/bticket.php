@@ -1,7 +1,5 @@
 <?php
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/fpdf/fpdf.php';
-define('EURO', chr(128) );
-define('EURO_VAL', 6.55957 );
 
 // Xavier Nicolay 2004
 // Version 1.02
@@ -153,6 +151,44 @@ function addSociete( $nom, $adresse )
 	//Coordonn�es de la soci�t�
 	$lignes = $this->sizeOfText( $adresse, $length) ;
 	$this->MultiCell($length, 4, $adresse);
+}
+
+// Company
+function addAgence( $nom )
+{
+	$x1 = 10;
+	$y1 = 58;
+	$nom = utf8_decode($nom);
+	//Positionnement en bas
+	$this->SetXY( $x1, $y1 );
+	$this->SetFont('Arial','',10);
+	$length = $this->GetStringWidth( "Agence :" );
+	$this->Cell( $length, 2, "Agence :");
+	$this->SetXY( $x1, $y1 + 4 );
+	$this->SetFont('Arial','B',12);
+	$length = $this->GetStringWidth( $nom );
+	//Coordonn�es de la soci�t�
+	$lignes = $this->sizeOfText( $nom, $length) ;
+	$this->MultiCell($length, 4, $nom);
+}
+
+// Company
+function addAgent( $nom )
+{
+	$x1 = 10;
+	$y1 = 68;
+	$nom = utf8_decode($nom);
+	//Positionnement en bas
+	$this->SetXY( $x1, $y1 );
+	$this->SetFont('Arial','',10);
+	$length = $this->GetStringWidth( "Agent de vente :" );
+	$this->Cell( $length, 2, "Agent de vente :");
+	$this->SetXY( $x1, $y1 + 4 );
+	$this->SetFont('Arial','B',12);
+	$length = $this->GetStringWidth( $nom );
+	//Coordonn�es de la soci�t�
+	$lignes = $this->sizeOfText( $nom, $length) ;
+	$this->MultiCell($length, 4, $nom);
 }
 
 // Label and number of invoice/estimate

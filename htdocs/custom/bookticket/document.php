@@ -52,6 +52,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/bticket/bticket.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/manifeste/manifeste.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/qrcode/qrcode.class.php';
 
 
@@ -63,99 +64,230 @@ $date = date('d/m/Y');
 $expire = date('d/m/Y', strtotime('+3 month'));
 
 $id = GETPOST('id', 'int');
+$type = GETPOST('type', 'alpha');
 $socid = GETPOST('socid', 'int');
-
 if (!empty($user->socid)) $socid = $user->socid;
 
-$object = new Bticket($db);
-$result_bticket = $object->fetch($id);
-if ($result <= 0) dol_print_error('', $object->error);
-$object_passenger = new Passenger($db);
-$object_passenger->fetch($object->fk_passenger);
+$usercancreate = $user->rights->bookticket->bticket->write;
 
-$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, c.prix_standard as prix, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity';
-$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
-$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
-$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
-$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
-$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
-$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
-$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
-$sql_t .= ' AND t.rowid IN ('.$object->id.')';
-$resql_t = $db->query($sql_t);
-$obj = $db->fetch_object($resql_t);
+if($usercancreate && $type == 'bticket'){
 
-$mysoc->getFullAddress();
+	$object = new Bticket($db);
+	$result_bticket = $object->fetch($id);
+	if ($result <= 0) dol_print_error('', $object->error);
+	$object_passenger = new Passenger($db);
+	$object_passenger->fetch($object->fk_passenger);
 
-$pdf = new PDF_Bticket( 'P', 'mm', 'A4' );
-$pdf->AddPage();
-$pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
-$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."\n".$obj->agence );
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, c.prix_standard as prix, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity';
+	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
+	$sql_t .= ' AND t.rowid IN ('.$object->id.')';
+	$resql_t = $db->query($sql_t);
+	$obj = $db->fetch_object($resql_t);
+
+	$mysoc->getFullAddress();
+
+	$pdf = new PDF_Bticket( 'P', 'mm', 'A4' );
+	$pdf->AddPage();
+	$pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
+	$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."\n".$obj->agence );
+	$pdf->addAgence( $obj->agence );
+	$userCreate = new User($db);
+	$userCreate->fetch($object->fk_user_creat);
+	$pdf->addAgent( $userCreate->getNomUrl(-1) );
 
 
-$pdf->fact_dev( "Billet ", $obj->ref );
+	$pdf->fact_dev( "Billet ", $obj->ref );
 
-$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
+	$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
 
-$pdf->addReglement("Airtel Money");
+	$pdf->addReglement("Airtel Money");
 
-$pdf->addAchat($date);
+	$pdf->addAchat($date);
 
-$pdf->addExpiration($expire);
+	$pdf->addExpiration($expire);
 
-$pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
-Quisque at arcu lobortis purus pulvinar pulvinar in in turpis.");
+	$pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
+	Quisque at arcu lobortis purus pulvinar pulvinar in in turpis.");
 
-$cols=array( "REF"    	=> 20,
-			 "Date"  	=> 20,
-			 "Heure"  	=> 20,
-			 "De"     	=> 30,
-			 "Vers"     => 30,
-			 "Classe" 	=> 15,
-			 "Details"  => 35,
-			 "Bg"   => 10,
-			 "St"   => 10 );
-$pdf->addCols( $cols);
-$cols=array( "REF"   	 => "C",
-			 "Date"  	 => "C",
-			 "Heure"     => "C",
-			 "De"     	 => "C",
-			 "Vers" 	 => "C",
-			 "Classe"    => "C",
-			 "Details"   => "C",
-			 "Bg"    	 => "C",
-			 "St"    	 => "C" );
-$pdf->addLineFormat($cols);
-$pdf->addLineFormat($cols);
+	$cols=array( "REF"    	=> 20,
+				"Date"  	=> 20,
+				"Heure"  	=> 20,
+				"De"     	=> 30,
+				"Vers"     => 30,
+				"Classe" 	=> 15,
+				"Details"  => 35,
+				"Bg"   => 10,
+				"St"   => 10 );
+	$pdf->addCols( $cols);
+	$cols=array( "REF"   	 => "C",
+				"Date"  	 => "C",
+				"Heure"     => "C",
+				"De"     	 => "C",
+				"Vers" 	 => "C",
+				"Classe"    => "C",
+				"Details"   => "C",
+				"Bg"    	 => "C",
+				"St"    	 => "C" );
+	$pdf->addLineFormat($cols);
+	$pdf->addLineFormat($cols);
 
-$y    = 129;
-$line = array(  "REF"   	=> $obj->ref,
-				"Date"  	=> $obj->jour,
-				"Heure"     => $obj->heure,
-				"De"     	=> $obj->de,
-				"Vers" 	 	=> $obj->vers,
-				"Classe"    => $obj->classe,
-				"Details"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
-				"Bg"   	    => $obj->kilo." Kg",
-				"St"    	=> $object->status == 2 ? "C" : "R"  );
-$size = $pdf->addLine( $y, $line );
-$y   += $size + 2;
+	$y    = 129;
+	$line = array(  "REF"   	=> $obj->ref,
+					"Date"  	=> $obj->jour,
+					"Heure"     => $obj->heure,
+					"De"     	=> $obj->de,
+					"Vers" 	 	=> $obj->vers,
+					"Classe"    => $obj->classe,
+					"Details"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
+					"Bg"   	    => $obj->kilo." Kg",
+					"St"    	=> $object->status == 2 ? "C" : "R"  );
+	$size = $pdf->addLine( $y, $line );
+	$y   += $size + 2;
 
-$pdf->addCadrePrice();
+	$pdf->addCadrePrice();
 
-$pdf->addPrice($obj->prix, 0, 0, $obj->prix);
+	$pdf->addPrice($obj->prix, 0, 0, $obj->prix);
 
-$pdf->addCondition("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
-Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. Vivamus quis nisi massa.
-Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et.
-Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui.
-Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum.
-ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
+	$pdf->addCondition("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
+	Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. Vivamus quis nisi massa.
+	Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et.
+	Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui.
+	Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum.
+	ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
 
-$qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
+	$qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
 
-$qrcode->displayFPDF($pdf, 150, 17, 20);
+	$qrcode->displayFPDF($pdf, 150, 17, 20);
 
-$pdf->Output('D', 'test.pdf', true);
+	$pdf->Output('D', 'test.pdf', true);
+
+}
+
+if($usercancreate && $type == 'travel'){
+
+	$object = new Travel($db);
+	$result_travel = $object->fetch($id);
+	if ($result_travel <= 0) dol_print_error('', $object->error);
+
+
+	// This sample program uses two distinct templates
+	$file_tpl2 = DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/manifeste/template2.tpl';
+
+	// This sample program uses data fetched from a CSV file
+
+	$btickets = [];
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  c.labelshort as classe, p.email as email, p.age as age, c.prix_standard as prix, tr.ref as travel, t.entity';
+	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
+	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
+	$resql_t = $db->query($sql_t);
+	if ($resql_t)
+	{
+		$num = $db->num_rows($resql_t);
+		$i = 0;
+		if ($num)
+		{
+			while ($i < $num)
+			{
+				$obj = $db->fetch_object($resql_t);
+				if ($obj)
+				{
+					$btickets[$i] = $obj;
+				}
+				$i++;
+			}
+		}
+	}
+
+	$pdf = new Manifeste();
+	$pdf->AliasNbPages ("{nb}");			// For page numbering
+
+
+	// ====================================================
+	//   First page contains the table for all employees
+	// ====================================================
+
+	$pdf->AddPage("L");
+
+	// Template #2 is used for the part which builds a table containing all employees
+	$template2 = $pdf->LoadTemplate ($file_tpl2);
+	if ($template2 <= 0) {
+		die ("  ** Error couldn't load template file '$file_tpl2'");
+	}
+	$pdf->IncludeTemplate ($template2);
+	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
+
+	// In the table of the first page, take into account only a subset of fields of CSV file; say fields #0,#2,#3,#5,#6,#7
+	$nn = count ($btickets);
+
+	// Get collumns widths with an anchor ID
+	$pcol = $pdf->GetColls ("COLSWDTH", "");
+	// Get Text properties of headers
+	$ptxp = $pdf->ApplyTextProp ("ROW0COL0", "");
+
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [0], $ptxp ['iy'], "Nom & Prenom", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [1], $ptxp ['iy'], "Age", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [2], $ptxp ['iy'], "Telephone", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [3], $ptxp ['iy'], "Email", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [4], $ptxp ['iy'], "Classe", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [5], $ptxp ['iy'], "Present", 1, 0, "C", true);
+
+
+	$pdf->SetFillColor (240, 240, 240);		// for "zebra" effect
+	// Get Text properties of data cell
+	$ptxp = $pdf->ApplyTextProp ("ROW1COL0", "");
+	$py = $ptxp ['py'];			// Initial Y position for data rows
+	for ($jj = 0; $jj < $nn; $jj ++) {
+		$pdf->SetXY ($ptxp ['px'], $py);
+
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [0], $ptxp ['iy'], $btickets[$jj]->nom." ".$btickets[$jj]->prenom , "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [1], $ptxp ['iy'], $btickets[$jj]->age, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [2], $ptxp ['iy'], $btickets[$jj]->telephone, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->email, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [4], $ptxp ['iy'], $btickets[$jj]->classe, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [6], $ptxp ['iy'], "", "", 0, "L", $jj & 1);
+
+		$py += $ptxp ['iy'];		// for row interspace
+	}
+
+	$file_pdf = "exp.pdf";
+	$pdf->Output("D", $file_pdf, true);
+}

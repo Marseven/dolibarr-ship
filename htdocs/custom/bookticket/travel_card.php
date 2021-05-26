@@ -907,6 +907,11 @@ if ($action != 'create' && $action != 'edit')
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
 		}
 
+		if ($usercancreate && ($object->status == Bticket::STATUS_DRAFT || $object->status == Bticket::STATUS_APPROVED))		// If draft
+		{
+			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("PRINT").'</a>';
+		}
+
 		if ($usercandelete)
 		{
 			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
@@ -967,49 +972,6 @@ if ($object->id && ($action == '' || $action == 'view') && $object->status)
 
 		print '</form>';
 	}
-}
-
-
-/*
- * Documents generes
- */
-
-if ($action != 'create' && $action != 'edit' && $action != 'delete')
-{
-	print '<div class="fichecenter"><div class="fichehalfleft">';
-	print '<a name="builddoc"></a>'; // ancre
-
-	// Documents
-	$objectref = dol_sanitizeFileName($object->ref);
-	$relativepath = $comref.'/'.$objectref.'.pdf';
-	if (!empty($conf->travel->multidir_output[$object->entity])) {
-		$filedir = $conf->travel->multidir_output[$object->entity].'/'.$objectref; //Check repertories of current entities
-	} else {
-		$filedir = $conf->travel->dir_output.'/'.$objectref;
-	}
-	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-	$genallowed = $usercanread;
-	$delallowed = $usercancreate;
-
-	$modulepart = "bookticket";
-
-	print $formfile->showdocuments($modulepart, $object->ref, $filedir, $urlsource, $genallowed, $delallowed, '', 0, 0, 0, 28, 0, '', 0, '', $object->default_lang, '', $object);
-	$somethingshown = $formfile->numoffiles;
-
-	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-
-	$MAXEVENT = 10;
-
-	$morehtmlright = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/travel_agenda.php?id='.$object->id.'">';
-	$morehtmlright .= $langs->trans("SeeAll");
-	$morehtmlright .= '</a>';
-
-	// List of actions on element
-	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
-	$formactions = new FormActions($db);
-	$somethingshown = $formactions->showactions($object, 'travel', 0, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for travel
-
-	print '</div></div></div>';
 }
 
 // End of page
