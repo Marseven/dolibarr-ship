@@ -96,7 +96,7 @@ $pdf->fact_dev( "Billet ", $obj->ref );
 
 $pdf->addDate($date);
 
-$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom." \n".$object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
+$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
 
 $pdf->addReglement("Airtel Money");
 
@@ -136,7 +136,7 @@ $line = array(  "REF"   	=> $obj->ref,
 				"Vers" 	 	=> $obj->vers,
 				"Classe"    => $obj->classe,
 				"Details"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
-				"Bg"   	    => $obj->kilo,
+				"Bg"   	    => $obj->kilo." Kg",
 				"St"    	=> $object->status == 2 ? "C" : "R"  );
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;

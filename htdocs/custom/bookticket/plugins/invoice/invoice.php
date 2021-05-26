@@ -252,12 +252,20 @@ function addPageNumber( $page )
 }
 
 // Client address
-function addClientAdresse( $adresse )
+function addClientAdresse( $nom, $adresse )
 {
 	$r1     = $this->w - 80;
 	$r2     = $r1 + 68;
 	$y1     = 40;
+	$nom = utf8_decode($nom);
 	$adresse = utf8_decode($adresse);
+	//Positionnement en bas
+	$this->SetXY( $r1, $y1 );
+	$this->SetFont('Arial','B',12);
+	$length = $this->GetStringWidth( $nom );
+	$this->Cell( $length, 2, $nom);
+	$this->SetXY( $r1, $y1 + 4 );
+	$this->SetFont('Arial','',10);
 	$this->SetXY( $r1, $y1);
 	$this->MultiCell( 60, 4, $adresse);
 }
@@ -454,17 +462,17 @@ function addCadrePrice()
 
 function addPrice($prix, $remise, $penalite, $total)
 {
-	$this->SetFont('Arial','',8);
+	$this->SetFont('Arial','',10);
 	$r1  = 10;
-	$y1  = $this->h - 160;
+	$y1  = $this->h - 130;
 	$this->SetXY( $r1+9, $y1);
-	$this->Cell(10,4, $prix);
+	$this->Cell(10,4, $prix." FCFA", "C");
 	$this->SetX( $r1+30 );
-	$this->Cell(10,4, $remise);
+	$this->Cell(10,4, $remise." %", "C");
 	$this->SetX( $r1+50 );
-	$this->Cell(10,4, $penalite);
+	$this->Cell(10,4, $penalite." FCFA", "C");
 	$this->SetX( $r1+70 );
-	$this->Cell(10,4, $total);
+	$this->Cell(10,4, $total, "C");
 	$this->SetX( $r1+85 );
 
 }
