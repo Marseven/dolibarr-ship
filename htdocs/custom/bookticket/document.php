@@ -89,18 +89,14 @@ $mysoc->getFullAddress();
 $pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 $pdf->AddPage();
 $pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
-$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."
-					".$obj->agence );
+$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."\n".$obj->agence );
 
 
 $pdf->fact_dev( "Billet ", $obj->ref );
 
 $pdf->addDate($date);
 
-$pdf->addClientAdresse($object_passenger->nom." ".$object_passenger->prenom." \n
-						".$object_passenger->adresse." \n
-						".$object_passenger->telephone." \n
-						".$object_passenger->email);
+$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom." \n".$object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
 
 $pdf->addReglement("Airtel Money");
 
@@ -150,7 +146,13 @@ $pdf->addCadrePrice();
 
 $pdf->addPrice();
 
-$pdf->addCondition("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo. Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. Vivamus quis nisi massa. Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et, scelerisque tincidunt tortor. Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui. Donec vehicula laoreet finibus. Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum. Maecenas sit amet rutrum nibh. Cras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
+$pdf->addCondition("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
+Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. Vivamus quis nisi massa.
+Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et, scelerisque tincidunt tortor.
+Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui. Donec vehicula laoreet finibus.
+Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum. Maecenas sit amet rutrum nibh. C
+ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
 
 $pdf->Output('D', 'test.pdf', true);
 

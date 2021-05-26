@@ -321,7 +321,7 @@ function addNote($ref)
 {
 	$this->SetFont( "Arial", "", 10);
 	$ref = utf8_decode($ref);
-	$length = $this->GetStringWidth( $ref );
+	$length = $this->GetStringWidth($ref);
 	$r1  = 10;
 	$r2  = $r1 + $length;
 	$y1  = 92;
@@ -336,7 +336,7 @@ function addCols( $tab )
 
 	$r1  = 10;
 	$r2  = $this->w - ($r1 * 2) ;
-	$y1  = 100;
+	$y1  = 130;
 	$y2  = $this->h - 180 - $y1;
 	$this->SetXY( $r1, $y1 );
 	$this->Rect( $r1, $y1, $r2, $y2, "D");
@@ -422,7 +422,7 @@ function addCondition($note)
 	$length = $this->GetStringWidth($note );
 	$r1  = 10;
 	$r2  = $r1 + $length;
-	$y1  = $this->h - 100;
+	$y1  = $this->h - 130;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
 	$this->MultiCell($length,4, $note);
