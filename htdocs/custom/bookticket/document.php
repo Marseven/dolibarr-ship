@@ -102,9 +102,9 @@ $pdf->addReglement("Airtel Money");
 
 $pdf->addEcheance($expire);
 
-$pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n
-Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo. \n
-Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. \n
+$pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
+Quisque at arcu lobortis purus pulvinar pulvinar in in turpis.
 Vivamus quis nisi massa. Donec lacinia metus diam, non scelerisque orci hendrerit et.");
 
 $cols=array( "REF"    	=> 20,
@@ -129,7 +129,7 @@ $cols=array( "REF"   	 => "C",
 $pdf->addLineFormat($cols);
 $pdf->addLineFormat($cols);
 
-$y    = 109;
+$y    = 130;
 $line = array(  "REF"   	=> $obj->ref,
 				"Date"  	=> $obj->jour,
 				"Heure"     => $obj->heure,
