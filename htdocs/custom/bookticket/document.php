@@ -104,8 +104,7 @@ $pdf->addEcheance($expire);
 
 $pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
-Quisque at arcu lobortis purus pulvinar pulvinar in in turpis.
-Vivamus quis nisi massa. Donec lacinia metus diam, non scelerisque orci hendrerit et.");
+Quisque at arcu lobortis purus pulvinar pulvinar in in turpis.");
 
 $cols=array( "REF"    	=> 20,
 			 "Date"  	=> 20,
@@ -129,7 +128,7 @@ $cols=array( "REF"   	 => "C",
 $pdf->addLineFormat($cols);
 $pdf->addLineFormat($cols);
 
-$y    = 130;
+$y    = 109;
 $line = array(  "REF"   	=> $obj->ref,
 				"Date"  	=> $obj->jour,
 				"Heure"     => $obj->heure,
