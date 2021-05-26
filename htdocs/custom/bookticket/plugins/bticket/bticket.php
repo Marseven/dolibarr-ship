@@ -153,7 +153,7 @@ function addSociete( $nom, $adresse )
 	$this->MultiCell($length, 4, $adresse);
 }
 
-// Company
+// Agence
 function addAgence( $nom )
 {
 	$x1 = 10;
@@ -164,15 +164,13 @@ function addAgence( $nom )
 	$this->SetFont('Arial','',10);
 	$length = $this->GetStringWidth( "Agence :" );
 	$this->Cell( $length, 2, "Agence :");
-	$this->SetXY( $x1, $y1 + 2 );
+	$this->SetXY( $x1, $y1 + 4 );
 	$this->SetFont('Arial','B',12);
 	$length = $this->GetStringWidth( $nom );
-	//Coordonn�es de la soci�t�
-	$lignes = $this->sizeOfText( $nom, $length) ;
-	$this->MultiCell($length, 4, $nom);
+	$this->Cell($length, 4, $nom);
 }
 
-// Company
+// Agent
 function addAgent( $nom )
 {
 	$x1 = 10;
@@ -183,12 +181,10 @@ function addAgent( $nom )
 	$this->SetFont('Arial','',10);
 	$length = $this->GetStringWidth( "Agent de vente :" );
 	$this->Cell( $length, 2, "Agent de vente :");
-	$this->SetXY( $x1, $y1 + 2 );
+	$this->SetXY( $x1, $y1 + 4 );
 	$this->SetFont('Arial','B',12);
 	$length = $this->GetStringWidth( $nom );
-	//Coordonn�es de la soci�t�
-	$lignes = $this->sizeOfText( $nom, $length) ;
-	$this->MultiCell($length, 4, $nom);
+	$this->Cell($length, 4, $nom);
 }
 
 // Label and number of invoice/estimate
