@@ -289,7 +289,7 @@ function addReglement( $mode )
 }
 
 // Expiry date
-function addEcheance( $date )
+function addAchat( $date )
 {
 	$r1  = 80;
 	$r2  = $r1 + 40;
@@ -300,14 +300,14 @@ function addEcheance( $date )
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2 - $r1)/2 - 5 , $y1+1 );
 	$this->SetFont( "Arial", "B", 10);
-	$this->Cell(10,4, "DATE D'ECHEANCE", 0, 0, "C");
+	$this->Cell(10,4, "DATE D'ACHAT", 0, 0, "C");
 	$this->SetXY( $r1 + ($r2-$r1)/2 - 5 , $y1 + 5 );
 	$this->SetFont( "Arial", "", 10);
 	$this->Cell(10,5,$date, 0,0, "C");
 }
 
 // VAT number
-function addNumTVA($tva)
+function addExpiration($date_fin)
 {
 	$this->SetFont( "Arial", "B", 10);
 	$r1  = $this->w - 80;
@@ -318,10 +318,10 @@ function addNumTVA($tva)
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + 16 , $y1+1 );
-	$this->Cell(40, 4, "TVA Intracommunautaire", '', '', "C");
+	$this->Cell(40, 4, "DATE D'EXPIRATION", '', '', "C");
 	$this->SetFont( "Arial", "", 10);
 	$this->SetXY( $r1 + 16 , $y1+5 );
-	$this->Cell(40, 5, $tva, '', '', "C");
+	$this->Cell(40, 5, $date_fin, '', '', "C");
 }
 
 function addNote($ref)

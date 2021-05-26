@@ -95,13 +95,13 @@ $pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."\n".$obj->agence );
 
 $pdf->fact_dev( "Billet ", $obj->ref );
 
-$pdf->addDate($date);
-
 $pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
 
 $pdf->addReglement("Airtel Money");
 
-$pdf->addEcheance($expire);
+$pdf->addAchat($date);
+
+$pdf->addExpiration($expire);
 
 $pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
@@ -156,7 +156,6 @@ ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
 
 $qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
 
-$qrcode->displayFPDF($pdf, 140, 17, 20);
+$qrcode->displayFPDF($pdf, 160, 17, 20);
 
 $pdf->Output('D', 'test.pdf', true);
-
