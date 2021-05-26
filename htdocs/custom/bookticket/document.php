@@ -95,11 +95,11 @@ if($usercancreate && $type == 'bticket'){
 	$pdf = new PDF_Bticket( 'P', 'mm', 'A4' );
 	$pdf->AddPage();
 	$pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
-	$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."\n".$obj->agence );
+	$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress());
 	$pdf->addAgence( $obj->agence );
 	$userCreate = new User($db);
 	$userCreate->fetch($object->fk_user_creat);
-	$pdf->addAgent( $userCreate->name );
+	$pdf->addAgent( $userCreate->lastname." ".$userCreate->firstname );
 
 
 	$pdf->fact_dev( "Billet ", $obj->ref );
