@@ -99,7 +99,7 @@ if($usercancreate && $type == 'bticket'){
 	$pdf->addAgence( $obj->agence );
 	$userCreate = new User($db);
 	$userCreate->fetch($object->fk_user_creat);
-	$pdf->addAgent( $userCreate->getNomUrl(-1) );
+	$pdf->addAgent( $userCreate->name );
 
 
 	$pdf->fact_dev( "Billet ", $obj->ref );

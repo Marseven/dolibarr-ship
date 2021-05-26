@@ -164,7 +164,7 @@ function addAgence( $nom )
 	$this->SetFont('Arial','',10);
 	$length = $this->GetStringWidth( "Agence :" );
 	$this->Cell( $length, 2, "Agence :");
-	$this->SetXY( $x1, $y1 + 4 );
+	$this->SetXY( $x1, $y1 + 2 );
 	$this->SetFont('Arial','B',12);
 	$length = $this->GetStringWidth( $nom );
 	//Coordonn�es de la soci�t�
@@ -176,14 +176,14 @@ function addAgence( $nom )
 function addAgent( $nom )
 {
 	$x1 = 10;
-	$y1 = 68;
+	$y1 = 70;
 	$nom = utf8_decode($nom);
 	//Positionnement en bas
 	$this->SetXY( $x1, $y1 );
 	$this->SetFont('Arial','',10);
 	$length = $this->GetStringWidth( "Agent de vente :" );
 	$this->Cell( $length, 2, "Agent de vente :");
-	$this->SetXY( $x1, $y1 + 4 );
+	$this->SetXY( $x1, $y1 + 2 );
 	$this->SetFont('Arial','B',12);
 	$length = $this->GetStringWidth( $nom );
 	//Coordonn�es de la soci�t�
