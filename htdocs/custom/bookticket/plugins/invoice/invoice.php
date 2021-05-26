@@ -324,7 +324,7 @@ function addNote($ref)
 	$length = $this->GetStringWidth($ref);
 	$r1  = 10;
 	$r2  = $r1 + $length;
-	$y1  = 92;
+	$y1  = 105;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
 	$this->MultiCell($length,4, $ref);
