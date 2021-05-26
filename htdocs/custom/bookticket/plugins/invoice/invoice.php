@@ -264,7 +264,7 @@ function addClientAdresse( $nom, $adresse )
 	$this->SetFont('Arial','B',12);
 	$length = $this->GetStringWidth( $nom );
 	$this->Cell( $length, 2, $nom);
-	$this->SetXY( $r1, $y1 + 4 );
+	$this->SetXY( $r1, $y1 + 7 );
 	$this->SetFont('Arial','',10);
 	$this->SetXY( $r1, $y1);
 	$this->MultiCell( 60, 4, $adresse);
@@ -464,7 +464,7 @@ function addPrice($prix, $remise, $penalite, $total)
 {
 	$this->SetFont('Arial','',10);
 	$r1  = 10;
-	$y1  = $this->h - 130;
+	$y1  = $this->h - 145;
 	$this->SetXY( $r1+9, $y1);
 	$this->Cell(10,4, $prix." FCFA", "C");
 	$this->SetX( $r1+30 );
