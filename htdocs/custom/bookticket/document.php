@@ -58,34 +58,57 @@ require DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
  * Actions
  */
 
+$date = date('d/m/Y');
+$expire = date('Y-m-d',strtotime('+3 month',strtotime($date)));
+
+$id = GETPOST('id', 'int');
+$socid = GETPOST('socid', 'int');
+
+if (!empty($user->socid)) $socid = $user->socid;
+
+$object = new Bticket($db);
+$result_bticket = $object->fetch($id);
+if ($result <= 0) dol_print_error('', $object->error);
+$object_passenger = new Passenger($db);
+$object_passenger->fetch($object->fk_passenger);
+
+$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, c.prix_standard as prix, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity';
+$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
+$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
+$sql_t .= ' AND t.rowid IN ('.$object->id.')';
+$resql_t = $db->query($sql_t);
+$obj = $db->fetch_object($resql_t);
+
+$mysoc->getFullAddress();
+
 $pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 $pdf->AddPage();
 $pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
-$pdf->addSociete( "MaSociete",
-				"MonAdresse\n" .
-				"75000 PARIS\n".
-				"R.C.S. PARIS B 000 000 007\n" );
+$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress().'\n'.$obj->agence );
 
 
-$pdf->fact_dev( "Billet ", "REF" );
+$pdf->fact_dev( "Billet ", "T0001" );
 
-//$pdf->temporaire( "Devis temporaire" );
+$pdf->addDate($date);
 
-$pdf->addDate( "03/12/2021");
+$pdf->addClientAdresse('M./Mme./Mlle.'.$object_passenger->nom.' '.$object_passenger->prenom.' \n
+						'.$object_passenger->adresse.' \n
+						'.$object_passenger->telephone.' \n
+						'.$object_passenger->email);
 
-//$pdf->addClient("CL01");
+$pdf->addReglement("Airtel Money");
 
-//$pdf->addPageNumber("1");
+$pdf->addEcheance($expire);
 
-$pdf->addClientAdresse("Ste\nM. XXXX\n3ème étage\n33, rue d'ailleurs\n75000 PARIS");
-
-$pdf->addReglement("Chèque à réception de facture");
-
-$pdf->addEcheance("03/12/2021");
-
-//$pdf->addNumTVA("FR888777666");
-
-$pdf->addNote("Devis ... du ....");
+$pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n
+Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo. \n
+Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. \n
+Vivamus quis nisi massa. Donec lacinia metus diam, non scelerisque orci hendrerit et.");
 
 $cols=array( "REF"    	=> 20,
 			 "Date"  	=> 20,
@@ -106,27 +129,27 @@ $cols=array( "REF"   	 => "L",
 			 "Détails"   => "C",
 			 "Bg"    => "C",
 			 "St"    => "C" );
-//$pdf->addLineFormat( $cols);
+$pdf->addLineFormat($cols);
 $pdf->addLineFormat($cols);
 
 $y    = 109;
-$line = array(  "REF"   	=> "L",
-				"Date"  	=> "L",
-				"Heure"     => "C",
-				"De"     	=> "R",
-				"Vers" 	 	=> "R",
-				"Classe"    => "C",
-				"Détails"   => "C",
-				"Bg"    => "C",
-				"St"    => "C"  );
+$line = array(  "REF"   	=> $obj->ref,
+				"Date"  	=> $obj->jour,
+				"Heure"     => $obj->heure,
+				"De"     	=> $obj->de,
+				"Vers" 	 	=> $obj->vers,
+				"Classe"    => $obj->classe,
+				"Détails"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
+				"Bg"    => $obj->kilo,
+				"St"    => $object->status  );
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
 $pdf->addCadrePrice();
 
-$pdf->addPrice( $params, $tab_tva, $tot_prods);
+$pdf->addPrice();
 
-$pdf->addCondition("Devis ... du ....");
+$pdf->addCondition("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo. Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. Vivamus quis nisi massa. Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et, scelerisque tincidunt tortor. Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui. Donec vehicula laoreet finibus. Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum. Maecenas sit amet rutrum nibh. Cras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
 
 $pdf->Output('D', 'test.pdf', true);
 
