@@ -324,7 +324,7 @@ function addNote($ref)
 	$length = $this->GetStringWidth($ref);
 	$r1  = 10;
 	$r2  = $r1 + $length;
-	$y1  = 105;
+	$y1  = 100;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
 	$this->MultiCell($length,4, $ref);
@@ -452,9 +452,20 @@ function addCadrePrice()
 	$this->SetX( $r1+85 );
 }
 
-function addPrice()
+function addPrice($prix, $remise, $penalite, $total)
 {
 	$this->SetFont('Arial','',8);
+	$r1  = 10;
+	$y1  = $this->h - 160;
+	$this->SetXY( $r1+9, $y1);
+	$this->Cell(10,4, $prix);
+	$this->SetX( $r1+30 );
+	$this->Cell(10,4, $remise);
+	$this->SetX( $r1+50 );
+	$this->Cell(10,4, $penalite);
+	$this->SetX( $r1+70 );
+	$this->Cell(10,4, $total);
+	$this->SetX( $r1+85 );
 
 }
 

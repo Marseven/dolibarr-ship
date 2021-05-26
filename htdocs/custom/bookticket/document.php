@@ -135,7 +135,7 @@ $line = array(  "REF"   	=> $obj->ref,
 				"De"     	=> $obj->de,
 				"Vers" 	 	=> $obj->vers,
 				"Classe"    => $obj->classe,
-				"Détails"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
+				"Details"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
 				"Bg"   	    => $obj->kilo,
 				"St"    	=> $object->status == 2 ? "C" : "R"  );
 $size = $pdf->addLine( $y, $line );
@@ -143,14 +143,14 @@ $y   += $size + 2;
 
 $pdf->addCadrePrice();
 
-$pdf->addPrice();
+$pdf->addPrice($obj->prix, 0, 0, $obj->prix);
 
 $pdf->addCondition("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
 Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. Vivamus quis nisi massa.
-Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et, scelerisque tincidunt tortor.
-Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui. Donec vehicula laoreet finibus.
-Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum. Maecenas sit amet rutrum nibh. C
+Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et.
+Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui.
+Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum.
 ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
 
 $pdf->Output('D', 'test.pdf', true);
