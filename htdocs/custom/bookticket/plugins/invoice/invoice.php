@@ -264,7 +264,7 @@ function addClientAdresse( $nom, $adresse )
 	$this->SetFont('Arial','B',12);
 	$length = $this->GetStringWidth( $nom );
 	$this->Cell( $length, 2, $nom);
-	$this->SetXY( $r1, $y1 + 7 );
+	$this->SetXY( $r1, $y1 + 10 );
 	$this->SetFont('Arial','',10);
 	$this->SetXY( $r1, $y1);
 	$this->MultiCell( 60, 4, $adresse);
