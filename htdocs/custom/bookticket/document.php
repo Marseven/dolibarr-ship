@@ -112,7 +112,7 @@ $cols=array( "REF"    	=> 20,
 			 "De"     	=> 30,
 			 "Vers"     => 30,
 			 "Classe" 	=> 15,
-			 "Détails"  => 35,
+			 "Details"  => 35,
 			 "Bg"   => 10,
 			 "St"   => 10 );
 $pdf->addCols( $cols);
@@ -122,13 +122,13 @@ $cols=array( "REF"   	 => "C",
 			 "De"     	 => "C",
 			 "Vers" 	 => "C",
 			 "Classe"    => "C",
-			 "Détails"   => "C",
+			 "Details"   => "C",
 			 "Bg"    	 => "C",
 			 "St"    	 => "C" );
 $pdf->addLineFormat($cols);
 $pdf->addLineFormat($cols);
 
-$y    = 109;
+$y    = 129;
 $line = array(  "REF"   	=> $obj->ref,
 				"Date"  	=> $obj->jour,
 				"Heure"     => $obj->heure,
