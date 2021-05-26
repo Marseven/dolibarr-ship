@@ -60,7 +60,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/qrcode/qrcode.class.p
  */
 
 $date = date('d/m/Y');
-$expire = date('d/m/Y',strtotime('+3 month',strtotime($date)));
+$expire = date('d/m/Y', strtotime('+3 month'));
 
 $id = GETPOST('id', 'int');
 $socid = GETPOST('socid', 'int');
@@ -156,6 +156,6 @@ ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
 
 $qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
 
-$qrcode->displayFPDF($pdf, 160, 17, 20);
+$qrcode->displayFPDF($pdf, 150, 17, 20);
 
 $pdf->Output('D', 'test.pdf', true);
