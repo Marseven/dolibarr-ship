@@ -457,23 +457,23 @@ function addCadrePrice()
 	$this->Cell(10,4, "PENALITE");
 	$this->SetX( $r1+70 );
 	$this->Cell(10,4, "TOTAUX");
-	$this->SetX( $r1+85 );
+	$this->SetX( $r1+80 );
 }
 
 function addPrice($prix, $remise, $penalite, $total)
 {
 	$this->SetFont('Arial','',10);
 	$r1  = 10;
-	$y1  = $this->h - 145;
+	$y1  = $this->h - 142;
 	$this->SetXY( $r1+9, $y1);
-	$this->Cell(10,4, $prix." FCFA", "C");
+	$this->Cell(10,4, $prix." F", "L");
 	$this->SetX( $r1+30 );
 	$this->Cell(10,4, $remise." %", "C");
 	$this->SetX( $r1+50 );
-	$this->Cell(10,4, $penalite." FCFA", "C");
+	$this->Cell(10,4, $penalite." F", "L");
 	$this->SetX( $r1+70 );
-	$this->Cell(10,4, $total, "C");
-	$this->SetX( $r1+85 );
+	$this->Cell(10,4, $total."F", "L");
+	$this->SetX( $r1+80 );
 
 }
 
