@@ -306,7 +306,7 @@ function addReglement( $mode )
 {
 	$r1  = 10;
 	$r2  = $r1 + 60;
-	$y1  = 80;
+	$y1  = 85;
 	$y2  = $y1+10;
 	$mid = $y1 + (($y2-$y1) / 2);
 	$mode = utf8_decode($mode);
@@ -325,7 +325,7 @@ function addAchat( $date )
 {
 	$r1  = 80;
 	$r2  = $r1 + 40;
-	$y1  = 80;
+	$y1  = 85;
 	$y2  = $y1+10;
 	$mid = $y1 + (($y2-$y1) / 2);
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
@@ -344,7 +344,7 @@ function addExpiration($date_fin)
 	$this->SetFont( "Arial", "B", 10);
 	$r1  = $this->w - 80;
 	$r2  = $r1 + 70;
-	$y1  = 80;
+	$y1  = 85;
 	$y2  = $y1+10;
 	$mid = $y1 + (($y2-$y1) / 2);
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
