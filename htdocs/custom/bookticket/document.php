@@ -156,7 +156,7 @@ ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
 
 $qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
 
-$qrcode->displayFPDF($pdf, $this->w - 80, 17, 20);
+$qrcode->displayFPDF($pdf, $pdf->w - 80, 17, 20);
 
 $pdf->Output('D', 'test.pdf', true);
 
