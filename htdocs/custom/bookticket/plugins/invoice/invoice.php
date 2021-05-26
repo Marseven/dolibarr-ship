@@ -336,8 +336,8 @@ function addCols( $tab )
 
 	$r1  = 10;
 	$r2  = $this->w - ($r1 * 2) ;
-	$y1  = 100;
-	$y2  = $this->h - 180 - $y1;
+	$y1  = 120;
+	$y2  = $this->h - 160 - $y1;
 	$this->SetXY( $r1, $y1 );
 	$this->Rect( $r1, $y1, $r2, $y2, "D");
 	$this->Line( $r1, $y1+6, $r1+$r2, $y1+6);
@@ -422,7 +422,7 @@ function addCondition($note)
 	$length = $this->GetStringWidth($note );
 	$r1  = 10;
 	$r2  = $r1 + $length;
-	$y1  = $this->h - 110;
+	$y1  = $this->h - 120;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
 	$this->MultiCell($length,4, $note);
