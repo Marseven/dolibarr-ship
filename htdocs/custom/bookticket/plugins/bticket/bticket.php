@@ -32,7 +32,7 @@ define('EURO_VAL', 6.55957 );
 //  function addTVAs( $params, $tab_tva, $invoice )
 //  function temporaire( $texte )
 
-class PDF_Invoice extends FPDF
+class PDF_Bticket extends FPDF
 {
 // private variables
 var $colonnes;

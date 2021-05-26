@@ -51,7 +51,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/bticket/bticket.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/qrcode/qrcode.class.php';
 
 
@@ -87,7 +87,7 @@ $obj = $db->fetch_object($resql_t);
 
 $mysoc->getFullAddress();
 
-$pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
+$pdf = new PDF_Bticket( 'P', 'mm', 'A4' );
 $pdf->AddPage();
 $pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
 $pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."\n".$obj->agence );
