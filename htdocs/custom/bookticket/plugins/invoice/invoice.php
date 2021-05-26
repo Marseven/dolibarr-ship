@@ -202,8 +202,8 @@ function addFacture( $numfact )
 
 function addDate( $date )
 {
-	$r1  = $this->w - 61;
-	$r2  = $r1 + 30;
+	$r1  = $this->w - 31;
+	$r2  = $r1 + 19;
 	$y1  = 17;
 	$y2  = $y1 ;
 	$mid = $y1 + ($y2 / 2);
