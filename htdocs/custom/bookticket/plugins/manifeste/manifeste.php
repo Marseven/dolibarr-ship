@@ -17,7 +17,7 @@ class Manifeste extends FPDF
 	{
 		$lines = file ($file_tpl);		// Load file template
 		if ($lines == false) {return (0);}
-
+		var_dump($lines);die;
 		$this->flag_template = $this->template;
 		$flag_page = false;
 		if ($this->page <= 0) {
