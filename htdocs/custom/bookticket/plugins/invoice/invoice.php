@@ -327,7 +327,7 @@ function addNote($ref)
 	$y1  = 92;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
-	$this->Cell($length,4, $ref);
+	$this->MultiCell($length,4, $ref);
 }
 
 function addCols( $tab )
@@ -380,14 +380,6 @@ function lineVert( $tab )
 	return $maxSize;
 }
 
-// add a line to the invoice/estimate
-/*    $ligne = array( "REFERENCE"    => $prod["ref"],
-                      "DESIGNATION"  => $libelle,
-                      "QUANTITE"     => sprintf( "%.2F", $prod["qte"]) ,
-                      "P.U. HT"      => sprintf( "%.2F", $prod["px_unit"]),
-                      "MONTANT H.T." => sprintf ( "%.2F", $prod["qte"] * $prod["px_unit"]) ,
-                      "TVA"          => $prod["tva"] );
-*/
 function addLine( $ligne, $tab )
 {
 	global $colonnes, $format;
@@ -433,7 +425,7 @@ function addCondition($note)
 	$y1  = $this->h - 100;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
-	$this->Cell($length,4, $note);
+	$this->MultiCell($length,4, $note);
 }
 
 function addCadrePrice()
@@ -441,7 +433,7 @@ function addCadrePrice()
 	$this->SetFont( "Arial", "B", 8);
 	$r1  = 10;
 	$r2  = $r1 + 120;
-	$y1  = $this->h - 150;
+	$y1  = $this->h - 170;
 	$y2  = $y1+20;
 	$this->Rect($r1, $y1, ($r2 - $r1), ($y2-$y1));
 	$this->Line( $r1, $y1+4, $r2, $y1+4);

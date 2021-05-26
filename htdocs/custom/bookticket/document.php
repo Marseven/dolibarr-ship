@@ -59,7 +59,7 @@ require DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
  */
 
 $date = date('d/m/Y');
-$expire = date('Y-m-d',strtotime('+3 month',strtotime($date)));
+$expire = date('d/m/Y',strtotime('+3 month',strtotime($date)));
 
 $id = GETPOST('id', 'int');
 $socid = GETPOST('socid', 'int');
@@ -89,17 +89,18 @@ $mysoc->getFullAddress();
 $pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
 $pdf->AddPage();
 $pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
-$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress().'\n'.$obj->agence );
+$pdf->addSociete( $mysoc->name, $mysoc->getFullAddress()."
+					".$obj->agence );
 
 
-$pdf->fact_dev( "Billet ", "T0001" );
+$pdf->fact_dev( "Billet ", $obj->ref );
 
 $pdf->addDate($date);
 
-$pdf->addClientAdresse('M./Mme./Mlle.'.$object_passenger->nom.' '.$object_passenger->prenom.' \n
-						'.$object_passenger->adresse.' \n
-						'.$object_passenger->telephone.' \n
-						'.$object_passenger->email);
+$pdf->addClientAdresse($object_passenger->nom." ".$object_passenger->prenom." \n
+						".$object_passenger->adresse." \n
+						".$object_passenger->telephone." \n
+						".$object_passenger->email);
 
 $pdf->addReglement("Airtel Money");
 
@@ -120,15 +121,15 @@ $cols=array( "REF"    	=> 20,
 			 "Bg"   => 10,
 			 "St"   => 10 );
 $pdf->addCols( $cols);
-$cols=array( "REF"   	 => "L",
-			 "Date"  	 => "L",
+$cols=array( "REF"   	 => "C",
+			 "Date"  	 => "C",
 			 "Heure"     => "C",
-			 "De"     	 => "R",
-			 "Vers" 	 => "R",
+			 "De"     	 => "C",
+			 "Vers" 	 => "C",
 			 "Classe"    => "C",
 			 "Détails"   => "C",
-			 "Bg"    => "C",
-			 "St"    => "C" );
+			 "Bg"    	 => "C",
+			 "St"    	 => "C" );
 $pdf->addLineFormat($cols);
 $pdf->addLineFormat($cols);
 
@@ -140,8 +141,8 @@ $line = array(  "REF"   	=> $obj->ref,
 				"Vers" 	 	=> $obj->vers,
 				"Classe"    => $obj->classe,
 				"Détails"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
-				"Bg"    => $obj->kilo,
-				"St"    => $object->status  );
+				"Bg"   	    => $obj->kilo,
+				"St"    	=> $object->status == 2 ? "C" : "R"  );
 $size = $pdf->addLine( $y, $line );
 $y   += $size + 2;
 
