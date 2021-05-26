@@ -51,7 +51,8 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
-require DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/invoice/invoice.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/qrcode/qrcode.class.php';
 
 
 /*
@@ -152,6 +153,10 @@ Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, f
 Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui.
 Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum.
 ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
+
+$qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
+
+$qrcode->displayFPDF($pdf, 10, 266, 10);
 
 $pdf->Output('D', 'test.pdf', true);
 

@@ -472,7 +472,7 @@ function addPrice($prix, $remise, $penalite, $total)
 	$this->SetX( $r1+50 );
 	$this->Cell(10,4, $penalite." F", "L");
 	$this->SetX( $r1+70 );
-	$this->Cell(10,4, $total."F", "L");
+	$this->Cell(10,4, $total." F", "L");
 	$this->SetX( $r1+80 );
 
 }
