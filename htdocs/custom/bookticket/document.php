@@ -228,9 +228,10 @@ if($usercancreate && $type == 'travel'){
 		die ("  ** Error couldn't load template file '$file_tpl2'");
 	}
 	$pdf->IncludeTemplate ($template2);
+	$pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
-	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
-	$pdf->ApplyTextProp ("FOOTTITLE", utf8_decode("Manifeste Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
+	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
+	$pdf->ApplyTextProp ("FOOTTITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
 
 	// In the table of the first page, take into account only a subset of fields of CSV file; say fields #0,#2,#3,#5,#6,#7
 	$nn = count ($btickets);
@@ -269,7 +270,7 @@ if($usercancreate && $type == 'travel'){
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [1], $ptxp ['iy'], $btickets[$jj]->age, "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [1], $ptxp ['iy'], $btickets[$jj]->age." ANS", "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
