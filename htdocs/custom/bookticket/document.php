@@ -228,7 +228,7 @@ if($usercancreate && $type == 'travel'){
 		die ("  ** Error couldn't load template file '$file_tpl2'");
 	}
 	$pdf->IncludeTemplate ($template2);
-	$pdf->Image('img/DVM.jpg', 10, 10, 28, 28);
+	$pdf->Image('img/DVM.jpg', 5, 5, 15, 15);
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
 	$pdf->ApplyTextProp ("FOOTTITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
