@@ -167,7 +167,7 @@ if($usercancreate && $type == 'bticket'){
 
 	$qrcode->displayFPDF($pdf, 150, 17, 20);
 
-	$file_pdf = $obj->ref."_".date("dMYHis").".pdf";
+	$file_pdf = $obj->ref."_".date("dmYHis").".pdf";
 
 	$pdf->Output('D', $file_pdf, true);
 
@@ -293,6 +293,6 @@ if($usercancreate && $type == 'travel'){
 		$py += $ptxp ['iy'];		// for row interspace
 	}
 
-	$file_pdf = $btickets[0]->travel."_".date("dMYHis").".pdf";
+	$file_pdf = $btickets[0]->travel."_".date("dmYHis").".pdf";
 	$pdf->Output("D", $file_pdf, true);
 }
