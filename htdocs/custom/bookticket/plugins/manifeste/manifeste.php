@@ -101,8 +101,8 @@ class Manifeste extends FPDF
 		$ii = $this->template;
 		$this->template ++;
 		$this->flag_template = -1;
-		print ("  >> Template <$file_tpl> loaded under handle #$ii ($num_line lines)\n");
-		return ($ii);
+		print ("  >> Template ".$file_tpl." loaded under handle #$ii ($num_line lines)\n");
+		return $ii;
 
 	}
 

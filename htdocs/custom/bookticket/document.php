@@ -223,7 +223,7 @@ if($usercancreate && $type == 'travel'){
 	$pdf->AddPage("L");
 
 	// Template #2 is used for the part which builds a table containing all employees
-	$template2 = $pdf->LoadTemplate ($file_tpl2);
+	$template2 = $pdf->LoadTemplate($file_tpl2);
 	if ($template2 <= 0) {
 		die ("  ** Error couldn't load template file '$file_tpl2'");
 	}
