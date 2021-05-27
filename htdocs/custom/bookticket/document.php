@@ -228,14 +228,7 @@ if($usercancreate && $type == 'travel'){
 		die ("  ** Error couldn't load template file '$file_tpl2'");
 	}
 	$pdf->IncludeTemplate ($template2);
-	$pdf->SetXY( 274, 196 );
-	$pdf->SetFont ("Arial", "I", 9);
-	$pdf->cell (10, 196, utf8_decode("Manifeste Voyage N° "));
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
-
-	$pdf->SetTextColor (0, 0, 0);
-	$pdf->SetFont ("Arial", "B", 24);
-	$pdf->Cell (110, 15, utf8_decode("Manifeste Voyage N° "));
 
 	// In the table of the first page, take into account only a subset of fields of CSV file; say fields #0,#2,#3,#5,#6,#7
 	$nn = count ($btickets);

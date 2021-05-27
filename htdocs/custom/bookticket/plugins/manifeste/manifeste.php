@@ -129,7 +129,7 @@ class Manifeste extends FPDF
 		$this->SetXY ($txtp['px'], $txtp['py']);
 		if (strlen ($text) > 0) {
 			$this->Text ($txtp['px'], $txtp['py'], $text);
-			}
+		}
 		return ($txtp);
 	}
 
