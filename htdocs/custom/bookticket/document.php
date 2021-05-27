@@ -179,7 +179,7 @@ if($usercancreate && $type == 'travel'){
 
 
 	// This sample program uses two distinct templates
-	$file_tpl2 = DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/manifeste/template2.tpl';
+	$file_tpl = DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/manifeste/template.tpl';
 
 	// This sample program uses data fetched from a CSV file
 
@@ -223,11 +223,11 @@ if($usercancreate && $type == 'travel'){
 	$pdf->AddPage("L");
 
 	// Template #2 is used for the part which builds a table containing all employees
-	$template2 = $pdf->LoadTemplate($file_tpl2);
-	if ($template2 <= 0) {
-		die ("  ** Error couldn't load template file '$file_tpl2'");
+	$template = $pdf->LoadTemplate($file_tpl);
+	if ($template <= 0) {
+		die ("  ** Error couldn't load template file '$file_tpl'");
 	}
-	$pdf->IncludeTemplate ($template2);
+	$pdf->IncludeTemplate ($template);
 	$pdf->Image('img/DVM.jpg', 10, 5, 15, 15);
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
