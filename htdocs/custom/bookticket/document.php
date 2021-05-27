@@ -229,6 +229,8 @@ if($usercancreate && $type == 'travel'){
 	}
 	$pdf->IncludeTemplate ($template2);
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
+	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
+	$pdf->ApplyTextProp ("FOOTTITLE", utf8_decode("Manifeste Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
 
 	// In the table of the first page, take into account only a subset of fields of CSV file; say fields #0,#2,#3,#5,#6,#7
 	$nn = count ($btickets);
