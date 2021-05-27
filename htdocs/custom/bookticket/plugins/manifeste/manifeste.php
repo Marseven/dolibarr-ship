@@ -27,6 +27,7 @@ class Manifeste extends FPDF
 
 		$this->templates[$this->template] = "";		// Set current template string to empty string
 		$num_line = 0;
+		$format = "";
 		foreach ($lines as $line) {
 			$num_line ++;
 			if ($verbose) {
@@ -101,7 +102,7 @@ class Manifeste extends FPDF
 		$ii = $this->template;
 		$this->template ++;
 		$this->flag_template = -1;
-		print ("  >> Template ".$file_tpl." loaded under handle #$ii ($num_line lines)\n");
+		//print ("  >> Template ".$file_tpl." loaded under handle #$ii ($num_line lines)\n");
 		return $ii;
 
 	}
