@@ -96,7 +96,7 @@ llxHeader("", $langs->trans("BookTicketArea"));
 
 print load_fiche_titre($langs->trans("BookTicketArea"), '', 'bookticket.png@bookticket');
 
-print '<div class="fichecenter"><div class="fichethirdleft">';
+print '<div class="ficheright"><div class="fichethirdleft">';
 
 
 /*
@@ -354,22 +354,6 @@ if ($user->rights->bookticket->bticket->read)
 				$bticket_static->travel = $objp->travel;
 				$bticket_static->classe = $objp->classe;
 				$bticket_static->entity = $objp->entity;
-
-				//Multilangs
-				if (!empty($conf->global->MAIN_MULTILANGS))
-				{
-					$sql = "SELECT label";
-					$sql .= " FROM ".MAIN_DB_PREFIX."bticket_lang";
-					$sql .= " WHERE fk_product=".$objp->rowid;
-					$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
-
-					$resultd = $db->query($sql);
-					if ($resultd)
-					{
-						$objtp = $db->fetch_object($resultd);
-						if ($objtp && $objtp->label != '') $objp->label = $objtp->label;
-					}
-				}
 
 
 				print '<tr class="oddeven">';
