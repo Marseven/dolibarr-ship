@@ -217,7 +217,7 @@ if ($user->rights->bookticket->bticket->read)
 			$boxstatItem .= '<span class="boxstatsindicator">'.img_object("", $board->picto, 'class="inline-block"').' '.($board->nb[$val] ? $board->nb[$val] : 0).'</span>';
 			$boxstatItem .= '</div>';
 			$boxstatItem .= '</a>';
-			print $boxstat;
+			print $boxstatItem;
 			$boxstatItems[$val] = $boxstatItem;
 		}
 	}
