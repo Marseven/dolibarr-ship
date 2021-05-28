@@ -1191,7 +1191,7 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+3 month'));
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 day'));
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1211,7 +1211,7 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+7 day'));
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+7 day'));
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1231,7 +1231,7 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+1 month'));
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 month'));
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1251,7 +1251,7 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+12 month'));
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+12 month'));
 
 		$resql = $this->db->query($sql);
 		if ($resql) {

@@ -61,7 +61,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/qrcode/qrcode.class.p
  */
 
 $date = date('d/m/Y');
-$expire = date('d/m/Y H:m:s', strtotime('+1 day'));
+$expire = date('d/m/Y H:m:s', strtotime('+3 month'));
 
 $id = GETPOST('id', 'int');
 $type = GETPOST('type', 'alpha');
