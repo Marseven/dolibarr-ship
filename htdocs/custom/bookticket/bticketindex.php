@@ -133,7 +133,6 @@ if ($user->rights->bookticket->bticket->read)
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnPurchase"), 20);
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsNotOnSell"), 30);
 
-		$dataseries = [];
 		include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 		$dolgraph = new DolGraph();
 		$dolgraph->SetData($dataseries);
