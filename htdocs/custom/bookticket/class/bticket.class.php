@@ -1368,7 +1368,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nbj"] = $obj->nb;
+				$stats["cnbj"] = $obj->nb;
 			}
 			$this->db->free($resql);
 		} else {
@@ -1390,7 +1390,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nbh"] = $obj->nb;
+				$stats["cnbh"] = $obj->nb;
 			}
 			$this->db->free($resql);
 		} else {
@@ -1412,7 +1412,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nbm"] = $obj->nb;
+				$stats["cnbm"] = $obj->nb;
 			}
 			$this->db->free($resql);
 		} else {
@@ -1434,7 +1434,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nba"] = $obj->nb;
+				$stats["cnba"] = $obj->nb;
 			}
 			$this->db->free($resql);
 		} else {
@@ -1456,7 +1456,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["caj"] = $obj->ca;
+				$stats["ccaj"] = $obj->ca;
 			}
 			$this->db->free($resql);
 		} else {
@@ -1478,7 +1478,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["cah"] = $obj->ca;
+				$stats["ccah"] = $obj->ca;
 			}
 			$this->db->free($resql);
 		} else {
@@ -1499,7 +1499,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["cam"] = $obj->ca;
+				$stats["ccam"] = $obj->ca;
 			}
 			$this->db->free($resql);
 		} else {
@@ -1521,7 +1521,7 @@ class Bticket extends CommonObject
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["caa"] = $obj->ca;
+				$stats["ccaa"] = $obj->ca;
 			}
 			$this->db->free($resql);
 		} else {

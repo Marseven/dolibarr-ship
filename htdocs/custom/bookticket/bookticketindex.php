@@ -278,6 +278,7 @@ print '</div>';
 print '<div class="fichecenter fichecenterbis">';
 
 $bticket_static = new Bticket($db);
+
 $stats = $bticket_static->load_stats();
 var_dump($stats);
 
