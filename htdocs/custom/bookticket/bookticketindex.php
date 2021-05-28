@@ -105,7 +105,6 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
  */
 
 $boxstatItems = array();
-$boxstatFromHook = '';
 
 // Load translation files required by page
 $langs->loadLangs(array('bookticket'));
@@ -115,114 +114,113 @@ if ($user->rights->bookticket->bticket->read)
 {
 	$object = new stdClass();
 
-	if (empty($reshook))
+
+	// Cle array returned by the method load_state_board for each line
+	$keys = array(
+		'users',
+		'travel',
+		'ship',
+		'passenger',
+		'classe',
+		'city',
+		'agence',
+		'bticket'
+	);
+
+	// Condition to be checked for each display line dashboard
+	$conditions = array(
+		'users' => $user->rights->user->user->lire,
+		'travel' => $user->rights->bookticket->travel->read,
+		'ship' => $user->rights->bookticket->ship->read,
+		'passenger' => $user->rights->bookticket->passenger->read,
+		'classe' => $user->rights->bookticket->classe->read,
+		'city' => $user->rights->bookticket->city->read,
+		'agence' => $user->rights->bookticket->agence->read,
+		'bticket' => $user->rights->bookticket->bticket->read
+	);
+	// Class file containing the method load_state_board for each line
+	$includes = array(
+		'users' => DOL_DOCUMENT_ROOT."/user/class/user.class.php",
+		'travel' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/travel.class.php",
+		'classe' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/classe.class.php",
+		'ship' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/ship.class.php",
+		'passenger' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/passenger.class.php",
+		'city' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/city.class.php",
+		'agence' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/agence.class.php",
+		'bticket' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/bticket.class.php"
+	);
+	// Name class containing the method load_state_board for each line
+	$classes = array(
+		'users' => 'User',
+		'bticket' => 'Bticket',
+		'travel' => 'Travel',
+		'ship' => 'Ship',
+		'passenger' => 'Passenger',
+		'city' => 'City',
+		'agence' => 'Agence',
+		'classe' => 'Classe'
+	);
+	// Translation keyword
+	$titres = array(
+		'users' => "Agence",
+		'agence' => "Ticket",
+		'bticket' => 'Bticket',
+		'travel' => 'Travel',
+		'ship' => 'Ship',
+		'passenger' => 'Passenger',
+		'city' => 'City',
+		'classe' => 'Classe'
+	);
+	// Dashboard Link lines
+	$links = array(
+		'users' => DOL_URL_ROOT.'/user/list.php',
+		'travel' => DOL_URL_ROOT.'/bookticket/travelindex.php',
+		'ship' => DOL_URL_ROOT.'/bookticket/shipindex.php',
+		'passenger' => DOL_URL_ROOT.'/bookticket/passengerindex.php',
+		'classe' => DOL_URL_ROOT.'/bookticket/classeindex.php',
+		'city' => DOL_URL_ROOT.'/bookticket/city_list.php',
+		'agence' => DOL_URL_ROOT.'/bookticket/agence_list.php',
+		'bticket' => DOL_URL_ROOT.'/bookticket/bticketindex.php'
+	);
+	// Translation lang files
+	$langfile = array(
+		'bookticket' => "bookticket"
+	);
+
+	print "je suis ici";
+
+	// Loop and displays each line of table
+	$boardloaded = array();
+	foreach ($keys as $val)
 	{
-		// Cle array returned by the method load_state_board for each line
-		$keys = array(
-			'users',
-			'travel',
-			'ship',
-			'passenger',
-			'classe',
-			'city',
-			'agence',
-			'bticket'
-		);
-
-		// Condition to be checked for each display line dashboard
-		$conditions = array(
-			'users' => $user->rights->user->user->lire,
-			'travel' => $user->rights->bookticket->travel->read,
-			'ship' => $user->rights->bookticket->ship->read,
-			'passenger' => $user->rights->bookticket->passenger->read,
-			'classe' => $user->rights->bookticket->classe->read,
-			'city' => $user->rights->bookticket->city->read,
-			'agence' => $user->rights->bookticket->agence->read,
-			'bticket' => $user->rights->bookticket->bticket->read
-		);
-		// Class file containing the method load_state_board for each line
-		$includes = array(
-			'users' => DOL_DOCUMENT_ROOT."/user/class/user.class.php",
-			'travel' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/travel.class.php",
-			'classe' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/classe.class.php",
-			'ship' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/ship.class.php",
-			'passenger' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/passenger.class.php",
-			'city' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/city.class.php",
-			'agence' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/agence.class.php",
-			'bticket' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/bticket.class.php"
-		);
-		// Name class containing the method load_state_board for each line
-		$classes = array(
-			'users' => 'User',
-			'bticket' => 'Bticket',
-			'travel' => 'Travel',
-			'ship' => 'Ship',
-			'passenger' => 'Passenger',
-			'city' => 'City',
-			'agence' => 'Agence',
-			'classe' => 'Classe'
-		);
-		// Translation keyword
-		$titres = array(
-			'users' => "Agence",
-			'agence' => "Ticket",
-			'bticket' => 'Bticket',
-			'travel' => 'Travel',
-			'ship' => 'Ship',
-			'passenger' => 'Passenger',
-			'city' => 'City',
-			'classe' => 'Classe'
-		);
-		// Dashboard Link lines
-		$links = array(
-			'users' => DOL_URL_ROOT.'/user/list.php',
-			'travel' => DOL_URL_ROOT.'/bookticket/travelindex.php',
-			'ship' => DOL_URL_ROOT.'/bookticket/shipindex.php',
-			'passenger' => DOL_URL_ROOT.'/bookticket/passengerindex.php',
-			'classe' => DOL_URL_ROOT.'/bookticket/classeindex.php',
-			'city' => DOL_URL_ROOT.'/bookticket/city_list.php',
-			'agence' => DOL_URL_ROOT.'/bookticket/agence_list.php',
-			'bticket' => DOL_URL_ROOT.'/bookticket/bticketindex.php'
-		);
-		// Translation lang files
-		$langfile = array(
-			'bookticket' => "bookticket"
-		);
-
-
-		// Loop and displays each line of table
-		$boardloaded = array();
-		foreach ($keys as $val)
+		if ($conditions[$val])
 		{
-			if ($conditions[$val])
+			$boxstatItem = '';
+			$class = $classes[$val];
+			// Search in cache if load_state_board is already realized
+			$classkeyforcache = $class;
+			if (!isset($boardloaded[$classkeyforcache]) || !is_object($boardloaded[$classkeyforcache]))
 			{
-				$boxstatItem = '';
-				$class = $classes[$val];
-				// Search in cache if load_state_board is already realized
-				$classkeyforcache = $class;
-				if (!isset($boardloaded[$classkeyforcache]) || !is_object($boardloaded[$classkeyforcache]))
-				{
-					include_once $includes[$val]; // Loading a class cost around 1Mb
+				include_once $includes[$val]; // Loading a class cost around 1Mb
 
-					$board = new $class($db);
-					$board->load_state_board();
-					$boardloaded[$class] = $board;
-				} else {
-					$board = $boardloaded[$classkeyforcache];
-				}
-
-				$langs->load(empty($langfile[$val]) ? $val : $langfile[$val]);
-
-				$text = $langs->trans($titres[$val]);
-				$boxstatItem .= '<a href="'.$links[$val].'" class="boxstatsindicator thumbstat nobold nounderline">';
-				$boxstatItem .= '<div class="boxstats">';
-				$boxstatItem .= '<span class="boxstatstext" title="'.dol_escape_htmltag($text).'">'.$text.'</span><br>';
-				$boxstatItem .= '<span class="boxstatsindicator">'.img_object("", $board->picto, 'class="inline-block"').' '.($board->nb[$val] ? $board->nb[$val] : 0).'</span>';
-				$boxstatItem .= '</div>';
-				$boxstatItem .= '</a>';
-
-				$boxstatItems[$val] = $boxstatItem;
+				$board = new $class($db);
+				$board->load_state_board();
+				$boardloaded[$class] = $board;
+			} else {
+				$board = $boardloaded[$classkeyforcache];
 			}
+
+			$langs->load(empty($langfile[$val]) ? $val : $langfile[$val]);
+
+			$text = $langs->trans($titres[$val]);
+			$boxstatItem .= '<a href="'.$links[$val].'" class="boxstatsindicator thumbstat nobold nounderline">';
+			$boxstatItem .= '<div class="boxstats">';
+			$boxstatItem .= '<span class="boxstatstext" title="'.dol_escape_htmltag($text).'">'.$text.'</span><br>';
+			$boxstatItem .= '<span class="boxstatsindicator">'.img_object("", $board->picto, 'class="inline-block"').' '.($board->nb[$val] ? $board->nb[$val] : 0).'</span>';
+			$boxstatItem .= '</div>';
+			$boxstatItem .= '</a>';
+
+			$boxstatItems[$val] = $boxstatItem;
 		}
 	}
 }
