@@ -121,7 +121,7 @@ if ($user->rights->bookticket->bticket->read)
 		print '<tr class="liste_titre"><th>'.$langs->trans("Statistics").'</th></tr>';
 		print '<tr><td class="center nopaddingleftimp nopaddingrightimp">';
 
-		$total = 0;
+		$total = 10;
 		$dataval = array();
 		$datalabels = array();
 		$i = 0;
