@@ -226,14 +226,6 @@ print '<div class="fichecenter fichecenterbis">';
 
 $boxlist .= '<div class="twocolumns">';
 
-$boxlist .= '<div class="firstcolumn fichehalfleft boxhalfleft" id="boxhalfleft">';
-
-$boxlist .= $boxstat;
-$boxlist .= $resultboxes['boxlistb'];
-
-$boxlist .= '</div>';
-
-
 if (empty($user->socid) && empty($conf->global->MAIN_DISABLE_GLOBAL_BOXSTATS))
 {
 	// Remove allready present info in new dash board
@@ -277,6 +269,13 @@ if (empty($user->socid) && empty($conf->global->MAIN_DISABLE_GLOBAL_BOXSTATS))
 		$boxstat .= '</div>';
 	}
 }
+
+$boxlist .= '<div class="firstcolumn fichehalfleft boxhalfleft" id="boxhalfleft">';
+
+$boxlist .= $boxstat;
+$boxlist .= $resultboxes['boxlistb'];
+
+$boxlist .= '</div>';
 
 $boxlist .= '<div class="secondcolumn fichehalfright boxhalfright" id="boxhalfright">';
 
