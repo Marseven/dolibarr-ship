@@ -388,7 +388,7 @@ if ($user->rights->bookticket->bticket->read)
 	}
 }
 
-print '</div></div>';
+print '</div>';
 
 
 print '</div></div></div>';
