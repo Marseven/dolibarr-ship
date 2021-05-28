@@ -1154,6 +1154,31 @@ class Bticket extends CommonObject
 			return 1;
 		}
 	}
+
+	public function load_state_board()
+    {
+         // phpcs:enable
+
+         $this->nb = array();
+
+         $sql = "SELECT count(b.rowid) as nb";
+         $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+         $sql .= " WHERE b.status >= 0";
+         $sql .= " AND b.entity IN (".getEntity('bticket').")";
+
+         $resql = $this->db->query($sql);
+         if ($resql) {
+             while ($obj = $this->db->fetch_object($resql)) {
+                 $this->nb["btickets"] = $obj->nb;
+             }
+             $this->db->free($resql);
+             return 1;
+         } else {
+             dol_print_error($this->db);
+             $this->error = $this->db->error();
+             return -1;
+         }
+    }
 }
 
 
