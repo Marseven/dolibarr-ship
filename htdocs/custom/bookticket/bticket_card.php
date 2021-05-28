@@ -871,15 +871,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
-			// Template to use by default
-			print '<tr>';
-			print '<td>'.$langs->trans("DefaultModel").'</td>';
-			print '<td>';
-			$liste = ModelePDFPropales::liste_modeles($db);
-			$preselected = ($conf->global->PROPALE_ADDON_PDF_ODT_DEFAULT ? $conf->global->PROPALE_ADDON_PDF_ODT_DEFAULT : $conf->global->PROPALE_ADDON_PDF);
-			print $form->selectarray('model_pdf', $liste, $preselected, 0, 0, 0, '', 0, 0, 0, '', '', 1);
-			print "</td></tr>";
-
 		print '</table>';
 
 		print '<hr>';

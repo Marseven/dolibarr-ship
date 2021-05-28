@@ -98,7 +98,6 @@ print load_fiche_titre($langs->trans("BookTicketArea"), '', 'bookticket.png@book
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
-print "je fonctionne bien ici !";
 
 /*
  * Dashboard Dolibarr states (statistics)
@@ -112,7 +111,7 @@ $boxstatFromHook = '';
 $langs->loadLangs(array('bookticket'));
 
 // Load global statistics of objects
-if ($user->rights->bookticket->read)
+if ($user->rights->bookticket->bticket->read)
 {
 	$object = new stdClass();
 
@@ -126,18 +125,20 @@ if ($user->rights->bookticket->read)
 			'passenger',
 			'classe',
 			'city',
-			'ticket'
+			'agence',
+			'bticket'
 		);
 
 		// Condition to be checked for each display line dashboard
 		$conditions = array(
 			'users' => $user->rights->user->user->lire,
-			'travel' => $user->rights->ticket->read,
-			'ship' => $user->rights->ticket->read,
-			'passenger' => $user->rights->ticket->read,
-			'classe' => $user->rights->ticket->read,
-			'city' => $user->rights->ticket->read,
-			'ticket' => $user->rights->ticket->read
+			'travel' => $user->rights->bookticket->travel->read,
+			'ship' => $user->rights->bookticket->ship->read,
+			'passenger' => $user->rights->bookticket->passenger->read,
+			'classe' => $user->rights->bookticket->classe->read,
+			'city' => $user->rights->bookticket->city->read,
+			'agence' => $user->rights->bookticket->agence->read,
+			'bticket' => $user->rights->bookticket->bticket->read
 		);
 		// Class file containing the method load_state_board for each line
 		$includes = array(
@@ -147,28 +148,30 @@ if ($user->rights->bookticket->read)
 			'ship' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/ship.class.php",
 			'passenger' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/passenger.class.php",
 			'city' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/city.class.php",
-			'ticket' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/ticket.class.php"
+			'agence' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/agence.class.php",
+			'bticket' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/bticket.class.php"
 		);
 		// Name class containing the method load_state_board for each line
 		$classes = array(
 			'users' => 'User',
-			'ticket' => 'Ticket',
+			'bticket' => 'Bticket',
 			'travel' => 'Travel',
 			'ship' => 'Ship',
 			'passenger' => 'Passenger',
 			'city' => 'City',
-			'classe' => 'Classe',
+			'agence' => 'Agence',
+			'classe' => 'Classe'
 		);
 		// Translation keyword
 		$titres = array(
-			'users' => "Users",
-			'ticket' => "Ticket",
-			'ticket' => 'Ticket',
+			'users' => "Agence",
+			'agence' => "Ticket",
+			'bticket' => 'Bticket',
 			'travel' => 'Travel',
 			'ship' => 'Ship',
 			'passenger' => 'Passenger',
 			'city' => 'City',
-			'classe' => 'Classe',
+			'classe' => 'Classe'
 		);
 		// Dashboard Link lines
 		$links = array(
@@ -178,7 +181,8 @@ if ($user->rights->bookticket->read)
 			'passenger' => DOL_URL_ROOT.'/bookticket/passengerindex.php',
 			'classe' => DOL_URL_ROOT.'/bookticket/classeindex.php',
 			'city' => DOL_URL_ROOT.'/bookticket/city_list.php',
-			'ticket' => DOL_URL_ROOT.'/bookticket/ticketindex.php'
+			'agence' => DOL_URL_ROOT.'/bookticket/agence_list.php',
+			'bticket' => DOL_URL_ROOT.'/bookticket/bticketindex.php'
 		);
 		// Translation lang files
 		$langfile = array(
