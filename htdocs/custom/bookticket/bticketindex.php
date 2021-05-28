@@ -108,15 +108,10 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
  */
 if ($user->rights->bookticket->bticket->read)
 {
-	$prodser = array();
-	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
-	$prodser[1][0] = $prodser[1][1] = $prodser[1][2] = $prodser[1][3] = 0;
 
 	$sql = "SELECT COUNT(t.rowid) as total";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as t";
 	//$sql .= ' WHERE t.entity IN ('.getEntity($bticket_static->element, 1).')';
-	// Add where from hooks
-	$parameters = array();
 
 
 	if ($conf->use_javascript_ajax)
@@ -126,31 +121,18 @@ if ($user->rights->bookticket->bticket->read)
 		print '<tr class="liste_titre"><th>'.$langs->trans("Statistics").'</th></tr>';
 		print '<tr><td class="center nopaddingleftimp nopaddingrightimp">';
 
-		/*$SommeA = $prodser[0]['sell'];
-		$SommeB = $prodser[0]['buy'];
-		$SommeC = $prodser[0]['none'];
-		$SommeD = $prodser[1]['sell'];
-		$SommeE = $prodser[1]['buy'];
-		$SommeF = $prodser[1]['none'];
 		$total = 0;
 		$dataval = array();
 		$datalabels = array();
 		$i = 0;
 
-		$total = $SommeA + $SommeB + $SommeC + $SommeD + $SommeE + $SommeF;
+		//$total = $SommeA + $SommeB + $SommeC;
 		$dataseries = array();
-		if (!empty($conf->product->enabled))
-		{
-			$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnSale"), round($SommeA));
-			$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnPurchase"), round($SommeB));
-			$dataseries[] = array($langs->transnoentitiesnoconv("ProductsNotOnSell"), round($SommeC));
-		}
-		if (!empty($conf->service->enabled))
-		{
-			$dataseries[] = array($langs->transnoentitiesnoconv("ServicesOnSale"), round($SommeD));
-			$dataseries[] = array($langs->transnoentitiesnoconv("ServicesOnPurchase"), round($SommeE));
-			$dataseries[] = array($langs->transnoentitiesnoconv("ServicesNotOnSell"), round($SommeF));
-		}*/
+
+		$dataseries[] = array($langs->transnoentitiesnoconv("BticketOnSale"), 10);
+		$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnPurchase"), 20);
+		$dataseries[] = array($langs->transnoentitiesnoconv("ProductsNotOnSell"), 30);
+
 		$dataseries = [];
 		include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 		$dolgraph = new DolGraph();
