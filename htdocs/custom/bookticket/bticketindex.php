@@ -210,7 +210,6 @@ if ($user->rights->bookticket->bticket->read)
 			print '<table class="noborder centpercent">';
 
 			$colnb = 2;
-			if (empty($conf->global->PRODUIT_MULTIPRICES)) $colnb++;
 
 			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
 			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';

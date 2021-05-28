@@ -275,6 +275,13 @@ print $boxlist;
 
 print '</div>';
 
+print '<div class="fichecenter fichecenterbis">';
+
+$bticket_static = new Bticket($db);
+$stats = $bticket_static->load_stats();
+var_dump($stats);
+print '</div>';
+
 print '</div></div>';
 
 print '<div class="fichetwothirdright">';
@@ -285,7 +292,6 @@ print '<div class="fichetwothirdright">';
  */
 if ($user->rights->bookticket->bticket->read)
 {
-	$bticket_static = new Bticket($db);
 
 	$max = 15;
 	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as travel,";

@@ -332,7 +332,7 @@ function addAchat( $date )
 	$this->Line( $r1, $mid, $r2, $mid);
 	$this->SetXY( $r1 + ($r2 - $r1)/2 - 5 , $y1+1 );
 	$this->SetFont( "Arial", "B", 10);
-	$this->Cell(10,4, "DATE D'ACHAT", 0, 0, "C");
+	$this->Cell(10,4, "DATE D'EDITION", 0, 0, "C");
 	$this->SetXY( $r1 + ($r2-$r1)/2 - 5 , $y1 + 5 );
 	$this->SetFont( "Arial", "", 10);
 	$this->Cell(10,5,$date, 0,0, "C");

@@ -1179,6 +1179,95 @@ class Bticket extends CommonObject
              return -1;
          }
     }
+
+	public function load_stats()
+    {
+		// phpcs:enable
+
+		$stats = [];
+
+		// Nbre Billet - J
+		$sql = "SELECT count(b.rowid) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+3 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nbj"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// Nbre Billet - H
+		$sql = "SELECT count(b.rowid) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+7 day'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nbh"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// Nbre Billet - M
+		$sql = "SELECT count(b.rowid) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+1 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nbm"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// Nbre Billet - A
+		$sql = "SELECT count(b.rowid) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('d/m/Y H:m:s', strtotime('+12 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nba"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		return $stats;
+    }
 }
 
 
