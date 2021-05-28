@@ -343,7 +343,7 @@ print '</tr>';
 
 print '<tr class="oddeven">';
 print '<td class="nowrap">';
-print $langs->trans("NbreBilletJour");
+print $langs->trans("ChiffreAffaireJour");
 print "</td>\n";
 print '<td>';
 print $stats['caj'] == NULL ? "0" : $stats['caj'];
@@ -352,7 +352,7 @@ print "</tr>\n";
 
 print '<tr class="oddeven">';
 print '<td class="nowrap">';
-print $langs->trans("NbreBilletSemaine");
+print $langs->trans("ChiffreAffaireSemaine");
 print "</td>\n";
 print '<td>';
 print $stats['cah']== NULL ? "0" : $stats['cah'];
@@ -361,7 +361,7 @@ print "</tr>\n";
 
 print '<tr class="oddeven">';
 print '<td class="nowrap">';
-print $langs->trans("NbreBilletMois");
+print $langs->trans("ChiffreAffaireMois");
 print "</td>\n";
 print '<td>';
 print $stats['cam']== NULL ? "0" : $stats['cam'];
@@ -370,7 +370,7 @@ print "</tr>\n";
 
 print '<tr class="oddeven">';
 print '<td class="nowrap">';
-print $langs->trans("NbreBilletAnne");
+print $langs->trans("ChiffreAffaireAnne");
 print "</td>\n";
 print '<td>';
 print $stats['caa']== NULL ? "0" : $stats['caj'];
