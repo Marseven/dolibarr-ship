@@ -127,9 +127,9 @@ if ($user->rights->bookticket->bticket->read)
 		$i = 0;
 
 		//$total = $SommeA + $SommeB + $SommeC;
-		$dataseries = array();
+		$dataseries = [];
 
-		$dataseries[1] = array("BticketOnSale", 10);
+		$dataseries[1] = ["Bticket", 10];
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnPurchase"), 20);
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsNotOnSell"), 30);
 
@@ -142,6 +142,7 @@ if ($user->rights->bookticket->bticket->read)
 		$dolgraph->SetType(array('pie'));
 		$dolgraph->setHeight('200');
 		$dolgraph->draw('idgraphstatus');
+		var_dump($dolgraph);
 		print $dolgraph->show($total ? 0 : 1);
 
 		print '</td></tr>';
