@@ -470,10 +470,10 @@ if ($user->rights->bookticket->travel->read)
 				print "</td>\n";
 				print '<td>'.dol_trunc($objp->ship, 32).'</td>';
 				print "<td>";
-				print dol_print_date($db->jdate($objp->jour_heure), 'day');
+				print dol_print_date($db->jdate($objp->jour), 'day');
 				print "</td>";
 				print '<td>';
-				print $objp->ship;
+				print $objp->heure;
 				print "</td>";
 
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
