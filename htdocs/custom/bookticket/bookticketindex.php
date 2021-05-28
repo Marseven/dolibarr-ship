@@ -174,13 +174,13 @@ if ($user->rights->bookticket->bticket->read)
 	// Dashboard Link lines
 	$links = array(
 		'users' => DOL_URL_ROOT.'/user/list.php',
-		'travel' => DOL_URL_ROOT.'/bookticket/travelindex.php',
-		'ship' => DOL_URL_ROOT.'/bookticket/shipindex.php',
-		'passenger' => DOL_URL_ROOT.'/bookticket/passengerindex.php',
-		'classe' => DOL_URL_ROOT.'/bookticket/classeindex.php',
-		'city' => DOL_URL_ROOT.'/bookticket/city_list.php',
-		'agence' => DOL_URL_ROOT.'/bookticket/agence_list.php',
-		'bticket' => DOL_URL_ROOT.'/bookticket/bticketindex.php'
+		'travel' => DOL_URL_ROOT.'/custom/bookticket/travelindex.php',
+		'ship' => DOL_URL_ROOT.'/custom/bookticket/shipindex.php',
+		'passenger' => DOL_URL_ROOT.'/custom/bookticket/passengerindex.php',
+		'classe' => DOL_URL_ROOT.'/custom/bookticket/classeindex.php',
+		'city' => DOL_URL_ROOT.'/custom/bookticket/city_list.php',
+		'agence' => DOL_URL_ROOT.'/custom/bookticket/agence_list.php',
+		'bticket' => DOL_URL_ROOT.'/custom/bookticket/bticketindex.php'
 	);
 	// Translation lang files
 	$langfile = array(
