@@ -308,7 +308,7 @@ if ($user->rights->bookticket->bticket->read)
 
 	$max = 15;
 	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as travel,";
-	$sql .= " t.entity, t.status";
+	$sql .= " t.entity, t.status,";
 	$sql .= " t.tms as datem";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as t";
 	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
