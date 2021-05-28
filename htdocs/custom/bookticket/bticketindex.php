@@ -129,14 +129,14 @@ if ($user->rights->bookticket->bticket->read)
 		//$total = $SommeA + $SommeB + $SommeC;
 		$dataseries = [];
 
-		$dataseries[1] = ["Bticket", 10];
+		$dataseries[1] = ["Bticket", 10, 10];
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnPurchase"), 20);
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsNotOnSell"), 30);
 
 		$dataseries = [];
 		include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 		$dolgraph = new DolGraph();
-		$dolgraph->SetData($dataseries[1]);
+		$dolgraph->SetData($dataseries);
 		$dolgraph->setShowLegend(2);
 		$dolgraph->setShowPercent(0);
 		$dolgraph->SetType(array('pie'));
