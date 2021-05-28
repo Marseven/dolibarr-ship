@@ -1144,6 +1144,31 @@ class Travel extends CommonObject
 			return 1;
 		}
 	}
+
+	public function load_state_board()
+    {
+         // phpcs:enable
+
+         $this->nb = array();
+
+         $sql = "SELECT count(t.rowid) as nb";
+         $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_travel as t";
+         $sql .= " WHERE t.statut >= 0";
+         $sql .= " AND t.entity IN (".getEntity('travel').")";
+
+         $resql = $this->db->query($sql);
+         if ($resql) {
+             while ($obj = $this->db->fetch_object($resql)) {
+                 $this->nb["travels"] = $obj->nb;
+             }
+             $this->db->free($resql);
+             return 1;
+         } else {
+             dol_print_error($this->db);
+             $this->error = $this->db->error();
+             return -1;
+         }
+     }
 }
 
 

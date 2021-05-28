@@ -188,25 +188,18 @@ if ($user->rights->bookticket->bticket->read)
 	);
 
 	// Loop and displays each line of table
-	$boardloaded = array();
 	foreach ($keys as $val)
 	{
 		if ($conditions[$val])
 		{
 			$boxstatItem = '';
 			$class = $classes[$val];
-			// Search in cache if load_state_board is already realized
-			$classkeyforcache = $class;
-			if (!isset($boardloaded[$classkeyforcache]) || !is_object($boardloaded[$classkeyforcache]))
-			{
-				include_once $includes[$val]; // Loading a class cost around 1Mb
+			include_once $includes[$val]; // Loading a class cost around 1Mb
 
-				$board = new $class($db);
-				$board->load_state_board();
-				$boardloaded[$class] = $board;
-			} else {
-				$board = $boardloaded[$classkeyforcache];
-			}
+			$board = new $class($db);
+			$board->load_state_board();
+			$boardloaded[$class] = $board;
+
 
 			$langs->load('bookticket');
 
