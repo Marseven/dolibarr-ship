@@ -136,7 +136,7 @@ if ($user->rights->bookticket->bticket->read)
 		$dataseries = [];
 		include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 		$dolgraph = new DolGraph();
-		$dolgraph->SetData($dataseries);
+		$dolgraph->SetData($dataseries[1]);
 		$dolgraph->setShowLegend(2);
 		$dolgraph->setShowPercent(0);
 		$dolgraph->SetType(array('pie'));
