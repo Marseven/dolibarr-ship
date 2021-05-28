@@ -346,7 +346,7 @@ print '<td class="nowrap">';
 print $langs->trans("NbreBilletJour");
 print "</td>\n";
 print '<td>';
-print $stats['caj'];
+print $stats['caj'] == NULL ? "0" : $stats['caj'];
 print "</td>";
 print "</tr>\n";
 
@@ -355,7 +355,7 @@ print '<td class="nowrap">';
 print $langs->trans("NbreBilletSemaine");
 print "</td>\n";
 print '<td>';
-print $stats['cah'];
+print $stats['cah']== NULL ? "0" : $stats['cah'];
 print "</td>";
 print "</tr>\n";
 
@@ -364,7 +364,7 @@ print '<td class="nowrap">';
 print $langs->trans("NbreBilletMois");
 print "</td>\n";
 print '<td>';
-print $stats['cam'];
+print $stats['cam']== NULL ? "0" : $stats['cam'];
 print "</td>";
 print "</tr>\n";
 
@@ -373,7 +373,7 @@ print '<td class="nowrap">';
 print $langs->trans("NbreBilletAnne");
 print "</td>\n";
 print '<td>';
-print $stats['caa'];
+print $stats['caa']== NULL ? "0" : $stats['caj'];
 print "</td>";
 print "</tr>\n";
 
