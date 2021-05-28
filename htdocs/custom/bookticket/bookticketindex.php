@@ -287,7 +287,7 @@ print '<table class="noborder centpercent">';
 
 $colnb = 2;
 
-print '<tr class="liste_titre"><th>'.$langs->trans("LastModifiedTravel").'</th>';
+print '<tr class="liste_titre"><th>'.$langs->trans("StatBillet").'</th>';
 print '<th class="right" ><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
 print '</tr>';
 
@@ -331,11 +331,58 @@ print "</table>";
 print '</div>';
 print '<br>';
 
-//$stats1 = $bticket_static->load_stats_by_classe();
-//var_dump($stats1);
+// CA
+print '<div class="div-table-responsive-no-min">';
+print '<table class="noborder centpercent">';
+
+$colnb = 2;
+
+print '<tr class="liste_titre"><th>'.$langs->trans("ChiffreAffaire").'</th>';
+print '<th class="right" ><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+print '</tr>';
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletJour");
+print "</td>\n";
+print '<td>';
+print $stats['caj'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletSemaine");
+print "</td>\n";
+print '<td>';
+print $stats['cah'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletMois");
+print "</td>\n";
+print '<td>';
+print $stats['cam'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletAnne");
+print "</td>\n";
+print '<td>';
+print $stats['caa'];
+print "</td>";
+print "</tr>\n";
+
+print "</table>";
+print '</div>';
+print '<br>';
 
 //$stats2 = $bticket_static->load_stats_by_agence();
-//var_dump($stats2);
+//$stats1 = $bticket_static->load_stats_by_classe();
 
 print '</div>';
 
