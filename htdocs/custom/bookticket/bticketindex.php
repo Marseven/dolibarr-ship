@@ -42,7 +42,6 @@ if (! $res) die("Include of main fails");
 
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.php';
 
 // Security check
 //$result = restrictedArea($user, 'produit|service|expedition');
@@ -64,8 +63,6 @@ $helpurl = '';
 $transAreaType = $langs->trans("BticketArea");
 $helpurl = 'EN:Module_Ticket|FR:Module_Ticket|ES:M&oacute;dulo_Ticket';
 
-$user->rights->bticket->lire = true;
-
 llxHeader("", $langs->trans("Bticket"), $helpurl);
 
 $linkback = "";
@@ -78,7 +75,7 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useless due to the global search combo
 {
 	// Search contract
-	if ($user->rights->bticket->lire)
+	if ($user->rights->bookticket->bticket->read)
 	{
 		$listofsearchfields['search_bticket'] = array('text'=>'Ticket');
 	}
@@ -109,7 +106,7 @@ if (!empty($conf->global->MAIN_SEARCH_FORM_ON_HOME_AREAS))     // This is useles
 /*
  * Number of bticket
  */
-if ($user->rights->bticket->lire)
+if ($user->rights->bookticket->bticket->read)
 {
 	$prodser = array();
 	$prodser[0][0] = $prodser[0][1] = $prodser[0][2] = $prodser[0][3] = 0;
