@@ -1266,6 +1266,87 @@ class Bticket extends CommonObject
 			die;
 		}
 
+
+		// CA - J
+		$sql = "SELECT sum(b.prix) as ca";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 day'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["caj"] = $obj->ca;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// CA - H
+		$sql = "SELECT sum(b.prix) as ca";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+7 day'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["cah"] = $obj->ca;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// CA - M
+		$sql = "SELECT sum(b.prix) as ca";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["cam"] = $obj->ca;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// CA - A
+		$sql = "SELECT sum(b.prix) as ca";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('bticket').")";
+		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+12 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["caa"] = $obj->ca;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
 		return $stats;
     }
 }
