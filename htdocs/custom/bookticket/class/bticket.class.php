@@ -1550,6 +1550,7 @@ class Bticket extends CommonObject
 
 
 		$resql = $this->db->query($sql);
+		var_dump($resql);die;
 		if ($resql) {
 			while ($obj = $this->db->fetch_object($resql)) {
 				$stats["anbj"] = $obj->nb;
