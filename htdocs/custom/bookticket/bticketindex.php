@@ -129,7 +129,7 @@ if ($user->rights->bookticket->bticket->read)
 		//$total = $SommeA + $SommeB + $SommeC;
 		$dataseries = [];
 
-		$dataseries = [["Bticket1", 10, 10], ["Bticket2", 20, 20]];
+		$dataseries = array(array(0=>'labelxA',1=>10), array('labelxB',10));
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnPurchase"), 20);
 		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsNotOnSell"), 30);
 
