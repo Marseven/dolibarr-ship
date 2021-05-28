@@ -96,7 +96,7 @@ llxHeader("", $langs->trans("BookTicketArea"));
 
 print load_fiche_titre($langs->trans("BookTicketArea"), '', 'bookticket.png@bookticket');
 
-print '<div class="ficheright"><div class="fichethirdleft">';
+print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
 /*
@@ -304,6 +304,8 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
  */
 if ($user->rights->bookticket->bticket->read)
 {
+	$bticket_static = new Bticket($db);
+
 	$max = 15;
 	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as travel,";
 	$sql .= " t.entity,";
