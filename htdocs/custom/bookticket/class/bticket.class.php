@@ -1359,10 +1359,11 @@ class Bticket extends CommonObject
 		// Nbre Billet - J
 		$sql = "SELECT count(b.rowid) as nb";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 day'));
+		$sql .= " GROUP BY fk_classe";
+
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1380,10 +1381,11 @@ class Bticket extends CommonObject
 		// Nbre Billet - H
 		$sql = "SELECT count(b.rowid) as nb";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+7 day'));
+		$sql .= " GROUP BY fk_classe";
+
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1401,10 +1403,11 @@ class Bticket extends CommonObject
 		// Nbre Billet - M
 		$sql = "SELECT count(b.rowid) as nb";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 month'));
+		$sql .= " GROUP BY fk_classe";
+
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1422,10 +1425,11 @@ class Bticket extends CommonObject
 		// Nbre Billet - A
 		$sql = "SELECT count(b.rowid) as nb";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+12 month'));
+		$sql .= " GROUP BY fk_classe";
+
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1444,10 +1448,10 @@ class Bticket extends CommonObject
 		// CA - J
 		$sql = "SELECT sum(b.prix) as ca";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 day'));
+		$sql .= " GROUP BY fk_classe";
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1465,10 +1469,11 @@ class Bticket extends CommonObject
 		// CA - H
 		$sql = "SELECT sum(b.prix) as ca";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+7 day'));
+		$sql .= " GROUP BY fk_classe";
+
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1486,10 +1491,10 @@ class Bticket extends CommonObject
 		// CA - M
 		$sql = "SELECT sum(b.prix) as ca";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 month'));
+		$sql .= " GROUP BY fk_classe";
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1507,10 +1512,11 @@ class Bticket extends CommonObject
 		// CA - A
 		$sql = "SELECT sum(b.prix) as ca";
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-		$sql .= " GROUP BY fk_classe";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+12 month'));
+		$sql .= " GROUP BY fk_classe";
+
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
