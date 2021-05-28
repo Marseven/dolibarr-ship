@@ -227,12 +227,9 @@ print '<div class="fichecenter fichecenterbis">';
 $boxlist .= '<div class="twocolumns">';
 
 $boxlist .= '<div class="firstcolumn fichehalfleft boxhalfleft" id="boxhalfleft">';
-if (!empty($nbworkboardcount))
-{
-	$boxlist .= $boxwork;
-}
 
-$boxlist .= $resultboxes['boxlista'];
+$boxlist .= $boxstat;
+$boxlist .= $resultboxes['boxlistb'];
 
 $boxlist .= '</div>';
 
@@ -283,8 +280,12 @@ if (empty($user->socid) && empty($conf->global->MAIN_DISABLE_GLOBAL_BOXSTATS))
 
 $boxlist .= '<div class="secondcolumn fichehalfright boxhalfright" id="boxhalfright">';
 
-$boxlist .= $boxstat;
-$boxlist .= $resultboxes['boxlistb'];
+if (!empty($nbworkboardcount))
+{
+	$boxlist .= $boxwork;
+}
+
+$boxlist .= $resultboxes['boxlista'];
 
 $boxlist .= '</div>';
 $boxlist .= "\n";
