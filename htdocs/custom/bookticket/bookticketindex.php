@@ -142,9 +142,9 @@ if ($user->rights->bookticket->bticket->read)
 	$includes = array(
 		'users' => DOL_DOCUMENT_ROOT."/user/class/user.class.php",
 		'travel' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/travel.class.php",
-		'classe' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/classe.class.php",
 		'ship' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/ship.class.php",
 		'passenger' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/passenger.class.php",
+		'classe' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/classe.class.php",
 		'city' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/city.class.php",
 		'agence' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/agence.class.php",
 		'bticket' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/bticket.class.php"
@@ -152,24 +152,24 @@ if ($user->rights->bookticket->bticket->read)
 	// Name class containing the method load_state_board for each line
 	$classes = array(
 		'users' => 'User',
-		'bticket' => 'Bticket',
 		'travel' => 'Travel',
 		'ship' => 'Ship',
 		'passenger' => 'Passenger',
+		'classe' => 'Classe',
 		'city' => 'City',
 		'agence' => 'Agence',
-		'classe' => 'Classe'
+		'bticket' => 'Bticket'
 	);
 	// Translation keyword
 	$titres = array(
-		'users' => "Agence",
-		'agence' => "Ticket",
-		'bticket' => 'Bticket',
+		'users' => "User",
 		'travel' => 'Travel',
 		'ship' => 'Ship',
 		'passenger' => 'Passenger',
+		'classe' => 'Classe',
 		'city' => 'City',
-		'classe' => 'Classe'
+		'agence' => "Agence",
+		'bticket' => 'Bticket'
 	);
 	// Dashboard Link lines
 	$links = array(
