@@ -352,7 +352,7 @@ if ($user->rights->bookticket->bticket->read)
 				$bticket_static->id = $objp->rowid;
 				$bticket_static->ref = $objp->ref;
 				$bticket_static->ship = $objp->ship;
-				$bticket_static->passenger = $objp->passenger;
+				$bticket_static->passenger = $objp->nom;
 				$bticket_static->travel = $objp->travel;
 				$bticket_static->classe = $objp->classe;
 				$bticket_static->entity = $objp->entity;
@@ -366,10 +366,10 @@ if ($user->rights->bookticket->bticket->read)
 				print "<td>";
 				print dol_print_date($db->jdate($objp->datem), 'day');
 				print "</td>";
-
 				print '<td>';
 				print $bticket_static->passenger;
 				print "</td>";
+
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
 				print $bticket_static->LibStatut($objp->status, 3, 0);
 				print "</span></td>";
