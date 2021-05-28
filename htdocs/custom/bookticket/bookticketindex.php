@@ -296,7 +296,9 @@ print $boxlist;
 
 print '</div>';
 
-print '<div class="fichetwothirdright"><div class="ficheaddleft">';
+print '</div></div>';
+
+print '<div class="fichetwothirdright">';
 
 
 /*
@@ -390,7 +392,7 @@ if ($user->rights->bookticket->bticket->read)
 
 print '</div>';
 
-print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
+print '</div><div class="fichetwothirdright">';
 
 
 /*
@@ -497,7 +499,7 @@ if ($user->rights->bookticket->travel->read)
 print '</div>';
 
 
-print '</div></div></div>';
+print '</div>';
 
 // End of page
 llxFooter();
