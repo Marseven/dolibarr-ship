@@ -282,11 +282,61 @@ $bticket_static = new Bticket($db);
 $stats = $bticket_static->load_stats();
 var_dump($stats);
 
-$stats1 = $bticket_static->load_stats_by_classe();
-var_dump($stats1);
+// Billets
+print '<div class="div-table-responsive-no-min">';
+print '<table class="noborder centpercent">';
 
-$stats2 = $bticket_static->load_stats_by_agence();
-var_dump($stats2);
+$colnb = 2;
+
+print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$langs->trans("LastModifiedTravel").'</th>';
+print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+print '</tr>';
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletJour");
+print "</td>\n";
+print '<td>';
+print $stats['nbj'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletSemaine");
+print "</td>\n";
+print '<td>';
+print $stats['nbh'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletMois");
+print "</td>\n";
+print '<td>';
+print $stats['nbm'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletAnne");
+print "</td>\n";
+print '<td>';
+print $stats['nba'];
+print "</td>";
+print "</tr>\n";
+
+print "</table>";
+print '</div>';
+print '<br>';
+
+//$stats1 = $bticket_static->load_stats_by_classe();
+//var_dump($stats1);
+
+//$stats2 = $bticket_static->load_stats_by_agence();
+//var_dump($stats2);
 
 print '</div>';
 
@@ -334,7 +384,6 @@ if ($user->rights->bookticket->bticket->read)
 			print '<table class="noborder centpercent">';
 
 			$colnb = 2;
-			if (empty($conf->global->PRODUIT_MULTIPRICES)) $colnb++;
 
 			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
 			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
