@@ -187,8 +187,6 @@ if ($user->rights->bookticket->bticket->read)
 		'bookticket' => "bookticket"
 	);
 
-	print "je suis ici";
-
 	// Loop and displays each line of table
 	$boardloaded = array();
 	foreach ($keys as $val)
@@ -210,7 +208,7 @@ if ($user->rights->bookticket->bticket->read)
 				$board = $boardloaded[$classkeyforcache];
 			}
 
-			$langs->load(empty($langfile[$val]) ? $val : $langfile[$val]);
+			$langs->load('bookticket');
 
 			$text = $langs->trans($titres[$val]);
 			$boxstatItem .= '<a href="'.$links[$val].'" class="boxstatsindicator thumbstat nobold nounderline">';
@@ -219,7 +217,7 @@ if ($user->rights->bookticket->bticket->read)
 			$boxstatItem .= '<span class="boxstatsindicator">'.img_object("", $board->picto, 'class="inline-block"').' '.($board->nb[$val] ? $board->nb[$val] : 0).'</span>';
 			$boxstatItem .= '</div>';
 			$boxstatItem .= '</a>';
-
+			print $boxstat;
 			$boxstatItems[$val] = $boxstatItem;
 		}
 	}
