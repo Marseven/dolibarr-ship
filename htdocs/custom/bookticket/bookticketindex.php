@@ -296,7 +296,7 @@ print $boxlist;
 
 print '</div>';
 
-print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
+print '<div class="fichetwothirdright"><div class="ficheaddleft">';
 
 
 /*
