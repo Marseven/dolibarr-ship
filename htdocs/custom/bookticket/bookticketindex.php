@@ -285,6 +285,9 @@ var_dump($stats);
 $stats1 = $bticket_static->load_stats_by_classe();
 var_dump($stats1);
 
+$stats2 = $bticket_static->load_stats_by_agence();
+var_dump($stats2);
+
 print '</div>';
 
 print '</div></div>';
