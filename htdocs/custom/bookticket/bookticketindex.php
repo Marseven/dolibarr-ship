@@ -390,6 +390,112 @@ if ($user->rights->bookticket->bticket->read)
 
 print '</div>';
 
+print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
+
+
+/*
+ * Latest modified travel
+ */
+if ($user->rights->bookticket->travel->read)
+{
+	$travel_static = new Travel($db);
+
+	$max = 15;
+	$sql = "SELECT t.rowid, t.ref, t.jour, t.heure, t.lieu_depart,  t.lieu_arrive, s.label as ship,";
+	$sql .= " t.entity, t.status,";
+	$sql .= " t.tms as datem";
+	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_travel as t";
+	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+	//$sql .= " WHERE p.entity IN (".getEntity($travel_static->element, 1).")";
+
+	$parameters = array();
+	$sql .= $db->order("t.tms", "DESC");
+	$sql .= $db->plimit($max, 0);
+
+	//print $sql;
+	$result = $db->query($sql);
+	if ($result)
+	{
+		$num = $db->num_rows($result);
+
+		$i = 0;
+
+		if ($num > 0)
+		{
+			$transRecordedType = $langs->trans("LastModifiedTravel", $max);
+			$transRecordedType = $langs->trans("LastRecordedTravel", $max);
+
+			print '<div class="div-table-responsive-no-min">';
+			print '<table class="noborder centpercent">';
+
+			$colnb = 2;
+			if (empty($conf->global->PRODUIT_MULTIPRICES)) $colnb++;
+
+			print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$transRecordedType.'</th>';
+			print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/travel_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+			print '</tr>';
+
+			while ($i < $num)
+			{
+				$objp = $db->fetch_object($result);
+
+				$travel_static->id = $objp->rowid;
+				$travel_static->ref = $objp->ref;
+				$travel_static->jour_heure = $objp->label;
+				$travel_static->lieu_depart = $objp->labelshort;
+				$travel_static->lieu_arrive = $objp->nbre_place;
+				$travel_static->ship = $objp->ship;
+				$travel_static->entity = $objp->entity;
+
+				//Multilangs
+				if (!empty($conf->global->MAIN_MULTILANGS))
+				{
+					$sql = "SELECT label";
+					$sql .= " FROM ".MAIN_DB_PREFIX."travel_lang";
+					$sql .= " WHERE fk_product=".$objp->rowid;
+					$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
+
+					$resultd = $db->query($sql);
+					if ($resultd)
+					{
+						$objtp = $db->fetch_object($resultd);
+						if ($objtp && $objtp->label != '') $objp->label = $objtp->label;
+					}
+				}
+
+
+				print '<tr class="oddeven">';
+				print '<td class="nowrap">';
+				print $travel_static->getNomUrl(1, '', 16);
+				print "</td>\n";
+				print '<td>'.dol_trunc($objp->ship, 32).'</td>';
+				print "<td>";
+				print dol_print_date($db->jdate($objp->jour_heure), 'day');
+				print "</td>";
+				print '<td>';
+				print $objp->ship;
+				print "</td>";
+
+				print '<td class="right nowrap width25"><span class="statusrefbuy">';
+				print $travel_static->LibStatut($objp->status, 3, 1);
+				print "</span></td>";
+				print "</tr>\n";
+				$i++;
+			}
+
+			$db->free($result);
+
+			print "</table>";
+			print '</div>';
+			print '<br>';
+		}
+	} else {
+		dol_print_error($db);
+	}
+}
+
+print '</div>';
+
 
 print '</div></div></div>';
 
