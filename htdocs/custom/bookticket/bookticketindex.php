@@ -392,7 +392,7 @@ if ($user->rights->bookticket->bticket->read)
 
 print '</div>';
 
-print '</div><div class="fichetwothirdright">';
+print '<div class="fichetwothirdright">';
 
 
 /*
@@ -498,8 +498,6 @@ if ($user->rights->bookticket->travel->read)
 
 print '</div>';
 
-
-print '</div>';
 
 // End of page
 llxFooter();
