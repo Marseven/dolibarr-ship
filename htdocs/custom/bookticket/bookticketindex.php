@@ -308,7 +308,7 @@ if ($user->rights->bookticket->bticket->read)
 
 	$max = 15;
 	$sql = "SELECT t.rowid, t.ref, s.label as ship, p.nom as nom,  c.label as classe, tr.ref as travel,";
-	$sql .= " t.entity,";
+	$sql .= " t.entity, t.status";
 	$sql .= " t.tms as datem";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as t";
 	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
@@ -367,11 +367,11 @@ if ($user->rights->bookticket->bticket->read)
 				print dol_print_date($db->jdate($objp->datem), 'day');
 				print "</td>";
 
-				print '<td class="right nowrap width25"><span class="statusrefsell">';
-				print $bticket_static->LibStatut($objp->passenger, 3, 0);
-				print "</span></td>";
+				print '<td>';
+				print $bticket_static->passenger;
+				print "</td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $bticket_static->LibStatut($objp->classe, 3, 1);
+				print $bticket_static->LibStatut($objp->status, 3, 0);
 				print "</span></td>";
 				print "</tr>\n";
 				$i++;
