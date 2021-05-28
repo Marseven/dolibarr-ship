@@ -217,7 +217,7 @@ if ($user->rights->bookticket->bticket->read)
 
 print '<div class="clearboth"></div>';
 
-print '<div class="fichecenter fichecenterbis">';
+print '<div class="fichethirdleft fichecenterbis">';
 
 
 /*
@@ -296,7 +296,7 @@ print $boxlist;
 
 print '</div>';
 
-print '</div></div>';
+print '</div></div></div>';
 
 print '<div class="fichetwothirdright">';
 
