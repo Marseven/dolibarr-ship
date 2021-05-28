@@ -1362,7 +1362,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 day'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 
 		$resql = $this->db->query($sql);
@@ -1384,7 +1384,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+7 day'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 
 		$resql = $this->db->query($sql);
@@ -1406,7 +1406,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 month'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 
 		$resql = $this->db->query($sql);
@@ -1428,7 +1428,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+12 month'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 
 		$resql = $this->db->query($sql);
@@ -1451,7 +1451,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 day'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1472,7 +1472,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+7 day'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 
 		$resql = $this->db->query($sql);
@@ -1494,7 +1494,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+1 month'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1515,7 +1515,7 @@ class Bticket extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
 		$sql .= " AND b.date_creation < ".date('Y-m-d', strtotime('+12 month'));
-		$sql .= " GROUP BY fk_classe";
+		$sql .= " GROUP BY b.fk_classe";
 
 
 		$resql = $this->db->query($sql);
