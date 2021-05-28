@@ -270,7 +270,7 @@ if (empty($user->socid) && empty($conf->global->MAIN_DISABLE_GLOBAL_BOXSTATS))
 
 $boxlist .= $boxstat;
 $boxlist .= $resultboxes['boxlistb'];
-$boxlist .= "\n"
+$boxlist .= "\n";
 print $boxlist;
 
 print '</div>';
