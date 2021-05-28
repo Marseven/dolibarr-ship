@@ -1110,7 +1110,7 @@ class Agence extends CommonObject
 
          $sql = "SELECT count(a.rowid) as nb";
          $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_agence as a";
-         $sql .= " WHERE a.status >= 0";
+         $sql .= " WHERE a.status > 0";
          $sql .= " AND a.entity IN (".getEntity('agence').")";
 
          $resql = $this->db->query($sql);

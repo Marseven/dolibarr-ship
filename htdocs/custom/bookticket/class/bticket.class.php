@@ -1163,7 +1163,7 @@ class Bticket extends CommonObject
 
          $sql = "SELECT count(b.rowid) as nb";
          $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
-         $sql .= " WHERE b.status >= 0";
+         $sql .= " WHERE b.status > 0";
          $sql .= " AND b.entity IN (".getEntity('bticket').")";
 
          $resql = $this->db->query($sql);

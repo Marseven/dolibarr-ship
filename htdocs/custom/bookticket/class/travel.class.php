@@ -1153,7 +1153,7 @@ class Travel extends CommonObject
 
          $sql = "SELECT count(t.rowid) as nb";
          $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_travel as t";
-         $sql .= " WHERE t.status >= 0";
+         $sql .= " WHERE t.status > 0";
          $sql .= " AND t.entity IN (".getEntity('travel').")";
 
          $resql = $this->db->query($sql);

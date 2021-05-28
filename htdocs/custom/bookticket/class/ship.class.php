@@ -1136,7 +1136,7 @@ class Ship extends CommonObject
 
          $sql = "SELECT count(s.rowid) as nb";
          $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
-         $sql .= " WHERE s.status >= 0";
+         $sql .= " WHERE s.status > 0";
          $sql .= " AND s.entity IN (".getEntity('ship').")";
 
          $resql = $this->db->query($sql);

@@ -1103,7 +1103,7 @@ class City extends CommonObject
 
          $sql = "SELECT count(c.rowid) as nb";
          $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_city as c";
-         $sql .= " WHERE c.status >= 0";
+         $sql .= " WHERE c.status > 0";
          $sql .= " AND c.entity IN (".getEntity('city').")";
 
          $resql = $this->db->query($sql);

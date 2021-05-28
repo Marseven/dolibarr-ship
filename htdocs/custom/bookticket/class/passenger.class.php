@@ -1161,7 +1161,7 @@ class Passenger extends CommonObject
 
          $sql = "SELECT count(p.rowid) as nb";
          $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_passenger as p";
-         $sql .= " WHERE p.status >= 0";
+         $sql .= " WHERE p.status > 0";
          $sql .= " AND p.entity IN (".getEntity('passenger').")";
 
          $resql = $this->db->query($sql);
