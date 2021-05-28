@@ -280,7 +280,6 @@ print '<div class="fichecenter fichecenterbis">';
 $bticket_static = new Bticket($db);
 
 $stats = $bticket_static->load_stats();
-var_dump($stats);
 
 // Billets
 print '<div class="div-table-responsive-no-min">';
@@ -288,8 +287,8 @@ print '<table class="noborder centpercent">';
 
 $colnb = 2;
 
-print '<tr class="liste_titre"><th colspan="'.$colnb.'">'.$langs->trans("LastModifiedTravel").'</th>';
-print '<th class="right" colspan="3"><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+print '<tr class="liste_titre"><th>'.$langs->trans("LastModifiedTravel").'</th>';
+print '<th class="right" ><a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
 print '</tr>';
 
 print '<tr class="oddeven">';
