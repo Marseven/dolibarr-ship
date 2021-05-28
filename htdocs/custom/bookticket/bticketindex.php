@@ -122,16 +122,10 @@ if ($user->rights->bookticket->bticket->read)
 		print '<tr><td class="center nopaddingleftimp nopaddingrightimp">';
 
 		$total = 10;
-		$dataval = array();
-		$datalabels = array();
-		$i = 0;
 
-		//$total = $SommeA + $SommeB + $SommeC;
 		$dataseries = [];
 
-		$dataseries = array(array(0=>'labelxA',1=>10), array('labelxB',10));
-		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsOnPurchase"), 20);
-		//$dataseries[] = array($langs->transnoentitiesnoconv("ProductsNotOnSell"), 30);
+		$dataseries = [["Bticket1", 10, 10], ["Bticket2", 20, 20]];
 
 		include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 		$dolgraph = new DolGraph();
@@ -141,7 +135,7 @@ if ($user->rights->bookticket->bticket->read)
 		$dolgraph->SetType(array('pie'));
 		$dolgraph->setHeight('200');
 		$dolgraph->draw('idgraphstatus');
-		var_dump($dolgraph);
+		//var_dump($dolgraph);
 		print $dolgraph->show($total ? 0 : 1);
 
 		print '</td></tr>';
