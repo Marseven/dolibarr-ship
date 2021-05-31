@@ -575,11 +575,11 @@ if ($action != 'create' && $action != 'edit')
 	$parameters = array();
 
 
-		/*if ($usercancreate)
+		if ($usercancreate)
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
-			if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
+			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
 			{
 				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
 				{
@@ -587,8 +587,8 @@ if ($action != 'create' && $action != 'edit')
 				} else {
 					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
 				}
-			}
-		}*/
+			}*/
+		}
 
 		if ($usercancreate && $object->status == City::STATUS_DRAFT)		// If draft
 		{
