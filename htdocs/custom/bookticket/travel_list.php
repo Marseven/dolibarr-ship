@@ -389,7 +389,7 @@ if ($resql)
 		// Jour
 		if (!empty($arrayfields['t.jour']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->jour).'">'.dol_print_date($obj->jour, 'day', 'tzuser');.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->jour).'">'.dol_print_date($obj->jour, 'day', 'tzuser').'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
