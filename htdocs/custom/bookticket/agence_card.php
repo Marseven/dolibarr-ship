@@ -170,7 +170,7 @@ if (empty($reshook))
 
 				$object->label                  = GETPOST('label', $label_security_check);
 				$object->labelshort             = GETPOST('labelshort');
-				$object->ville             = GETPOST('ville');
+				$object->ville             		= GETPOST('ville');
 
 				if (!$error && $object->check())
 				{
@@ -197,7 +197,7 @@ if (empty($reshook))
 		$object->fetch($id);
 
 		// If status is waiting approval and approver is also user
-		if ($object->status == Agence::STATUS_DRAFT && $user->id == $object->fk_valideur)
+		if ($object->status == Agence::STATUS_DRAFT)
 		{
 			$object->status = Agence::STATUS_APPROVED;
 

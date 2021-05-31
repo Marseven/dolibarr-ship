@@ -328,23 +328,6 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 
-		/* Multilangs
-		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
-		{
-			$sql = "SELECT label";
-			$sql .= " FROM ".MAIN_DB_PREFIX."product_lang";
-			$sql .= " WHERE fk_product=".$obj->rowid;
-			$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
-			$sql .= " LIMIT 1";
-
-			$result = $db->query($sql);
-			if ($result)
-			{
-				$objtp = $db->fetch_object($result);
-				if (!empty($objtp->label)) $obj->label = $objtp->label;
-			}
-		}*/
-
 		$agence_static->id = $obj->rowid;
 		$agence_static->ref = $obj->ref;
 		$agence_static->label = $obj->label;
@@ -354,7 +337,7 @@ if ($resql)
 		// Label
 		if (!empty($arrayfields['a.label']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">'.$obj->label.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'"><a href="'.dol_buildpath('/bookticket/agence_card.php', 1).'?id='.$obj->rowid.'">'.$obj->label.'</a></td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
