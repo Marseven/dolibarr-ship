@@ -161,12 +161,13 @@ if (empty($reshook))
 	if ($action == 'update' && $usercancreate)
 	{
 		$object->fetch($id);
-		var_dump($object);
-		die;
+
 		if (GETPOST('cancel', 'alpha'))
 		{
 			$action = '';
 		} else {
+			var_dump($object->rowid > 0);
+			die;
 			if ($object->rowid > 0)
 			{
 				$object->oldcopy = clone $object;
