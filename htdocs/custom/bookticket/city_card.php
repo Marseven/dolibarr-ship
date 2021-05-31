@@ -547,7 +547,7 @@ $formconfirm = '';
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
 	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
 {
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeleteCity"), $langs->trans("ConfirmDeleteCity"), "confirm_delete", '', 0, "action-delete");
+	$formconfirm = $form->formconfirm("city_card.php?id=".$object->id, $langs->trans("DeleteCity"), $langs->trans("ConfirmDeleteCity"), "confirm_delete", '', 0, "action-delete");
 }
 
 // Clone confirmation
@@ -558,7 +558,6 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 	$formquestionclone = array(
 		'text' => $langs->trans("ConfirmClone"),
 		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentCity"), 'value' => 1),
-		array('type' => 'checkbox', 'name' => 'clone_categories', 'label' => $langs->trans("CloneCategoriesCity"), 'value' => 1),
 	);
 
 
