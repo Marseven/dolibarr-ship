@@ -179,8 +179,6 @@ if (empty($reshook))
 
 					if ($object->update($user) > 0)
 					{
-						var_dump($object->id > 0);
-						die;
 						$action = 'view';
 					} else {
 						if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
