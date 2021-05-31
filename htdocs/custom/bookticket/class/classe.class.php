@@ -1234,7 +1234,6 @@ class Classe extends CommonObject
 		if (!$resql) {
 			$error++; $this->errors[] = "Error ".$this->db->lasterror();
 		}
-		var_dump($error); die;
 
 		// Commit or rollback
 		if ($error)
