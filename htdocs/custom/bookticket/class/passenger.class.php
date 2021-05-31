@@ -535,9 +535,124 @@ class Passenger extends CommonObject
 	 * @param bool $notrigger  false=launch triggers after, true=disable triggers
 	 * @return int             <0 if KO, >0 if OK
 	 */
-	public function delete(User $user, $notrigger = false)
+	public function delete(User $user, $notrigger = false, $forcechilddeletion = 0)
 	{
-		return $this->deleteCommon($user, $notrigger);
+
+		dol_syslog(get_class($this)."::deleteCommon delete", LOG_DEBUG);
+
+		$error = 0;
+
+		$this->db->begin();
+
+		if ($forcechilddeletion)	// Force also delete of childtables that should lock deletion in standard case when option force is off
+		{
+
+			foreach ($this->childtables as $table)
+			{
+				$sql = 'DELETE FROM '.MAIN_DB_PREFIX.$table.' WHERE '.$this->fk_element.' = '.$this->id;
+				$resql = $this->db->query($sql);
+				if (!$resql)
+				{
+					$this->error = $this->db->lasterror();
+					$this->errors[] = $this->error;
+					$this->db->rollback();
+					return -1;
+				}
+			}
+		} elseif (!empty($this->fk_element) && !empty($this->childtables))	// If object has childs linked with a foreign key field, we check all child tables.
+		{
+
+			$objectisused = $this->isObjectUsed($this->id);
+			if (!empty($objectisused))
+			{
+				dol_syslog(get_class($this)."::deleteCommon Can't delete record as it has some child", LOG_WARNING);
+				$this->error = 'ErrorRecordHasChildren';
+				$this->errors[] = $this->error;
+				$this->db->rollback();
+				return 0;
+			}
+		}
+
+		// Delete cascade first
+		if (is_array($this->childtablesoncascade) && !empty($this->childtablesoncascade)) {
+			foreach ($this->childtablesoncascade as $table)
+			{
+				$deleteFromObject = explode(':', $table);
+				if (count($deleteFromObject) >= 2) {
+					$className = str_replace('@', '', $deleteFromObject[0]);
+					$filePath = $deleteFromObject[1];
+					$columnName = $deleteFromObject[2];
+					if (dol_include_once($filePath)) {
+						$childObject = new $className($this->db);
+						if (method_exists($childObject, 'deleteByParentField')) {
+							$result = $childObject->deleteByParentField($this->id, $columnName);
+							if ($result < 0) {
+								$error++;
+								$this->errors[] = $childObject->error;
+								break;
+							}
+						} else {
+							$error++;
+							$this->errors[] = "You defined a cascade delete on an object $childObject but there is no method deleteByParentField for it";
+							break;
+						}
+					} else {
+						$error++;
+						$this->errors[] = 'Cannot include child class file '.$filePath;
+						break;
+					}
+				} else {
+					// Delete record in child table
+					$sql = 'DELETE FROM '.MAIN_DB_PREFIX.$table.' WHERE '.$this->fk_element.' = '.$this->id;
+
+					$resql = $this->db->query($sql);
+					if (!$resql) {
+						$error++;
+						$this->error = $this->db->lasterror();
+						$this->errors[] = $this->error;
+						break;
+					}
+				}
+			}
+		}
+
+		if (!$error) {
+			if (!$notrigger) {
+				// Call triggers
+				$result = $this->call_trigger(strtoupper(get_class($this)).'_DELETE', $user);
+				if ($result < 0) { $error++; } // Do also here what you must do to rollback action if trigger fail
+				// End call triggers
+			}
+		}
+
+		// Delete llx_ecm_files
+		if (!$error) {
+			$res = $this->deleteEcmFiles(1); // Deleting files physically is done later with the dol_delete_dir_recursive
+			if (!$res) {
+				$error++;
+			}
+		}
+
+		if (!$error)
+		{
+			$sql = 'DELETE FROM '.MAIN_DB_PREFIX.$this->table_element.' WHERE rowid='.$this->id;
+
+			$res = $this->db->query($sql);
+			if ($res === false) {
+				$error++;
+				$this->errors[] = $this->db->lasterror();
+			}
+		}
+
+		// Commit or rollback
+		if ($error) {
+			$this->db->rollback();
+			return -1;
+		} else {
+			$this->db->commit();
+			return 1;
+		}
+		//return $this->deleteCommon($user, $notrigger);
 		//return $this->deleteCommon($user, $notrigger, 1);
 	}
 
