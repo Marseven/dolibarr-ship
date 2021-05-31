@@ -289,7 +289,7 @@ if($action == 'valid' && $usercancreate){
 	}
 }
 
-// Action clone object
+/* Action clone object
 if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
 if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 {
@@ -351,11 +351,11 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 			dol_print_error($db, $object->error);
 		}
 	}
-}
+}*/
 
 // Delete a travel
-if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
+//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
+if ($action == 'confirm_delete' && $usercandelete)
 {
 	$result = $object->delete($user);
 
@@ -849,7 +849,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 }
 
 
-$formconfirm = '';
+/*$formconfirm = '';
 
 // Confirm delete travel
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
@@ -873,7 +873,7 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 }
 ;
 // Print form confirm
-print $formconfirm;
+print $formconfirm;*/
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -891,7 +891,7 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
-			if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
+			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
 			{
 				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
 				{
@@ -899,7 +899,7 @@ if ($action != 'create' && $action != 'edit')
 				} else {
 					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
 				}
-			}
+			}*/
 		}
 
 		if ($usercancreate && $object->status == Travel::STATUS_DRAFT)		// If draft
@@ -921,7 +921,7 @@ if ($action != 'create' && $action != 'edit')
 				{
 					print '<span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span>'."\n";
 				} else {
-					print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+					print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer ce voyage ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 				}
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("TravelIsUsed").'">'.$langs->trans("Delete").'</a>';

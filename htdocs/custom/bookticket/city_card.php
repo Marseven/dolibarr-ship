@@ -598,7 +598,7 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
 			{
-				print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cette ville\');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+				print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cette ville ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("CityIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}

@@ -40,7 +40,9 @@ BookTicketAboutPage = Page à propos de BookTicket
 #
 # City
 #
-MyPageName = Nom de ma page
+City = Ville
+Citys = Villes
+NewCity = Nouvelle Ville
 
 #
 # Agence

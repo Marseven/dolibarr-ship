@@ -559,7 +559,7 @@ if (empty($reshook))
 		}
 	}
 
-	// Action clone object
+	/* Action clone object
 	if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
 	if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 	{
@@ -622,11 +622,11 @@ if (empty($reshook))
 				dol_print_error($db, $object->error);
 			}
 		}
-	}
+	}*/
 
 	// Delete a bticket
-	if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
+	//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
+	if ($action == 'delete' && $usercandelete)
 	{
 		$result = $object->delete($user);
 
@@ -1436,7 +1436,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 $tmpcode = '';
 
-$formconfirm = '';
+/*$formconfirm = '';
 
 // Confirm delete bticket
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
@@ -1462,7 +1462,7 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 
 
 // Print form confirm
-print $formconfirm;
+print $formconfirm;*/
 
 // Si validation de la demande
 if ($action == 'valid')
@@ -1487,7 +1487,7 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
-			if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
+			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
 			{
 				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
 				{
@@ -1495,10 +1495,10 @@ if ($action != 'create' && $action != 'edit')
 				} else {
 					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
 				}
-			}
+			}*/
 		}
 
-		if ($usercancreate && ($object->status == Bticket::STATUS_DRAFT || $object->status == Bticket::STATUS_APPROVED))		// If draft
+		if ($usercancreate && $object->status == Bticket::STATUS_APPROVED)		// If draft
 		{
 			print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
@@ -1520,7 +1520,7 @@ if ($action != 'create' && $action != 'edit')
 				{
 					print '<span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span>'."\n";
 				} else {
-					print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+					print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cet Billet de voyage ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 				}
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("TicketIsUsed").'">'.$langs->trans("Delete").'</a>';
