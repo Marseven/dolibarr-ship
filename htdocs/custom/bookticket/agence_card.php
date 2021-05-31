@@ -612,12 +612,9 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
 			{
-				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
-				{
-					print '<span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span>'."\n";
-				} else {
-					print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cette agence ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
-				}
+
+				print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cette agence ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("AgenceIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}
