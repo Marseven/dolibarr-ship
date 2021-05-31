@@ -8130,20 +8130,19 @@ abstract class CommonObject
 				$error++;
 			}
 		}
-		var_dump(!empty($this->isextrafieldmanaged));
+		
 		if (!$error && !empty($this->isextrafieldmanaged))
 		{
 			$result = $this->deleteExtraFields();
 			if ($result < 0) { $error++; }
 		}
 
-		var_dump($error);
 		if (!$error)
 		{
 			$sql = 'DELETE FROM '.MAIN_DB_PREFIX.$this->table_element.' WHERE rowid='.$this->id;
 
 			$res = $this->db->query($sql);
-			var_dump($res);
+			
 			if ($res === false) {
 				$error++;
 				$this->errors[] = $this->db->lasterror();
