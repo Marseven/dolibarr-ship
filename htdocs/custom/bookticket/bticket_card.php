@@ -478,7 +478,7 @@ if (empty($reshook))
 
 				if (!$error && $object->check())
 				{
-					if ($object->update($object->id, $user) > 0 && $object_passenger->update($object_passenger->id, $user) > 0)
+					if ($object->update($user) > 0 && $object_passenger->update($user) > 0)
 					{
 						$action = 'view';
 					} else {
