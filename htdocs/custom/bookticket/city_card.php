@@ -206,8 +206,6 @@ if (empty($reshook))
 		{
 			$object->status = City::STATUS_APPROVED;
 
-			$db->begin();
-
 			$verif = $object->approve($user);
 			if ($verif <= 0)
 			{
@@ -217,12 +215,9 @@ if (empty($reshook))
 
 			if (!$error)
 			{
-				$db->commit();
-
 			   	header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
 			   	exit;
 			} else {
-				$db->rollback();
 				$action = '';
 			}
 		}
