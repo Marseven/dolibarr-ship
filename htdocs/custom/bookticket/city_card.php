@@ -202,7 +202,7 @@ if (empty($reshook))
 		$object->fetch($id);
 
 		// If status is waiting approval and approver is also user
-		if ($object->status == City::STATUS_DRAFT && $user->id == $object->fk_valideur)
+		if ($object->status == City::STATUS_DRAFT)
 		{
 			$object->status = City::STATUS_APPROVED;
 
