@@ -8113,7 +8113,7 @@ abstract class CommonObject
 				}
 			}
 		}
-		var_dump($error);
+		
 		if (!$error) {
 			if (!$notrigger) {
 				// Call triggers
@@ -8122,7 +8122,7 @@ abstract class CommonObject
 				// End call triggers
 			}
 		}
-		var_dump($error);
+		
 		// Delete llx_ecm_files
 		if (!$error) {
 			$res = $this->deleteEcmFiles(1); // Deleting files physically is done later with the dol_delete_dir_recursive
@@ -8130,7 +8130,7 @@ abstract class CommonObject
 				$error++;
 			}
 		}
-		var_dump($error);
+		var_dump(!empty($this->isextrafieldmanaged));
 		if (!$error && !empty($this->isextrafieldmanaged))
 		{
 			$result = $this->deleteExtraFields();
