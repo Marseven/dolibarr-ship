@@ -75,6 +75,12 @@ class Travel extends CommonObject
 	 * Approved
 	 */
 	const STATUS_APPROVED = 2;
+
+	/**
+	 * Approved
+	 */
+	const STATUS_LOCK = 5;
+
 	/**
 	 * Canceled
 	 */
@@ -1119,7 +1125,7 @@ class Travel extends CommonObject
 
 		// Update request
 		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_travel SET";
-		$sql .= " status = '".self::STATUS_APPROVED."',";
+		$sql .= " status = '".self::STATUS_APPROVED."'";
 		$sql .= " WHERE rowid= ".$this->id;
 
 		$this->db->begin();

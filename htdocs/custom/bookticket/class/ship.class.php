@@ -1102,7 +1102,7 @@ class Ship extends CommonObject
 
 		// Update request
 		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_ship SET";
-		$sql .= " status = '".self::STATUS_APPROVED."',";
+		$sql .= " status = '".self::STATUS_APPROVED."'";
 		$sql .= " WHERE rowid= ".$this->id;
 
 		$this->db->begin();

@@ -1129,7 +1129,7 @@ class Bticket extends CommonObject
 
 		// Update request
 		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_bticket SET";
-		$sql .= " status = '".self::STATUS_APPROVED."',";
+		$sql .= " status = '".self::STATUS_APPROVED."'";
 		$sql .= " WHERE rowid= ".$this->id;
 
 		$this->db->begin();

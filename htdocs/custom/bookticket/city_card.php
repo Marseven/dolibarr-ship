@@ -224,7 +224,7 @@ if (empty($reshook))
 		}
 	}
 
-	// Action clone object
+	/* Action clone object
 	if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
 	if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 	{
@@ -281,11 +281,11 @@ if (empty($reshook))
 				dol_print_error($db, $object->error);
 			}
 		}
-	}
+	}*/
 
 	// Delete a city
-	if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_delete' && $confirm == 'yes' && $usercandelete)
+	//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
+	if ($action == 'delete' && $usercandelete)
 	{
 		$result = $object->delete($user);
 
@@ -539,7 +539,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 $formconfirm = '';
 
-// Confirm delete city
+/* Confirm delete city
 if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
 	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
 {
@@ -561,7 +561,7 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 }
 ;
 // Print form confirm
-print $formconfirm;
+print $formconfirm;*/
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -575,7 +575,7 @@ if ($action != 'create' && $action != 'edit')
 	$parameters = array();
 
 
-		if ($usercancreate)
+		/*if ($usercancreate)
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
@@ -588,7 +588,7 @@ if ($action != 'create' && $action != 'edit')
 					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
 				}
 			}
-		}
+		}*/
 
 		if ($usercancreate && $object->status == City::STATUS_DRAFT)		// If draft
 		{
