@@ -173,7 +173,8 @@ if (empty($reshook))
 
 				$object->label                  = GETPOST('label', $label_security_check);
 				$object->labelshort             = GETPOST('labelshort');
-
+				var_dump($object->id > 0);
+				die;
 				if (!$error && $object->check())
 				{
 					if ($object->update($object->id, $user) > 0)
@@ -193,8 +194,7 @@ if (empty($reshook))
 		}
 	}
 
-	var_dump($object->id > 0);
-	die;
+
 
 	//Approve
 	if($action == 'valid' && $usercancreate){
