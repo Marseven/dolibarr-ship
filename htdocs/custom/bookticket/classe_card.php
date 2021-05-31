@@ -222,7 +222,7 @@ if($action == 'valid' && $usercancreate){
 		$db->begin();
 
 		$verif = $object->approve($user);
-		var_dump($verif); die;
+
 		if ($verif <= 0)
 		{
 			setEventMessages($object->error, $object->errors, 'errors');
