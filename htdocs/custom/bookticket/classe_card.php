@@ -575,7 +575,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('PrixStandard'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->prix_standard;
+				print $object->prix_standard." FCFA";
 				print '</td>';
 				print '</tr>';
 
@@ -586,7 +586,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('PrixEnfant'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->prix_enfant;
+				print $object->prix_enfant." FCFA";
 				print '</td>';
 				print '</tr>';
 
@@ -597,7 +597,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('PrixEnfStand'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->prix_enf_stand;
+				print $object->prix_enf_stand." FCFA";
 				print '</td>';
 				print '</tr>';
 
@@ -608,7 +608,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('KiloBagage'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->kilo_bagage;
+				print $object->kilo_bagage." Kg";
 				print '</td>';
 				print '</tr>';
 
