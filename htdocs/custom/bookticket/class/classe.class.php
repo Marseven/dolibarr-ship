@@ -1231,10 +1231,10 @@ class Classe extends CommonObject
 
 		$this->db->begin();
 		$resql = $this->db->query($sql);
-		var_dump($this->db->lasterror()); die;
 		if (!$resql) {
 			$error++; $this->errors[] = "Error ".$this->db->lasterror();
 		}
+		var_dump($error); die;
 
 		// Commit or rollback
 		if ($error)
