@@ -907,10 +907,9 @@ if ($action != 'create' && $action != 'edit')
 		if ($usercancreate && $object->status == Travel::STATUS_DRAFT)		// If draft
 		{
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
-			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
 
-		if ($usercancreate &&  $object->status == Bticket::STATUS_APPROVED)		// If draft
+		if ($usercancreate &&  $object->status == Travel::STATUS_APPROVED)		// If draft
 		{
 			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
@@ -919,7 +918,6 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
 			{
-
 				print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer ce voyage ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 
 			} else {
