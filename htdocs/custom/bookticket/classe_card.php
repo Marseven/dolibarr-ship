@@ -215,13 +215,14 @@ if($action == 'valid' && $usercancreate){
 	$object->fetch($id);
 
 	// If status is waiting approval and approver is also user
-	if ($object->status == Classe::STATUS_DRAFT && $user->id == $object->fk_valideur)
+	if ($object->status == Classe::STATUS_DRAFT)
 	{
 		$object->status = Classe::STATUS_APPROVED;
 
 		$db->begin();
 
 		$verif = $object->approve($user);
+
 		if ($verif <= 0)
 		{
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -231,7 +232,6 @@ if($action == 'valid' && $usercancreate){
 		if (!$error)
 		{
 			$db->commit();
-
 			   header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
 			   exit;
 		} else {
@@ -724,12 +724,7 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
 			{
-				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
-				{
-					print '<span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span>'."\n";
-				} else {
-					print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cette classe ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
-				}
+				print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cette classe ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("ClasseIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}

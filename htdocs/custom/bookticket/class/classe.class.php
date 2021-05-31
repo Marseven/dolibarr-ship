@@ -1230,7 +1230,7 @@ class Classe extends CommonObject
 		$sql .= " WHERE rowid= ".$this->id;
 
 		$this->db->begin();
-
+		var_dump($this->db->lasterror());
 		$resql = $this->db->query($sql);
 		if (!$resql) {
 			$error++; $this->errors[] = "Error ".$this->db->lasterror();
