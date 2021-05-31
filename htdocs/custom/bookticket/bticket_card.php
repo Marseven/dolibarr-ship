@@ -121,6 +121,7 @@ $sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre
 $sql_ship .= " s.entity";
 $sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
 $sql_ship .= ' WHERE s.entity IN ('.getEntity('ship').')';
+$sql_ship .= ' AND s.status = 2';
 
 $resql_ship =$db->query($sql_ship);
 if ($resql_ship)
@@ -146,6 +147,7 @@ $sql_classe = 'SELECT c.rowid, c.label, c.labelshort, c.entity,';
 $sql_classe .= ' c.date_creation, c.tms as date_update';
 $sql_classe .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
 $sql_classe .= ' WHERE c.entity IN ('.getEntity('classe').')';
+$sql_classe .= ' AND c.status = 2';
 $resql_classe =$db->query($sql_classe);
 if ($resql_classe)
 {
@@ -170,6 +172,7 @@ $sql_agence = 'SELECT a.rowid, a.label, a.labelshort, a.ville, a.entity,';
 $sql_agence .= ' a.date_creation, a.tms as date_update';
 $sql_agence .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence as a';
 $sql_agence .= ' WHERE a.entity IN ('.getEntity('agence').')';
+$sql_agence .= ' AND a.status = 2';
 $resql_agence =$db->query($sql_agence);
 if ($resql_agence)
 {
@@ -194,6 +197,7 @@ $sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.entity,';
 $sql_travel .= ' t.date_creation, t.tms as date_update';
 $sql_travel .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
 $sql_travel .= ' WHERE t.entity IN ('.getEntity('travel').')';
+$sql_travel .= ' AND t.status = 2';
 $resql_travel =$db->query($sql_travel);
 if ($resql_travel)
 {

@@ -113,6 +113,7 @@ $sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre
 $sql_ship .= " s.entity";
 $sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
 $sql_ship .= ' WHERE s.entity IN ('.getEntity('ship').')';
+$sql_ship .= ' AND s.status = 2';
 
 $resql_ship =$db->query($sql_ship);
 if ($resql_ship)
@@ -138,6 +139,7 @@ $sql_city = 'SELECT c.rowid, c.label, c.labelshort, c.entity,';
 $sql_city .= ' c.date_creation, c.tms as date_update';
 $sql_city .= ' FROM '.MAIN_DB_PREFIX.'bookticket_city as c';
 $sql_city .= ' WHERE c.entity IN ('.getEntity('city').')';
+$sql_city .= ' AND c.status = 2';
 $resql_city =$db->query($sql_city);
 if ($resql_city)
 {
@@ -263,7 +265,7 @@ if($action == 'valid' && $usercancreate){
 	$object->fetch($id);
 
 	// If status is waiting approval and approver is also user
-	if ($object->status == Travel::STATUS_DRAFT && $user->id == $object->fk_valideur)
+	if ($object->status == Travel::STATUS_DRAFT)
 	{
 		$object->status = Travel::STATUS_APPROVED;
 
@@ -355,7 +357,7 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 
 // Delete a travel
 //if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-if ($action == 'confirm_delete' && $usercandelete)
+if ($action == 'delete' && $usercandelete)
 {
 	$result = $object->delete($user);
 
@@ -917,12 +919,9 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_delete) || $object->no_button_delete <> 1)
 			{
-				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
-				{
-					print '<span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span>'."\n";
-				} else {
-					print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer ce voyage ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
-				}
+
+				print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer ce voyage ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("TravelIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}
