@@ -8044,7 +8044,7 @@ abstract class CommonObject
 
 		if ($forcechilddeletion)	// Force also delete of childtables that should lock deletion in standard case when option force is off
 		{
-			die('ici');
+			
 			foreach ($this->childtables as $table)
 			{
 				$sql = 'DELETE FROM '.MAIN_DB_PREFIX.$table.' WHERE '.$this->fk_element.' = '.$this->id;
@@ -8059,7 +8059,7 @@ abstract class CommonObject
 			}
 		} elseif (!empty($this->fk_element) && !empty($this->childtables))	// If object has childs linked with a foreign key field, we check all child tables.
 		{
-			die;
+			
 			$objectisused = $this->isObjectUsed($this->id);
 			if (!empty($objectisused))
 			{
@@ -8072,7 +8072,6 @@ abstract class CommonObject
 		}
 
 		// Delete cascade first
-		var_dump(is_array($this->childtablesoncascade) && !empty($this->childtablesoncascade));
 		if (is_array($this->childtablesoncascade) && !empty($this->childtablesoncascade)) {
 			foreach ($this->childtablesoncascade as $table)
 			{
@@ -8123,7 +8122,7 @@ abstract class CommonObject
 				// End call triggers
 			}
 		}
-
+		var_dump($error);
 		// Delete llx_ecm_files
 		if (!$error) {
 			$res = $this->deleteEcmFiles(1); // Deleting files physically is done later with the dol_delete_dir_recursive
@@ -8131,14 +8130,14 @@ abstract class CommonObject
 				$error++;
 			}
 		}
-
+		var_dump($error);
 		if (!$error && !empty($this->isextrafieldmanaged))
 		{
 			$result = $this->deleteExtraFields();
 			if ($result < 0) { $error++; }
 		}
 
-		
+		var_dump($error);
 		if (!$error)
 		{
 			$sql = 'DELETE FROM '.MAIN_DB_PREFIX.$this->table_element.' WHERE rowid='.$this->id;
