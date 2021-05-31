@@ -285,7 +285,6 @@ if (empty($reshook))
 
 	// Delete a city
 	//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-	var_dump($action == 'delete' && $usercandelete);die;
 	if ($action == 'delete' && $usercandelete)
 	{
 		$result = $object->delete($user);
