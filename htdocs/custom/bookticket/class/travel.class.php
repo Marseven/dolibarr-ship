@@ -1266,6 +1266,46 @@ class Travel extends CommonObject
 		}
 	}
 
+	/**
+	 *	Lock leave request
+	 *
+	 *  @param	User	$user        	User that lock
+	 *  @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *  @return int         			<0 if KO, >0 if OK
+	 */
+	public function lock($user = null, $notrigger = 0)
+	{
+		global $conf, $langs;
+		$error = 0;
+
+		// Update request
+		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_travel SET";
+		$sql .= " status = '".self::STATUS_LOCK."'";
+		$sql .= " WHERE rowid= ".$this->id;
+
+		$this->db->begin();
+
+		$resql = $this->db->query($sql);
+		if (!$resql) {
+			$error++; $this->errors[] = "Error ".$this->db->lasterror();
+		}
+
+		// Commit or rollback
+		if ($error)
+		{
+			foreach ($this->errors as $errmsg)
+			{
+				dol_syslog(get_class($this)."::lock ".$errmsg, LOG_ERR);
+				$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
+			}
+			$this->db->rollback();
+			return -1 * $error;
+		} else {
+			$this->db->commit();
+			return 1;
+		}
+	}
+
 	public function load_state_board()
     {
          // phpcs:enable

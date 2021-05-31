@@ -291,6 +291,38 @@ if($action == 'valid' && $usercancreate){
 	}
 }
 
+//Lock
+if($action == 'valid' && $usercancreate){
+
+	$object->fetch($id);
+
+	// If status is waiting lock and
+	if ($object->status == Travel::STATUS_APPROVED)
+	{
+		$object->status = Travel::STATUS_LOCK;
+
+		$db->begin();
+
+		$verif = $object->lock($user);
+		if ($verif <= 0)
+		{
+			setEventMessages($object->error, $object->errors, 'errors');
+			$error++;
+		}
+
+		if (!$error)
+		{
+			$db->commit();
+
+			   header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
+			   exit;
+		} else {
+			$db->rollback();
+			$action = '';
+		}
+	}
+}
+
 /* Action clone object
 if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
 if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
@@ -909,9 +941,14 @@ if ($action != 'create' && $action != 'edit')
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
 		}
 
-		if ($usercancreate &&  $object->status == Travel::STATUS_APPROVED)		// If draft
+		if ($usercancreate &&  ($object->status == Travel::STATUS_APPROVED || $object->status == Travel::STATUS_LOCK))		// If draft
 		{
 			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("PRINT").'</a>';
+		}
+
+		if ($usercancreate && $object->status == Travel::STATUS_APPROVED)		// If draft
+		{
+			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=lock" class="butAction">'.$langs->trans("CLOTURER").'</a>';
 		}
 
 		if ($usercandelete)
