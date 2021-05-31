@@ -285,10 +285,11 @@ if (empty($reshook))
 
 	// Delete a city
 	//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
+	var_dump($action);die;
 	if ($action == 'delete' && $usercandelete)
 	{
 		$result = $object->delete($user);
-
+		var_dump($result);die;
 		if ($result > 0)
 		{
 			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/city_list.php?delcity='.urlencode($object->rowid));
