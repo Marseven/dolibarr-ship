@@ -1075,6 +1075,7 @@ class City extends CommonObject
 		$this->db->begin();
 
 		$resql = $this->db->query($sql);
+		var_dump($resql);
 		if (!$resql) {
 			$error++; $this->errors[] = "Error ".$this->db->lasterror();
 		}
