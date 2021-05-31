@@ -160,7 +160,9 @@ if (empty($reshook))
 	// Update a city
 	if ($action == 'update' && $usercancreate)
 	{
-		var_dump($object->fetch($id));die;
+		$object->fetch($id);
+		var_dump($object);
+		die;
 		if (GETPOST('cancel', 'alpha'))
 		{
 			$action = '';
