@@ -317,33 +317,19 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 
-		/* Multilangs
-		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
-		{
-			$sql = "SELECT label";
-			$sql .= " FROM ".MAIN_DB_PREFIX."product_lang";
-			$sql .= " WHERE fk_product=".$obj->rowid;
-			$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
-			$sql .= " LIMIT 1";
-
-			$result = $db->query($sql);
-			if ($result)
-			{
-				$objtp = $db->fetch_object($result);
-				if (!empty($objtp->label)) $obj->label = $objtp->label;
-			}
-		}*/
-
 		$city_static->id = $obj->rowid;
-		$city_static->ref = $obj->ref;
 		$city_static->label = $obj->label;
+		$city_static->labelshort = $obj->labelshort;
+
 		print '<tr class="oddeven">';
 
 
 		// Label
 		if (!empty($arrayfields['c.label']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">'.$obj->label.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">';
+			print $city_static->getNomUrl(1);
+			print '</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 

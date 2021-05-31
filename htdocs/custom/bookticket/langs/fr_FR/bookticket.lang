@@ -38,7 +38,32 @@ BookTicketAbout = À propos de BookTicket
 BookTicketAboutPage = Page à propos de BookTicket
 
 #
-# Page d'exemple
+# City
+#
+MyPageName = Nom de ma page
+
+#
+# Agence
+#
+MyPageName = Nom de ma page
+
+#
+# Classe
+#
+MyPageName = Nom de ma page
+
+#
+# Ship
+#
+MyPageName = Nom de ma page
+
+#
+# Travel
+#
+MyPageName = Nom de ma page
+
+#
+# Bticket
 #
 MyPageName = Nom de ma page
 

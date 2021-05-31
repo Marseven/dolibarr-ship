@@ -363,23 +363,6 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 
-		/* Multilangs
-		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
-		{
-			$sql = "SELECT label";
-			$sql .= " FROM ".MAIN_DB_PREFIX."product_lang";
-			$sql .= " WHERE fk_product=".$obj->rowid;
-			$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
-			$sql .= " LIMIT 1";
-
-			$result = $db->query($sql);
-			if ($result)
-			{
-				$objtp = $db->fetch_object($result);
-				if (!empty($objtp->label)) $obj->label = $objtp->label;
-			}
-		}*/
-
 		$classe_static->id = $obj->rowid;
 		$classe_static->ref = $obj->ref;
 		$proclasse_staticduct_static->label = $obj->label;
