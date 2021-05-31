@@ -160,11 +160,12 @@ if (empty($reshook))
 	// Update a city
 	if ($action == 'update' && $usercancreate)
 	{
+		var_dump($object);die;
 		if (GETPOST('cancel', 'alpha'))
 		{
 			$action = '';
 		} else {
-			if ($object->id > 0)
+			if ($object->rowid > 0)
 			{
 				$object->oldcopy = clone $object;
 
@@ -173,7 +174,7 @@ if (empty($reshook))
 
 				if (!$error && $object->check())
 				{
-					if ($object->update($object->id, $user) > 0)
+					if ($object->update($object->rowid, $user) > 0)
 					{
 						$action = 'view';
 					} else {
