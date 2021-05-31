@@ -166,9 +166,8 @@ if (empty($reshook))
 		{
 			$action = '';
 		} else {
-			var_dump($object->rowid > 0);
-			die;
-			if ($object->rowid > 0)
+
+			if ($object->id > 0)
 			{
 				$object->oldcopy = clone $object;
 
@@ -177,7 +176,7 @@ if (empty($reshook))
 
 				if (!$error && $object->check())
 				{
-					if ($object->update($object->rowid, $user) > 0)
+					if ($object->update($object->id, $user) > 0)
 					{
 						$action = 'view';
 					} else {
@@ -187,12 +186,15 @@ if (empty($reshook))
 					}
 				} else {
 					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-					else setEventMessages($langs->trans("ErrorCityBadRefOrLabel"), null, 'errors');
+					else setEventMessages($langs->trans("ErrorCityBadLabel"), null, 'errors');
 					$action = 'edit';
 				}
 			}
 		}
 	}
+
+	var_dump($object->id > 0);
+	die;
 
 	//Approve
 	if($action == 'valid' && $usercancreate){
