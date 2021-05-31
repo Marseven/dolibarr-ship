@@ -327,9 +327,7 @@ if ($resql)
 		// Label
 		if (!empty($arrayfields['c.label']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'">';
-			print $city_static->getNomUrl(1);
-			print '</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->label).'"><a href="'.dol_buildpath('/bookticket/city_card.php', 1).'?id='.$obj->rowid.'">'.$obj->label.'</a></td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
