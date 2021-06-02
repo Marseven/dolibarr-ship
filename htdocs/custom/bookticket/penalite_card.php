@@ -246,10 +246,6 @@ if ($action == 'add' && $usercancreate)
 		$idpassenger = $object_bticket->fk_passenger;
 		$object_passenger->fetch($idpassenger);
 
-		var_dump($object_bticket->id);
-		var_dump($object_passenger->id);
-		die;
-
 		$object->ref   = $ref;
 		$object->fk_bticket = GETPOST('fk_bticket');
 		$object->fk_bticket = $idpassenger;
