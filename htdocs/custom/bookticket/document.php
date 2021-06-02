@@ -196,8 +196,7 @@ if($usercancreate && $type == 'travel'){
 	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
 	$resql_t = $db->query($sql_t);
-	var_dump($sql_t);
-	var_dump($db->lasterror());
+
 	if ($resql_t)
 	{
 		$num = $db->num_rows($resql_t);
@@ -215,7 +214,6 @@ if($usercancreate && $type == 'travel'){
 			}
 		}
 	}
-	var_dump($btickets);die;
 
 	$pdf = new Manifeste();
 	$pdf->AliasNbPages ("{nb}");			// For page numbering
@@ -250,7 +248,7 @@ if($usercancreate && $type == 'travel'){
 	$pdf->ApplyTextProp("SOCIETY5", utf8_decode($society5));
 
 	$pdf->ApplyTextProp("SHIP", utf8_decode("Nom :  ".$btickets[0]->ship." - N° Immatriculation :".$btickets[0]->refship));
-	$pdf->ApplyTextProp("DEPART", utf8_decode("Date du :".$btickets[0]->depart));
+	$pdf->ApplyTextProp("DEPART", utf8_decode("Date du :".dol_print_date($btickets[0]->depart, 'day', 'tzuser')));
 
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
