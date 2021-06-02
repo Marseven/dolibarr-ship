@@ -1227,10 +1227,10 @@ if ($action != 'create' && $action != 'edit')
 			}*/
 		}
 
-		if ($usercancreate && $object->status == Bticket::STATUS_APPROVED)		// If draft
+		/*if ($usercancreate && $object->status == Bticket::STATUS_APPROVED)		// If draft
 		{
 			print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
-		}
+		}*/
 
 		if ($object->status == Bticket::STATUS_VALIDATED)	// If validated
 		{
