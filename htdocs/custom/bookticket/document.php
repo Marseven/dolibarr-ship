@@ -284,11 +284,11 @@ if($usercancreate && $type == 'travel'){
 	$n = 0;		// Initial Y position for data rows
 	for ($jj = 0; $jj < $nn; $jj ++) {
 		$pdf->SetXY ($ptxp ['px'], $py);
-
+		$n++;
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [0], $ptxp ['iy'], $n++ , "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [0], $ptxp ['iy'], $n , "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
