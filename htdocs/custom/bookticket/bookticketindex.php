@@ -397,7 +397,7 @@ print '</div>';
 
 $penalite_static = new Penalite($db);
 
-$stats = $bticket_static->load_stats();
+$stats = $penalite_static->load_stats();
 
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder centpercent">';
