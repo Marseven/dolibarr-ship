@@ -186,7 +186,7 @@ if($usercancreate && $type == 'travel'){
 	// This sample program uses data fetched from a CSV file
 
 	$btickets = [];
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  c.labelshort as classe, p.nationalite as nationalite, p.age as age, c.prix_standard as prix, tr.ref as travel, t.entity';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  c.labelshort as classe, p.nationalite as nationalite, p.age as age, c.prix_standard as prix, tr.ref as travel, tr.jour as depart, s.ship as ship, s.ref as refship, t.entity';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -245,6 +245,9 @@ if($usercancreate && $type == 'travel'){
 	$pdf->ApplyTextProp("SOCIETY3", utf8_decode($society3));
 	$pdf->ApplyTextProp("SOCIETY4", utf8_decode($society4));
 	$pdf->ApplyTextProp("SOCIETY5", utf8_decode($society5));
+
+	$pdf->ApplyTextProp("SHIP", utf8_decode($btickets[0]->ship." ".$btickets[0]->refship));
+	$pdf->ApplyTextProp("DEPART", utf8_decode($btickets[0]->depart));
 
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
