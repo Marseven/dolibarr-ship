@@ -280,14 +280,15 @@ if($usercancreate && $type == 'travel'){
 	$pdf->SetFillColor (240, 240, 240);		// for "zebra" effect
 	// Get Text properties of data cell
 	$ptxp = $pdf->ApplyTextProp ("ROW1COL0", "");
-	$py = $ptxp ['py'];			// Initial Y position for data rows
+	$py = $ptxp ['py'];
+	$n = 0;		// Initial Y position for data rows
 	for ($jj = 0; $jj < $nn; $jj ++) {
 		$pdf->SetXY ($ptxp ['px'], $py);
 
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [0], $ptxp ['iy'], $jj , "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [0], $ptxp ['iy'], $n++ , "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
