@@ -1320,7 +1320,7 @@ class Travel extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["travels"] = $obj->nb;
+                 $this->nb["travel"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;
