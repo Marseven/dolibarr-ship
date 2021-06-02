@@ -576,7 +576,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$bticket .= $lines->rowid;
 					$bticket .= '"';
 					$bticket .= '>';
-					$bticket .= $langs->trans($lines->label);
+					$bticket .= $langs->trans($lines->ref);
 					$shbticketip .= '</option>';
 				}
 			}
@@ -783,7 +783,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$bticket .= $lines->rowid;
 					$bticket .= '"';
 					$bticket .= '>';
-					$bticket .= $langs->trans($lines->label);
+					$bticket .= $langs->trans($lines->ref);
 					$shbticketip .= '</option>';
 				}
 			}
