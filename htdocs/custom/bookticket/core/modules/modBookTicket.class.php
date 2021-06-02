@@ -107,11 +107,11 @@ class modBookTicket extends DolibarrModules
 			'theme' => 0,
 			// Set this to relative path of css file if module has its own css file
 			'css' => array(
-				//    '/bookticket/css/bookticket.css.php',
+				 '/bookticket/css/select2.min.css.php',
 			),
 			// Set this to relative path of js file if module must load a js on all pages
 			'js' => array(
-				//   '/bookticket/js/bookticket.js.php',
+				 '/bookticket/js/select2.min.js.php',
 			),
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			'hooks' => array(
