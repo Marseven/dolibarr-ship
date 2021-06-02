@@ -566,6 +566,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $object->prenom;
 				print '</td></tr>';
 
+				// nationalite
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("Nationalite").'</td>';
+				print '<td>';
+				print $object->natioanlite;
+				print '</td></tr>';
+
 				// age
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("Age").'</td>';
