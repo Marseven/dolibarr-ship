@@ -854,8 +854,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// billet_perdu
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("BilletPerdu").'</td>';
-			print '<td><input type="checkbox" name="billet_perdu"'.$object->billet_perdu == "on" ? "checked" : " ";
-			print '></td></tr>';
+			print '<td><input type="checkbox" name="billet_perdu" >';
+			print '</td></tr>';
+
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
