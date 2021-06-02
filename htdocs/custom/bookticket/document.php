@@ -233,13 +233,18 @@ if($usercancreate && $type == 'travel'){
 	$pdf->Image('img/DVM.jpg', 10, 5, 15, 15);
 
 	$society = "DOUYA  VOYAGE MARITIME\n";
-	$society .=	"D.V.M  S.A\n";
-	$society .=	"Siège social- Libreville\n";
-	$society .=	"B.P : 14050 Libreville-  Gabon – Email : douya.voyagemaritime@ gmail.com\n";
-	$society .=	"Libreville  Tél : ( +241)  07 52 56 05 – 04 18 67 36-  06 03 29 85\n";
-	$society .=	"Port-Gentil Tél : (+241 ) 06 35 90 35- 05 34 54 88- 07 44 85 19\n";
+	$society1 =	"D.V.M  S.A\n";
+	$society2 =	"Siège social- Libreville\n";
+	$society3 =	"B.P : 14050 Libreville-  Gabon – Email : douya.voyagemaritime@ gmail.com\n";
+	$society4 =	"Libreville  Tél : ( +241)  07 52 56 05 – 04 18 67 36-  06 03 29 85\n";
+	$society5 =	"Port-Gentil Tél : (+241 ) 06 35 90 35- 05 34 54 88- 07 44 85 19\n";
 
 	$pdf->ApplyTextProp("SOCIETY", utf8_decode($society));
+	$pdf->ApplyTextProp("SOCIETY1", utf8_decode($society1));
+	$pdf->ApplyTextProp("SOCIETY2", utf8_decode($society2));
+	$pdf->ApplyTextProp("SOCIETY3", utf8_decode($society3));
+	$pdf->ApplyTextProp("SOCIETY4", utf8_decode($society4));
+	$pdf->ApplyTextProp("SOCIETY5", utf8_decode($society5));
 
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
