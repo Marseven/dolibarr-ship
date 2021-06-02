@@ -232,12 +232,12 @@ if($usercancreate && $type == 'travel'){
 	$pdf->IncludeTemplate ($template);
 	$pdf->Image('img/DVM.jpg', 10, 5, 15, 15);
 
-	$society = "DOUYA  VOYAGE MARITIME\n";
-	$society1 =	"D.V.M  S.A\n";
+	$society = "DOUYA  VOYAGE MARITIME";
+	$society1 =	"D.V.M  S.A";
 	$society2 =	"Siège social- Libreville\n";
-	$society3 =	"B.P : 14050 Libreville-  Gabon – Email : douya.voyagemaritime@ gmail.com\n";
-	$society4 =	"Libreville  Tél : ( +241)  07 52 56 05 – 04 18 67 36-  06 03 29 85\n";
-	$society5 =	"Port-Gentil Tél : (+241 ) 06 35 90 35- 05 34 54 88- 07 44 85 19\n";
+	$society3 =	"B.P : 14050 Libreville-  Gabon – Email : douya.voyagemaritime@ gmail.com";
+	$society4 =	"Libreville  Tél : ( +241)  07 52 56 05 – 04 18 67 36-  06 03 29 85";
+	$society5 =	"Port-Gentil Tél : (+241 ) 06 35 90 35- 05 34 54 88- 07 44 85 19";
 
 	$pdf->ApplyTextProp("SOCIETY", utf8_decode($society));
 	$pdf->ApplyTextProp("SOCIETY1", utf8_decode($society1));
