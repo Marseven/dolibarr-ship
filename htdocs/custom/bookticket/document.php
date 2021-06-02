@@ -196,6 +196,7 @@ if($usercancreate && $type == 'travel'){
 	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
 	$resql_t = $db->query($sql_t);
+	var_dump($resql_t);
 	if ($resql_t)
 	{
 		$num = $db->num_rows($resql_t);
@@ -213,6 +214,7 @@ if($usercancreate && $type == 'travel'){
 			}
 		}
 	}
+	var_dump($btickets);die;
 
 	$pdf = new Manifeste();
 	$pdf->AliasNbPages ("{nb}");			// For page numbering

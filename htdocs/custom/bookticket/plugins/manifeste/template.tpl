@@ -9,15 +9,15 @@ SetTextProp ("FOOTRNB2", 196, 287, -1, -1, 0, 0, 0,"Arial", "I", 9);
 
 SetTextProp ("SOCIETY", 30, 10, -1, -1, 0, 0, 0,"Arial", "B", 14);
 SetTextProp ("SOCIETY1", 30, 16, -1, -1, 0, 0, 0,"Arial", "B", 14);
-SetTextProp ("SOCIETY2", 30, 22, -1, -1, 0, 0, 0,"Arial", "", 10);
-SetTextProp ("SOCIETY3", 30, 28, -1, -1, 0, 0, 0,"Arial", "", 10);
-SetTextProp ("SOCIETY4", 30, 32, -1, -1, 0, 0, 0,"Arial", "", 10);
-SetTextProp ("SOCIETY5", 30, 36, -1, -1, 0, 0, 0,"Arial", "", 10);
+SetTextProp ("SOCIETY2", 30, 22, -1, -1, 0, 0, 0,"Arial", "", 8);
+SetTextProp ("SOCIETY3", 30, 28, -1, -1, 0, 0, 0,"Arial", "", 8);
+SetTextProp ("SOCIETY4", 30, 32, -1, -1, 0, 0, 0,"Arial", "", 8);
+SetTextProp ("SOCIETY5", 30, 36, -1, -1, 0, 0, 0,"Arial", "", 8);
 
-SetTextProp ("TITLE", 60, 40, -1, -1, 0, 0, 0,"Arial", "B", 20);     
+SetTextProp ("TITLE", 60, 45, -1, -1, 0, 0, 0,"Arial", "B", 18);     
 
-SetTextProp ("SHIP", 15, 46, -1, -1, 0, 0, 0,"Arial", "", 12);
-SetTextProp ("DEPART", 15, 52, -1, -1, 0, 0, 0,"Arial", "", 12);
+SetTextProp ("SHIP", 15, 48, -1, -1, 0, 0, 0,"Arial", "", 10);
+SetTextProp ("DEPART", 15, 56, -1, -1, 0, 0, 0,"Arial", "", 10);
 
 
 SetColumns  ("COLSWDTH", 10, 50, 45, 35, 25, 25);
