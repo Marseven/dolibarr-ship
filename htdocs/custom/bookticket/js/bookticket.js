@@ -1,3 +1,3 @@
 $(document).ready(function() {
-    $('.passenger').select2();
+    $('.flat').select2();
 });
