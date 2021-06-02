@@ -1282,7 +1282,7 @@ class Passenger extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["passengers"] = $obj->nb;
+                 $this->nb["passenger"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;

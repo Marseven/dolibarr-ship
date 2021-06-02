@@ -1265,7 +1265,7 @@ class Classe extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["classes"] = $obj->nb;
+                 $this->nb["classe"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;

@@ -1224,7 +1224,7 @@ class City extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["citys"] = $obj->nb;
+                 $this->nb["city"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;

@@ -1353,7 +1353,7 @@ class Penalite extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["penalites"] = $obj->nb;
+                 $this->nb["penalite"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;

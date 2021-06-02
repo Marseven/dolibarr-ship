@@ -1324,7 +1324,7 @@ class Bticket extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["btickets"] = $obj->nb;
+                 $this->nb["bticket"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;

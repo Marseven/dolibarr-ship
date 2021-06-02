@@ -1257,7 +1257,7 @@ class Ship extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["ships"] = $obj->nb;
+                 $this->nb["ship"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;

@@ -1231,7 +1231,7 @@ class Agence extends CommonObject
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["agences"] = $obj->nb;
+                 $this->nb["agence"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;
