@@ -353,37 +353,45 @@ if ($action == 'update' && $usercancreate)
 			$object->billet_perdu = GETPOST('billet_perdu');
 			$object->classe = GETPOST('classe');
 			$object->classe_enfant = GETPOST('classe_enfant');
-			$object->classe = GETPOST('prix_c');
-			$object->classe_enfant = GETPOST('prix_ce');
+			$object->prix_c = GETPOST('prix_c');
+			$object->prix_ce = GETPOST('prix_ce');
+			$object->prix_n = 0;
+			$object->prix_bp = 0;
+			$object->prix_da = 0;
+			$object->prix_db = 0;
 
 			if($object->datea != GETPOST('datea') && GETPOST('datea') == 'on'){
 				$object_bticket->fk_travel = GETPOST('fk_travel');
-				$object_bticket->prix  += 5000;
+				$object->prix_da = 5000;
+				$object_bticket->prix  += $object->prix_da;
 			}
 
 			if($object->dateb != GETPOST('dateb') && GETPOST('dateb') == 'on'){
 				$object_bticket->fk_travel  = GETPOST('fk_travel');
-				$object_bticket->prix  += 8000;
+				$object->prix_db = 8000;
+				$object_bticket->prix  += $object->prix_db;
 			}
 
 			if($object->nom != GETPOST('nomprenom') && GETPOST('nomprenom') == 'on'){
 				$object_passenger->nom   = GETPOST('nom');
 				$object_passenger->prenom  = GETPOST('prenom');
-				$object_bticket->prix  += 8000;
+				$object->prix_n = 8000;
+				$object_bticket->prix  += $object->prix_n;
 			}
 
 			if($object->billet_perdu != GETPOST('billet_perdu') && GETPOST('billet_perdu') == 'on'){
-				$object_bticket->prix  += 8000;
+				$object->prix_bp = 8000;
+				$object_bticket->prix  += $object->prix_bp;
 			}
 
 			if($object->classe != GETPOST('classe') && GETPOST('classe') == 'on'){
 				$object_bticket->fk_classe  = GETPOST('fk_classe');
-				$object_bticket->prix  += GETPOST('prix_c');
+				$object_bticket->prix  += $object->prix_c;
 			}
 
 			if($object->classe_enfanr != GETPOST('classe_enfant') && GETPOST('classe_enfant') == 'on'){
 				$object_bticket->fk_classe = GETPOST('fk_classe');
-				$object_bticket->prix  += GETPOST('prix_ce');
+				$object_bticket->prix  += $object->prix_ce;
 			}
 
 			$object->fk_valideur = $user->fk_user;
