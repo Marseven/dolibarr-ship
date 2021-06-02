@@ -39,7 +39,6 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-$morejs=array("/bookticket/js/bookticket.js", "/bookticket/js/select2.min.js");
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
@@ -685,7 +684,7 @@ $shortlabel = dol_trunc($object->label, 16);
 $title = $langs->trans('bticket')." ".$shortlabel." - ".$langs->trans('Card');
 $helpurl = 'EN:Module_Ticket|FR:Module_Ticket|ES:M&oacute;dulo_Ticket';
 
-llxHeader('', $title,'','','','',$morejs, $helpurl);
+llxHeader('', $title, $helpurl);
 
 $form = new Form($db);
 $formfile = new FormFile($db);
