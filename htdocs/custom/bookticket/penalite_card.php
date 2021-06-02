@@ -241,14 +241,14 @@ if ($action == 'add' && $usercancreate)
 
 	if (!$error)
 	{
-		$idpassenger = GETPOST('fk_passenger');
-		$object_passenger->fetch($idpassenger);
 		$idbticket = GETPOST('fk_bticket');
 		$object_bticket->fetch($idbticket);
+		$idpassenger = $object_bticket->fk_passenger;
+		$object_passenger->fetch($idpassenger);
 
 		$object->ref   = $ref;
 		$object->fk_bticket = GETPOST('fk_bticket');
-		$object->fk_bticket = GETPOST('fk_passenger');
+		$object->fk_bticket = $idpassenger;
 		$object->datea = GETPOST('datea');
 		$object->dateb = GETPOST('dateb');
 		$object->nom = GETPOST('nom');
@@ -330,14 +330,15 @@ if ($action == 'update' && $usercancreate)
 		{
 			$object->oldcopy = clone $object;
 
-			$idpassenger = GETPOST('fk_passenger');
-			$object_passenger->fetch($idpassenger);
 			$idbticket = GETPOST('fk_bticket');
 			$object_bticket->fetch($idbticket);
+			$idpassenger = $object_bticket->fk_passenger;
+			$object_passenger->fetch($idpassenger);
+
 
 			$object->ref   = $ref;
 			$object->fk_bticket = GETPOST('fk_bticket');
-			$object->fk_bticket = GETPOST('fk_passenger');
+			$object->fk_bticket = $idpassenger;
 			$object->datea = GETPOST('datea');
 			$object->dateb = GETPOST('dateb');
 			$object->nom = GETPOST('nomprenom');
@@ -625,8 +626,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// nom
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NouveauPassager").'</td>';
-			print '<td><input type="checkbox" name="nomprenom" ><input name="fk_passenger" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object_passenger->id).'">';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomPrenom").'</td>';
+			print '<td><input type="checkbox" name="nomprenom" >';
 			print '</td></tr>';
 
 			// nom
