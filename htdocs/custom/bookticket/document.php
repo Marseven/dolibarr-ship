@@ -237,7 +237,7 @@ if($usercancreate && $type == 'travel'){
 	$society1 =	"D.V.M S.A";
 	$society2 =	"Siège social - Libreville";
 	$society3 =	"B.P : 14050 Libreville - Gabon - Email : douya.voyagemaritime@gmail.com";
-	$society4 =	"Libreville  Tél : (+241) 07 52 56 05 – 04 18 67 36 -  06 03 29 85";
+	$society4 =	"Libreville  Tél : (+241) 07 52 56 05 - 04 18 67 36 -  06 03 29 85";
 	$society5 =	"Port-Gentil Tél : (+241 ) 06 35 90 35 - 05 34 54 88 - 07 44 85 19";
 
 	$pdf->ApplyTextProp("SOCIETY", utf8_decode($society));
