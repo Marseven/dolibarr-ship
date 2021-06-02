@@ -1362,7 +1362,177 @@ class Penalite extends CommonObject
              $this->error = $this->db->error();
              return -1;
          }
-     }
+    }
+
+	public function load_stats()
+    {
+		// phpcs:enable
+
+		$stats = [];
+
+		// Nbre Billet - J
+		$sql = "SELECT count(b.fk_bticket) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 day'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nbj"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// Nbre Billet - H
+		$sql = "SELECT count(b.fk_bticket) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-7 day'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nbh"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// Nbre Billet - M
+		$sql = "SELECT count(b.fk_bticket) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nbm"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// Nbre Billet - A
+		$sql = "SELECT count(b.fk_bticket) as nb";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-12 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["nba"] = $obj->nb;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+
+		// CA - J
+		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 day'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["caj"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// CA - H
+		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-7 day'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["cah"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// CA - M
+		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["cam"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		// CA - A
+		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
+		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+		$sql .= " WHERE b.status > 0";
+		$sql .= " AND b.entity IN (".getEntity('penalite').")";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-12 month'));
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			while ($obj = $this->db->fetch_object($resql)) {
+				$stats["caa"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
+			}
+			$this->db->free($resql);
+		} else {
+			dol_print_error($this->db);
+			$this->error = $this->db->error();
+			print $this->error;
+			die;
+		}
+
+		return $stats;
+    }
 }
 
 

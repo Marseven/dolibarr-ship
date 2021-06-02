@@ -124,7 +124,8 @@ if ($user->rights->bookticket->bticket->read)
 		'classe',
 		'city',
 		'agence',
-		'bticket'
+		'bticket',
+		'penalite'
 	);
 
 	// Condition to be checked for each display line dashboard
@@ -136,7 +137,8 @@ if ($user->rights->bookticket->bticket->read)
 		'classe' => $user->rights->bookticket->classe->read,
 		'city' => $user->rights->bookticket->city->read,
 		'agence' => $user->rights->bookticket->agence->read,
-		'bticket' => $user->rights->bookticket->bticket->read
+		'bticket' => $user->rights->bookticket->bticket->read,
+		'penalite' => $user->rights->bookticket->bticket->read
 	);
 	// Class file containing the method load_state_board for each line
 	$includes = array(
@@ -147,7 +149,8 @@ if ($user->rights->bookticket->bticket->read)
 		'classe' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/classe.class.php",
 		'city' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/city.class.php",
 		'agence' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/agence.class.php",
-		'bticket' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/bticket.class.php"
+		'bticket' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/bticket.class.php",
+		'penalite' => DOL_DOCUMENT_ROOT."/custom/bookticket/class/penalite.class.php"
 	);
 	// Name class containing the method load_state_board for each line
 	$classes = array(
@@ -158,7 +161,8 @@ if ($user->rights->bookticket->bticket->read)
 		'classe' => 'Classe',
 		'city' => 'City',
 		'agence' => 'Agence',
-		'bticket' => 'Bticket'
+		'bticket' => 'Bticket',
+		'penalite' => 'Penalite'
 	);
 	// Translation keyword
 	$titres = array(
@@ -169,7 +173,8 @@ if ($user->rights->bookticket->bticket->read)
 		'classe' => 'Classe',
 		'city' => 'City',
 		'agence' => "Agence",
-		'bticket' => 'Bticket'
+		'bticket' => 'Bticket',
+		'penalite' => 'Penalite'
 	);
 	// Dashboard Link lines
 	$links = array(
@@ -180,7 +185,8 @@ if ($user->rights->bookticket->bticket->read)
 		'classe' => DOL_URL_ROOT.'/custom/bookticket/classeindex.php',
 		'city' => DOL_URL_ROOT.'/custom/bookticket/city_list.php',
 		'agence' => DOL_URL_ROOT.'/custom/bookticket/agence_list.php',
-		'bticket' => DOL_URL_ROOT.'/custom/bookticket/bticketindex.php'
+		'bticket' => DOL_URL_ROOT.'/custom/bookticket/bticketindex.php',
+		'penalite' => DOL_URL_ROOT.'/custom/bookticket/penalite_list.php'
 	);
 	// Translation lang files
 	$langfile = array(
@@ -373,7 +379,7 @@ print '<td class="nowrap">';
 print $langs->trans("ChiffreAffaireAnne");
 print "</td>\n";
 print '<td>';
-print $stats['caa']== NULL ? "0" : $stats['caj'];
+print $stats['caa']== NULL ? "0" : $stats['caa'];
 print "</td>";
 print "</tr>\n";
 
@@ -383,6 +389,102 @@ print '<br>';
 
 //$stats2 = $bticket_static->load_stats_by_agence();
 //$stats1 = $bticket_static->load_stats_by_classe();
+
+print '</div>';
+
+
+// Penalite
+
+$penalite_static = new Penalite($db);
+
+$stats = $bticket_static->load_stats();
+
+print '<div class="div-table-responsive-no-min">';
+print '<table class="noborder centpercent">';
+
+$colnb = 2;
+
+print '<tr class="liste_titre"><th>'.$langs->trans("ChiffrePenalite").'</th>';
+print '<th class="right" ><a href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_list.php?sortfield=t.tms&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+print '</tr>';
+
+//BilletPenalise
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletJour");
+print "</td>\n";
+print '<td>';
+print $stats['nbj'] == NULL ? "0" : $stats['nbj'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletSemaine");
+print "</td>\n";
+print '<td>';
+print $stats['nbh']== NULL ? "0" : $stats['nbh'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletMois");
+print "</td>\n";
+print '<td>';
+print $stats['nbm']== NULL ? "0" : $stats['nbm'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("NbreBilletAnne");
+print "</td>\n";
+print '<td>';
+print $stats['nba']== NULL ? "0" : $stats['nba'];
+print "</td>";
+print "</tr>\n";
+
+//CAPenalite
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("SommePenaliteJour");
+print "</td>\n";
+print '<td>';
+print $stats['caj'] == NULL ? "0" : $stats['caj'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("SommePenaliteSemaine");
+print "</td>\n";
+print '<td>';
+print $stats['cah']== NULL ? "0" : $stats['cah'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("SommePenaliteMois");
+print "</td>\n";
+print '<td>';
+print $stats['cam']== NULL ? "0" : $stats['cam'];
+print "</td>";
+print "</tr>\n";
+
+print '<tr class="oddeven">';
+print '<td class="nowrap">';
+print $langs->trans("SommePenaliteAnne");
+print "</td>\n";
+print '<td>';
+print $stats['caa']== NULL ? "0" : $stats['caa'];
+print "</td>";
+print "</tr>\n";
+
+print "</table>";
+print '</div>';
+print '<br>';
 
 print '</div>';
 
