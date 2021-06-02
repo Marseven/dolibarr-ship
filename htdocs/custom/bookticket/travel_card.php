@@ -727,6 +727,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
+			$object_ship = new Ship($db);
+			$object_ship->fetch($object->fk_ship);
+
 			$head = travel_prepare_head($object);
 			$titre = $langs->trans("CardTravel");
 			$picto = 'travel';
@@ -791,10 +794,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<td>';
 				$htmlhelp = $langs->trans('NbrePlaceHelp');
 				$htmlhelp .= '<br>'.$langs->trans("NbrePlaceHelp");
-				print $form->textwithpicto($langs->trans('NbrePlace'), $htmlhelp);
+				print $form->textwithpicto($langs->trans('NbrePlaceDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_place;
+				print $object->nbre_place." / ".$object_ship->nbre_place;
 				print '</td>';
 				print '</tr>';
 
@@ -803,10 +806,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<td>';
 				$htmlhelp = $langs->trans('NbreVipHelp');
 				$htmlhelp .= '<br>'.$langs->trans("NbreVipHelp");
-				print $form->textwithpicto($langs->trans('NbreVip'), $htmlhelp);
+				print $form->textwithpicto($langs->trans('NbreVipDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_vip;
+				print $object->nbre_vip." / ".$object_ship->nbre_vip;
 				print '</td>';
 				print '</tr>';
 
@@ -815,10 +818,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<td>';
 				$htmlhelp = $langs->trans('NbreAffHelp');
 				$htmlhelp .= '<br>'.$langs->trans("NbreAffHelp");
-				print $form->textwithpicto($langs->trans('NbreAff'), $htmlhelp);
+				print $form->textwithpicto($langs->trans('NbreAffDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_aff;
+				print $object->nbre_aff." / ".$object_ship->nbre_aff;
 				print '</td>';
 				print '</tr>';
 
@@ -827,10 +830,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<td>';
 				$htmlhelp = $langs->trans('NbreEcoHelp');
 				$htmlhelp .= '<br>'.$langs->trans("NbreEcoHelp");
-				print $form->textwithpicto($langs->trans('NbreEco'), $htmlhelp);
+				print $form->textwithpicto($langs->trans('NbreEcoDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_eco;
+				print $object->nbre_eco." / ".$object_ship->nbre_eco;
 				print '</td>';
 				print '</tr>';
 

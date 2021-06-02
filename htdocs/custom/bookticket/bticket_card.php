@@ -71,6 +71,7 @@ if (!empty($user->socid)) $socid = $user->socid;
 
 $object = new Bticket($db);
 $object_passenger = new Passenger($db);
+$object_travel = new Travel($db);
 
 if ($id > 0 || !empty($ref))
 {
@@ -320,8 +321,8 @@ if (empty($reshook))
 			$object->fk_classe             	 = GETPOST('fk_classe');
 			$object->fk_agence             	 = GETPOST('fk_agence');
 
-			if(GETPOST('new_passenger') == 'off'){
-				$object->fk_passenger            = GETPOST('fk_passenger');
+			if(GETPOST('new_passenger') != 'on'){
+				$object->fk_passenger = GETPOST('fk_passenger');
 			}else{
 				$object_passenger->ref             	 = GETPOST('pref');
 				$object_passenger->nom             	 = GETPOST('nom');
@@ -341,7 +342,7 @@ if (empty($reshook))
 				$object->fk_passenger = $id_passenger;
 			}
 
-			$sql_prix = 'SELECT c.rowid, c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.entity,';
+			$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.entity,';
 			$sql_prix .= ' c.date_creation, c.tms as date_update';
 			$sql_prix .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
 			$sql_prix .= ' WHERE c.entity IN ('.getEntity('classe').')';
@@ -381,6 +382,20 @@ if (empty($reshook))
 			if (!$error)
 			{
 				$id = $object->create($user);
+
+				$object_travel->fetch($object->travel);
+
+				if($obj_prix->labelshort == "VIP"){
+					$object_travel->nbre_vip--;
+				}elseif($obj_prix->labelshort == "ECO"){
+					$object_travel->nbre_eco--;
+				}else{
+					$object_travel->nbre_aff--;
+				}
+
+				$object_travel->nbre_place--;
+
+				$object_travel->update($user);
 			}
 
 			if ($id > 0)
@@ -933,7 +948,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// nationalite
 			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
 			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth300 maxwidth500 widthcentpercentminusx');
+			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth80 maxwidth100 widthcentpercentminusx');
 			print '</td></tr>';
 
 			// age
@@ -1175,7 +1190,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// nationalite
 			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
 			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth300 maxwidth500 widthcentpercentminusx');
+			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth80 maxwidth100 widthcentpercentminusx');
 			print '</td></tr>';
 
 			// age
