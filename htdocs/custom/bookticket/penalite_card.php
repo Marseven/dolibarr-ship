@@ -1100,6 +1100,16 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td>';
 			print '</tr>';
 
+			// classe_enfant
+			print '<tr>';
+			print '<td>';
+			print $langs->trans('Total');
+			print '</td>';
+			print '<td>';
+			print $object->prix_da+$object->prix_db+$object->prix_n+$object->prix_bp+$object->prix_c+$object->prix_ce." FCFA";
+			print '</td>';
+			print '</tr>';
+
 			// Other attributes
 			include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
