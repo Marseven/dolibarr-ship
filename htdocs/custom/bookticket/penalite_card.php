@@ -248,7 +248,7 @@ if ($action == 'add' && $usercancreate)
 
 		$object->ref   = $ref;
 		$object->fk_bticket = GETPOST('fk_bticket');
-		$object->fk_bticket = $idpassenger;
+		$object->fk_passenger = $idpassenger;
 		$object->datea = GETPOST('datea');
 		$object->dateb = GETPOST('dateb');
 		$object->nom = GETPOST('nomprenom');
@@ -346,7 +346,7 @@ if ($action == 'update' && $usercancreate)
 
 			$object->ref   = $ref;
 			$object->fk_bticket = GETPOST('fk_bticket');
-			$object->fk_bticket = $idpassenger;
+			$object->fk_passenger= $idpassenger;
 			$object->datea = GETPOST('datea');
 			$object->dateb = GETPOST('dateb');
 			$object->nom = GETPOST('nomprenom');
@@ -356,32 +356,32 @@ if ($action == 'update' && $usercancreate)
 			$object->classe = GETPOST('prix_c');
 			$object->classe_enfant = GETPOST('prix_ce');
 
-			if(GETPOST('datea') == 'on'){
+			if($object->datea != GETPOST('datea') && GETPOST('datea') == 'on'){
 				$object_bticket->fk_travel = GETPOST('fk_travel');
 				$object_bticket->prix  += 5000;
 			}
 
-			if(GETPOST('dateb') == 'on'){
+			if($object->dateb != GETPOST('dateb') && GETPOST('dateb') == 'on'){
 				$object_bticket->fk_travel  = GETPOST('fk_travel');
 				$object_bticket->prix  += 8000;
 			}
 
-			if(GETPOST('nomprenom') == 'on'){
+			if($object->nom != GETPOST('nomprenom') && GETPOST('nomprenom') == 'on'){
 				$object_passenger->nom   = GETPOST('nom');
 				$object_passenger->prenom  = GETPOST('prenom');
 				$object_bticket->prix  += 8000;
 			}
 
-			if(GETPOST('billet_perdu') == 'on'){
+			if($object->billet_perdu != GETPOST('billet_perdu') && GETPOST('billet_perdu') == 'on'){
 				$object_bticket->prix  += 8000;
 			}
 
-			if(GETPOST('classe') == 'on'){
+			if($object->classe != GETPOST('classe') && GETPOST('classe') == 'on'){
 				$object_bticket->fk_classe  = GETPOST('fk_classe');
 				$object_bticket->prix  += GETPOST('prix_c');
 			}
 
-			if(GETPOST('classe_enfant') == 'on'){
+			if($object->classe_enfanr != GETPOST('classe_enfant') && GETPOST('classe_enfant') == 'on'){
 				$object_bticket->fk_classe = GETPOST('fk_classe');
 				$object_bticket->prix  += GETPOST('prix_ce');
 			}
@@ -648,6 +648,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input name="prenom" class="maxwidth300" value="'.$object_passenger->prenom.'">';
 			print '</td></tr>';
 
+			// billet_perdu
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("BilletPerdu").'</td>';
+			print '<td><input type="checkbox" name="billet_perdu" >';
+			print '</td></tr>';
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
@@ -848,6 +852,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input name="prenom" class="maxwidth300" value="'.$object_passenger->prenom.'">';
 			print '</td></tr>';
 
+			// billet_perdu
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("BilletPerdu").'</td>';
+			print '<td><input type="checkbox" name="billet_perdu"'.$object->billet_perdu == "on" ? "checked" : " ";
+			print '></td></tr>';
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
