@@ -186,7 +186,7 @@ if($usercancreate && $type == 'travel'){
 	// This sample program uses data fetched from a CSV file
 
 	$btickets = [];
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  c.labelshort as classe, p.nationalite as nationalite, c.prix_standard as prix, tr.ref as travel, tr.jour as depart, s.ship as ship, s.ref as refship, t.entity';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  p.nationalite as nationalite, tr.ref as travel, tr.jour as depart, s.ship as ship, s.ref as refship, t.entity';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -196,7 +196,7 @@ if($usercancreate && $type == 'travel'){
 	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
 	$resql_t = $db->query($sql_t);
-	var_dump($resql_t);
+	var_dump($db->lasterror());
 	if ($resql_t)
 	{
 		$num = $db->num_rows($resql_t);
