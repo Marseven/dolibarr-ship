@@ -343,7 +343,7 @@ if ($resql)
 	while ($i < min($num, $limit))
 	{
 		$obj = $db->fetch_object($resql);
-
+		var_dump($obj);
 		$penalite_static->id = $obj->rowid;
 		$penalite_static->ref = $obj->ref;
 		$penalite_static->passenger = $obj->passenger;
