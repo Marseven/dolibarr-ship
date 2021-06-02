@@ -138,7 +138,7 @@ if ($user->rights->bookticket->bticket->read)
 		'city' => $user->rights->bookticket->city->read,
 		'agence' => $user->rights->bookticket->agence->read,
 		'bticket' => $user->rights->bookticket->bticket->read,
-		'penalite' => $user->rights->bookticket->bticket->read
+		'penalite' => $user->rights->bookticket->penalite->read
 	);
 	// Class file containing the method load_state_board for each line
 	$includes = array(
