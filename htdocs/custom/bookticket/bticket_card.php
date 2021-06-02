@@ -326,6 +326,7 @@ if (empty($reshook))
 				$object_passenger->ref             	 = GETPOST('pref');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom            = GETPOST('prenom');
+				$object_passenger->nationalite       = GETPOST('nationalite');
 				$object_passenger->age             	 = GETPOST('age');
 				$object_passenger->adresse           = GETPOST('adresse');
 				$object_passenger->telephone         = GETPOST('telephone');
@@ -423,6 +424,7 @@ if (empty($reshook))
 				$object_passenger->ref             	 = GETPOST('pref');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom             	 = GETPOST('prenom');
+				$object_passenger->nationalite       = GETPOST('nationalite');
 				$object_passenger->age             	 = GETPOST('age');
 				$object_passenger->adresse             	 = GETPOST('adresse');
 				$object_passenger->telephone             	 = GETPOST('telephone');
@@ -928,6 +930,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input name="prenom" class="maxwidth300" value="'.$object_passenger->prenom.'">';
 			print '</td></tr>';
 
+			// nationalite
+			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
+			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
+			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth300 maxwidth500 widthcentpercentminusx');
+			print '</td></tr>';
+
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
 			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object_passenger->age.'"> ANS';
@@ -1162,6 +1170,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// prenom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Prenom").'</td>';
 			print '<td><input name="prenom" class="maxwidth300" value="'.$obj_p->prenom.'">';
+			print '</td></tr>';
+
+			// nationalite
+			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
+			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
+			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth300 maxwidth500 widthcentpercentminusx');
 			print '</td></tr>';
 
 			// age

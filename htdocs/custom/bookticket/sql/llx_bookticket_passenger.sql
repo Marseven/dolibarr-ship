@@ -23,6 +23,7 @@ create table llx_bookticket_passenger
   ref                       varchar(128) DEFAULT 0 NOT NULL,
   nom				                varchar(255) DEFAULT NULL,
   prenom				            varchar(255) DEFAULT NULL,
+  nationalite				        varchar(255) DEFAULT NULL,
   age				                integer DEFAULT NULL,
   adresse				            varchar(255) DEFAULT NULL,
   telephone				          varchar(255) DEFAULT NULL,

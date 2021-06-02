@@ -222,7 +222,7 @@ if($usercancreate && $type == 'travel'){
 	//   First page contains the table for all employees
 	// ====================================================
 
-	$pdf->AddPage("L");
+	$pdf->AddPage("P");
 
 	// Template #2 is used for the part which builds a table containing all employees
 	$template = $pdf->LoadTemplate($file_tpl);
@@ -231,6 +231,7 @@ if($usercancreate && $type == 'travel'){
 	}
 	$pdf->IncludeTemplate ($template);
 	$pdf->Image('img/DVM.jpg', 10, 5, 15, 15);
+
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
 	$pdf->ApplyTextProp ("FOOTTITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
@@ -245,17 +246,17 @@ if($usercancreate && $type == 'travel'){
 
 	// Column interspace is 1
 	$pdf->SetX ($pdf->GetX() + 1);
-	$pdf->Cell ($pcol [0], $ptxp ['iy'], "Nom & Prenom", 1, 0, "C", true);
+	$pdf->Cell ($pcol [0], $ptxp ['iy'], "No", 1, 0, "C", true);
 	$pdf->SetX ($pdf->GetX() + 1);
-	$pdf->Cell ($pcol [1], $ptxp ['iy'], "Age", 1, 0, "C", true);
+	$pdf->Cell ($pcol [1], $ptxp ['iy'], "Nom", 1, 0, "C", true);
 	$pdf->SetX ($pdf->GetX() + 1);
-	$pdf->Cell ($pcol [2], $ptxp ['iy'], "Telephone", 1, 0, "C", true);
+	$pdf->Cell ($pcol [2], $ptxp ['iy'], "Prenom", 1, 0, "C", true);
 	$pdf->SetX ($pdf->GetX() + 1);
-	$pdf->Cell ($pcol [3], $ptxp ['iy'], "Email", 1, 0, "C", true);
+	$pdf->Cell ($pcol [3], $ptxp ['iy'], "Nationalite", 1, 0, "C", true);
 	$pdf->SetX ($pdf->GetX() + 1);
-	$pdf->Cell ($pcol [4], $ptxp ['iy'], "Classe", 1, 0, "C", true);
+	$pdf->Cell ($pcol [4], $ptxp ['iy'], "No Billet", 1, 0, "C", true);
 	$pdf->SetX ($pdf->GetX() + 1);
-	$pdf->Cell ($pcol [5], $ptxp ['iy'], "Present", 1, 0, "C", true);
+	$pdf->Cell ($pcol [5], $ptxp ['iy'], "Telephone", 1, 0, "C", true);
 
 
 	$pdf->SetFillColor (240, 240, 240);		// for "zebra" effect
@@ -268,23 +269,23 @@ if($usercancreate && $type == 'travel'){
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [0], $ptxp ['iy'], $btickets[$jj]->nom." ".$btickets[$jj]->prenom , "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [0], $ptxp ['iy'], $jj , "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [1], $ptxp ['iy'], $btickets[$jj]->age." ANS", "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [1], $ptxp ['iy'], $btickets[$jj]->nom, "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [2], $ptxp ['iy'], $btickets[$jj]->telephone, "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [2], $ptxp ['iy'], $btickets[$jj]->prenom, "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->email, "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->nationalite, "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [4], $ptxp ['iy'], $btickets[$jj]->classe, "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [4], $ptxp ['iy'], $btickets[$jj]->telephone, "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
