@@ -227,7 +227,7 @@ include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 
 
-// Add a bticket
+// Add a penalite
 if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
@@ -248,6 +248,7 @@ if ($action == 'add' && $usercancreate)
 
 		$object->ref   = $ref;
 		$object->fk_bticket = GETPOST('fk_bticket');
+		$object->fk_bticket = GETPOST('fk_passenger');
 		$object->datea = GETPOST('datea');
 		$object->dateb = GETPOST('dateb');
 		$object->nom = GETPOST('nom');
@@ -291,6 +292,7 @@ if ($action == 'add' && $usercancreate)
 		$id_bticket = $object_bticket->update($user);
 
 		$object->status = Penalite::STATUS_APPROVED;
+		$object->fk_valideur = $user->fk_user;
 
 		if (!$error)
 		{
@@ -335,6 +337,7 @@ if ($action == 'update' && $usercancreate)
 
 			$object->ref   = $ref;
 			$object->fk_bticket = GETPOST('fk_bticket');
+			$object->fk_bticket = GETPOST('fk_passenger');
 			$object->datea = GETPOST('datea');
 			$object->dateb = GETPOST('dateb');
 			$object->nom = GETPOST('nomprenom');

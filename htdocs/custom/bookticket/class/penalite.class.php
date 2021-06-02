@@ -154,20 +154,86 @@ class Penalite extends CommonObject
 
 
 	/**
-	 * @var string raison
+	 * @var string datea
 	 */
-	public $raison;
+	public $datea;
 
 
 	/**
-	 * @var float prix
+	 * @var float prixda
 	 */
-	public $prix;
+	public $prixda;
+
+
+	/**
+	 * @var string dateb
+	 */
+	public $dateb;
+
+
+	/**
+	 * @var float prixdb
+	 */
+	public $prixdb;
+
+	/**
+	 * @var string nom
+	 */
+	public $nom;
+
+
+	/**
+	 * @var float prixn
+	 */
+	public $prixn;
+
+	/**
+	 * @var string billet_perdu
+	 */
+	public $billet_perdu;
+
+
+	/**
+	 * @var float prixbp
+	 */
+	public $prixbp;
+
+	/**
+	 * @var string classe
+	 */
+	public $classe;
+
+
+	/**
+	 * @var float prixc
+	 */
+	public $prixc;
+
+	/**
+	 * @var string classe_enfant
+	 */
+	public $classe_enfant;
+
+
+	/**
+	 * @var float prixce
+	 */
+	public $prixce;
 
 	/**
 	 * @var int ID
 	 */
 	public $fk_bticket;
+
+	/**
+	 * @var int ID
+	 */
+	public $fk_passenger;
+
+	/**
+	 * @var int ID
+	 */
+	public $fk_valideur;
 
 
 	/**
