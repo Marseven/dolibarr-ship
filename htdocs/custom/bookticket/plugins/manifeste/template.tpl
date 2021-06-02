@@ -12,5 +12,5 @@ SetTextProp ("TITLE", 55, 15, -1, -1, 0, 0, 0,"Arial", "B", 24);
 
 
 SetColumns  ("COLSWDTH", 10, 45, 45, 35, 25, 25);
-SetTextProp ("ROW0COL0", 15, 52, -1, 8, 255, 255, 255, "Arial", "B", 11);  
-SetTextProp ("ROW1COL0", 15, 64, -1, 6, 0, 0, 0, "Arial", "", 9);  
+SetTextProp ("ROW0COL0", 10, 52, -1, 8, 255, 255, 255, "Arial", "B", 11);  
+SetTextProp ("ROW1COL0", 10, 64, -1, 6, 0, 0, 0, "Arial", "", 9);  

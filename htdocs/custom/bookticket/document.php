@@ -186,7 +186,7 @@ if($usercancreate && $type == 'travel'){
 	// This sample program uses data fetched from a CSV file
 
 	$btickets = [];
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  c.labelshort as classe, p.email as email, p.age as age, c.prix_standard as prix, tr.ref as travel, t.entity';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  c.labelshort as classe, p.nationalite as natioanlite, p.age as age, c.prix_standard as prix, tr.ref as travel, t.entity';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
