@@ -486,7 +486,7 @@ print "</table>";
 print '</div>';
 print '<br>';
 
-print '</div>';
+
 
 print '</div></div>';
 
