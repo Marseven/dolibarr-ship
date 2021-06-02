@@ -161,7 +161,7 @@ $title = $langs->trans("Penalites");
 $texte = $langs->trans("Penalites");
 
 
-$sql = 'SELECT DISTINCT p.rowid, p.ref,  b.ref as bticket, ps.nom as passenger, ps.prenom as prenom, t.entity, fk_passenger';
+$sql = 'SELECT DISTINCT p.rowid, p.ref,  b.ref as bticket, ps.nom as passenger, ps.prenom as prenom, p.entity, p.fk_passenger';
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_penalite as p';
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_bticket as b ON p.fk_bticket = b.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as ps ON p.fk_passenger = ps.rowid";
