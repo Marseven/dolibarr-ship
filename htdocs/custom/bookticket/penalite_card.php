@@ -972,21 +972,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Ref
 			print '<tr>';
-			print '<td class="titlefield">'.$langs->trans("Ref").'</td>';
+			print '<td class="titlefield">'.$langs->trans("RefBillet").'</td>';
 			print '<td>';
 			print $obj->ref;
 			print '</td></tr>';
-
-			// Bticket
-			print '<tr>';
-			print '<td>';
-			$htmlhelp = $langs->trans('BticketHelp');
-			print $form->textwithpicto($langs->trans('Bticket'), $htmlhelp);
-			print '</td>';
-			print '<td>';
-			print $obj->ref;
-			print '</td>';
-			print '</tr>';
 
 			// Passenger
 			print '<tr>';
