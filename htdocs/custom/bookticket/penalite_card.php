@@ -255,8 +255,8 @@ if ($action == 'add' && $usercancreate)
 		$object->billet_perdu = GETPOST('billet_perdu');
 		$object->classe = GETPOST('classe');
 		$object->classe_enfant = GETPOST('classe_enfant');
-		$object->classe = GETPOST('prixc');
-		$object->classe_enfant = GETPOST('prixce');
+		$object->classe = GETPOST('prix_c');
+		$object->classe_enfant = GETPOST('prix_ce');
 
 		if(GETPOST('datea') == 'on'){
 			$object_bticket->fk_travel = GETPOST('fk_travel');
@@ -280,12 +280,12 @@ if ($action == 'add' && $usercancreate)
 
 		if(GETPOST('classe') == 'on'){
 			$object_bticket->fk_classe  = GETPOST('fk_classe');
-			$object_bticket->prix  += GETPOST('prixc');
+			$object_bticket->prix  += GETPOST('prix_c');
 		}
 
 		if(GETPOST('classe_enfant') == 'on'){
 			$object_bticket->fk_classe = GETPOST('fk_classe');
-			$object_bticket->prix  += GETPOST('prixce');
+			$object_bticket->prix  += GETPOST('prix_ce');
 		}
 
 		$id_passenger = $object_passenger->update($user);
@@ -345,8 +345,8 @@ if ($action == 'update' && $usercancreate)
 			$object->billet_perdu = GETPOST('billet_perdu');
 			$object->classe = GETPOST('classe');
 			$object->classe_enfant = GETPOST('classe_enfant');
-			$object->classe = GETPOST('prixc');
-			$object->classe_enfant = GETPOST('prixce');
+			$object->classe = GETPOST('prix_c');
+			$object->classe_enfant = GETPOST('prix_ce');
 
 			if(GETPOST('datea') == 'on'){
 				$object_bticket->fk_travel = GETPOST('fk_travel');
@@ -370,12 +370,12 @@ if ($action == 'update' && $usercancreate)
 
 			if(GETPOST('classe') == 'on'){
 				$object_bticket->fk_classe  = GETPOST('fk_classe');
-				$object_bticket->prix  += GETPOST('prixc');
+				$object_bticket->prix  += GETPOST('prix_c');
 			}
 
 			if(GETPOST('classe_enfant') == 'on'){
 				$object_bticket->fk_classe = GETPOST('fk_classe');
-				$object_bticket->prix  += GETPOST('prixce');
+				$object_bticket->prix  += GETPOST('prix_ce');
 			}
 
 			$object->fk_valideur = $user->fk_user;
@@ -672,7 +672,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PenaliteClasse").'</td>';
-			print '<td><input type="number" name="prixc" >';
+			print '<td><input type="number" name="prix_c" >';
 			print '</td></tr>';
 
 			// classe_enfant
@@ -706,7 +706,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PenaliteClasseEnfant").'</td>';
-			print '<td><input type="number" name="prixce" >';
+			print '<td><input type="number" name="prix_ce" >';
 			print '</td></tr>';
 
 		print '</table>';
@@ -733,8 +733,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_p .= ' AND p.rowid IN ('.$object->fk_passenger.')';
 			$resql_p = $db->query($sql_p);
 			$obj_p = $db->fetch_object($resql_p);
-
-			//var_dump($object); die;
 
 			//WYSIWYG Editor
 			require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
@@ -879,7 +877,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PenaliteClasse").'</td>';
-			print '<td><input type="number" name="prixc" >';
+			print '<td><input type="number" name="prix_c" >';
 			print '</td></tr>';
 
 			// classe_enfant
@@ -913,7 +911,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PenaliteClasseEnfant").'</td>';
-			print '<td><input type="number" name="prixce" >';
+			print '<td><input type="number" name="prix_ce" >';
 			print '</td></tr>';
 
 			print '</table>';
@@ -1039,7 +1037,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('PenaliteDateA'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->datea == "on" ? $object->prixda." FCFA" : "Non";
+			print $object->datea == "on" ? $object->prix_da." FCFA" : "Non";
 			print '</td>';
 			print '</tr>';
 
@@ -1050,7 +1048,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('PenaliteDateB'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->dateb == "on" ? $object->prixdb." FCFA" : "Non";
+			print $object->dateb == "on" ? $object->prix_db." FCFA" : "Non";
 			print '</td>';
 			print '</tr>';
 
@@ -1061,7 +1059,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('PenaliteNom'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->nom == "on" ? $object->prixn." FCFA" : "Non";
+			print $object->nom == "on" ? $object->prix_n." FCFA" : "Non";
 			print '</td>';
 			print '</tr>';
 
@@ -1072,7 +1070,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('PenaliteBilletPerdu'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->billet_perdu == "on" ? $object->prixbp." FCFA" : "Non";
+			print $object->billet_perdu == "on" ? $object->prix_bp." FCFA" : "Non";
 			print '</td>';
 			print '</tr>';
 
@@ -1083,7 +1081,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('PenaliteClasse'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->classe == "on" ? $object->prixc." FCFA" : "Non";
+			print $object->classe == "on" ? $object->prix_c." FCFA" : "Non";
 			print '</td>';
 			print '</tr>';
 
@@ -1094,7 +1092,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('PenaliteClasseEnfant'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $object->classe_enfant == "on" ? $object->prixce." FCFA" : "Non";
+			print $object->classe_enfant == "on" ? $object->prix_ce." FCFA" : "Non";
 			print '</td>';
 			print '</tr>';
 

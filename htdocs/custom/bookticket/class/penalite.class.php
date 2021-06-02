@@ -119,17 +119,17 @@ class Penalite extends CommonObject
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
 		'ref'           => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
 		'datea'  		=> array('type'=>'varchar(255)', 'label'=>'DateA', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prixda'        	=> array('type'=>'integer', 'label'=>'Prix Date A', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'prix_da'        => array('type'=>'integer', 'label'=>'Prix Date A', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'dateb'  		=> array('type'=>'varchar(255)', 'label'=>'DateB', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prixdb'        	=> array('type'=>'integer', 'label'=>'Prix Date B', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'nom'  		=> array('type'=>'varchar(255)', 'label'=>'NomPrenom', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prixn'        	=> array('type'=>'integer', 'label'=>'Prix Nom Prenom', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'billet_perdu'  		=> array('type'=>'varchar(255)', 'label'=>'Billet Perdu', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prixbp'        	=> array('type'=>'integer', 'label'=>'Prix Billet Perdu', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'prix_db'        => array('type'=>'integer', 'label'=>'Prix Date B', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'nom'  			=> array('type'=>'varchar(255)', 'label'=>'NomPrenom', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'prix_n'        	=> array('type'=>'integer', 'label'=>'Prix Nom Prenom', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'billet_perdu'  => array('type'=>'varchar(255)', 'label'=>'Billet Perdu', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'prix_bp'        => array('type'=>'integer', 'label'=>'Prix Billet Perdu', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'classe'  		=> array('type'=>'varchar(255)', 'label'=>'Classe', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prixc'        	=> array('type'=>'integer', 'label'=>'Prix Classe', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'classe_enfant'  		=> array('type'=>'varchar(255)', 'label'=>'Classe Enfant', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prixce'        	=> array('type'=>'integer', 'label'=>'Prix Classe Enfant', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'prix_c'        	=> array('type'=>'integer', 'label'=>'Prix Classe', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
+		'classe_enfant' => array('type'=>'varchar(255)', 'label'=>'Classe Enfant', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
+		'prix_ce'        => array('type'=>'integer', 'label'=>'Prix Classe Enfant', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'fk_bticket' 	=> array('type'=>'integer:Bticket:bticket/class/bticket.class.php', 'label'=>'Le billet', 'picto'=>'bticket', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'bticket.rowid'),
 		'fk_passenger' 	=> array('type'=>'integer:Bticket:bticket/class/passenger.class.php', 'label'=>'Le passager', 'picto'=>'passenger', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'passenger.rowid'),
 		'fk_valideur' 	=> array('type'=>'integer:User:user/class/user.class.php', 'label'=>'Le valideur', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.fk_user'),
@@ -160,9 +160,9 @@ class Penalite extends CommonObject
 
 
 	/**
-	 * @var float prixda
+	 * @var float prix_da
 	 */
-	public $prixda;
+	public $prix_da;
 
 
 	/**
@@ -172,9 +172,9 @@ class Penalite extends CommonObject
 
 
 	/**
-	 * @var float prixdb
+	 * @var float prix_db
 	 */
-	public $prixdb;
+	public $prix_db;
 
 	/**
 	 * @var string nom
@@ -183,9 +183,9 @@ class Penalite extends CommonObject
 
 
 	/**
-	 * @var float prixn
+	 * @var float prix_n
 	 */
-	public $prixn;
+	public $prix_n;
 
 	/**
 	 * @var string billet_perdu
@@ -194,9 +194,9 @@ class Penalite extends CommonObject
 
 
 	/**
-	 * @var float prixbp
+	 * @var float prix_bp
 	 */
-	public $prixbp;
+	public $prix_bp;
 
 	/**
 	 * @var string classe
@@ -205,9 +205,9 @@ class Penalite extends CommonObject
 
 
 	/**
-	 * @var float prixc
+	 * @var float prix_c
 	 */
-	public $prixc;
+	public $prix_c;
 
 	/**
 	 * @var string classe_enfant
@@ -216,9 +216,9 @@ class Penalite extends CommonObject
 
 
 	/**
-	 * @var float prixce
+	 * @var float prix_ce
 	 */
-	public $prixce;
+	public $prix_ce;
 
 	/**
 	 * @var int ID
