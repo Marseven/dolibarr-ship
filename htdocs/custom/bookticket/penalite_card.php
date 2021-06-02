@@ -501,10 +501,10 @@ if ($object->id > 0 && $action == 'addin')
  * View
  */
 
-$title = $langs->trans('bticketCard');
+$title = $langs->trans('PenaliteCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->label, 16);
-$title = $langs->trans('bticket')." ".$shortlabel." - ".$langs->trans('Card');
+$title = $langs->trans('Penalite')." ".$shortlabel." - ".$langs->trans('Card');
 $helpurl = 'EN:Module_Ticket|FR:Module_Ticket|ES:M&oacute;dulo_Ticket';
 
 llxHeader('', $title, $helpurl);
