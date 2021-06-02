@@ -370,9 +370,9 @@ if ($resql)
 		// bticket
 		if (!empty($arrayfields['p.bticket']['checked']))
 		{
-			print '<td class="center">';
+			print '<td class="center"><a href="'.dol_buildpath('/bookticket/bticket_card.php', 1).'?id='.$obj->fk_bticket.'">';
 			print $obj->bticket;
-			print '</td>';
+			print '</a></td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
