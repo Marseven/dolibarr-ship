@@ -232,15 +232,14 @@ if($usercancreate && $type == 'travel'){
 	$pdf->IncludeTemplate ($template);
 	$pdf->Image('img/DVM.jpg', 10, 5, 15, 15);
 
-	$society = "DOUYA  VOYAGE MARITIME \n
-				D.V.M  S.A \n
-				Siège social- Libreville \n
-				B.P : 14050 Libreville-  Gabon – Email : douya.voyagemaritime@ gmail.com\n
-				Libreville  Tél : ( +241)  07 52 56 05 – 04 18 67 36-  06 03 29 85\n
-				Port-Gentil Tél : (+241 ) 06 35 90 35- 05 34 54 88- 07 44 85 19\n
-				";
+	$society = "DOUYA  VOYAGE MARITIME\n";
+	$society .=	"D.V.M  S.A\n";
+	$society .=	"Siège social- Libreville\n";
+	$society .=	"B.P : 14050 Libreville-  Gabon – Email : douya.voyagemaritime@ gmail.com\n";
+	$society .=	"Libreville  Tél : ( +241)  07 52 56 05 – 04 18 67 36-  06 03 29 85\n";
+	$society .=	"Port-Gentil Tél : (+241 ) 06 35 90 35- 05 34 54 88- 07 44 85 19\n";
 
-	$pdf->ApplyTextProp("SOCIETY", $society);
+	$pdf->ApplyTextProp("SOCIETY", utf8_decode($society));
 
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
