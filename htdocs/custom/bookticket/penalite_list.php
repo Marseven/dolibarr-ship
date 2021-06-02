@@ -317,13 +317,13 @@ if ($resql)
 
 	print '<tr class="liste_titre">';
 	if (!empty($arrayfields['p.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['p.ref']['label'], $_SERVER["PHP_SELF"], "p.ref", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['passenger']['checked'])) {
 		print_liste_field_titre($arrayfields['passenger']['label'], $_SERVER["PHP_SELF"], "passenger", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['p.bticket']['checked'])) {
-		print_liste_field_titre($arrayfields['p.bticket']['label'], $_SERVER["PHP_SELF"], "t.bticket", "", $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre($arrayfields['p.bticket']['label'], $_SERVER["PHP_SELF"], "p.bticket", "", $param, '', $sortfield, $sortorder, 'center ');
 	}
 
 	if (!empty($arrayfields['t.date_creation']['checked'])) {
