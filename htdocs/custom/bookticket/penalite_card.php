@@ -246,46 +246,54 @@ if ($action == 'add' && $usercancreate)
 		$idpassenger = $object_bticket->fk_passenger;
 		$object_passenger->fetch($idpassenger);
 
+		var_dump($object_bticket->id);
+		var_dump($object_passenger->id);
+		die;
+
 		$object->ref   = $ref;
 		$object->fk_bticket = GETPOST('fk_bticket');
 		$object->fk_bticket = $idpassenger;
 		$object->datea = GETPOST('datea');
 		$object->dateb = GETPOST('dateb');
-		$object->nom = GETPOST('nom');
+		$object->nom = GETPOST('nomprenom');
 		$object->billet_perdu = GETPOST('billet_perdu');
 		$object->classe = GETPOST('classe');
 		$object->classe_enfant = GETPOST('classe_enfant');
-		$object->classe = GETPOST('prix_c');
-		$object->classe_enfant = GETPOST('prix_ce');
+		$object->prix_c = GETPOST('prix_c');
+		$object->prix_ce = GETPOST('prix_ce');
+		$object->prix_n = 8000;
+		$object->prix_bp = 8000;
+		$object->prix_da = 5000;
+		$object->prix_db = 8000;
 
 		if(GETPOST('datea') == 'on'){
 			$object_bticket->fk_travel = GETPOST('fk_travel');
-			$object_bticket->prix  += 5000;
+			$object_bticket->prix  += $object->prix_da;
 		}
 
 		if(GETPOST('dateb') == 'on'){
 			$object_bticket->fk_travel  = GETPOST('fk_travel');
-			$object_bticket->prix  += 8000;
+			$object_bticket->prix  += $object->prix_db;
 		}
 
-		if(GETPOST('nom') == 'on'){
+		if(GETPOST('nomprenom') == 'on'){
 			$object_passenger->nom   = GETPOST('nom');
 			$object_passenger->prenom  = GETPOST('prenom');
-			$object_bticket->prix  += 8000;
+			$object_bticket->prix  += $object->prix_n;
 		}
 
 		if(GETPOST('billet_perdu') == 'on'){
-			$object_bticket->prix  += 8000;
+			$object_bticket->prix  += $object->prix_bp;
 		}
 
 		if(GETPOST('classe') == 'on'){
 			$object_bticket->fk_classe  = GETPOST('fk_classe');
-			$object_bticket->prix  += GETPOST('prix_c');
+			$object_bticket->prix  += $object->prix_c;
 		}
 
 		if(GETPOST('classe_enfant') == 'on'){
 			$object_bticket->fk_classe = GETPOST('fk_classe');
-			$object_bticket->prix  += GETPOST('prix_ce');
+			$object_bticket->prix  += $object->prix_ce;
 		}
 
 		$id_passenger = $object_passenger->update($user);
@@ -294,7 +302,7 @@ if ($action == 'add' && $usercancreate)
 		$object->status = Penalite::STATUS_APPROVED;
 		$object->fk_valideur = $user->fk_user;
 
-		if (!$error)
+		if (!$error && $id_passenger > 0 && $id_bticket > 0)
 		{
 			$id = $object->create($user);
 		}
