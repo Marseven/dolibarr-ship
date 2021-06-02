@@ -16,3 +16,4 @@
 -- ===========================================================================
 
 ALTER TABLE llx_bookticket_penalite ADD CONSTRAINT fk_penalite_fk_bticket FOREIGN KEY (fk_bticket) REFERENCES llx_bookticket_bticket (rowid);
+ALTER TABLE llx_bookticket_penalite ADD CONSTRAINT fk_penalite_fk_passenger FOREIGN KEY (fk_passenger) REFERENCES llx_bookticket_passenger (rowid);

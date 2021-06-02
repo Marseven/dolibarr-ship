@@ -536,14 +536,14 @@ if (empty($reshook))
 
 		$object->fetch($id);
 
-		// If status is waiting approval and approver is also user
+		// If status is waiting refuse and refuser is also user
 		if ($object->status == Bticket::STATUS_VALIDATED && $user->id == $object->fk_valideur)
 		{
 			$object->status = Bticket::STATUS_REFUSED;
 
 			$db->begin();
 
-			$verif = $object->approve($user);
+			$verif = $object->refuse($user);
 			if ($verif <= 0)
 			{
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -1512,7 +1512,7 @@ if ($action != 'create' && $action != 'edit')
 			if ($user->id == $object->fk_valideur)
 			{
 				print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
-				print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=refuse" class="butAction">'.$langs->trans("ActionRefuseCP").'</a>';
+				print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=refuse" class="butAction">'.$langs->trans("ActionRefuse").'</a>';
 			}
 		}
 

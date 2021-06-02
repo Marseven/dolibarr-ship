@@ -1221,6 +1221,46 @@ class Penalite extends CommonObject
 		}
 	}
 
+	/**
+	 *	Refuse leave request
+	 *
+	 *  @param	User	$user        	User that refuse
+	 *  @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *  @return int         			<0 if KO, >0 if OK
+	 */
+	public function refuse($user = null, $notrigger = 0)
+	{
+		global $conf, $langs;
+		$error = 0;
+
+		// Update request
+		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_penalite SET";
+		$sql .= " status = '".self::STATUS_REFUSED."'";
+		$sql .= " WHERE rowid= ".$this->id;
+
+		$this->db->begin();
+
+		$resql = $this->db->query($sql);
+		if (!$resql) {
+			$error++; $this->errors[] = "Error ".$this->db->lasterror();
+		}
+
+		// Commit or rollback
+		if ($error)
+		{
+			foreach ($this->errors as $errmsg)
+			{
+				dol_syslog(get_class($this)."::refuse ".$errmsg, LOG_ERR);
+				$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
+			}
+			$this->db->rollback();
+			return -1 * $error;
+		} else {
+			$this->db->commit();
+			return 1;
+		}
+	}
+
 	public function load_state_board()
     {
          // phpcs:enable
