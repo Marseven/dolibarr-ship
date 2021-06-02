@@ -4,11 +4,11 @@
 ; -----------------------------------
 ;
 SetDrawColor (64, 64, 64);
-SetTextProp ("FOOTTITLE", 10, 280, -1, -1, 0, 0, 0,"Arial", "B", 10);                          
-SetTextProp ("FOOTRNB2", 196, 280, -1, -1, 0, 0, 0,"Arial", "I", 9);  
+SetTextProp ("FOOTTITLE", 10, 287, -1, -1, 0, 0, 0,"Arial", "B", 10);                          
+SetTextProp ("FOOTRNB2", 196, 287, -1, -1, 0, 0, 0,"Arial", "I", 9);  
 
-
-SetTextProp ("TITLE", 55, 15, -1, -1, 0, 0, 0,"Arial", "B", 24);                                      
+SetTextProp ("SOCIETY", 20, 10, -1, -1, 0, 0, 0,"Arial", "B", 14);
+SetTextProp ("TITLE", 55, 20, -1, -1, 0, 0, 0,"Arial", "B", 20);                                      
 
 
 SetColumns  ("COLSWDTH", 10, 45, 45, 35, 25, 25);
