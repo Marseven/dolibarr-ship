@@ -39,7 +39,7 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-$morejs=array("/bookticket/js/bookticket.js.php", "/bookticket/js/select2.min.js.php");
+$morejs=array("/bookticket/js/bookticket.js", "/bookticket/js/select2.min.js");
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
