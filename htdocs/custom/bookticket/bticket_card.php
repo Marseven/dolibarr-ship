@@ -333,6 +333,7 @@ if (empty($reshook))
 				$object_passenger->accompagne        = GETPOST('accompagne');
 				$object_passenger->nom_enfant        = GETPOST('nom_enfant');
 				$object_passenger->age_enfant        = GETPOST('age_enfant');
+				$object_passenger->status = Passenger::STATUS_VALIDATED;
 
 				$id_passenger = $object_passenger->create($user);
 
@@ -429,6 +430,7 @@ if (empty($reshook))
 				$object_passenger->accompagne             	 = GETPOST('accompagne');
 				$object_passenger->nom_enfant             	 = GETPOST('nom_enfant');
 				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
+				$object_passenger->status = Passenger::STATUS_VALIDATED;
 
 				if(GETPOST('age') > 13){
 					$object->prix = $obj_prix->prix_standard;
