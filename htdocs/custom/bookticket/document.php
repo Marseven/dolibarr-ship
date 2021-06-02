@@ -236,7 +236,7 @@ if($usercancreate && $type == 'travel'){
 	$society = "DOUYA  VOYAGE MARITIME";
 	$society1 =	"D.V.M  S.A";
 	$society2 =	"Siège social- Libreville\n";
-	$society3 =	"B.P : 14050 Libreville-  Gabon – Email : douya.voyagemaritime@ gmail.com";
+	$society3 =	"B.P : 14050 Libreville - Gabon - Email : douya.voyagemaritime@ gmail.com";
 	$society4 =	"Libreville  Tél : ( +241)  07 52 56 05 – 04 18 67 36-  06 03 29 85";
 	$society5 =	"Port-Gentil Tél : (+241 ) 06 35 90 35- 05 34 54 88- 07 44 85 19";
 
@@ -247,8 +247,8 @@ if($usercancreate && $type == 'travel'){
 	$pdf->ApplyTextProp("SOCIETY4", utf8_decode($society4));
 	$pdf->ApplyTextProp("SOCIETY5", utf8_decode($society5));
 
-	$pdf->ApplyTextProp("SHIP", utf8_decode("Nom :  ".$btickets[0]->ship." - N° Immatriculation :".$btickets[0]->refship));
-	$pdf->ApplyTextProp("DEPART", utf8_decode("Date du :".dol_print_date($btickets[0]->depart, 'day', 'tzuser')));
+	$pdf->ApplyTextProp("SHIP", utf8_decode("Nom : ".$btickets[0]->ship." - N° Immatriculation : ".$btickets[0]->refship));
+	$pdf->ApplyTextProp("DEPART", utf8_decode("Date du : ".dol_print_date($btickets[0]->depart, 'day', 'tzuser')));
 
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
