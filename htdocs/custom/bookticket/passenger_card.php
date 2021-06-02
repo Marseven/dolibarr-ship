@@ -570,7 +570,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("Nationalite").'</td>';
 				print '<td>';
-				print $object->natioanlite;
+				print $object->nationalite;
 				print '</td></tr>';
 
 				// age
