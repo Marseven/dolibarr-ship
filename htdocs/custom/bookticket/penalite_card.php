@@ -257,28 +257,32 @@ if ($action == 'add' && $usercancreate)
 		$object->classe_enfant = GETPOST('classe_enfant');
 		$object->prix_c = GETPOST('prix_c');
 		$object->prix_ce = GETPOST('prix_ce');
-		$object->prix_n = 8000;
-		$object->prix_bp = 8000;
-		$object->prix_da = 5000;
-		$object->prix_db = 8000;
+		$object->prix_n = 0;
+		$object->prix_bp = 0;
+		$object->prix_da = 0;
+		$object->prix_db = 0;
 
 		if(GETPOST('datea') == 'on'){
 			$object_bticket->fk_travel = GETPOST('fk_travel');
+			$object->prix_da = 5000;
 			$object_bticket->prix  += $object->prix_da;
 		}
 
 		if(GETPOST('dateb') == 'on'){
 			$object_bticket->fk_travel  = GETPOST('fk_travel');
+			$object->prix_db = 8000;
 			$object_bticket->prix  += $object->prix_db;
 		}
 
 		if(GETPOST('nomprenom') == 'on'){
 			$object_passenger->nom   = GETPOST('nom');
 			$object_passenger->prenom  = GETPOST('prenom');
+			$object->prix_n = 8000;
 			$object_bticket->prix  += $object->prix_n;
 		}
 
 		if(GETPOST('billet_perdu') == 'on'){
+			$object->prix_bp = 8000;
 			$object_bticket->prix  += $object->prix_bp;
 		}
 
