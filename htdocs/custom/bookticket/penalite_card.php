@@ -735,12 +735,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
 		{
-			$sql_p = 'SELECT DISTINCT p.rowid, p.nom, p.prenom, p.entity';
-			$sql_p .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
-			$sql_p .= ' WHERE p.entity IN ('.getEntity('passenger').')';
-			$sql_p .= ' AND p.rowid IN ('.$object->fk_passenger.')';
-			$resql_p = $db->query($sql_p);
-			$obj_p = $db->fetch_object($resql_p);
+			$object_passenger->fetch($object->fk_passenger);
 
 			//WYSIWYG Editor
 			require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
@@ -845,12 +840,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$obj_p->nom.'">';
+			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
 			print '</td></tr>';
 
 			// prenom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Prenom").'</td>';
-			print '<td><input name="prenom" class="maxwidth300" value="'.$obj_p->prenom.'">';
+			print '<td><input name="prenom" class="maxwidth300" value="'.$object_passenger->prenom.'">';
 			print '</td></tr>';
 
 
