@@ -904,8 +904,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
-
-			$passenger = '<td><select class="flat" name="fk_passenger">';
+			include_once DOL_DOCUMENT_ROOT.'/core/lib/ajax.lib.php';
+			$passenger = ajax_combobox("fk_passenger", $events, true);
+			$passenger .= '<td><select class="flat" name="fk_passenger" id="fk_passenger">';
 			if (empty($passengerrecords))
 			{
 				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
