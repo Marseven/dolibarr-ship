@@ -922,10 +922,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$passenger .= '</select>';
 
-			$passenger .= '<script type="text/javascript">';
-			$passenger .= "$(document).ready(function() {$('.passenger').select2();});";
-			$passenger .= '</script>';
-
 			print $passenger;
 
 			print '</td></tr>';
