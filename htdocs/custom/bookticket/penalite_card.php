@@ -731,7 +731,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
 		{
-			$sql_p = 'SELECT DISTINCT p.rowid, p.nom, p.prenom, p.age, p.adresse,  p.telephone, p.email, p.accompagne,  p.nom_enfant,  p.age_enfant, p.entity';
+			$sql_p = 'SELECT DISTINCT p.rowid, p.nom, p.prenom, p.entity';
 			$sql_p .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
 			$sql_p .= ' WHERE p.entity IN ('.getEntity('passenger').')';
 			$sql_p .= ' AND p.rowid IN ('.$object->fk_passenger.')';
@@ -760,9 +760,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
 			print '<input type="hidden" name="canvas" value="'.$object->canvas.'">';
 
-			$head = bticket_prepare_head($object);
-			$titre = $langs->trans("CardTicket");
-			$picto =  'bticket';
+			$head = penalite_prepare_head($object);
+			$titre = $langs->trans("CardPenalite");
+			$picto =  'penalite';
 
 			print dol_get_fiche_head($head, 'card', $titre, 0, $picto);
 
@@ -836,7 +836,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NouveauPassager").'</td>';
-			print '<td><input type="checkbox" name="nomprenom" ><input name="fk_passenger" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object_passenger->id).'">';
+			print '<td><input type="checkbox" name="nomprenom" >';
 			print '</td></tr>';
 
 			// nom
