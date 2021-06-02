@@ -285,7 +285,11 @@ if($usercancreate && $type == 'travel'){
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [4], $ptxp ['iy'], $btickets[$jj]->telephone, "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [4], $ptxp ['iy'], $btickets[$jj]->ref, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [5], $ptxp ['iy'], $btickets[$jj]->telephone, "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
