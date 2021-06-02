@@ -803,12 +803,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// datea
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateA").'</td>';
-			print '<td><input type="checkbox" name="datea" '.$object->datea == "on" ? '"checked"' : "".' >';
+			print '<td><input type="checkbox" name="datea" >';
 			print '</td></tr>';
 
 			// datea
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateB").'</td>';
-			print '<td><input type="checkbox" name="dateb" '.$object->dateb == "on" ? '"checked"' : "".' >';
+			print '<td><input type="checkbox" name="dateb" >';
 			print '</td></tr>';
 
 			print '<tr>';
@@ -840,7 +840,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomPrenom").'</td>';
-			print '<td><input type="checkbox" name="nomprenom" '.$object->nom == "on" ? '"checked"' : "".' >';
+			print '<td><input type="checkbox" name="nomprenom" >';
 			print '</td></tr>';
 
 			// nom
@@ -856,7 +856,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// classe
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Classe").'</td>';
-			print '<td><input type="checkbox" name="classe"  '.$object->classe == "on" ? '"checked"' : "".' >';
+			print '<td><input type="checkbox" name="classe" >';
 			print '</td></tr>';
 
 			// classe
@@ -890,7 +890,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// classe_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("ClasseEnfant").'</td>';
-			print '<td><input type="checkbox" name="classe_enfant" '.$object->classe_enfant == "on" ? '"checked"' : "".' >';
+			print '<td><input type="checkbox" name="classe_enfant" >';
 			print '</td></tr>';
 
 			// classe
