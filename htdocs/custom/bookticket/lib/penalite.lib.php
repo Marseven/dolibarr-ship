@@ -60,7 +60,7 @@ function penalite_prepare_head($object)
 		$nbNote = 0;
 		if (!empty($object->note_private)) $nbNote++;
 		if (!empty($object->note_public)) $nbNote++;
-		$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/bticket_note.php?id='.$object->id;
+		$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/panlite_note.php?id='.$object->id;
 		$head[$h][1] = $langs->trans('Notes');
 		if ($nbNote > 0) $head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbNote.'</span>';
 		$head[$h][2] = 'note';
@@ -133,26 +133,6 @@ function show_stats_for_company($ticket, $socid)
 	print '<td class="right" width="25%">'.$langs->trans("NbOfObjectReferers").'</td>';
 	print '<td class="right" width="25%">'.$langs->trans("TotalQuantity").'</td>';
 	print '</tr>';
-
-
-	// ticket
-	if (!empty($conf->contrat->enabled) && $user->rights->contrat->lire)
-	{
-		$nblines++;
-		$ret = $ticket->load_stats_contrat($socid);
-		if ($ret < 0) dol_print_error($db);
-		$langs->load("contracts");
-		print '<tr><td>';
-		print '<a href="contrat.php?id='.$ticket->id.'">'.img_object('', 'contract', 'class="paddingright"').$langs->trans("Contracts").'</a>';
-		print '</td><td class="right">';
-		print $ticket->stats_contrat['customers'];
-		print '</td><td class="right">';
-		print $ticket->stats_contrat['nb'];
-		print '</td><td class="right">';
-		print $ticket->stats_contrat['qty'];
-		print '</td>';
-		print '</tr>';
-	}
 
 	return $nblines++;
 }

@@ -946,13 +946,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
 
-			$head = bticket_prepare_head($object);
+			$head = penalite_prepare_head($object);
 			$titre = $langs->trans("CardPenalite");
 			$picto = 'penalite';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
 			if ($user->socid && !in_array('penalite', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
