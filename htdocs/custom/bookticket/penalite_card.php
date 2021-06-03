@@ -232,7 +232,7 @@ if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
 
-	var_dump($ref);
+	var_dump(GETPOST('ref'));
 		die;
 
 	if (empty($ref))
