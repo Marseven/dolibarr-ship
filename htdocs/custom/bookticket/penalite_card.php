@@ -301,6 +301,7 @@ if ($action == 'add' && $usercancreate)
 		var_dump($id_passenger);
 		var_dump($id_bticket);
 		die;
+
 		$object->status = Penalite::STATUS_APPROVED;
 		$object->fk_valideur = $user->fk_user;
 
@@ -329,7 +330,7 @@ if ($action == 'add' && $usercancreate)
 	}
 }
 
-// Update a bticket
+// Update a penalite
 if ($action == 'update' && $usercancreate)
 {
 	if (GETPOST('cancel', 'alpha'))
@@ -395,8 +396,6 @@ if ($action == 'update' && $usercancreate)
 				$object_bticket->fk_classe = GETPOST('fk_classe');
 				$object_bticket->prix  += $object->prix_ce;
 			}
-
-			$object->fk_valideur = $user->fk_user;
 
 			$object->status = Penalite::STATUS_VALIDATED;
 
