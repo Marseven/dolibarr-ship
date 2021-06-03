@@ -1376,7 +1376,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 day'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1397,7 +1397,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-7 day'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1418,7 +1418,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 month'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1439,7 +1439,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-12 month'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1461,7 +1461,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 day'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1482,7 +1482,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-7 day'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1503,7 +1503,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-1 month'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -1524,7 +1524,7 @@ class Penalite extends CommonObject
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
 		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-12 month'));
-		$sql .= " AND b.date_creation < ".date('Y-m-d H:m:s');
+		$sql .= " AND b.date_creation < ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
