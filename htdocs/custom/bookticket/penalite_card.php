@@ -270,7 +270,7 @@ if ($action == 'add' && $usercancreate)
 		$date2 = strtotime($depart);
 		var_dump($now);
 		var_dump($date2);
-		$diff  = $object->dateDiff($date2, $now);
+		$diff  = $object->dateDiff($now,$date2);
 
 		var_dump($diff);die;
 
