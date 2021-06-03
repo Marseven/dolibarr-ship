@@ -132,7 +132,7 @@ class Penalite extends CommonObject
 		'prix_ce'        => array('type'=>'integer', 'label'=>'Prix Classe Enfant', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
 		'fk_bticket' 	=> array('type'=>'integer:Bticket:bticket/class/bticket.class.php', 'label'=>'Le billet', 'picto'=>'bticket', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'bticket.rowid'),
 		'fk_passenger' 	=> array('type'=>'integer:Bticket:bticket/class/passenger.class.php', 'label'=>'Le passager', 'picto'=>'passenger', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'passenger.rowid'),
-		'fk_valideur' 	=> array('type'=>'integer:User:user/class/user.class.php', 'label'=>'Le valideur', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.fk_user'),
+		'fk_valideur' 	=> array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserValidor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.fk_user'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
 		'fk_user_creat' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
