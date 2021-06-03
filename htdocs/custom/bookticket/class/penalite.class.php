@@ -1481,7 +1481,8 @@ class Penalite extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND BETWEEN  ".date('Y-m-d', strtotime('-7 day'))." AND b.date_creation";
+		$sql .= " AND b.date_creation > ".date('Y-m-d', strtotime('-7 day'));
+		$sql .= " AND b.date_creation <= ".date('Y-m-d');
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
