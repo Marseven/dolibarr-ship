@@ -767,7 +767,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$number = "0123456789";
 			$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
 			$tmpref = "DVM-BL-".$code;
-			print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input id="ref" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpref).'" disabled>';
+			print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input id="ref" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpref).'">';
 			if ($refalreadyexists)
 			{
 				print $langs->trans("RefAlreadyExists");

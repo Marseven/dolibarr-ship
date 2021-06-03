@@ -232,9 +232,6 @@ if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
 
-	var_dump(GETPOST('ref'));
-		die;
-
 	if (empty($ref))
 	{
 		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
@@ -581,7 +578,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$number = "0123456789";
 			$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
 			$tmpref = "DVM-PN-".$code;
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.$tmpref.'" disabled></td></tr>';
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.$tmpref.'"></td></tr>';
 
 			// bticket
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Bticket").'</td>';
