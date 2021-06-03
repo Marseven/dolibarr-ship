@@ -289,6 +289,9 @@ if (empty($reshook))
 	{
 		$error = 0;
 
+		// Générateur de références aléatoires Compatible EAN13 (13 chiffres)
+
+
         if (empty($ref))
         {
             setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
@@ -761,9 +764,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<table class="border centpercent">';
 
 			print '<tr>';
-			$tmpcode = '';
-			if (!empty($modCodeBticket->code_auto)) $tmpcode = $modCodeBticket->getNextValue($object, $type);
-			print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input id="ref" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpcode).'">';
+			$number = "0123456789";
+			$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
+			$tmpref = "DVM-BL-".$code;
+			print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input id="ref" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpref).'" disabled>';
 			if ($refalreadyexists)
 			{
 				print $langs->trans("RefAlreadyExists");
@@ -1046,7 +1050,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<table class="border allwidth">';
 
 			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
 
 			// Barcode
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
