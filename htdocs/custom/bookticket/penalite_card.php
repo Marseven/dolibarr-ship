@@ -951,7 +951,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, c.prix_standard as prix, tr.ref as travel, a.label as agence, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
