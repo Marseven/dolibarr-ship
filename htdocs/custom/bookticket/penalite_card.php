@@ -266,6 +266,8 @@ if ($action == 'add' && $usercancreate)
 		$object_travel->fetch($object_bticket->fk_travel);
 		$now   = time();
 		$date2 = strtotime($object_travel->jour.' '.$object_travel->heure);
+		var_dump($now);
+		var_dump($date2);
 		$diff  = $object->dateDiff($date2, $now);
 
 		var_dump($diff);die;
