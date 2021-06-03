@@ -262,27 +262,35 @@ if ($action == 'add' && $usercancreate)
 		$object->prix_da = 0;
 		$object->prix_db = 0;
 
+		$object_travel = new Travel($db);
+		$object_travel->fetch($object_bticket->fk_travel);
+		$now   = time();
+		$date2 = strtotime($object_travel->jour.' '.$object_travel->heure);
+		$diff  = $object->dateDiff($now, $date2);
+
+		var_dump($diff);die;
+
 		if(GETPOST('datea') == 'on'){
 			$object_bticket->fk_travel = GETPOST('fk_travel');
-			$object->prix_da = 5000;
+			if($diff['hour'] > 24){$object->prix_da = 5000;}else{$object->prix_da = 10000;}
 			$object_bticket->prix  += $object->prix_da;
 		}
 
 		if(GETPOST('dateb') == 'on'){
 			$object_bticket->fk_travel  = GETPOST('fk_travel');
-			$object->prix_db = 8000;
+			if($diff['hour'] > 24){$object->prix_db = 8000;}else{$object->prix_db = 10000;}
 			$object_bticket->prix  += $object->prix_db;
 		}
 
 		if(GETPOST('nomprenom') == 'on'){
 			$object_passenger->nom   = GETPOST('nom');
 			$object_passenger->prenom  = GETPOST('prenom');
-			$object->prix_n = 8000;
+			if($diff['hour'] > 24){$object->prix_n = 8000;}else{$object->prix_n = 10000;}
 			$object_bticket->prix  += $object->prix_n;
 		}
 
 		if(GETPOST('billet_perdu') == 'on'){
-			$object->prix_bp = 8000;
+			if($diff['hour'] > 24){$object->prix_bp = 8000;}else{$object->prix_bp = 10000;}
 			$object_bticket->prix  += $object->prix_bp;
 		}
 
