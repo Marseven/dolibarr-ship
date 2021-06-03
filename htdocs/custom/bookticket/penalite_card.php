@@ -265,7 +265,7 @@ if ($action == 'add' && $usercancreate)
 		$object_travel = new Travel($db);
 		$object_travel->fetch($object_bticket->fk_travel);
 		$now   = time();
-		$depart = $object_travel->jour.' '.$object_travel->heure;
+		$depart = date('Y-m-d', $object_travel->jour).' '.$object_travel->heure;
 		var_dump($depart);
 		$date2 = strtotime($depart);
 		var_dump($now);
