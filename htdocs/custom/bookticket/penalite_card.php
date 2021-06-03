@@ -232,6 +232,9 @@ if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
 
+	var_dump($ref);
+		die;
+
 	if (empty($ref))
 	{
 		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
@@ -298,9 +301,6 @@ if ($action == 'add' && $usercancreate)
 
 		$id_passenger = $object_passenger->update($user);
 		$id_bticket = $object_bticket->update($user);
-		var_dump($id_passenger);
-		var_dump($id_bticket);
-		die;
 
 		$object->status = Penalite::STATUS_APPROVED;
 		$object->fk_valideur = $user->fk_user;
