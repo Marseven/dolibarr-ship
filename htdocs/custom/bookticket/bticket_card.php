@@ -952,7 +952,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// nationalite
 			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
 			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth80 maxwidth100 widthcentpercentminusx');
+			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth100 maxwidth150 widthcentpercentminusx');
 			print '</td></tr>';
 
 			// age
@@ -1194,7 +1194,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// nationalite
 			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
 			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth80 maxwidth100 widthcentpercentminusx');
+			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth100 maxwidth150 widthcentpercentminusx');
 			print '</td></tr>';
 
 			// age
