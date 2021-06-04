@@ -358,7 +358,7 @@ function addExpiration($date_fin)
 
 function addNote($ref)
 {
-	$this->SetFont( "Arial", "", 10);
+	$this->SetFont( "Arial", "", 12);
 	$ref = utf8_decode($ref);
 	$length = $this->GetStringWidth($ref);
 	$r1  = 10;
@@ -366,7 +366,7 @@ function addNote($ref)
 	$y1  = 100;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
-	$this->MultiCell($length,4, $ref);
+	$this->Cell($length, 4, $ref);
 }
 
 function addCols( $tab )

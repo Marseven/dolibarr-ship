@@ -129,7 +129,7 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addExpiration($expire);
 
-	$pdf->addNote("L'enregistrement débute à ".$heuresave);
+	$pdf->addNote("L'enregistrement débute à ".$heuresave.".");
 
 	$cols=array( "REF"    	=> 20,
 				"Date"  	=> 20,
