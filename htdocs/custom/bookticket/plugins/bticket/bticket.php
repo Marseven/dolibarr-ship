@@ -316,7 +316,7 @@ function addReglement( $mode )
 	$this->SetFont( "Arial", "B", 10);
 	$this->Cell(10,4, "MODE DE REGLEMENT", 0, 0, "C");
 	$this->SetXY( $r1 + ($r2-$r1)/2 -5 , $y1 + 5 );
-	$this->SetFont( "Arial", "", 10);
+	$this->SetFont( "Arial", "", 8);
 	$this->Cell(10,5,$mode, 0,0, "C");
 }
 

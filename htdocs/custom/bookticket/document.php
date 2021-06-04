@@ -60,9 +60,6 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/qrcode/qrcode.class.p
  * Actions
  */
 
-$date = date('d/m/Y');
-$expire = date('d/m/Y H:m:s', strtotime('+3 month'));
-
 $id = GETPOST('id', 'int');
 $type = GETPOST('type', 'alpha');
 $socid = GETPOST('socid', 'int');
@@ -78,7 +75,7 @@ if($usercancreate && $type == 'bticket'){
 	$object_passenger = new Passenger($db);
 	$object_passenger->fetch($object->fk_passenger);
 
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, c.prix_standard as prix, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, c.prix_standard as prix, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity, t.date_creation';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -89,6 +86,10 @@ if($usercancreate && $type == 'bticket'){
 	$sql_t .= ' AND t.rowid IN ('.$object->id.')';
 	$resql_t = $db->query($sql_t);
 	$obj = $db->fetch_object($resql_t);
+
+	$date = date('d/m/Y', $obj->date_creation );
+	$expire = date('d/m/Y', strtotime('+3 month'));
+	$heuresave = date($obj->hour, strtotime('-2 hour'));
 
 	$mysoc->getFullAddress();
 
@@ -106,15 +107,13 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
 
-	$pdf->addReglement("Airtel Money");
+	$pdf->addReglement("Airtel Money / Cash");
 
 	$pdf->addAchat($date);
 
 	$pdf->addExpiration($expire);
 
-	$pdf->addNote("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-	Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
-	Quisque at arcu lobortis purus pulvinar pulvinar in in turpis.");
+	$pdf->addNote("L'enregistrement débute à ".$heuresave);
 
 	$cols=array( "REF"    	=> 20,
 				"Date"  	=> 20,
@@ -155,13 +154,30 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addPrice($obj->prix, 0, 0, $obj->prix);
 
-	$pdf->addCondition("Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-	Mauris sed nibh at mi blandit imperdiet. Nullam hendrerit sollicitudin ante sit amet commodo.
-	Quisque at arcu lobortis purus pulvinar pulvinar in in turpis. Vivamus quis nisi massa.
-	Donec lacinia metus diam, non scelerisque orci hendrerit et. Nulla purus nibh, finibus et turpis et.
-	Sed venenatis lacinia efficitur. Nunc in justo nec diam ultrices bibendum. Duis pharetra sagittis dui.
-	Proin in odio molestie, tristique elit non, faucibus augue. Aenean eget augue sed nisl convallis elementum.
-	ras tristique leo ac metus tincidunt, sollicitudin elementum lacus dictum.");
+	$pdf->addCondition("CONDITIONS GÉNÉRALES DE TRANSPORT
+
+	Validité du billet:
+	Le transporteur se réserve le droit de modifier l'itinéraire, les horaires de départ ou annuler le voyage.
+	Il n'est responsable des horaires à l'arrivée en fonction des marées ou du mauvais temps.
+
+	Le billet paye a une validité 03 mois à compter de sa date d'émission. Il est modifiable contre une pénalité de 5.000F CFA.
+	Le billet est non remboursable. sauf en cas de non exécution du trajet par la compagnie. Le billet est annulé, si le passager
+	n'a pas notifié le changement de la date de son voyage au moins 24 h avant le départ.
+	Si le passager a déjà sa carte d'embarquement et qu'il vienne après le départ du bateau, son billet devient nul et sans remboursement.
+
+	Heure limite d'enregistrement
+	La convocation est prévue 2h avant l'heure du départ et l'enregistrement termine 30 min avant l'heure du départ.
+	Passé ce délai, compagnie se réserve le droit de disposer des passagers qui ni se serait pas présenter à temps.
+
+	Confirmation
+	Si vous n'utilisez pas une place réservée, pensez à avertir la compagnie 24h avant I’heure de départ,
+	qui Pourra ainsi l’attribuer à un autre passager en liste d'attente.
+
+	Sécurité
+	Il est strictement	interdit de placer dans les bagages	certains objets dangereux (produits inflammables,
+	toxiques, corrosifs, armes blanches ou pompes, munitions, drogues, etc)
+
+	Renseignez-vous auprès de votre agence commerciales.");
 
 	$qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
 
