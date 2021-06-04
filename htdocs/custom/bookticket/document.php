@@ -133,7 +133,7 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addExpiration($expire);
 
-	$pdf->addNote(utf8_decode("La convocation est prévue à ".$heuresave." et l'enregistrement termine à ".$heuresave1."."));
+	$pdf->addNote(utf8_decode("La convocation est prevue a ".$heuresave." et l'enregistrement termine a ".$heuresave1."."));
 
 	$cols=array( "REF"    	=> 20,
 				"Date"  	=> 20,
