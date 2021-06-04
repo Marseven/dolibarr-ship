@@ -107,6 +107,10 @@ if($usercancreate && $type == 'bticket'){
 	$heure1 = $heure1->modify("- 2 hour");
 	$heuresave = $heure1->format('H:m');
 
+	$heure2 = new DateTime($obj->heure);
+	$heure2 = $heure2->modify("- 0.5 hour");
+	$heuresave1 = $heure2->format('H:m');
+
 	$mysoc->getFullAddress();
 
 	$pdf = new PDF_Bticket( 'P', 'mm', 'A4' );
@@ -129,7 +133,7 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addExpiration($expire);
 
-	$pdf->addNote("L'enregistrement débute à ".$heuresave.".");
+	$pdf->addNote(utf8_decode("La convocation est prévue à ".$heuresave." et l'enregistrement termine à ".$heuresave1."."));
 
 	$cols=array( "REF"    	=> 20,
 				"Date"  	=> 20,
