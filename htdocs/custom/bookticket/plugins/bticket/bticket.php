@@ -372,7 +372,7 @@ function addNote($ref)
 function addCols( $tab )
 {
 	global $colonnes;
-
+	$this->SetFont( "Arial", "", 10);
 	$r1  = 10;
 	$r2  = $this->w - ($r1 * 2) ;
 	$y1  = 110;
