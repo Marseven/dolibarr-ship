@@ -159,7 +159,7 @@ if($usercancreate && $type == 'bticket'){
 
 	$y    = 119;
 	$line = array(  "REF"   	=> $obj->ref,
-					"Date"  	=> $obj->jour,
+					"Date"  	=> dol_print_date($obj->jour, 'day', 'tzuser'),
 					"Heure"     => $obj->heure,
 					"De"     	=> $obj->de,
 					"Vers" 	 	=> $obj->vers,
