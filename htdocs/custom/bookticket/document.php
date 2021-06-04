@@ -102,10 +102,11 @@ if($usercancreate && $type == 'bticket'){
 	$date1 = new DateTime($obj->date_creation);
 	$date1 = $date1->modify("+ 3 months");
 	$expire = $date1->format('d/m/Y');
-	var_dump($expire);die;
+
 	$heure1 = new \DateTime($obj->heure);
 	$heure1 = $heure1->modify("- 2 hour");
 	$heuresave = $heure1->format('H:m');
+	var_dump($heuresave);die;
 
 	$mysoc->getFullAddress();
 
