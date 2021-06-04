@@ -105,11 +105,11 @@ if($usercancreate && $type == 'bticket'){
 
 	$heure1 = new DateTime($obj->heure);
 	$heure1 = $heure1->modify("- 2 hour");
-	$heuresave = $heure1->format('H:m');
+	$heuresave = $heure1->format('H:i');
 
 	$heure2 = new DateTime($obj->heure);
-	$heure2 = $heure2->modify("- 0.5 hour");
-	$heuresave1 = $heure2->format('H:m');
+	$heure2 = $heure2->modify("- 30 minutes");
+	$heuresave1 = $heure2->format('H:i');
 
 	$mysoc->getFullAddress();
 
