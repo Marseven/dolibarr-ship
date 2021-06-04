@@ -99,10 +99,11 @@ if($usercancreate && $type == 'bticket'){
 	$penalites = $obj_p->da + $obj_p->db + $obj_p->n + $obj_p->bp + $obj_p->c + $obj_p->ce;
 
 	$date = dol_print_date($object->date_creation, 'day', 'tzuser');
-	$date1 = new DateTime($object->date_creation);
+	$date1 = new \DateTime($object->date_creation);
 	$date1 = $date1->modify("+ 3 months");
 	$expire = $date1->format('d/m/Y');
-	$heure1 = new DateTime($obj->heure);
+	var_dump($expire);die;
+	$heure1 = new \DateTime($obj->heure);
 	$heure1 = $heure1->modify("- 2 hour");
 	$heuresave = $heure1->format('H:m');
 
