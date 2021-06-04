@@ -98,9 +98,13 @@ if($usercancreate && $type == 'bticket'){
 
 	$penalites = $obj_p->da + $obj_p->db + $obj_p->n + $obj_p->bp + $obj_p->c + $obj_p->ce;
 
-	$date = date('d/m/Y', $obj->date_creation );
-	$expire = date('d/m/Y', strtotime('+3 month'));
-	$heuresave = date($obj->heure, strtotime('-2 hour'));
+	$date = dol_print_date($object->date_creation, 'day', 'tzuser');
+	$date1 = new DateTime($object->date_creation);
+	$date1 = $date1->modify("+ 3 months");
+	$expire = $date1->format('d/m/Y');
+	$heure1 = new DateTime($obj->heure);
+	$heure1 = $heure1->modify("- 2 hour");
+	$heuresave = $heure1->format('H:m');
 
 	$mysoc->getFullAddress();
 
@@ -170,22 +174,21 @@ if($usercancreate && $type == 'bticket'){
 	Validité du billet:
 	Le transporteur se réserve le droit de modifier l'itinéraire, les horaires de départ ou annuler le voyage.
 	Il n'est responsable des horaires à l'arrivée en fonction des marées ou du mauvais temps.
-
 	Le billet paye a une validité 03 mois à compter de sa date d'émission. Il est modifiable contre une pénalité de
 	5.000F CFA. Le billet est non remboursable. sauf en cas de non exécution du trajet par la compagnie. Le billet
 	est annulé, si le passager n'a pas notifié le changement de la date de son voyage au moins 24 h avant le départ.
 	Si le passager a déjà sa carte d'embarquement et qu'il vienne après le départ du bateau, son billet devient nul
 	et sans remboursement.
 
-	Heure limite d'enregistrement
+	Heure limite d'enregistrement :
 	La convocation est prévue 2h avant l'heure du départ et l'enregistrement termine 30 min avant l'heure du départ.
 	Passé ce délai, compagnie se réserve le droit de disposer des passagers qui ni se serait pas présenter à temps.
 
-	Confirmation
+	Confirmation :
 	Si vous n'utilisez pas une place réservée, pensez à avertir la compagnie 24h avant I’heure de départ,
 	qui Pourra ainsi l’attribuer à un autre passager en liste d'attente.
 
-	Sécurité
+	Sécurité :
 	Il est strictement	interdit de placer dans les bagages	certains objets dangereux (produits inflammables,
 	toxiques, corrosifs, armes blanches ou pompes, munitions, drogues, etc)
 
