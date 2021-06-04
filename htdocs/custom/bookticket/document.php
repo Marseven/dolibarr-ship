@@ -157,7 +157,7 @@ if($usercancreate && $type == 'bticket'){
 	$pdf->addLineFormat($cols);
 	$pdf->addLineFormat($cols);
 
-	$y    = 129;
+	$y    = 119;
 	$line = array(  "REF"   	=> $obj->ref,
 					"Date"  	=> $obj->jour,
 					"Heure"     => $obj->heure,
