@@ -173,11 +173,11 @@ if($usercancreate && $type == 'bticket'){
 	$pdf->addCadrePrice();
 	$prix = 0;
 	if($object_passenger->accompagne == "on" && $object_passenger->age > 13){
-		$prix = $obj->prix_standard;
+		$prix = $obj->prix_enf_stand;
 	}elseif($object_passenger->accompagne != "on" && $object_passenger->age <= 13){
 		$prix = $obj->prix_enfant;
 	}else{
-		$prix = $obj->prix_enf_stand;
+		$prix = $obj->prix_standard;
 	}
 	$pdf->addPrice($prix, 0, $penalites, $obj->prix);
 
