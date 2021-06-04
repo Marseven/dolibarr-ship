@@ -42,6 +42,7 @@ if (! $res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/penalite.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
@@ -75,7 +76,7 @@ if($usercancreate && $type == 'bticket'){
 	$object_passenger = new Passenger($db);
 	$object_passenger->fetch($object->fk_passenger);
 
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, c.prix_standard as prix, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity, t.date_creation';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, t.prix as prix, c.prix_standard as prix_standard, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity, t.date_creation';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -87,9 +88,19 @@ if($usercancreate && $type == 'bticket'){
 	$resql_t = $db->query($sql_t);
 	$obj = $db->fetch_object($resql_t);
 
+	$sql_p = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
+	$sql_p .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
+	$sql_p .= " WHERE b.status > 0";
+	$sql_p .= " AND b.entity IN (".getEntity('penalite').")";
+	$sql_p .= " AND b.fk_bticket IN (".$object->id.")";
+	$resql_p = $db->query($sql_p);
+	$obj_p = $db->fetch_object($resql_p);
+
+	$penalites = $obj_p->da + $obj_p->db + $obj_p->n + $obj_p->bp + $obj_p->c + $obj_p->ce;
+
 	$date = date('d/m/Y', $obj->date_creation );
 	$expire = date('d/m/Y', strtotime('+3 month'));
-	$heuresave = date($obj->hour, strtotime('-2 hour'));
+	$heuresave = date($obj->heure, strtotime('-2 hour'));
 
 	$mysoc->getFullAddress();
 
@@ -152,18 +163,19 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addCadrePrice();
 
-	$pdf->addPrice($obj->prix, 0, 0, $obj->prix);
+	$pdf->addPrice($obj->prix_standard, 0, $penalites, $obj->prix);
 
-	$pdf->addCondition("CONDITIONS GÉNÉRALES DE TRANSPORT
+	$pdf->addCondition(utf8_decode("CONDITIONS GÉNÉRALES DE TRANSPORT
 
 	Validité du billet:
 	Le transporteur se réserve le droit de modifier l'itinéraire, les horaires de départ ou annuler le voyage.
 	Il n'est responsable des horaires à l'arrivée en fonction des marées ou du mauvais temps.
 
-	Le billet paye a une validité 03 mois à compter de sa date d'émission. Il est modifiable contre une pénalité de 5.000F CFA.
-	Le billet est non remboursable. sauf en cas de non exécution du trajet par la compagnie. Le billet est annulé, si le passager
-	n'a pas notifié le changement de la date de son voyage au moins 24 h avant le départ.
-	Si le passager a déjà sa carte d'embarquement et qu'il vienne après le départ du bateau, son billet devient nul et sans remboursement.
+	Le billet paye a une validité 03 mois à compter de sa date d'émission. Il est modifiable contre une pénalité de
+	5.000F CFA. Le billet est non remboursable. sauf en cas de non exécution du trajet par la compagnie. Le billet
+	est annulé, si le passager n'a pas notifié le changement de la date de son voyage au moins 24 h avant le départ.
+	Si le passager a déjà sa carte d'embarquement et qu'il vienne après le départ du bateau, son billet devient nul
+	et sans remboursement.
 
 	Heure limite d'enregistrement
 	La convocation est prévue 2h avant l'heure du départ et l'enregistrement termine 30 min avant l'heure du départ.
@@ -177,7 +189,7 @@ if($usercancreate && $type == 'bticket'){
 	Il est strictement	interdit de placer dans les bagages	certains objets dangereux (produits inflammables,
 	toxiques, corrosifs, armes blanches ou pompes, munitions, drogues, etc)
 
-	Renseignez-vous auprès de votre agence commerciales.");
+	Renseignez-vous auprès de votre agence commerciales."));
 
 	$qrcode = new QRcode('Billet N° '.$obj->ref.' valide pour Douya Voyage Maritime', 'H');
 
