@@ -836,7 +836,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 
 		$picto = 'bticket';
-		$title = $langs->trans("NewTicket");
+		$title = $langs->trans("NewBTicket");
 
 		$linkback = "";
 		print load_fiche_titre($title, $linkback, $picto);

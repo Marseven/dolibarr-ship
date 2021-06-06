@@ -257,8 +257,8 @@ if ($resql)
 	$perm = $user->rights->bookticket->bticket->write;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
-	$newcardbutton .= dolGetButtonTitle($langs->trans('NewTicket'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&type=0', '', $perm, $params);
-	$label = 'NewTicket';
+	$newcardbutton .= dolGetButtonTitle($langs->trans('NewBTicket'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&type=0', '', $perm, $params);
+	$label = 'NewBTicket';
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post" name="formulaire">';
 	if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
