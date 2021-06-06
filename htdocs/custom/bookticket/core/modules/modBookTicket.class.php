@@ -436,7 +436,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket',      // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',                          // This is a Top menu entry
-			'titre'=>'Ticket',
+			'titre'=>'BTicket',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'ticket',
 			'url'=>'/bookticket/bticketindex.php',
@@ -452,7 +452,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=ticket',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'List Ticket',
+			'titre'=>'ListBTicket',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_ticket_list',
 			'url'=>'/bookticket/bticket_list.php',
@@ -468,7 +468,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=ticket',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'Add Ticket',
+			'titre'=>'AddBTicket',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_ticket_new',
 			'url'=>'/bookticket/bticket_card.php?action=create',
@@ -485,7 +485,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=ticket',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'Ordre Penalite',
+			'titre'=>'OrdrePenalite',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_penalite_list',
 			'url'=>'/bookticket/penalite_list.php',
@@ -518,7 +518,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=travel',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'List Travel',
+			'titre'=>'ListTravel',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_travel_list',
 			'url'=>'/bookticket/travel_list.php',
@@ -534,7 +534,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=travel',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'Add Travel',
+			'titre'=>'AddTravel',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_travel_new',
 			'url'=>'/bookticket/travel_card.php?action=create',
@@ -551,7 +551,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=travel',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'List Agence',
+			'titre'=>'ListAgence',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_agence_list',
 			'url'=>'/bookticket/agence_list.php',
@@ -567,7 +567,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=travel',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'Add Agence',
+			'titre'=>'AddAgence',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_agence_new',
 			'url'=>'/bookticket/agence_card.php?action=create',
@@ -584,7 +584,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=travel',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'List City',
+			'titre'=>'ListCity',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_city_list',
 			'url'=>'/bookticket/city_list.php',
@@ -600,7 +600,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=travel',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'Add City',
+			'titre'=>'AddCity',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_city_new',
 			'url'=>'/bookticket/city_card.php?action=create',
@@ -634,7 +634,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=ship',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'List Ship',
+			'titre'=>'ListShip',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_ship_list',
 			'url'=>'/bookticket/ship_list.php',
@@ -650,7 +650,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=ship',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'Add Ship',
+			'titre'=>'AddShip',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_ship_new',
 			'url'=>'/bookticket/ship_card.php?action=create',
@@ -683,7 +683,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=classe',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'List Classe',
+			'titre'=>'ListClasse',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_classe_list',
 			'url'=>'/bookticket/classe_list.php',
@@ -699,7 +699,7 @@ class modBookTicket extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=classe',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'Add Classe',
+			'titre'=>'AddClasse',
 			'mainmenu'=>'bookticket',
 			'leftmenu'=>'bookticket_classe_new',
 			'url'=>'/bookticket/classe_card.php?action=create',

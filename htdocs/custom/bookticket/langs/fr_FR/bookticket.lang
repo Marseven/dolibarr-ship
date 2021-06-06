@@ -37,20 +37,35 @@ About = À propos
 BookTicketAbout = À propos de BookTicket
 BookTicketAboutPage = Page à propos de BookTicket
 PRINT = Imprimer
-Ticket = Billets de voyage
-List Ticket = Liste des billets
-Add Ticket = Créer un billet
-Ordre Penalite = Ordres de Pénalités
-List Travel = Liste des voyages
-Add Travel = Créer un voyage
-List Agence = Liste des agences
-Add Agence = Ajouter une agence
-List City = Liste des villes
-Add City = Ajouter une ville 
-List Ship = Liste des bâteaux
-Add Ship = Ajouter un bâteau
-List Classe = Liste des classes
-Add Classe = Ajouter une classe
+BTicket = Billets de voyage
+ListBTicket = Liste des billets
+AddBTicket = Créer un billet
+OrdrePenalite = Ordres de Pénalités
+ListTravel = Liste des voyages
+AddTravel = Créer un voyage
+ListAgence = Liste des agences
+AddAgence = Ajouter une agence
+ListCity = Liste des villes
+AddCity = Ajouter une ville 
+ListShip = Liste des bâteaux
+AddShip = Ajouter un bâteau
+ListClasse = Liste des classes
+AddClasse = Ajouter une classe
+
+StatBillet = Statistique sur la vente de billets de voyage
+NbreBilletJour = Nombre de billets vendu aujourd'hui
+NbreBilletSemaine =	Nombre de billets vendu cette semaine
+NbreBilletMois = Nombre de billets vendu ce mois
+NbreBilletAnne = Nombre de billets vendu cette année
+
+ChiffreAffaire = Statistique sur le chiffre d'affaire
+ChiffreAffaireJour =  Chiffre d'affaire aujourd'hui
+ChiffreAffaireSemaine = Chiffre d'affaire cette semaine
+ChiffreAffaireMois = Chiffre d'affaire ce mois
+ChiffreAffaireAnne = Chiffre d'affaire cette année
+
+LastRecordedTicket = Derniers Billets
+LastRecordedTravel = Derniers Voyages
 
 #
 # City
@@ -123,6 +138,17 @@ BticketDeleted = Supprimer le Billet
 BticketIsUsed = Billet utilisé
 BticketCard = Détails du Billet
 CardBticket = Détails du Billet
+
+#
+# Passenger
+#
+Passenger = Passager
+Passengers = Passagers
+NewPassenger = Nouveau Passager
+PassengerDeleted = Supprimer le passager
+PassengerIsUsed = Passager utilisé
+PassengerCard = Détails du Passager
+CardPassenger = Détails du Passager
 
 #
 # Penalite
