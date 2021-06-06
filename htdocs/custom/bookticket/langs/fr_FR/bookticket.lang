@@ -66,12 +66,19 @@ ChiffreAffaireAnne = Chiffre d'affaire cette année
 
 LastRecordedTicket = Derniers Billets
 LastRecordedTravel = Derniers Voyages
+LastRecordedShip = Derniers Bâteaux
+LastRecordedClasse = Derniers Classes
 
 ChiffrePenalite = Statistique sur les Pénalités
 SommePenaliteJour = Chiffre d'affaire sur les pénalités aujourd'hui
 SommePenaliteSemaine = Chiffre d'affaire sur les pénalités cette semaine
 SommePenaliteMois = Chiffre d'affaire sur les pénalités ce mois
 SommePenaliteAnne = Chiffre d'affaire sur les pénalités cette année
+
+ClasseArea = Espace de gestion des classes
+TravelArea = Espace de gestion des voyages
+ShipArea = Espace de gestion des bâteaux
+BticketArea = Espace de gestion des billets de voyage
 
 LabelShort = Code
 

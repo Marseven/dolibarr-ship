@@ -172,9 +172,9 @@ include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
  * View
  */
 
-$title = $langs->trans("Tickets");
+$title = $langs->trans("BTickets");
 
-$texte = $langs->trans("Tickets");
+$texte = $langs->trans("BTickets");
 
 
 $sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger, p.prenom as prenom,  c.label as classe, tr.ref as travel, t.entity, fk_passenger';
@@ -221,7 +221,7 @@ if ($resql)
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Ticket|FR:Module_Tickets|ES:M&oacute;dulo_Tickets';
+	$helpurl = 'EN:Module_BTicket|FR:Module_BTickets|ES:M&oacute;dulo_BTickets';
 
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "");
