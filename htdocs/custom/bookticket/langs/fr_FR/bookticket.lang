@@ -37,6 +37,20 @@ About = À propos
 BookTicketAbout = À propos de BookTicket
 BookTicketAboutPage = Page à propos de BookTicket
 PRINT = Imprimer
+Ticket = Billets de voyage
+List Ticket = Liste des billets
+Add Ticket = Créer un billet
+Ordre Penalite = Ordres de Pénalités
+List Travel = Liste des voyages
+Add Travel = Créer un voyage
+List Agence = Liste des agences
+Add Agence = Ajouter une agence
+List City = Liste des villes
+Add City = Ajouter une ville 
+List Ship = Liste des bâteaux
+Add Ship = Ajouter un bâteau
+List Classe = Liste des classes
+Add Classe = Ajouter une classe
 
 #
 # City
