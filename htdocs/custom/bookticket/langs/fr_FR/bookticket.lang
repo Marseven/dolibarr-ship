@@ -82,10 +82,13 @@ BticketArea = Espace de gestion des billets de voyage
 
 LabelShort = Code
 
+UserCreat = Créé par
+
 #
 # City
 #
 City = Ville
+city = Ville
 Citys = Villes
 NewCity = Nouvelle Ville
 Labelshort = Code
@@ -99,6 +102,7 @@ CardCity = Détails de la Ville
 # Agence
 #
 Agence = Agence
+agence = Agence
 Agences = Agences
 NewAgence = Nouvelle Agence
 Labelshort = Code
@@ -111,6 +115,7 @@ CardAgence = Détails de l'agence
 # Classe
 #
 Classe = Classe
+classe = Classe
 Classes = Classes
 NewClasse = Nouvelle Classe
 Labelshort = Code
@@ -127,6 +132,7 @@ KiloBagage = Nombre de Kilo des Bagages
 # Ship
 #
 Ship = Bâteau
+ship = Bâteau
 Ships = Bâteaux
 NewShip = Nouveau Bâteau
 Labelshort = Code
@@ -143,6 +149,7 @@ NbreEco	= Nombre de places Économique
 # Travel
 #
 Travel = Voyage
+travel = Voyage
 Travels = Voyages
 NewTravel = Nouveau Voyage
 TravelDeleted = Supprimer le Voyage
@@ -151,11 +158,16 @@ TravelCard = Détails du Voyage
 CardTravel = Détails du Voyage
 LieuDepart = Lieu de départ
 LieuArrive = Lieu d'arrivé
+NbrePlaceDispo = Nombre de places totals disponibles
+NbreVipDispo = Nombre de places VIP disponibles
+NbreAffDispo = Nombre de places Affaire disponibles
+NbreEcoDispo = Nombre de places Économique disponibles
 
 #
 # Bticket
 #
 Bticket = Billet de voyage
+bticket = Billet de voyage
 Btickets = Billets de voyage
 NewBTicket = Nouveau Billet
 BticketDeleted = Supprimer le Billet
@@ -167,6 +179,7 @@ CardBticket = Détails du Billet
 # Passenger
 #
 Passenger = Passager
+passenger = Passager
 Passengers = Passagers
 NewPassenger = Nouveau Passager
 PassengerDeleted = Supprimer le passager
@@ -189,6 +202,7 @@ AgeEnfant = Âge de l'enfant
 # Penalite
 #
 Penalite = Pénalité
+penalite = Pénalité
 Penalites = Pénalités
 NewPenalite = Nouvelle Pénalité
 PenaliteDeleted = Supprimer la Pénalité
@@ -201,9 +215,14 @@ NomPrenom = Modification du Nom & Prénom
 Prenom = Prénom	
 BilletPerdu = Réimpression d'un billet perdu	
 ClasseAdulte = Modification de classe pour un Adulte
-PenaliteClasse = Prix de la modification
+PenaliteClasse = Prix de la modification de la classe pour adulte
 ClasseEnfant = Modification de classe pour un Enfant	
-PenaliteClasseEnfant = Prix de la modification
+PenaliteClasseEnfant = Prix de la modification de classe pour enfant
+PenaliteDateA = Prix de la Modification de la date de voyage (1ère fois)
+PenaliteDateB = Prix de la Modification de la date de voyage (2ème fois)
+PenaliteNom = Prix de la Modification du Nom & Prénom
+PenaliteBilletPerdu = Prix de la réimpression du billet
+PrixBillet = Prix total du billet
 
 #
 # Box d'exemple
