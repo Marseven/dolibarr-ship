@@ -36,6 +36,7 @@ BookTicketArea = Espace de Gestion et Vente de Billet de voyage
 About = À propos
 BookTicketAbout = À propos de BookTicket
 BookTicketAboutPage = Page à propos de BookTicket
+PRINT = Imprimer
 
 #
 # City
@@ -43,31 +44,82 @@ BookTicketAboutPage = Page à propos de BookTicket
 City = Ville
 Citys = Villes
 NewCity = Nouvelle Ville
+Labelshort = Code
+CityDeleted = Supprimer la Ville
+CityIsUsed = Ville utilisée
+CityCard = Détails de la Ville 
+CardCity = Détails de la Ville
+
 
 #
 # Agence
 #
-MyPageName = Nom de ma page
+Agence = Agence
+Agences = Agences
+NewAgence = Nouvelle Agence
+Labelshort = Code
+AgenceDeleted = Supprimer l'agence
+AgenceIsUsed = Agence utilisée
+AgenceCard = Détails de l'agence 
+CardAgence = Détails de l'agence
 
 #
 # Classe
 #
-MyPageName = Nom de ma page
+Classe = Classe
+Classes = Classes
+NewClasse = Nouvelle Classe
+Labelshort = Code
+ClasseDeleted = Supprimer la classe
+ClasseIsUsed = Classe utilisée
+ClasseCard = Détails de la classe 
+CardClasse = Détails de la classe
 
 #
 # Ship
 #
-MyPageName = Nom de ma page
+Ship = Bâteau
+Ships = Bâteaux
+NewShip = Nouveau Bâteau
+Labelshort = Code
+ShipDeleted = Supprimer le Bâteau
+ShipIsUsed = Bâteau utilisé
+ShipCard = Détails du Bâteau 
+CardShip = Détails du Bâteau
 
 #
 # Travel
 #
-MyPageName = Nom de ma page
+Travel = Voyage
+Travels = Voyages
+NewTravel = Nouveau Voyage
+TravelDeleted = Supprimer le Voyage
+TravelIsUsed = Voyage utilisé
+TravelCard = Détails du Voyage 
+CardTravel = Détails du Voyage
+
 
 #
 # Bticket
 #
-MyPageName = Nom de ma page
+Bticket = Billet de voyage
+Btickets = Billets de voyage
+NewBticket = Nouveau Billet
+BticketDeleted = Supprimer le Billet
+BticketIsUsed = Billet utilisé
+BticketCard = Détails du Billet
+CardBticket = Détails du Billet
+
+#
+# Penalite
+#
+Penalite = Pénalité
+Penalites = Pénalités
+NewPenalite = Nouvelle Pénalité
+PenaliteDeleted = Supprimer la Pénalité
+PenaliteIsUsed = Pénalité utilisée
+PenaliteCard = Détails de l'ordre de pénalité
+CardPenalite = Détails de l'ordre de pénalité
 
 #
 # Box d'exemple
