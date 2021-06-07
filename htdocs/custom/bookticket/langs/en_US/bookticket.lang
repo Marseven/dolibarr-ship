@@ -19,35 +19,214 @@
 
 # Module label 'ModuleBookTicketName'
 ModuleBookTicketName = BookTicket
-# Module description 'ModuleBookTicketDesc'
-ModuleBookTicketDesc = Maritime travel ticket management and sale module.
+# Module description 'ModuleBookTicketDesc
+ModuleBookTicketDesc = Module for the management and sale of maritime travel tickets.
+
 #
-# Admin page
+# Administration page
 #
-BookTicketSetup = BookTicket setup
+BookTicketSetup = BookTicket module configuration
 Settings = Settings
-BookTicketSetupPage = BookTicket setup page
-BOOKTICKET_MYPARAM1 = My param 1
-BOOKTICKET_MYPARAM1Tooltip = My param 1 tooltip
-BOOKTICKET_MYPARAM2=My param 2
-BOOKTICKET_MYPARAM2Tooltip=My param 2 tooltip
-BookTicketArea = Travel Ticket Management and Sale Area
-
+BookTicketSetupPage = BookTicket module setup page
+BookTicketArea = Ticket Management and Sales Area
 
 #
-# About page
+# About Page
 #
 About = About
 BookTicketAbout = About BookTicket
-BookTicketAboutPage = BookTicket about page
+BookTicketAboutPage = About Page
+PRINT = Print
+BTicket = Travel Tickets
+ListBTicket = List of tickets
+AddBTicket = Create a ticket
+OrdrePenalite = Penalty Orders
+ListTravel = List of trips
+AddTravel = Create a trip
+ListAgence = List of agencies
+AddAgence = Add an agency
+ListCity = List of cities
+AddCity = Add a city 
+ListShip = List of ships
+AddShip = Add a ship
+ListClasse = List of classes
+AddClasse = Add a class
+
+StatTicket = Statistics on the sale of travel tickets
+NbreBilletJour = Number of tickets sold today
+NbreBilletSemaine = Number of tickets sold this week
+NbreBilletMois = Number of tickets sold this month
+NbreBilletAnne = Number of tickets sold this year
+
+ChiffreAffaire = Turnover statistic
+ChiffreAffaireJour = Turnover today
+ChiffreAffaireSemaine = Turnover this week
+ChiffreAffaireMois = Turnover this month
+ChiffreAffaireAnne = Turnover this year
+
+LastRecordedTicket = Last Tickets
+LastRecordedTravel = Last Travels
+LastRecordedShip = Last Ships
+LastRecordedClass = Last Classes
+
+ChiffrePenalite = Penalty Statistics
+SommePenaliteJour = Turnover on penalties today
+SommePenaliteSemaine = Turnover on penalties this week
+SommePenaliteMois = Turnover on penalties this month
+SommePenaliteAnne = Turnover on penalties this year
+
+ClassArea = Class management area
+TravelArea = Travel management area
+ShipArea = Ship management area
+BticketArea = Travel ticket management area
+
+LabelShort = Code
+
+UserCreat = Created by
 
 #
-# Sample page
+# City
 #
-MyPageName = My page name
+City = City
+city = City
+Citys = Cities
+NewCity = New City
+Labelshort = Code
+CityDeleted = Delete City
+CityIsUsed = City used
+CityCard = City Details 
+CardCity = City Details
+
 
 #
-# Sample widget
+# Agency
+#
+Agence = Agency
+Agence = Agency
+Agence = Agency
+NewAgence = New Agency
+Labelshort = Code
+AgenceDeleted = Delete Agency
+AgenceIsUsed = Used Agency
+AgenceCard = Agency Details 
+CardAgence = Agency Details
+
+#
+# Class
+#
+Classe = Class
+Classe = Class
+Classes = Classes
+NewClasse = New Class
+Labelshort = Code
+ClasseDeleted = Delete the class
+ClasseIsUsed = Used class
+CardClasse = Details of the class 
+CardClasse = Details of the class
+PrixStandard = Adult Price	
+PrixEnfant = Child Price	
+PrixEnfStand = Accompanied Adult Price	
+KiloBagage = Number of Kilo of Baggage
+
+#
+# Ship
+#
+Ship = Ship
+ship = Ship
+Ships = Cats
+NewShip = New Ship
+Labelshort = Code
+ShipDeleted = Delete the ship
+ShipIsUsed = Ship used
+ShipCard = Ship Details 
+CardShip = Ship Details
+NbrePlace = Total number of places	
+NbreVip = Number of VIP seats
+NbreAff = Number of business seats
+NbreEco = Number of Economy seats
+
+#
+# Travel
+#
+Travel = Travel
+travel = Travel
+Travels = Travels
+NewTravel = New Travel
+TravelDeleted = Deleted Travel
+TravelIsUsed = Travel used
+TravelCard = Travel Details 
+CardTravel = Travel Details
+LieuDepart = Departure Location
+LieuArrive = Arrival Location
+NbrePlaceDispo = Total number of seats available
+NbreVipDispo = Number of VIP seats available
+NbreAffDispo = Number of available business seats
+NbreEcoDispo = Number of Economy seats available
+
+#
+# Bticket
+#
+Bticket = Travel ticket
+bticket = Travel ticket
+Btickets = Travel tickets
+NewBTicket = New Ticket
+BticketDeleted = Delete Ticket
+BticketIsUsed = Used Ticket
+BticketCard = Ticket Details
+CardBticket = Ticket Details
+
+#
+# Passenger
+#
+Passenger = Passager
+passenger = Passager
+Passengers = Passagers
+NewPassenger = New Passenger
+PassengerDeleted = Delete Passenger
+PassengerIsUsed = Passenger used
+PassengerCard = Passenger Details
+CardPassenger = Passenger Details
+InformationPassager = Passenger Information 
+NouveauPassager = Create a new passenger	
+PieceIdentite = ID number
+Pays = Nationality	
+Age = Age
+Adresse = Address	
+Telephone = Telephone	
+Email = Email address	
+Accompagne = Accompanied by a child?	
+NomEnfant = Name & First name of the child
+AgeEnfant = Age of the child
+
+#
+# Penalty
+#
+Penalty = Penalty
+Penalite = Penalty
+Penalites = Penalties
+NewPenalite = New Penalty
+PenaliteDeleted = Delete Penalty
+PenaliteIsUsed = Penalty used
+PenaliteCard = Details of the penalty order
+CardPenalite = Details of the penalty order
+DateA = Change of travel date (1st time)	
+DateB = Modification of the travel date (2nd time)
+NomPrenom = Modification of LastName & FirstName
+Nom = Last Name		
+Prenom = First name	
+BilletPerdu = Reprint of a lost ticket	
+ClasseAdulte = Modification of class for an Adult
+PenaliteClasse = Price of class modification for adult
+ClasseEnfant = Class modification for a Child	
+PenaliteClasseEnfant = Price of the class modification for a child
+PenaliteDateA = Price of the modification of the travel date (1st time)
+PenaliteDateB = Price of change of travel date (2nd time)
+PenaliteNom = Price of the change of the name & surname
+PenaliteBilletPerdu = Price of the ticket reprint
+PrixBillet = Total price of the ticket
+
+#
+# Example box
 #
 MyWidget = My widget
-MyWidgetDescription = My widget description
+MyWidgetDescription = Description of my widget
