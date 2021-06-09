@@ -124,7 +124,7 @@ if ($user->rights->classe->lire)
 		print '<tr class="liste_titre"><th>'.$langs->trans("Statistics").'</th></tr>';
 		print '<tr><td class="center nopaddingleftimp nopaddingrightimp">';
 
-		/*$SommeA = $prodser[0]['sell'];
+		$SommeA = $prodser[0]['sell'];
 		$SommeB = $prodser[0]['buy'];
 		$SommeC = $prodser[0]['none'];
 		$SommeD = $prodser[1]['sell'];
@@ -148,7 +148,7 @@ if ($user->rights->classe->lire)
 			$dataseries[] = array($langs->transnoentitiesnoconv("ServicesOnSale"), round($SommeD));
 			$dataseries[] = array($langs->transnoentitiesnoconv("ServicesOnPurchase"), round($SommeE));
 			$dataseries[] = array($langs->transnoentitiesnoconv("ServicesNotOnSell"), round($SommeF));
-		}*/
+		}
 		$dataseries = [];
 		include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 		$dolgraph = new DolGraph();
