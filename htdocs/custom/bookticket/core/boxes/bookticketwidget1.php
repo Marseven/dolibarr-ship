@@ -91,7 +91,7 @@ class bookticketwidget1 extends ModeleBoxes
 
 		parent::__construct($db, $param);
 
-		$this->boxlabel = $langs->transnoentitiesnoconv("MyWidget");
+		$this->boxlabel = $langs->transnoentitiesnoconv("BookTicket");
 
 		$this->param = $param;
 
