@@ -226,6 +226,12 @@ PenaliteBilletPerdu = Prix de la réimpression du billet
 PrixBillet = Prix total du billet
 
 #
+# AgenceUser
+#
+
+
+
+#
 # Box d'exemple
 #
 MyWidget = Mon widget

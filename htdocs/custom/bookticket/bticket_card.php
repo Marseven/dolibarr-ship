@@ -323,7 +323,13 @@ if (empty($reshook))
 			$object->fk_travel             	 = GETPOST('fk_travel');
 			$object->fk_ship             	 = GETPOST('fk_ship');
 			$object->fk_classe             	 = GETPOST('fk_classe');
-			$object->fk_agence             	 = GETPOST('fk_agence');
+
+			$sql_a = 'SELECT DISTINCT au.rowid, au.fk_agence';
+			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
+			$sql_a .= ' WHERE au.fk_user IN ('.$user->id.')';
+			$resql_a = $db->query($sql_a);
+			$obj = $db->fetch_object($resql_a);
+			$object->fk_agence             	 = $obj->fk_agence;
 
 			if(GETPOST('new_passenger') != 'on'){
 				$object->fk_passenger = GETPOST('fk_passenger');
@@ -519,7 +525,9 @@ if (empty($reshook))
 				$object->fk_travel             	 = GETPOST('fk_travel');
 				$object->fk_ship             	 = GETPOST('fk_ship');
 				$object->fk_classe             	 = GETPOST('fk_classe');
-				$object->fk_agence             	 = GETPOST('fk_agence');
+
+				//$object->fk_agence             	 = GETPOST('fk_agence');
+
 				$object->fk_passenger             	 = GETPOST('fk_passenger');
 
 				$object_passenger->ref             	 = GETPOST('pref');
@@ -956,38 +964,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
-			// agence
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Agence").'</td>';
-
-			$agence = '<td><select class="flat" name="fk_agence">';
-			if (empty($agencerecords))
-			{
-				$agence .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($agencerecords as $lines)
-				{
-					$agence .= '<option value="';
-					$agence .= $lines->rowid;
-					$agence .= '"';
-					$agence .= '>';
-					$agence .= $langs->trans($lines->label);
-					$agence .= '</option>';
-				}
-			}
-
-			$agence .= '</select>';
-
-			print $agence;
-
-			print '</td></tr>';
-
 		print '</table>';
 
 		print '<hr>';
 
 		print '<table class="border centpercent">';
 
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
+			/*print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
 			// passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
@@ -1011,10 +994,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print $passenger;
 
-			print '</td></tr>';
+			print '</td></tr>';*/
 
 			// new_passenger
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NouveauPassager").'</td>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passager").'</td>';
 			print '<td><input type="checkbox" name="new_passenger" >';
 			print '</td></tr>';
 
