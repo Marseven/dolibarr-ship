@@ -232,13 +232,14 @@ if($usercancreate && $type == 'travel'){
 	// This sample program uses data fetched from a CSV file
 
 	$btickets = [];
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, p.telephone as telephone, p.nom as nom, p.prenom as prenom,  p.nationalite as nationalite, tr.ref as travel, tr.jour as depart, s.label as ship, s.ref as refship, t.entity';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, p.telephone as telephone, p.nom as nom, p.prenom as prenom, tr.ref as travel, tr.lieu_depart as lieu_depart, tr.lieu_arrive as lieu_arrive, tr.jour as depart, s.label as ship, s.ref as refship, ct.label as country, t.entity';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
 	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
 	$resql_t = $db->query($sql_t);
@@ -295,6 +296,7 @@ if($usercancreate && $type == 'travel'){
 
 	$pdf->ApplyTextProp("SHIP", utf8_decode("Nom : ".$btickets[0]->ship." - N° Immatriculation : ".$btickets[0]->refship));
 	$pdf->ApplyTextProp("DEPART", utf8_decode("Date du : ".dol_print_date($btickets[0]->depart, 'day', 'tzuser')));
+	$pdf->ApplyTextProp("TRAJET", utf8_decode("De : ".$btickets[0]->lieu_depart." à ".$btickets[0]->lieu_arrive));
 
 	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
 	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
@@ -346,7 +348,7 @@ if($usercancreate && $type == 'travel'){
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->nationalite, "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->country, "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect

@@ -16,9 +16,9 @@
  */
 
 /**
- *	\file       bookticket/passengerindex.php
+ *	\file       bookticket/ticketindex.php
  *	\ingroup    bookticket
- *	\brief      Home page of passenger left menu
+ *	\brief      Home page of ticket left menu
  */
 
 
@@ -39,13 +39,19 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
+
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_user.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/passenger.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/agence_user.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bookticket', 'other'));
@@ -64,18 +70,20 @@ $socid = GETPOST('socid', 'int');
 
 if (!empty($user->socid)) $socid = $user->socid;
 
-$object = new Passenger($db);
+$object = new Bticket($db);
+$object_passenger = new Passenger($db);
+$object_travel = new Travel($db);
 
 if ($id > 0 || !empty($ref))
 {
 	$result = $object->fetch($id, $ref);
 
-	if (!empty($conf->passenger->enabled)) $upload_dir = $conf->passenger->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'passenger').dol_sanitizeFileName($object->ref);
-	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'passenger').dol_sanitizeFileName($object->ref);
+	if (!empty($conf->bticket->enabled)) $upload_dir = $conf->bticket->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'bticket').dol_sanitizeFileName($object->ref);
+	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'bticket').dol_sanitizeFileName($object->ref);
 
-	if (!empty($conf->global->PASSENGER_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
+	if (!empty($conf->global->BTICKET_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
 	{
-		if (!empty($conf->passenger->enabled)) $upload_dirold = $conf->passenger->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
+		if (!empty($conf->bticket->enabled)) $upload_dirold = $conf->bticket->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 		else $upload_dirold = $conf->service->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 	}
 }
@@ -87,11 +95,11 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('passenger', 'card', $canvas);
+	$objcanvas->getCanvas('bticket', 'card', $canvas);
 }
 
 // Security check
-//$result = restrictedArea($user, 'passenger');
+//$result = restrictedArea($user, 'bticket');
 
 /*
  * Actions
@@ -99,9 +107,58 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->bookticket->passenger->read;
-$usercancreate = $user->rights->bookticket->passenger->write;
-$usercandelete = $user->rights->bookticket->passenger->delete;
+$usercanread = $user->rights->bookticket->agence_user->read;
+$usercancreate = $user->rights->bookticket->agence_user->write;
+$usercandelete = $user->rights->bookticket->agence_user->delete;
+
+$agencerecords = [];
+$sql_agence = 'SELECT a.rowid, a.label, a.labelshort, a.ville, a.entity,';
+$sql_agence .= ' a.date_creation, a.tms as date_update';
+$sql_agence .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence as a';
+$sql_agence .= ' WHERE a.entity IN ('.getEntity('agence').')';
+$sql_agence .= ' AND a.status = 2';
+$resql_agence =$db->query($sql_agence);
+if ($resql_agence)
+{
+	$num = $db->num_rows($resql_agence);
+	$i = 0;
+	if ($num)
+	{
+		while ($i < $num)
+		{
+			$obj = $db->fetch_object($resql_agence);
+			if ($obj)
+			{
+				$agencerecords[$i] = $obj;
+			}
+			$i++;
+		}
+	}
+}
+
+$userrecords = [];
+$sql_passenger = 'SELECT u.rowid, u.lastname, u.firstname';
+$sql_passenger .= ' FROM '.MAIN_DB_PREFIX.'user as u';
+$resql_passenger =$db->query($sql_passenger);
+if ($resql_passenger)
+{
+	$num = $db->num_rows($resql_passenger);
+	$i = 0;
+	if ($num)
+	{
+		while ($i < $num)
+		{
+			$obj = $db->fetch_object($resql_passenger);
+			if ($obj)
+			{
+				$userrecords[$i] = $obj;
+			}
+			$i++;
+		}
+	}
+}
+
+
 
 
 // Actions to build doc
@@ -112,32 +169,18 @@ include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 
-// Add a passenger
+// Add a agence_user
 if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
 
-	if (empty($ref))
-	{
-		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
-		$action = "create";
-		$error++;
-	}
-
 	if (!$error)
 	{
 
+		$object->fk_agence             	 = GETPOST('fk_agence');
+		$object->fk_user             	 = GETPOST('fk_user');
 
-		$object->ref               = $ref;
-		$object->nom               = GETPOST('nom');
-		$object->prenom            = GETPOST('prenom');
-		$object->age               = GETPOST('age');
-		$object->adresse           = GETPOST('adresse');
-		$object->telephone         = GETPOST('telephone');
-		$object->email             = GETPOST('email');
-		$object->accompagne        = GETPOST('accompagne');
-		$object->nom_enfant        = GETPOST('nom_enfant');
-		$object->age_enfant        = GETPOST('age_enfant');
+		$object->status = AgenceUser::STATUS_APPROVED;
 
 		if (!$error)
 		{
@@ -164,7 +207,7 @@ if ($action == 'add' && $usercancreate)
 	}
 }
 
-// Update a passenger
+// Update a agence_user
 if ($action == 'update' && $usercancreate)
 {
 	if (GETPOST('cancel', 'alpha'))
@@ -175,20 +218,12 @@ if ($action == 'update' && $usercancreate)
 		{
 			$object->oldcopy = clone $object;
 
-			$object->ref                    = $ref;
-			$object->nom             	 = GETPOST('nom');
-			$object->prenom             	 = GETPOST('prenom');
-			$object->age             	 = GETPOST('age');
-			$object->adresse             	 = GETPOST('adresse');
-			$object->telephone             	 = GETPOST('telephone');
-			$object->email             	 = GETPOST('email');
-			$object->accompagne             	 = GETPOST('accompagne');
-			$object->nom_enfant             	 = GETPOST('nom_enfant');
-			$object->age_enfant             	 = GETPOST('age_enfant');
+			$$object->fk_agence             	 = GETPOST('fk_agence');
+			$object->fk_user             	 = GETPOST('fk_user');
 
 			if (!$error && $object->check())
 			{
-				if ($object->update($user) > 0)
+				if ($object->update($user) > 0 && $object_passenger->update($user) > 0)
 				{
 					$action = 'view';
 				} else {
@@ -198,7 +233,7 @@ if ($action == 'update' && $usercancreate)
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans("ErrorpassengerBadRefOrLabel"), null, 'errors');
+				else setEventMessages($langs->trans("ErrorBticketBadRefOrLabel"), null, 'errors');
 				$action = 'edit';
 			}
 		}
@@ -220,6 +255,7 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 		{
 			$object->ref = GETPOST('clone_ref', 'alphanohtml');
 			$object->id = null;
+			$object->barcode = -1;
 
 			if ($object->check())
 			{
@@ -236,14 +272,14 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 				} else {
 					$id = $originalId;
 
-					if ($object->error == 'ErrorpassengerAlreadyExists')
+					if ($object->error == 'ErrorBticketAlreadyExists')
 					{
 						$db->rollback();
 
 						$refalreadyexists++;
 						$action = "";
 
-						$mesg = $langs->trans("ErrorpassengerAlreadyExists", $object->ref);
+						$mesg = $langs->trans("ErrorBticketAlreadyExists", $object->ref);
 						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
 						setEventMessages($mesg, null, 'errors');
 						$object->fetch($id);
@@ -269,7 +305,7 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 	}
 }*/
 
-// Delete a passenger
+// Delete a agence_user
 //if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
 if ($action == 'delete' && $usercandelete)
 {
@@ -277,7 +313,7 @@ if ($action == 'delete' && $usercandelete)
 
 	if ($result > 0)
 	{
-		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?delpassenger='.urlencode($object->ref));
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?type='.$object->type.'&delbticket='.urlencode($object->ref));
 		exit;
 	} else {
 		setEventMessages($langs->trans($object->error), null, 'errors');
@@ -287,23 +323,22 @@ if ($action == 'delete' && $usercandelete)
 }
 
 
-// Add Passenger into object
+// Add agence_user into object
 if ($object->id > 0 && $action == 'addin')
 {
 	$thirpdartyid = 0;
 }
 
 
-
 /*
  * View
  */
 
-$title = $langs->trans('PassengerCard');
+$title = $langs->trans('AffectationCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->label, 16);
-$title = $langs->trans('Passenger')." ".$shortlabel." - ".$langs->trans('Card');
-$helpurl = '';
+$title = $langs->trans('Affectation')." ".$shortlabel." - ".$langs->trans('Card');
+$helpurl = 'EN:Module_Ticket|FR:Module_Ticket|ES:M&oacute;dulo_Ticket';
 
 llxHeader('', $title, $helpurl);
 
@@ -311,7 +346,9 @@ $form = new Form($db);
 $formfile = new FormFile($db);
 $formcompany = new FormCompany($db);
 
+// Load object modBarCodeTicket
 $res = 0;
+
 
 if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
@@ -319,7 +356,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	if (empty($object->error) && $id)
 	{
-		$object = new Passenger($db);
+		$object = new Bticket($db);
 		$result = $object->fetch($id);
 		if ($result <= 0) dol_print_error('', $object->error);
 	}
@@ -348,11 +385,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add">';
 		print '<input type="hidden" name="type" value="'.$type.'">'."\n";
+		if (!empty($modCodeBticket->code_auto))
+			print '<input type="hidden" name="code_auto" value="1">';
+		if (!empty($modBarCodeBticket->code_auto))
+			print '<input type="hidden" name="barcode_auto" value="1">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
 
-		$picto = 'passenger';
-		$title = $langs->trans("Newpassenger");
+		$picto = 'agence_user';
+		$title = $langs->trans("NewAffectation");
 
 		$linkback = "";
 		print load_fiche_titre($title, $linkback, $picto);
@@ -361,56 +402,57 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<table class="border centpercent">';
 
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
-			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
 
-			// nom
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$object->nom.'">';
+			// user
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Users").'</td>';
+
+			$user = '<td><select class="flat" name="fk_classe">';
+			if (empty($userrecords))
+			{
+				$user .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($userrecords as $lines)
+				{
+					$user .= '<option value="';
+					$user .= $lines->rowid;
+					$user .= '"';
+					$user .= '>';
+					$user .= $langs->trans($lines->lastname).' '.$langs->trans($lines->firstname);
+					$user .= '</option>';
+				}
+			}
+
+			$user .= '</select>';
+
+			print $user;
+
 			print '</td></tr>';
 
-			// prenom
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Prenom").'</td>';
-			print '<td><input name="prenom" class="maxwidth300" value="'.$object->prenom.'">';
-			print '</td></tr>';
+			// agence
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Agence").'</td>';
 
-			// age
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'"> ANS';
-			print '</td></tr>';
+			$agence = '<td><select class="flat" name="fk_agence">';
+			if (empty($agencerecords))
+			{
+				$agence .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($agencerecords as $lines)
+				{
+					$agence .= '<option value="';
+					$agence .= $lines->rowid;
+					$agence .= '"';
+					$agence .= '>';
+					$agence .= $langs->trans($lines->label);
+					$agence .= '</option>';
+				}
+			}
 
-			// adresse
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Adresse").'</td>';
-			print '<td><input name="adresse" class="maxwidth300" value="'.$object->adresse.'">';
-			print '</td></tr>';
+			$agence .= '</select>';
 
-			// telephone
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Telephone").'</td>';
-			print '<td><input name="telephone" class="maxwidth300" value="'.$object->telephone.'">';
-			print '</td></tr>';
+			print $agence;
 
-			// email
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Email").'</td>';
-			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object->email.'">';
 			print '</td></tr>';
-
-			// accompagne
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == "on" ? 'checked' : '').'>';
-			print '</td></tr>';
-
-			// nom_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
-			print '</td></tr>';
-
-			// age_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'"> ANS';
-			print '</td></tr>';
-
 
 		print '</table>';
 
@@ -425,11 +467,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</form>';
 	} elseif ($object->id > 0) {
 		/*
-         * Passenger card
+         * bticket card
          */
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
 		{
+
 			//WYSIWYG Editor
 			require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
@@ -439,11 +482,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
                         	document.formprod.action.value="edit";
                         	document.formprod.submit();
                         });
-		});';
+				});';
 				print '</script>'."\n";
 
 
-			$type = $langs->trans('Passenger');
+			$type = $langs->trans('Ticket');
 
 			// Main official, simple, and not duplicated code
 			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST" name="formprod">'."\n";
@@ -452,60 +495,65 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
 			print '<input type="hidden" name="canvas" value="'.$object->canvas.'">';
 
-			$head = passenger_prepare_head($object);
-			$titre = $langs->trans("CardPassenger".$object->type);
-			$picto =  'Passenger';
+			$head = agence_user_prepare_head($object);
+			$titre = $langs->trans("CardAffectation");
+			$picto =  'agence_user';
+
 			print dol_get_fiche_head($head, 'card', $titre, 0, $picto);
+
 
 			print '<table class="border allwidth">';
 
-			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
+			// user
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Users").'</td>';
 
-			// nom
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$object->nom.'">';
+			$user = '<td><select class="flat" name="fk_classe">';
+			if (empty($userrecords))
+			{
+				$user .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($userrecords as $lines)
+				{
+					$user .= '<option value="';
+					$user .= $lines->rowid;
+					$user .= '"';
+					$user .= '>';
+					$user .= $langs->trans($lines->lastname).' '.$langs->trans($lines->firstname);
+					$user .= '</option>';
+				}
+			}
+
+			$user .= '</select>';
+
+			print $user;
+
 			print '</td></tr>';
 
-			// prenom
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Prenom").'</td>';
-			print '<td><input name="prenom" class="maxwidth300" value="'.$object->prenom.'">';
+			// agence
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Agence").'</td>';
+
+			$agence = '<td><select class="flat" name="fk_agence">';
+			if (empty($agencerecords))
+			{
+				$agence .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($agencerecords as $lines)
+				{
+					$agence .= '<option value="';
+					$agence .= $lines->rowid;
+					$agence .= '"';
+					$agence .= '>';
+					$agence .= $langs->trans($lines->label);
+					$agence .= '</option>';
+				}
+			}
+
+			$agence .= '</select>';
+
+			print $agence;
+
 			print '</td></tr>';
 
-			// age
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'"> ANS';
-			print '</td></tr>';
-
-			// adresse
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Adresse").'</td>';
-			print '<td><input name="adresse" class="maxwidth300" value="'.$object->adresse.'">';
-			print '</td></tr>';
-
-			// telephone
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Telephone").'</td>';
-			print '<td><input name="telephone" class="maxwidth300" value="'.$object->telephone.'">';
-			print '</td></tr>';
-
-			// email
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Email").'</td>';
-			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object->email.'">';
-			print '</td></tr>';
-
-			// accompagne
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
-			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == "on" ? 'checked' : '').'>';
-			print '</td></tr>';
-
-			// nom_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
-			print '</td></tr>';
-
-			// age_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'"> ANS';
-			print '</td></tr>';
 
 			print '</table>';
 
@@ -522,159 +570,102 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
+
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
+
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql_a = 'SELECT DISTINCT p.rowid, ct.label as nationalite';
-			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
-			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
+			$sql_a = 'SELECT DISTINCT au.rowid, u.lastname, u.firstname,  a.label';
+			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
+			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON au.fk_agence = a.rowid";
+			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."user as u ON au.fk_user = u.rowid";
+			$sql_a .= ' WHERE a.rowid IN ('.$object->fk_agence.')';
+			$sql_a .= ' AND u.rowid IN ('.$object->fk_user.')';
 			$resql_a = $db->query($sql_a);
 			$obj = $db->fetch_object($resql_a);
 
-			$head = passenger_prepare_head($object);
-			$titre = $langs->trans("CardPassenger");
-			$picto = 'Passenger';
+
+
+			$head = bticket_prepare_head($object);
+			$titre = $langs->trans("CardAffectation");
+			$picto = 'agence_user';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/ticket_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
-			if ($user->socid && !in_array('passenger', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
+			if ($user->socid && !in_array('bticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
-			dol_banner_tab($object, 'rowid', $linkback, $shownav, 'rowid');
+			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
-				print '<div class="fichecenter">';
-				print '<div class="fichehalfleft">';
-				print '<div class="underbanner clearboth"></div>';
+			print '<div class="fichecenter">';
+			print '<div class="fichehalfleft">';
+			print '<div class="underbanner clearboth"></div>';
 
-				print '<table class="border tableforfield centpercent">';
-				print '<tbody>';
+			print '<table class="border tableforfield centpercent">';
+			print '<tbody>';
 
-				// ref
+			// User
+			print '<tr>';
+			print '<td class="titlefield">'.$langs->trans("User").'</td>';
+			print '<td>';
+			print $obj->lastname.' '.$obj->firstname;
+			print '</td></tr>';
+
+
+
+
+
+			// Agence
+			print '<tr>';
+			print '<td>';
+			print $form->textwithpicto($langs->trans('Agence'), $htmlhelp);
+			print '</td>';
+			print '<td>';
+			print $obj->label;
+			print '</td>';
+			print '</tr>';
+
+			// Other attributes
+			include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+
+			print '</tbody>';
+			print '</table>'."\n";
+
+			print '</div>';
+			print '<div class="fichehalfright">';
+			print '<div class="ficheaddleft">';
+
+			print '<div class="underbanner clearboth"></div>';
+
+			// Info workflow
+			print '<table class="border tableforfield centpercent">'."\n";
+			print '<tbody>';
+
+			if (!empty($object->fk_user_creat))
+			{
+				$userCreate = new User($db);
+				$userCreate->fetch($object->fk_user_creat);
 				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("PieceIdentite").'</td>';
-				print '<td>';
-				print $object->ref;
-				print '</td></tr>';
-
-				// nom
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("LastName").'</td>';
-				print '<td>';
-				print $object->nom;
-				print '</td></tr>';
-
-				// prenom
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Prenom").'</td>';
-				print '<td>';
-				print $object->prenom;
-				print '</td></tr>';
-
-				// nationalite
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Nationalite").'</td>';
-				print '<td>';
-				print $obj->nationalite;
-				print '</td></tr>';
-
-				// age
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Age").'</td>';
-				print '<td>';
-				print $object->age.' ANS';
-				print '</td></tr>';
-
-				// telephone
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Telephone").'</td>';
-				print '<td>';
-				print $object->telephone;
-				print '</td></tr>';
-
-				// email
-				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Email").'</td>';
-				print '<td>';
-				print $object->email;
-				print '</td></tr>';
-
-
-
-				// accompagne
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('AccompagneHelp');
-				print $form->textwithpicto($langs->trans('Accompagne'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->accompagne == "on" ? "Oui" : "Non";
-				print '</td>';
+				print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
+				print '<td>'.$userCreate->getNomUrl(-1).'</td>';
 				print '</tr>';
+			}
 
-				// nom_enfant
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('NomEnfnatHelp');
-				print $form->textwithpicto($langs->trans('NomEnfant'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->nom_enfant;
-				print '</td>';
-				print '</tr>';
+			print '<tr>';
+			print '<td>'.$langs->trans('DateCreation').'</td>';
+			print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
+			print '</tr>';
 
-				// age_enfant
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('AgeEnfantHelp');
-				print $form->textwithpicto($langs->trans('AgeEnfant'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->age_enfant.' ANS';
-				print '</td>';
-				print '</tr>';
+			print '</tbody>';
+			print '</table>';
 
-				// Other attributes
-				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+			print '</div>';
+			print '</div>';
+			print '</div>';
 
-				print '</tbody>';
-				print '</table>'."\n";
-
-				print '</div>';
-				print '<div class="fichehalfright">';
-				print '<div class="ficheaddleft">';
-
-				print '<div class="underbanner clearboth"></div>';
-
-				// Info workflow
-				print '<table class="border tableforfield centpercent">'."\n";
-				print '<tbody>';
-
-				if (!empty($object->fk_user_creat))
-				{
-					$userCreate = new User($db);
-					$userCreate->fetch($object->fk_user_creat);
-					print '<tr>';
-					print '<td class="titlefield">'.$langs->trans('UserCreat').'</td>';
-					print '<td>'.$userCreate->getNomUrl(-1).'</td>';
-					print '</tr>';
-				}
-
-				print '<tr>';
-				print '<td>'.$langs->trans('DateCreation').'</td>';
-				print '<td>'.dol_print_date($object->date_creation, 'dayhour', 'tzuser').'</td>';
-				print '</tr>';
-
-				print '</tbody>';
-				print '</table>';
-
-				print '</div>';
-				print '</div>';
-				print '</div>';
-
-				print '<div class="clearboth"></div>';
-
+			print '<div class="clearboth"></div>';
 
 			print dol_get_fiche_end();
 		}
@@ -684,33 +675,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	}
 }
 
-/*$formconfirm = '';
+$tmpcode = '';
 
-// Confirm delete Passenger
-if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
+// Si validation de la demande
+if ($action == 'valid')
 {
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeletePassenger"), $langs->trans("ConfirmDeletePassenger"), "confirm_delete", '', 0, "action-delete");
+	print $form->formconfirm($_SERVER["PHP_SELF"]."?id=".$object->id, $langs->trans("TitleValidCP"), $langs->trans("ConfirmValidCP"), "confirm_valid", '', 1, 1);
 }
-
-// Clone confirmation
-if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))		// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	// Define confirmation messages
-	$formquestionclone = array(
-		'text' => $langs->trans("ConfirmClone"),
-		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentPassenger"), 'value' => 1),
-	);
-
-
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmClonePassenger', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
-}
-
-
-// Print form confirm
-print $formconfirm;*/
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -729,15 +700,6 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
-			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
-			{
-				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
-				{
-					print '<span id="action-clone" class="butAction">'.$langs->trans('ToClone').'</span>'."\n";
-				} else {
-					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
-				}
-			}*/
 		}
 
 		if ($usercandelete)
@@ -748,10 +710,10 @@ if ($action != 'create' && $action != 'edit')
 				{
 					print '<span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span>'."\n";
 				} else {
-					print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer ce passager ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+					print '<a class="butActionDelete" onclick="return confirm(\'Voulez-vous vraiment supprimer cet Billet de voyage ! \');" href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 				}
 			} else {
-				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("PassengerIsUsed").'">'.$langs->trans("Delete").'</a>';
+				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("TicketIsUsed").'">'.$langs->trans("Delete").'</a>';
 			}
 		} else {
 			print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans("Delete").'</a>';
@@ -801,7 +763,6 @@ if ($object->id && ($action == '' || $action == 'view') && $object->status)
 		print '</form>';
 	}
 }
-
 
 
 // End of page

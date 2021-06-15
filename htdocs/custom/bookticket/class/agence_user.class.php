@@ -17,9 +17,9 @@
  */
 
 /**
- * \file        htdocs/modulebuilder/template/class/penalite.class.php
+ * \file        htdocs/modulebuilder/template/class/agence_user.class.php
  * \ingroup     bookticket
- * \brief       This file is a CRUD class file for Penalite (Create/Read/Update/Delete)
+ * \brief       This file is a CRUD class file for Agence_user (Create/Read/Update/Delete)
  */
 
 // Put here all includes required by your class file
@@ -27,9 +27,9 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 /**
- * Class for Penalite
+ * Class for AgenceUser
  */
-class Penalite extends CommonObject
+class AgenceUser extends CommonObject
 {
 	/**
 	 * @var string ID of module.
@@ -39,12 +39,12 @@ class Penalite extends CommonObject
 	/**
 	 * @var string ID to identify managed object.
 	 */
-	public $element = 'penalite';
+	public $element = 'agence_user';
 
 	/**
 	 * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.
 	 */
-	public $table_element = 'bookticket_penalite';
+	public $table_element = 'bookticket_agence_user';
 
 	/**
 	 * @var int  Does this object support multicompany module ?
@@ -58,9 +58,9 @@ class Penalite extends CommonObject
 	public $isextrafieldmanaged = 1;
 
 	/**
-	 * @var string String with name of icon for Penalite. Must be the part after the 'object_' into object_Penalite.png
+	 * @var string String with name of icon for AgenceUser. Must be the part after the 'object_' into object_AgenceUser.png
 	 */
-	public $picto = 'penalite@bookticket';
+	public $picto = 'agence_user@bookticket';
 
 
 	/**
@@ -75,6 +75,12 @@ class Penalite extends CommonObject
 	 * Approved
 	 */
 	const STATUS_APPROVED = 2;
+
+	/**
+	 * Approved
+	 */
+	const STATUS_LOCK = 5;
+
 	/**
 	 * Canceled
 	 */
@@ -117,22 +123,8 @@ class Penalite extends CommonObject
 	 */
 	public $fields = array(
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
-		'ref'           => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
-		'datea'  		=> array('type'=>'varchar(255)', 'label'=>'DateA', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prix_da'        => array('type'=>'integer', 'label'=>'Prix Date A', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'dateb'  		=> array('type'=>'varchar(255)', 'label'=>'DateB', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prix_db'        => array('type'=>'integer', 'label'=>'Prix Date B', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'nom'  			=> array('type'=>'varchar(255)', 'label'=>'NomPrenom', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prix_n'        	=> array('type'=>'integer', 'label'=>'Prix Nom Prenom', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'billet_perdu'  => array('type'=>'varchar(255)', 'label'=>'Billet Perdu', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prix_bp'        => array('type'=>'integer', 'label'=>'Prix Billet Perdu', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'classe'  		=> array('type'=>'varchar(255)', 'label'=>'Classe', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prix_c'        	=> array('type'=>'integer', 'label'=>'Prix Classe', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'classe_enfant' => array('type'=>'varchar(255)', 'label'=>'Classe Enfant', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'prix_ce'        => array('type'=>'integer', 'label'=>'Prix Classe Enfant', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),
-		'fk_bticket' 	=> array('type'=>'integer:Bticket:bticket/class/bticket.class.php', 'label'=>'Le billet', 'picto'=>'bticket', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'bticket.rowid'),
-		'fk_passenger' 	=> array('type'=>'integer:Bticket:bticket/class/passenger.class.php', 'label'=>'Le passager', 'picto'=>'passenger', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'passenger.rowid'),
-		'fk_valideur' 	=> array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserValidor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.fk_user'),
+		'fk_agence' 	=> array('type'=>'integer:Agence:agence/class/agence.class.php', 'label'=>'Agence', 'picto'=>'agence', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'agence.rowid'),
+		'fk_user' 		=> array('type'=>'integer:User:user/class/user.class.php', 'label'=>'Utilisateur', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
 		'fk_user_creat' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
@@ -146,94 +138,16 @@ class Penalite extends CommonObject
 	 */
 	public $rowid;
 
-	/**
-	 * @var string Ref
-	 */
-	public $ref;
-
-
-
-	/**
-	 * @var string datea
-	 */
-	public $datea;
-
-
-	/**
-	 * @var float prix_da
-	 */
-	public $prix_da;
-
-
-	/**
-	 * @var string dateb
-	 */
-	public $dateb;
-
-
-	/**
-	 * @var float prix_db
-	 */
-	public $prix_db;
-
-	/**
-	 * @var string nom
-	 */
-	public $nom;
-
-
-	/**
-	 * @var float prix_n
-	 */
-	public $prix_n;
-
-	/**
-	 * @var string billet_perdu
-	 */
-	public $billet_perdu;
-
-
-	/**
-	 * @var float prix_bp
-	 */
-	public $prix_bp;
-
-	/**
-	 * @var string classe
-	 */
-	public $classe;
-
-
-	/**
-	 * @var float prix_c
-	 */
-	public $prix_c;
-
-	/**
-	 * @var string classe_enfant
-	 */
-	public $classe_enfant;
-
-
-	/**
-	 * @var float prix_ce
-	 */
-	public $prix_ce;
 
 	/**
 	 * @var int ID
 	 */
-	public $fk_bticket;
+	public $fk_agence;
 
 	/**
 	 * @var int ID
 	 */
-	public $fk_passenger;
-
-	/**
-	 * @var int ID
-	 */
-	public $fk_valideur;
+	public $fk_user;
 
 
 	/**
@@ -284,7 +198,7 @@ class Penalite extends CommonObject
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->bookticket->penalite->read) {
+		/*if ($user->rights->bookticket->agence_user->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -729,8 +643,8 @@ class Penalite extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->penalite->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->penalite->penalite_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->agence_user->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->agence_user->agence_user_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -771,7 +685,7 @@ class Penalite extends CommonObject
 			if (!$error && !$notrigger)
 			{
 				// Call trigger
-				$result = $this->call_trigger('PENALITE_VALIDATE', $user);
+				$result = $this->call_trigger('AGENCE_USER_VALIDATE', $user);
 				if ($result < 0) $error++;
 				// End call triggers
 			}
@@ -785,16 +699,16 @@ class Penalite extends CommonObject
 			if (preg_match('/^[\(]?PROV/i', $this->ref))
 			{
 				// Now we rename also files into index
-				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'penalite/".$this->db->escape($this->newref)."'";
-				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'penalite/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
+				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'agence_user/".$this->db->escape($this->newref)."'";
+				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'agence_user/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
 				$resql = $this->db->query($sql);
 				if (!$resql) { $error++; $this->error = $this->db->lasterror(); }
 
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->bookticket->dir_output.'/penalite/'.$oldref;
-				$dirdest = $conf->bookticket->dir_output.'/penalite/'.$newref;
+				$dirsource = $conf->bookticket->dir_output.'/agence_user/'.$oldref;
+				$dirdest = $conf->bookticket->dir_output.'/agence_user/'.$newref;
 				if (!$error && file_exists($dirsource))
 				{
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
@@ -803,7 +717,7 @@ class Penalite extends CommonObject
 					{
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/penalite/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/agence_user/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry)
 						{
 							$dirsource = $fileentry['name'];
@@ -857,7 +771,7 @@ class Penalite extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'PENALITE_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'AGENCE_USER_UNVALIDATE');
 	}
 
 	/**
@@ -882,7 +796,7 @@ class Penalite extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'PENALITE_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'AGENCE_USER_CANCEL');
 	}
 
 	/**
@@ -907,7 +821,7 @@ class Penalite extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'PENALITE_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'AGENCE_USER_REOPEN');
 	}
 
 	/**
@@ -928,14 +842,14 @@ class Penalite extends CommonObject
 
 		$result = '';
 
-		$label = img_picto('', $this->picto).' <u>'.$langs->trans("PENALITE").'</u>';
+		$label = img_picto('', $this->picto).' <u>'.$langs->trans("AgenceUser").'</u>';
 		if (isset($this->status)) {
 			$label .= ' '.$this->getLibStatut(5);
 		}
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/bookticket/penalite_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/bookticket/agence_user_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink')
 		{
@@ -950,7 +864,7 @@ class Penalite extends CommonObject
 		{
 			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
 			{
-				$label = $langs->trans("ShowPenalite");
+				$label = $langs->trans("ShowAgenceUser");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
 			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
@@ -996,7 +910,7 @@ class Penalite extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('penalitedao'));
+		$hookmanager->initHooks(array('agence_userdao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) $result = $hookmanager->resPrint;
@@ -1117,8 +1031,8 @@ class Penalite extends CommonObject
 	{
 		$this->lines = array();
 
-		$objectline = new PenaliteLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_penalite = '.$this->id));
+		$objectline = new AgenceUserLine($this->db);
+		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_agence_user = '.$this->id));
 
 		if (is_numeric($result))
 		{
@@ -1141,16 +1055,16 @@ class Penalite extends CommonObject
 		global $langs, $conf;
 		$langs->load("bookticket@bookticket");
 
-		if (empty($conf->global->BOOKTICKET_PENALITE_ADDON)) {
-			$conf->global->BOOKTICKET_PENALITE_ADDON = 'mod_penalite_standard';
+		if (empty($conf->global->BOOKTICKET_AGENCE_USER_ADDON)) {
+			$conf->global->BOOKTICKET_AGENCE_USER_ADDON = 'mod_agence_user_standard';
 		}
 
-		if (!empty($conf->global->BOOKTICKET_PENALITE_ADDON))
+		if (!empty($conf->global->BOOKTICKET_AGENCE_USER_ADDON))
 		{
 			$mybool = false;
 
-			$file = $conf->global->BOOKTICKET_PENALITE_ADDON.".php";
-			$classname = $conf->global->BOOKTICKET_PENALITE_ADDON;
+			$file = $conf->global->BOOKTICKET_AGENCE_USER_ADDON.".php";
+			$classname = $conf->global->BOOKTICKET_AGENCE_USER_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
@@ -1211,12 +1125,12 @@ class Penalite extends CommonObject
 		$langs->load("bookticket@bookticket");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_penalite';
+			$modele = 'standard_agence_user';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->PENALITE_ADDON_PDF)) {
-				$modele = $conf->global->PENALITE_ADDON_PDF;
+			} elseif (!empty($conf->global->AGENCE_USER_ADDON_PDF)) {
+				$modele = $conf->global->AGENCE_USER_ADDON_PDF;
 			}
 		}
 
@@ -1272,7 +1186,7 @@ class Penalite extends CommonObject
 		$error = 0;
 
 		// Update request
-		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_penalite SET";
+		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_agence_user SET";
 		$sql .= " status = '".self::STATUS_APPROVED."'";
 		$sql .= " WHERE rowid= ".$this->id;
 
@@ -1300,20 +1214,20 @@ class Penalite extends CommonObject
 	}
 
 	/**
-	 *	Refuse leave request
+	 *	Lock leave request
 	 *
-	 *  @param	User	$user        	User that refuse
+	 *  @param	User	$user        	User that lock
 	 *  @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *  @return int         			<0 if KO, >0 if OK
 	 */
-	public function refuse($user = null, $notrigger = 0)
+	public function lock($user = null, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error = 0;
 
 		// Update request
-		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_penalite SET";
-		$sql .= " status = '".self::STATUS_REFUSED."'";
+		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_agence_user SET";
+		$sql .= " status = '".self::STATUS_LOCK."'";
 		$sql .= " WHERE rowid= ".$this->id;
 
 		$this->db->begin();
@@ -1328,7 +1242,7 @@ class Penalite extends CommonObject
 		{
 			foreach ($this->errors as $errmsg)
 			{
-				dol_syslog(get_class($this)."::refuse ".$errmsg, LOG_ERR);
+				dol_syslog(get_class($this)."::lock ".$errmsg, LOG_ERR);
 				$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
 			}
 			$this->db->rollback();
@@ -1346,14 +1260,14 @@ class Penalite extends CommonObject
          $this->nb = array();
 
          $sql = "SELECT count(t.rowid) as nb";
-         $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as t";
+         $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_agence_user as t";
          $sql .= " WHERE t.status > 0";
-         $sql .= " AND t.entity IN (".getEntity('penalite').")";
+         $sql .= " AND t.entity IN (".getEntity('agence_user').")";
 
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["penalite"] = $obj->nb;
+                 $this->nb["agence_user"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;
@@ -1362,216 +1276,19 @@ class Penalite extends CommonObject
              $this->error = $this->db->error();
              return -1;
          }
-    }
-
-	public function load_stats()
-    {
-		// phpcs:enable
-
-		$stats = [];
-
-		// Nbre Billet - J
-		$sql = "SELECT count(b.fk_bticket) as nb";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
-		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nbj"] = $obj->nb;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-		// Nbre Billet - H
-		$sql = "SELECT count(b.fk_bticket) as nb";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND WEEK(b.date_creation) = ( SELECT WEEK(NOW() ) )";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nbh"] = $obj->nb;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-		// Nbre Billet - M
-		$sql = "SELECT count(b.fk_bticket) as nb";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nbm"] = $obj->nb;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-		// Nbre Billet - A
-		$sql = "SELECT count(b.fk_bticket) as nb";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["nba"] = $obj->nb;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-
-		// CA - J
-		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
-		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["caj"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-		// CA - H
-		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND WEEK(b.date_creation) = ( SELECT WEEK(NOW()))";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["cah"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-		// CA - M
-		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["cam"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-		// CA - A
-		$sql = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
-		$sql .= " WHERE b.status > 0";
-		$sql .= " AND b.entity IN (".getEntity('penalite').")";
-		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			while ($obj = $this->db->fetch_object($resql)) {
-				$stats["caa"] = $obj->da + $obj->db + $obj->n + $obj->bp + $obj->c + $obj->ce;
-			}
-			$this->db->free($resql);
-		} else {
-			dol_print_error($this->db);
-			$this->error = $this->db->error();
-			print $this->error;
-			die;
-		}
-
-		return $stats;
-    }
-
-	function dateDiff($date1, $date2){
-		$diff = abs($date1 - $date2); // abs pour avoir la valeur absolute, ainsi éviter d'avoir une différence négative
-		$retour = array();
-
-		$tmp = $diff;
-		$retour['second'] = $tmp % 60;
-
-		$tmp = floor( ($tmp - $retour['second']) /60 );
-		$retour['minute'] = $tmp % 60;
-
-		$tmp = floor( ($tmp - $retour['minute'])/60 );
-		$retour['hour'] = $tmp % 24;
-
-		$tmp = floor( ($tmp - $retour['hour'])  /24 );
-		$retour['day'] = $tmp;
-
-		return $retour;
-	}
-
+     }
 }
 
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 
 /**
- * Class PenaliteLine. You can also remove this and generate a CRUD class for lines objects.
+ * Class AgenceUserLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class PenaliteLine extends CommonObjectLine
+class AgenceUserLine extends CommonObjectLine
 {
-	// To complete with content of an object PenaliteLine
-	// We should have a field rowid, fk_penalite and position
+	// To complete with content of an object AgenceUserLine
+	// We should have a field rowid, fk_agence_user and position
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes

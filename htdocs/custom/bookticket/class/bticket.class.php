@@ -1346,7 +1346,9 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation = ( SELECT DATE( NOW() ) )";
+		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
+		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
+		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
 
 
 		$resql = $this->db->query($sql);
@@ -1433,7 +1435,9 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation = ( SELECT DATE( NOW() ) )";
+		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
+		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
+		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
 
 
 		$resql = $this->db->query($sql);
@@ -1528,7 +1532,9 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation = ( SELECT DATE( NOW() ) )";
+		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
+		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
+		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
 
 		$sql .= " GROUP BY b.fk_classe";
 
@@ -1623,7 +1629,9 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation = ( SELECT DATE( NOW() ) )";
+		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
+		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
+		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
 
 		$sql .= " GROUP BY b.fk_classe";
 
@@ -1724,7 +1732,9 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation = ( SELECT DATE( NOW() ) )";
+		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
+		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
+		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
 
 		$sql .= " GROUP BY b.fk_agence";
 
@@ -1821,7 +1831,9 @@ class Bticket extends CommonObject
 		$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_bticket as b";
 		$sql .= " WHERE b.status > 0";
 		$sql .= " AND b.entity IN (".getEntity('bticket').")";
-		$sql .= " AND b.date_creation = ( SELECT DATE( NOW() ) )";
+		$sql .= " AND DAY(b.date_creation) = ( SELECT DAY( NOW() ) )";
+		$sql .= " AND MONTH(b.date_creation) = ( SELECT MONTH(NOW() ) )";
+		$sql .= " AND YEAR(b.date_creation) = ( SELECT YEAR(NOW()))";
 
 		$sql .= " GROUP BY b.fk_agence";
 

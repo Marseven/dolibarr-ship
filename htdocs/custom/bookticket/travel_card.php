@@ -180,6 +180,19 @@ if ($action == 'add' && $usercancreate)
 
 	if (!$error)
 	{
+		$ref = explode('-',$ref);
+		if(GETPOST('lieu_depart') == 'Port-Gentil'){
+			$ref = $ref[0].'-POG/LBV-'.$ref[2];
+		}else{
+			$ref = $ref[0].'-LBV/POG-'.$ref[2];
+		}
+
+		if(GETPOST('lieu_depart') == GETPOST('lieu_arrive')){
+			setEventMessages($langs->trans('LieuIdentique'), null, 'errors');
+			$action = "create";
+			exit;
+		}
+
 		$object->ref                   = $ref;
 		$object->jour            = GETPOST('jour');
 		$object->heure            = GETPOST('heure');
@@ -484,7 +497,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Ref
 		$number = "0123456789";
 		$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
-		$tmpref = "DVM-VG-".$code;
+		$tmpref = "DVM-TRAJET-".$code;
 		print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($tmpref).'"></td></tr>';
 
 		print '</td></tr>';

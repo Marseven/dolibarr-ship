@@ -18,6 +18,7 @@ SetTextProp ("TITLE", 60, 40, -1, -1, 0, 0, 0,"Arial", "B", 20);
 
 SetTextProp ("SHIP", 15, 52, -1, -1, 0, 0, 0,"Arial", "", 12);
 SetTextProp ("DEPART", 15, 58, -1, -1, 0, 0, 0,"Arial", "", 12);
+SetTextProp ("TRAJET", 15, 62, -1, -1, 0, 0, 0,"Arial", "", 12);
 
 
 SetColumns  ("COLSWDTH", 10, 50, 45, 35, 25, 25);
