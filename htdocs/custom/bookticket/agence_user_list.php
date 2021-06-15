@@ -72,7 +72,7 @@ if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('b
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "t.ref";
+if (!$sortfield) $sortfield = "Agence";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
