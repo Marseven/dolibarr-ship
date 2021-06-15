@@ -14,13 +14,13 @@ SetTextProp ("SOCIETY3", 30, 22, -1, -1, 0, 0, 0,"Arial", "I", 9);
 SetTextProp ("SOCIETY4", 30, 26, -1, -1, 0, 0, 0,"Arial", "I", 9);
 SetTextProp ("SOCIETY5", 30, 30, -1, -1, 0, 0, 0,"Arial", "I", 9);
 
-SetTextProp ("TITLE", 60, 40, -1, -1, 0, 0, 0,"Arial", "B", 20);     
+SetTextProp ("TITLE", 40, 40, -1, -1, 0, 0, 0,"Arial", "B", 20);     
 
 SetTextProp ("SHIP", 15, 52, -1, -1, 0, 0, 0,"Arial", "", 12);
 SetTextProp ("DEPART", 15, 58, -1, -1, 0, 0, 0,"Arial", "", 12);
 SetTextProp ("TRAJET", 15, 62, -1, -1, 0, 0, 0,"Arial", "", 12);
 
 
-SetColumns  ("COLSWDTH", 10, 50, 45, 35, 25, 25);
+SetColumns  ("COLSWDTH", 10, 50, 45, 30, 32, 23);
 SetTextProp ("ROW0COL0", 10, 65, -1, 8, 255, 255, 255, "Arial", "B", 11);  
 SetTextProp ("ROW1COL0", 10, 75, -1, 6, 0, 0, 0, "Arial", "", 9);  
