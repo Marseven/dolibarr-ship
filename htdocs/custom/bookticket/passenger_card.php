@@ -525,7 +525,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql_a = 'SELECT DISTINCT p.rowid, ct.label as nationalite';
+			$sql_a = 'SELECT DISTINCT ct.label as nationalite';
 			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
 			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
 			$resql_a = $db->query($sql_a);
