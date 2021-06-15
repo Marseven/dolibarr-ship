@@ -72,7 +72,7 @@ if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('b
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "Agence";
+if (!$sortfield) $sortfield = "a.label";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
@@ -91,7 +91,7 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('bticket', 'list', $canvas);
+	$objcanvas->getCanvas('agence_user', 'list', $canvas);
 }
 
 // Security check
