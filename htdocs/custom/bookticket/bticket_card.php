@@ -347,7 +347,7 @@ if (empty($reshook))
 				$object_passenger->age_enfant        = GETPOST('age_enfant');
 				$object_passenger->status = Passenger::STATUS_VALIDATED;
 
-				/*
+
 				$customer = new Societe($db);
 
 				if (GETPOST("private", 'int') == 1)	// Ask to create a contact
@@ -427,7 +427,6 @@ if (empty($reshook))
 				$result = $customer->create($user);
 
 
-				*/
 
 				$id_passenger = $object_passenger->create($user);
 
@@ -442,11 +441,11 @@ if (empty($reshook))
 			$resql_prix =$db->query($sql_prix);
 			$obj_prix = $db->fetch_object($resql_prix);
 
-			if(GETPOST('age') > 13){
+			if(GETPOST('date_naissance') > 13){
 				$object->prix = $obj_prix->prix_standard;
-			}elseif(GETPOST('age') <= 13 && GETPOST('age') >= 5){
+			}elseif(GETPOST('date_naissance') <= 13 && GETPOST('date_naissance') >= 5){
 				$object->prix = $obj_prix->prix_enfant;
-			}elseif(GETPOST('age') < 5 && GETPOST('age') >= 0){
+			}elseif(GETPOST('date_naissance') < 5 && GETPOST('date_naissance') >= 0){
 				$object->prix = $obj_prix->prix_enfant;
 			}else{
 				$error++;
@@ -456,7 +455,7 @@ if (empty($reshook))
 
 			if(GETPOST('accompagne') == 'on'){
 
-				if(GETPOST('age_enfant') > 13){
+				if(GETPOST('date_naissance_enfant') > 13){
 					$error++;
 					$mesg = 'Age enfant passager renseigne superieur ';
 					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
@@ -534,7 +533,7 @@ if (empty($reshook))
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom             	 = GETPOST('prenom');
 				$object_passenger->nationalite       = GETPOST('nationalite');
-				$object_passenger->age             	 = GETPOST('age');
+				$object_passenger->date_naissance             	 = GETPOST('date_naissance');
 				$object_passenger->adresse             	 = GETPOST('adresse');
 				$object_passenger->telephone             	 = GETPOST('telephone');
 				$object_passenger->email             	 = GETPOST('email');
@@ -994,11 +993,24 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print $passenger;
 
-			print '</td></tr>';*/
+			print '</td></tr>';
 
 			// new_passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passager").'</td>';
 			print '<td><input type="checkbox" name="new_passenger" >';
+			print '</td></tr>';*/
+
+			// ship
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("TypePiece").'</td>';
+
+			$piece = '<td><select class="flat" name="type_piece">';
+			$piece .= '<option value="CNI">'.($langs->trans("CNI")).'</option>';
+			$piece .= '<option value="Passeport">'.($langs->trans("Passeport")).'</option>';
+			$piece .= '<option value="Carte de Séjour">'.($langs->trans("CarteSéjour")).'</option>';
+			$piece .= '</select>';
+
+			print $piece;
+
 			print '</td></tr>';
 
 			// Ref
@@ -1022,7 +1034,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object_passenger->age.'"> ANS';
+			print '<td><input name="date_naissance" type="date" class="maxwidth50" value="'.$object_passenger->date_naissance.'"> ANS';
 			print '</td></tr>';
 
 			// adresse
@@ -1052,7 +1064,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object_passenger->age_enfant.'"> ANS';
+			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth50" value="'.$object_passenger->date_naissance_enfant.'"> ANS';
 			print '</td></tr>';
 
 
@@ -1214,34 +1226,22 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
-			// agence
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Agence").'</td>';
-
-			$agence = '<td><select class="flat" name="fk_agence">';
-			if (empty($agencerecords))
-			{
-				$agence .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($agencerecords as $lines)
-				{
-					$agence .= '<option value="';
-					$agence .= $lines->rowid;
-					$agence .= '"';
-					$agence .= '>';
-					$agence .= $langs->trans($lines->label);
-					$agence .= '</option>';
-				}
-			}
-
-			$agence .= '</select>';
-
-			print $agence;
-
-			print '</td></tr>';
-
 			print '<hr>';
 
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
+
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("TypePiece").'</td>';
+
+			$piece = '<td><select class="flat" name="type_piece">';
+			$piece .= '<option value="'.$obj_p->type_piece.'">'.($langs->trans("'.$obj_p->type_piece.'")).'</option>';
+			$piece .= '<option value="CNI">'.($langs->trans("CNI")).'</option>';
+			$piece .= '<option value="Passeport">'.($langs->trans("Passeport")).'</option>';
+			$piece .= '<option value="Carte de Séjour">'.($langs->trans("CarteSéjour")).'</option>';
+			$piece .= '</select>';
+
+			print $piece;
+
+			print '</td></tr>';
 
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($obj_p->ref).'"></td></tr>';
@@ -1263,8 +1263,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// age
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$obj_p->age.'"> ANS';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateNaissance").'</td>';
+			print '<td><input name="date_naissance" type="date" class="maxwidth50" value="'.$obj_p->date_naissance.'"> ANS';
 			print '</td></tr>';
 
 			// adresse
@@ -1294,7 +1294,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$obj_p->age_enfant.'"> ANS';
+			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth50" value="'.$obj_p->date_naissance_enfant.'"> ANS';
 			print '</td></tr>';
 
 			// fk_passenger

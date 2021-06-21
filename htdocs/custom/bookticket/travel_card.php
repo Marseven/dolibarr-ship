@@ -942,6 +942,8 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate)
 		{
+			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&type=0">'.$langs->trans('NewBTicket').'</a>';
+
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
 			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)

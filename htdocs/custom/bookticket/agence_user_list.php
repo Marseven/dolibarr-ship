@@ -346,7 +346,7 @@ if ($resql)
 		// Agence
 		if (!empty($arrayfields['Agence']['checked']))
 		{
-			print '<td class="center">';
+			print '<td class="tdoverflowmax200">';
 			print $obj->label;
 			print '</td>';
 			if (!$i) $totalarray['nbfield']++;

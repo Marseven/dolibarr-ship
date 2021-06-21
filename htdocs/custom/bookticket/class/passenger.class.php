@@ -119,16 +119,17 @@ class Passenger extends CommonObject
 	public $fields = array(
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
 		'ref'           => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
+		'type_piece'         => array('type'=>'varchar(255)', 'label'=>'Type de pièce identité', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'nom'         => array('type'=>'varchar(255)', 'label'=>'Nom', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'prenom'         => array('type'=>'varchar(255)', 'label'=>'Prenom', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'nationalite'         => array('type'=>'varchar(255)', 'label'=>'Nationalite', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'adresse'         => array('type'=>'varchar(255)', 'label'=>'Adresse', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'telephone'         => array('type'=>'varchar(255)', 'label'=>'Téléphone', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'email'         => array('type'=>'varchar(255)', 'label'=>'Email', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'age'           => array('type'=>'integer', 'label'=>'Age', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
+		'date_naissance'           => array('type'=>'date', 'label'=>'Date de naissance', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'help'=>'Help text', 'css'=>'maxwidth75imp'),
 		'accompagne'        => array('type'=>'integer', 'label'=>'Accompagne', 'enabled'=>1, 'visible'=>1, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),'age'           => array('type'=>'integer', 'label'=>'Age', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
 		'nom_enfant'         => array('type'=>'varchar(255)', 'label'=>'NomEnfant', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
-		'age_enfant'           => array('type'=>'integer', 'label'=>'AgeEnfant', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
+		'date_naissance_enfant'           => array('type'=>'date', 'label'=>'Date de naissance Enfant', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'help'=>'Help text', 'css'=>'maxwidth75imp'),
 		'entity'        => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>1, 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>20),'age'           => array('type'=>'integer', 'label'=>'Age', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
@@ -152,6 +153,11 @@ class Passenger extends CommonObject
 	 * @var int Entity
 	 */
 	public $entity;
+
+	/**
+	 * @var string type_piece
+	 */
+	public $type_piece;
 
 	/**
 	 * @var string nom
@@ -184,9 +190,9 @@ class Passenger extends CommonObject
 	public $email;
 
 	/**
-	 * @var int age
+	 * @var date date_naissance
 	 */
-	public $age;
+	public $date_naissance;
 
 	/**
 	 * @var int accompagne
@@ -199,9 +205,9 @@ class Passenger extends CommonObject
 	public $nom_enfant;
 
 	/**
-	 * @var int age_enfant
+	 * @var int date_naissance_enfant
 	 */
-	public $age_enfant;
+	public $date_naissance_enfant;
 
 	/**
 	 * @var int Status
