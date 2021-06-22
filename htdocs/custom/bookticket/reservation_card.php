@@ -89,7 +89,7 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('travel', 'card', $canvas);
+	$objcanvas->getCanvas('reservation', 'card', $canvas);
 }
 
 // Security check
@@ -329,7 +329,7 @@ if ($object->id > 0 && $action == 'addin')
 $title = $langs->trans('ReservationCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->ref, 16);
-$title = $langs->trans('travel')." ".$shortlabel." - ".$langs->trans('Card');
+$title = $langs->trans('reservation')." ".$shortlabel." - ".$langs->trans('Card');
 $helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
 llxHeader('', $title, $helpurl);
@@ -344,7 +344,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	if (empty($object->error) && $id)
 	{
-		$object = new Travel($db);
+		$object = new Reservation($db);
 		$result = $object->fetch($id);
 		if ($result <= 0) dol_print_error('', $object->error);
 	}
