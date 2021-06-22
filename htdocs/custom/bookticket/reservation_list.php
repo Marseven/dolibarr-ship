@@ -316,7 +316,7 @@ if ($resql)
 
 	print '<tr class="liste_titre">';
 	if (!empty($arrayfields['r.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['r.ref']['label'], $_SERVER["PHP_SELF"], "r.ref", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['t.jour']['checked'])) {
 		print_liste_field_titre($arrayfields['t.jour']['label'], $_SERVER["PHP_SELF"], "t.jour", "", $param, "", $sortfield, $sortorder);
