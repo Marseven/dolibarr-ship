@@ -555,7 +555,7 @@ class modBookTicket extends DolibarrModules
 			'type'=>'left',                          // This is a Top menu entry
 			'titre'=>'Reservations',
 			'mainmenu'=>'bookticket',
-			'leftmenu'=>'agence_user',
+			'leftmenu'=>'reservation',
 			'url'=>'/bookticket/reservation_list.php',
 			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
@@ -830,7 +830,7 @@ class modBookTicket extends DolibarrModules
 		);
 
 		$this->menu[$r++]=array(
-			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=agence_caisse',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=agence_user',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'ListAgenceCaisse',
 			'mainmenu'=>'bookticket',
