@@ -43,12 +43,12 @@ if (! $res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_user.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/agence_user.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/agence_caisse.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
@@ -107,9 +107,9 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->bookticket->agence_user->read;
-$usercancreate = $user->rights->bookticket->agence_user->write;
-$usercandelete = $user->rights->bookticket->agence_user->delete;
+$usercanread = $user->rights->bookticket->agence_caisse->read;
+$usercancreate = $user->rights->bookticket->agence_caisse->write;
+$usercandelete = $user->rights->bookticket->agence_caisse->delete;
 
 $agencerecords = [];
 $sql_agence = 'SELECT a.rowid, a.label, a.labelshort, a.ville, a.entity,';
@@ -136,22 +136,22 @@ if ($resql_agence)
 	}
 }
 
-$userrecords = [];
-$sql_passenger = 'SELECT u.rowid, u.lastname, u.firstname';
-$sql_passenger .= ' FROM '.MAIN_DB_PREFIX.'user as u';
-$resql_passenger =$db->query($sql_passenger);
-if ($resql_passenger)
+$caisserecords = [];
+$sql_bank = 'SELECT ba.rowid, ba.label';
+$sql_bank .= ' FROM '.MAIN_DB_PREFIX.'bank_account as ba';
+$resql_bank =$db->query($sql_bank);
+if ($resql_bank)
 {
-	$num = $db->num_rows($resql_passenger);
+	$num = $db->num_rows($resql_bank);
 	$i = 0;
 	if ($num)
 	{
 		while ($i < $num)
 		{
-			$obj = $db->fetch_object($resql_passenger);
+			$obj = $db->fetch_object($resql_bank);
 			if ($obj)
 			{
-				$userrecords[$i] = $obj;
+				$caisserecords[$i] = $obj;
 			}
 			$i++;
 		}
@@ -169,7 +169,7 @@ include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 
-// Add a agence_user
+// Add a agence_caisse
 if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
@@ -178,9 +178,9 @@ if ($action == 'add' && $usercancreate)
 	{
 
 		$object->fk_agence             	 = GETPOST('fk_agence');
-		$object->fk_user             	 = GETPOST('fk_user');
+		$object->fk_caisse             	 = GETPOST('fk_caisse');
 
-		$object->status = AgenceUser::STATUS_APPROVED;
+		$object->status = AgenceCaisse::STATUS_APPROVED;
 
 		if (!$error)
 		{
@@ -207,7 +207,7 @@ if ($action == 'add' && $usercancreate)
 	}
 }
 
-// Update a agence_user
+// Update a agence_caisse
 if ($action == 'update' && $usercancreate)
 {
 	if (GETPOST('cancel', 'alpha'))
@@ -219,7 +219,7 @@ if ($action == 'update' && $usercancreate)
 			$object->oldcopy = clone $object;
 
 			$$object->fk_agence             	 = GETPOST('fk_agence');
-			$object->fk_user             	 = GETPOST('fk_user');
+			$object->fk_caisse             	 = GETPOST('fk_caisse');
 
 			if (!$error && $object->check())
 			{
@@ -323,7 +323,7 @@ if ($action == 'delete' && $usercandelete)
 }
 
 
-// Add agence_user into object
+// Add agence_caisse into object
 if ($object->id > 0 && $action == 'addin')
 {
 	$thirpdartyid = 0;
@@ -334,7 +334,7 @@ if ($object->id > 0 && $action == 'addin')
  * View
  */
 
-$title = $langs->trans('AffectationCard');
+$title = $langs->trans('BankCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->label, 16);
 $title = $langs->trans('Affectation')." ".$shortlabel." - ".$langs->trans('Card');
@@ -392,7 +392,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
 
-		$picto = 'agence_user';
+		$picto = 'agence_caisse';
 		$title = $langs->trans("NewAffectation");
 
 		$linkback = "";
@@ -404,28 +404,28 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 
 
-			// user
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Users").'</td>';
+			// caisse
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Caisses").'</td>';
 
-			$user = '<td><select class="flat" name="fk_classe">';
-			if (empty($userrecords))
+			$caisse = '<td><select class="flat" name="fk_classe">';
+			if (empty($caisserecords))
 			{
-				$user .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				$caisse .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			}else{
-				foreach ($userrecords as $lines)
+				foreach ($caisserecords as $lines)
 				{
-					$user .= '<option value="';
-					$user .= $lines->rowid;
-					$user .= '"';
-					$user .= '>';
-					$user .= $langs->trans($lines->lastname).' '.$langs->trans($lines->firstname);
-					$user .= '</option>';
+					$caisse .= '<option value="';
+					$caisse .= $lines->rowid;
+					$caisse .= '"';
+					$caisse .= '>';
+					$caisse .= $langs->trans($lines->label);
+					$caisse .= '</option>';
 				}
 			}
 
-			$user .= '</select>';
+			$caisse .= '</select>';
 
-			print $user;
+			print $caisse;
 
 			print '</td></tr>';
 
@@ -504,28 +504,28 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<table class="border allwidth">';
 
-			// user
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Users").'</td>';
+			// caisse
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Caisses").'</td>';
 
-			$user = '<td><select class="flat" name="fk_classe">';
-			if (empty($userrecords))
+			$caisse = '<td><select class="flat" name="fk_classe">';
+			if (empty($caisserecords))
 			{
-				$user .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+				$caisse .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			}else{
-				foreach ($userrecords as $lines)
+				foreach ($caisserecords as $lines)
 				{
-					$user .= '<option value="';
-					$user .= $lines->rowid;
-					$user .= '"';
-					$user .= '>';
-					$user .= $langs->trans($lines->lastname).' '.$langs->trans($lines->firstname);
-					$user .= '</option>';
+					$caisse .= '<option value="';
+					$caisse .= $lines->rowid;
+					$caisse .= '"';
+					$caisse .= '>';
+					$caisse .= $langs->trans($lines->label);
+					$caisse .= '</option>';
 				}
 			}
 
-			$user .= '</select>';
+			$caisse .= '</select>';
 
-			print $user;
+			print $caisse;
 
 			print '</td></tr>';
 
@@ -575,24 +575,24 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql_a = 'SELECT DISTINCT au.rowid, u.lastname, u.firstname,  a.label';
-			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
-			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON au.fk_agence = a.rowid";
-			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."user as u ON au.fk_user = u.rowid";
+			$sql_a = 'SELECT DISTINCT ac.rowid, ba.label as caisse,  a.label as agence';
+			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
+			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON ac.fk_agence = a.rowid";
+			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_account as ba ON ac.fk_user = ba.rowid";
 			$sql_a .= ' WHERE a.rowid IN ('.$object->fk_agence.')';
-			$sql_a .= ' AND u.rowid IN ('.$object->fk_user.')';
+			$sql_a .= ' AND ba.rowid IN ('.$object->fk_caisse.')';
 			$resql_a = $db->query($sql_a);
 			$obj = $db->fetch_object($resql_a);
 
 
 
-			$head = agence_user_prepare_head($object);
-			$titre = $langs->trans("CardAffectation");
-			$picto = 'agence_user';
+			$head = agence_caisse_prepare_head($object);
+			$titre = $langs->trans("CardCaisse");
+			$picto = 'agence_caisse';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/agence_user_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/agence_caisse_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
 			if ($user->socid && !in_array('bticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
@@ -606,11 +606,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<table class="border tableforfield centpercent">';
 			print '<tbody>';
 
-			// User
+			// Caisse
 			print '<tr>';
-			print '<td class="titlefield">'.$langs->trans("User").'</td>';
+			print '<td class="titlefield">'.$langs->trans("Caisse").'</td>';
 			print '<td>';
-			print $obj->lastname.' '.$obj->firstname;
+			print $obj->caisse;
 			print '</td></tr>';
 
 
@@ -623,7 +623,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->textwithpicto($langs->trans('Agence'), $htmlhelp);
 			print '</td>';
 			print '<td>';
-			print $obj->label;
+			print $obj->agence;
 			print '</td>';
 			print '</tr>';
 
