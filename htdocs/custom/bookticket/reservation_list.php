@@ -148,7 +148,7 @@ $sql .= ' t.date_creation, t.tms as date_update';
 // Add fields from hooks
 $parameters = array();
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_reservation as r';
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as t ON t.fk_ship = s.rowid";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as t ON r.fk_travel = t.rowid";
 $sql .= ' WHERE t.entity IN ('.getEntity('travel').')';
 
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
