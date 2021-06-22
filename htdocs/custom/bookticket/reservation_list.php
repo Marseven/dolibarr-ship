@@ -16,36 +16,28 @@
  */
 
 /**
- *	\file       bookticket/penaliteindex.php
+ *	\file       bookticket/reservationindex.php
  *	\ingroup    bookticket
- *	\brief      Home page of penalite left menu
+ *	\brief      Home page of reservation left menu
  */
 
 
 // Load Dolibarr environment
 $res=0;
-
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
 if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
-
 // Try main.inc.php into web root detected using web root calculated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
 while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
 if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
 if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
-
 // Try main.inc.php using relative path
 if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
 if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/bticket.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/penalite.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/reservation.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs('bookticket');
@@ -58,7 +50,8 @@ $toselect = GETPOST('toselect', 'array');
 
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_ref = GETPOST("search_ref", 'alpha');
-$search_passenger = GETPOST("search_passenger", 'alpha');
+$search_jour_heure = GETPOST("search_jour_heure", 'alpha');
+$search_ship = GETPOST("search_ship", 'alpha');
 $search_finished = GETPOST("search_finished", 'int');
 $optioncss = GETPOST('optioncss', 'alpha');
 
@@ -66,57 +59,45 @@ $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
-
 if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "p.ref";
+if (!$sortfield) $sortfield = "t.ref";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
-$contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'Penalitelist';
+$contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'reservationlist';
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$object = new Penalite($db);
+$object = new Reservation($db);
 $form = new Form($db);
 
 if (empty($action)) $action = 'list';
 
-// Get object canvas (By default, this is not defined, so standard usage of dolibarr)
-$canvas = GETPOST("canvas");
-$objcanvas = null;
-if (!empty($canvas))
-{
-	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
-	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('bticket', 'list', $canvas);
-}
-
 // Security check
-//$result = restrictedArea($user, 'ticket', '', '', '', '', '', 0);
+//$result = restrictedArea($user, 'reservation', '', '', '', '', '', 0);
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-	'p.ref'=>"Ref",
-	'passenger'=>"Passenger",
+	't.ref'=>"Ref",
+	't.jour'=>"TravelJour",
+	't.ship'=>"TravelShip",
 );
-
 
 //$isInEEC = isInEEC($mysoc);
 
 // Definition of fields for lists
 $arrayfields = array(
-	'p.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
-	'p.bticket'=>array('label'=>$langs->trans("Billet"), 'checked'=>1, 'position'=>12),
-	'passenger'=>array('label'=>$langs->trans("Passenger"), 'checked'=>1, 'position'=>22),
-	'p.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-	'p.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+	'r.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
+	't.jour'=>array('label'=>$langs->trans("Jour"), 'checked'=>1, 'position'=>10),
+	't.heure'=>array('label'=>$langs->trans("Heure"), 'checked'=>1, 'position'=>10),
+	'trajet'=>array('label'=>$langs->trans("Trajet"), 'checked'=>1, 'position'=>20),
+	'r.nbre_vip'=>array('label'=>$langs->trans('NbreVip'), 'checked'=>1,  'position'=>30),
+	'r.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>52),
+	'r.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>52),
+	'r.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
 );
-
-$object->fields = dol_sort_array($object->fields, 'position');
-$arrayfields = dol_sort_array($arrayfields, 'position');
-
 
 
 /*
@@ -128,7 +109,7 @@ if (!GETPOST('confirmmassaction', 'alpha') && $massaction != 'presend' && $massa
 
 $parameters = array();
 
-$rightskey = 'penalite';
+$rightskey = 'reservation';
 
 // Selection of new fields
 include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
@@ -138,13 +119,12 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 {
 	$sall = "";
 	$search_ref = "";
-	$search_passenger = "";
-	$search_finished = '';
+	$search_finished = ''; // There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
 	$search_array_options = array();
 }
 
 // Mass actions
-$objectclass = 'Penalite';
+$objectclass = 'Reservation';
 
 $permissiontoread = $user->rights->bookticket->{$rightskey}->read;
 $permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
@@ -152,24 +132,26 @@ $uploaddir = $conf->bookticket->dir_output;
 include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
 
+
 /*
  * View
  */
 
-$title = $langs->trans("Penalites");
+$title = $langs->trans("Reservations");
 
-$texte = $langs->trans("Penalites");
+$texte = $langs->trans("Reservations");
 
 
-$sql = 'SELECT DISTINCT p.rowid, p.ref,  b.ref as bticket, ps.nom as passenger, ps.prenom as prenom, p.entity, p.fk_passenger';
-$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_penalite as p';
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_bticket as b ON p.fk_bticket = b.rowid";
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as ps ON p.fk_passenger = ps.rowid";
-$sql .= ' WHERE p.entity IN ('.getEntity('penalite').')';
+$sql = 'SELECT DISTINCT r.rowid, r.ref, t.jour, t.heure, t.lieu_depart, t.lieu_arrive, r.nbre_place, r.nbre_vip, r.nbre_aff, r.nbre_eco, t.entity,';
+$sql .= ' t.date_creation, t.tms as date_update';
 
-if ($search_ref)     $sql .= natural_search('p.ref', $search_ref);
-if ($search_passenger)   $sql .= natural_search('passenger', $search_passenger);
-$sql .= $db->order($sortfield, $sortorder);
+// Add fields from hooks
+$parameters = array();
+$sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_reservation as r';
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as t ON t.fk_ship = s.rowid";
+$sql .= ' WHERE t.entity IN ('.getEntity('travel').')';
+
+if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -197,19 +179,18 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 		$id = $obj->rowid;
-		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?id='.$id);
+		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/travel_card.php?id='.$id);
 		exit;
 	}
 
 	$helpurl = '';
-	$helpurl = 'EN:Module_Ticket|FR:Module_Tickets|ES:M&oacute;dulo_Tickets';
+	$helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
+    llxHeader('', $title, $helpurl, '', 0, 0, "", "", $paramsCat);
 
-    llxHeader('', $title, $helpurl, '', 0, 0, "", "");
-
-	// Displays ship removal confirmation
-	if (GETPOST('delTicket')) {
-		setEventMessages($langs->trans("PenaliteDeleted", GETPOST('delTicket')), null, 'mesgs');
+	// Displays Travel removal confirmation
+	if (GETPOST('delprod')) {
+		setEventMessages($langs->trans("TravelDeleted", GETPOST('delprod')), null, 'mesgs');
 	}
 
 	$param = '';
@@ -217,11 +198,6 @@ if ($resql)
 	if ($limit > 0 && $limit != $conf->liste_limit) $param .= '&limit='.urlencode($limit);
 	if ($sall) $param .= "&sall=".urlencode($sall);
 	if ($search_ref) $param = "&search_ref=".urlencode($search_ref);
-	if ($search_passenger) $param .= "&search_passenger=".urlencode($search_passenger);
-	if ($search_finished) $param = "&search_finished=".urlencode($search_finished);
-
-	// Add $param from extra fields
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
 
 	// List of mass actions available
 	$arrayofmassactions = array(
@@ -229,16 +205,16 @@ if ($resql)
 		//'builddoc'=>$langs->trans("PDFMerge"),
 		//'presend'=>$langs->trans("SendByMail"),
 	);
-	if ($user->rights->bookticket->{$rightskey}->delete) $arrayofmassactions['predelete'] = "<span class='fa fa-trash paddingrightonly'></span>".$langs->trans("Delete");
+	if ($user->rights->{$rightskey}->supprimer) $arrayofmassactions['predelete'] = "<span class='fa fa-trash paddingrightonly'></span>".$langs->trans("Delete");
 	if (in_array($massaction, array('presend', 'predelete'))) $arrayofmassactions = array();
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 	$newcardbutton = '';
-	$perm = $user->rights->bookticket->penalite->write;
+	$perm = $user->rights->bookticket->reservation->write;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
-	//$newcardbutton .= dolGetButtonTitle($langs->trans('NewPenalite'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?action=create&type=0', '', $perm, $params);
-	$label = 'NewPenalite';
+	//$newcardbutton .= dolGetButtonTitle($langs->trans('NewTravel'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/travel_card.php?action=create&type=0', '', $perm, $params);
+	$label = 'NewReservation';
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post" name="formulaire">';
 	if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -250,14 +226,14 @@ if ($resql)
 	//print '<input type="hidden" name="page" value="'.$page.'">';
 	print '<input type="hidden" name="type" value="'.$type.'">';
 
-	$picto = 'bticket';
+	$picto = 'reservation';
 
 	print_barre_liste($texte, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 	$topicmail = "Information";
-	$modelmail = "Penalite";
-	$objecttmp = new Bticket($db);
-	$trackid = 'penalite'.$object->id;
+	$modelmail = "reservation";
+	$objecttmp = new Reservation($db);
+	$trackid = 'reservation'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 
@@ -276,38 +252,63 @@ if ($resql)
 
 	// Lines with input filters
 	print '<tr class="liste_titre_filter">';
-	if (!empty($arrayfields['p.ref']['checked']))
+	if (!empty($arrayfields['r.ref']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['passenger']['checked']))
+	if (!empty($arrayfields['t.jour']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_label" size="12" value="'.dol_escape_htmltag($search_passenger).'">';
+		//print '<input class="flat" type="date" name="search_jour" size="12" value="'.dol_escape_htmltag($search_jour).'">';
 		print '</td>';
 	}
 
-	// bticket
-	if (!empty($arrayfields['p.bticket']['checked']))
+	if (!empty($arrayfields['t.heure']['checked']))
+	{
+		print '<td class="liste_titre left">';
+		//print '<input class="flat" type="datetime" name="search_jour" size="12" value="'.dol_escape_htmltag($search_jour).'">';
+		print '</td>';
+	}
+
+	if (!empty($arrayfields['trajet']['checked']))
+	{
+		print '<td class="liste_titre left">';
+		//print '<input class="flat" type="text" name="search_ship" size="12" value="'.dol_escape_htmltag($search_ship).'">';
+		print '</td>';
+	}
+
+
+
+	// lieu_depart
+	if (!empty($arrayfields['r.nbre_vip']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
+	// lieu_arrive
+	if (!empty($arrayfields['r.nbre_aff']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
+	// lieu_arrive
+	if (!empty($arrayfields['r.nbre_eco']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
 	// Date creation
-	if (!empty($arrayfields['p.date_creation']['checked']))
+	if (!empty($arrayfields['r.date_creation']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
-	// Date modification
-	if (!empty($arrayfields['p.tms']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
+
 	print '<td class="liste_titre center maxwidthsearch">';
 	$searchpicto = $form->showFilterButtons();
 	print $searchpicto;
@@ -316,27 +317,34 @@ if ($resql)
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	if (!empty($arrayfields['p.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['p.ref']['label'], $_SERVER["PHP_SELF"], "p.ref", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['r.ref']['checked'])) {
+		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['passenger']['checked'])) {
-		print_liste_field_titre($arrayfields['passenger']['label'], $_SERVER["PHP_SELF"], "passenger", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['t.jour']['checked'])) {
+		print_liste_field_titre($arrayfields['t.jour']['label'], $_SERVER["PHP_SELF"], "t.jour", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.bticket']['checked'])) {
-		print_liste_field_titre($arrayfields['p.bticket']['label'], $_SERVER["PHP_SELF"], "p.bticket", "", $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.heure']['checked'])) {
+		print_liste_field_titre($arrayfields['t.heure']['label'], $_SERVER["PHP_SELF"], "t.heure", "", $param, "", $sortfield, $sortorder);
+	}
+	if (!empty($arrayfields['trajet']['checked'])) {
+		print_liste_field_titre($arrayfields['trajet']['label'], $_SERVER["PHP_SELF"], "trajet", "", $param, "", $sortfield, $sortorder);
 	}
 
+	if (!empty($arrayfields['r.nbre_vip']['checked']))  print_liste_field_titre($arrayfields['r.nbre_vip']['label'], $_SERVER['PHP_SELF'], 'r.nbre_vip', '', $param, '', $sortfield, $sortorder, 'center ');
+
+	if (!empty($arrayfields['r.nbre_aff']['checked']))  print_liste_field_titre($arrayfields['r.nbre_aff']['label'], $_SERVER['PHP_SELF'], 'r.nbre_aff', '', $param, '', $sortfield, $sortorder, 'center ');
+
+	if (!empty($arrayfields['r.nbre_eco']['checked']))  print_liste_field_titre($arrayfields['r.nbre_eco']['label'], $_SERVER['PHP_SELF'], 'r.nbre_eco', '', $param, '', $sortfield, $sortorder, 'center ');
+
 	if (!empty($arrayfields['t.date_creation']['checked'])) {
-		print_liste_field_titre($arrayfields['p.date_creation']['label'], $_SERVER["PHP_SELF"], "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+		print_liste_field_titre($arrayfields['r.date_creation']['label'], $_SERVER["PHP_SELF"], "r.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
-	if (!empty($arrayfields['t.tms']['checked'])) {
-		print_liste_field_titre($arrayfields['p.tms']['label'], $_SERVER["PHP_SELF"], "t.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
-	}
+
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	print "</tr>\n";
 
 
-	$penalite_static = new Penalite($db);
+	$reservation_static = new Reservation($db);
 
 	$i = 0;
 	$totalarray = array();
@@ -344,54 +352,87 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 
-		$penalite_static->id = $obj->rowid;
-		$penalite_static->ref = $obj->ref;
-		$penalite_static->passenger = $obj->passenger;
+		/* Multilangs
+		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
+		{
+			$sql = "SELECT label";
+			$sql .= " FROM ".MAIN_DB_PREFIX."product_lang";
+			$sql .= " WHERE fk_product=".$obj->rowid;
+			$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
+			$sql .= " LIMIT 1";
+
+			$result = $db->query($sql);
+			if ($result)
+			{
+				$objtp = $db->fetch_object($result);
+				if (!empty($objtp->label)) $obj->label = $objtp->label;
+			}
+		}*/
+
+		$reservation_static->id = $obj->rowid;
+		$reservation_static->ref = $obj->ref;
 		print '<tr class="oddeven">';
 
 		// Ref
-		if (!empty($arrayfields['p.ref']['checked']))
+		if (!empty($arrayfields['r.ref']['checked']))
 		{
 			print '<td class="tdoverflowmax200">';
-			print $penalite_static->getNomUrl(1);
+			print $reservation_static->getNomUrl(1);
 			print "</td>\n";
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// Passenger
-		if (!empty($arrayfields['passenger']['checked']))
+		// Jour
+		if (!empty($arrayfields['t.jour']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.dol_buildpath('/bookticket/passenger_card.php', 1).'?id='.$obj->fk_passenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->jour).'">'.dol_print_date($obj->jour, 'day', 'tzuser').'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-
-
-		// bticket
-		if (!empty($arrayfields['p.bticket']['checked']))
+		// Heure
+		if (!empty($arrayfields['t.heure']['checked']))
 		{
-			print '<td class="center"><a href="'.dol_buildpath('/bookticket/bticket_card.php', 1).'?id='.$obj->fk_bticket.'">';
-			print $obj->bticket;
-			print '</a></td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.$obj->heure.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// Ship
+		if (!empty($arrayfields['trajet']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="trajet">'.$obj->lieu_depart.' / '.$obj->lieu_arrive.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// lieu_depart
+		if (!empty($arrayfields['r.nbre_vip']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_vip).'">'.$obj->nbre_vip.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// lieu_arrive
+		if (!empty($arrayfields['r.nbre_aff']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_aff).'">'.$obj->nbre_aff.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// lieu_arrive
+		if (!empty($arrayfields['r.nbre_eco']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->nbre_eco).'">'.$obj->nbre_eco.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
 		// Date creation
-		if (!empty($arrayfields['p.date_creation']['checked']))
+		if (!empty($arrayfields['t.date_creation']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
 			print '</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
-		// Date modification
-		if (!empty($arrayfields['p.tms']['checked']))
-		{
-			print '<td class="center nowraponall">';
-			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
-			print '</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
+
 
 		// Action
 		print '<td class="nowrap center">';

@@ -441,6 +441,23 @@ class modBookTicket extends DolibarrModules
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
+		//reservation
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Read reservation of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'reservation'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Create/Update reservation of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'reservation'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Delete reservation of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'reservation'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$r++;
+
 		/* END MODULEBUILDER PERMISSIONS */
 
 		// Main menu entries to add
@@ -528,6 +545,39 @@ class modBookTicket extends DolibarrModules
 			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
 			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
 			'perms'=>'$user->rights->bookticket->penalite->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			'target'=>'',
+			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
+		);
+
+		//Réservation
+		$this->menu[$r++]=array(
+			'fk_menu'=>'fk_mainmenu=bookticket',      // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+			'type'=>'left',                          // This is a Top menu entry
+			'titre'=>'Reservations',
+			'mainmenu'=>'bookticket',
+			'leftmenu'=>'agence_user',
+			'url'=>'/bookticket/reservation_list.php',
+			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'position'=>1000+$r,
+			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled.
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->reservation->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
+			'target'=>'',
+			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
+		);
+
+		$this->menu[$r++]=array(
+			'fk_menu'=>'fk_mainmenu=bookticket,fk_leftmenu=reservation',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+			'type'=>'left',			                // This is a Left menu entry
+			'titre'=>'AddReservation',
+			'mainmenu'=>'bookticket',
+			'leftmenu'=>'bookticket_reservation_card',
+			'url'=>'/bookticket/reservation_card.php',
+			'langs'=>'bookticket@bookticket',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'position'=>1000+$r,
+			'enabled'=>'$conf->bookticket->enabled',  // Define condition to show or hide menu entry. Use '$conf->bookticket->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			//'perms'=>'1', // Use 'perms'=>'$user->rights->bookticket->myobject->read' if you want your menu with a permission rules
+			'perms'=>'$user->rights->bookticket->reservation->read',			                // Use 'perms'=>'$user->rights->bookticket->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);

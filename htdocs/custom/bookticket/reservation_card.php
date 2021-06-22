@@ -16,9 +16,9 @@
  */
 
 /**
- *	\file       bookticket/travelindex.php
+ *	\file       bookticket/reservation_card.php
  *	\ingroup    bookticket
- *	\brief      Home page of travel left menu
+ *	\brief      Home page of reservation left menu
  */
 
 
@@ -40,9 +40,8 @@ if (! $res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/city.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/travel.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/reservation.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/reservation.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
@@ -67,7 +66,7 @@ $label_security_check = empty($conf->global->MAIN_SECURITY_ALLOW_UNSECURED_LABEL
 
 if (!empty($user->socid)) $socid = $user->socid;
 
-$object = new Travel($db);
+$object = new Reservation($db);
 
 if ($id > 0 || !empty($ref))
 {
@@ -102,57 +101,31 @@ if (!empty($canvas))
 
 if ($cancel) $action = '';
 
-$usercanread = $user->rights->bookticket->travel->read;
-$usercancreate = $user->rights->bookticket->travel->write;
-$usercandelete = $user->rights->bookticket->travel->delete;
+$usercanread = $user->rights->bookticket->reservation->read;
+$usercancreate = $user->rights->bookticket->reservation->write;
+$usercandelete = $user->rights->bookticket->reservation->delete;
 
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 
-$shiprecords = [];
-$sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
-$sql_ship .= " s.entity";
-$sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
-$sql_ship .= ' WHERE s.entity IN ('.getEntity('ship').')';
-$sql_ship .= ' AND s.status = 2';
-
-$resql_ship =$db->query($sql_ship);
-if ($resql_ship)
+$travelrecords = [];
+$sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.lieu_depart, t.lieu_arrive, t.nbre_place, t.nbre_eco, t.nbre_vip, t.nbre_aff, t.entity,';
+$sql_travel .= ' t.date_creation, t.tms as date_update';
+$sql_travel .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
+$sql_travel .= ' WHERE t.entity IN ('.getEntity('travel').')';
+$sql_travel .= ' AND t.status = 2';
+$resql_travel =$db->query($sql_travel);
+if ($resql_travel)
 {
-	$num = $db->num_rows($resql_ship);
+	$num = $db->num_rows($resql_travel);
 	$i = 0;
 	if ($num)
 	{
 		while ($i < $num)
 		{
-			$obj = $db->fetch_object($resql_ship);
+			$obj = $db->fetch_object($resql_travel);
 			if ($obj)
 			{
-				$shiprecords[$i] = $obj;
-			}
-			$i++;
-		}
-	}
-}
-
-$cityrecords = [];
-$sql_city = 'SELECT c.rowid, c.label, c.labelshort, c.entity,';
-$sql_city .= ' c.date_creation, c.tms as date_update';
-$sql_city .= ' FROM '.MAIN_DB_PREFIX.'bookticket_city as c';
-$sql_city .= ' WHERE c.entity IN ('.getEntity('city').')';
-$sql_city .= ' AND c.status = 2';
-$resql_city =$db->query($sql_city);
-if ($resql_city)
-{
-	$num = $db->num_rows($resql_city);
-	$i = 0;
-	if ($num)
-	{
-		while ($i < $num)
-		{
-			$obj = $db->fetch_object($resql_city);
-			if ($obj)
-			{
-				$cityrecords[$i] = $obj;
+				$travelrecords[$i] = $obj;
 			}
 			$i++;
 		}
@@ -160,13 +133,13 @@ if ($resql_city)
 }
 
 // Actions to build doc
-$upload_dir = $conf->travel->dir_output;
+$upload_dir = $conf->reservation->dir_output;
 $permissiontoadd = $usercancreate;
 include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 
-// Add a travel
+// Add a reservation
 if ($action == 'add' && $usercancreate)
 {
 	$error = 0;
@@ -180,33 +153,17 @@ if ($action == 'add' && $usercancreate)
 
 	if (!$error)
 	{
-		$ref = explode('-',$ref);
-		if(GETPOST('lieu_depart') == 'Port-Gentil'){
-			$ref = $ref[0].'-POG/LBV-'.$ref[2];
-		}else{
-			$ref = $ref[0].'-LBV/POG-'.$ref[2];
-		}
-
-		if(GETPOST('lieu_depart') == GETPOST('lieu_arrive')){
-			setEventMessages($langs->trans('LieuIdentique'), null, 'errors');
-			$action = "create";
-			exit;
-		}
 
 		$object->ref                   = $ref;
-		$object->jour            = GETPOST('jour');
-		$object->heure            = GETPOST('heure');
-		$object->fk_ship               = GETPOST('fk_ship');
-		$object->lieu_depart           = GETPOST('lieu_depart');
-		$object->lieu_arrive           = GETPOST('lieu_arrive');
+		$object->fk_travel               = GETPOST('fk_travel');
 
-		$object_ship = new Ship($db);
-		$result = $object_ship->fetch($object->fk_ship);
+		$object_travel = new Travel($db);
+		$object_travel->fetch($object->fk_travel);
 
-		$object->nbre_place             = $object_ship->nbre_place;
-		$object->nbre_vip             	 = $object_ship->nbre_vip;
-		$object->nbre_aff             	 = $object_ship->nbre_aff;
-		$object->nbre_eco             	 = $object_ship->nbre_eco;
+		if(GETPOST('nbre_vip') <= $object_travel->nbre_vip) $object->nbre_vip = GETPOST('nbre_vip');
+		if(GETPOST('nbre_aff') <= $object_travel->nbre_aff) $object->nbre_aff = GETPOST('nbre_aff');
+		if(GETPOST('nbre_eco') <= $object_travel->nbre_eco) $object->nbre_eco = GETPOST('nbre_eco');
+		$object->nbre_place = $object->nbre_vip + $object->nbre_eco + $object->nbre_aff;
 
 
 		// Fill array 'array_options' with data from add form
@@ -247,11 +204,15 @@ if ($action == 'update' && $usercancreate)
 			$object->oldcopy = clone $object;
 
 			$object->ref                    = $ref;
-			$object->jour             = GETPOST('jour');
-			$object->heure             = GETPOST('heure');
-			$object->fk_ship                = GETPOST('fk_ship');
-			$object->lieu_depart            = GETPOST('lieu_depart');
-			$object->lieu_arrive            = GETPOST('lieu_arrive');
+			$object->fk_travel               = GETPOST('fk_travel');
+
+			$object_travel = new Travel($db);
+			$object_travel->fetch($object->fk_travel);
+
+			if(GETPOST('nbre_vip') <= $object_travel->nbre_vip) $object->nbre_vip = GETPOST('nbre_vip');
+			if(GETPOST('nbre_aff') <= $object_travel->nbre_aff) $object->nbre_aff = GETPOST('nbre_aff');
+			if(GETPOST('nbre_eco') <= $object_travel->nbre_eco) $object->nbre_eco = GETPOST('nbre_eco');
+			$object->nbre_place = $object->nbre_vip + $object->nbre_eco + $object->nbre_aff;
 
 			if (!$error && $object->check())
 			{
@@ -310,9 +271,9 @@ if($action == 'valid' && $usercancreate){
 	$object->fetch($id);
 
 	// If status is waiting lock and
-	if ($object->status == Travel::STATUS_APPROVED)
+	if ($object->status == Reservation::STATUS_APPROVED)
 	{
-		$object->status = Travel::STATUS_LOCK;
+		$object->status = Reservation::STATUS_LOCK;
 
 		$db->begin();
 
@@ -336,71 +297,7 @@ if($action == 'valid' && $usercancreate){
 	}
 }
 
-/* Action clone object
-if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-{
-	if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-	{
-		setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-	} else {
-		$db->begin();
-
-		$originalId = $id;
-		if ($object->id > 0)
-		{
-			$object->ref = GETPOST('clone_ref', 'alphanohtml');
-			$object->id = null;
-
-			if ($object->check())
-			{
-				$object->context['createfromclone'] = 'createfromclone';
-				$id = $object->create($user);
-				if ($id > 0)
-				{
-
-					$db->commit();
-					$db->close();
-
-					header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-					exit;
-				} else {
-					$id = $originalId;
-
-					if ($object->error == 'ErrorTravelAlreadyExists')
-					{
-						$db->rollback();
-
-						$refalreadyexists++;
-						$action = "";
-
-						$mesg = $langs->trans("ErrorTravelAlreadyExists", $object->ref);
-						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-						setEventMessages($mesg, null, 'errors');
-						$object->fetch($id);
-					} else {
-						$db->rollback();
-						if (count($object->errors))
-						{
-							setEventMessages($object->error, $object->errors, 'errors');
-							dol_print_error($db, $object->errors);
-						} else {
-							setEventMessages($langs->trans($object->error), null, 'errors');
-							dol_print_error($db, $object->error);
-						}
-					}
-				}
-
-				unset($object->context['createfromclone']);
-			}
-		} else {
-			$db->rollback();
-			dol_print_error($db, $object->error);
-		}
-	}
-}*/
-
-// Delete a travel
+// Delete a Reservation
 //if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
 if ($action == 'delete' && $usercandelete)
 {
@@ -408,7 +305,7 @@ if ($action == 'delete' && $usercandelete)
 
 	if ($result > 0)
 	{
-		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/travel_list.php?deltravel='.urlencode($object->ref));
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/reservation_list.php?delreservation='.urlencode($object->ref));
 		exit;
 	} else {
 		setEventMessages($langs->trans($object->error), null, 'errors');
@@ -429,7 +326,7 @@ if ($object->id > 0 && $action == 'addin')
  * View
  */
 
-$title = $langs->trans('travelCard');
+$title = $langs->trans('ReservationCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->ref, 16);
 $title = $langs->trans('travel')." ".$shortlabel." - ".$langs->trans('Card');
@@ -478,8 +375,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
 
-		$picto = 'travel';
-		$title = $langs->trans("NewTravel");
+		$picto = 'reservation';
+		$title = $langs->trans("NewReservation");
 
 		$linkback = "";
 		print load_fiche_titre($title, $linkback, $picto);
@@ -497,104 +394,26 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Ref
 		$number = "0123456789";
 		$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
-		$tmpref = "DVM-TRAJET-".$code;
+		$tmpref = "DVM-RSV-".$code;
 		print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($tmpref).'"></td></tr>';
 
 		print '</td></tr>';
 
-		// Jour
-		print '<tr><td class="fieldrequired">'.$langs->trans("Jour").'</td><td colspan="3">';
-        print '<input name="jour" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour).'">';
+		// Nbre_vip
+		print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
+		print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'"> Place(s)';
 		print '</td></tr>';
 
-		// Heure
-		print '<tr><td class="fieldrequired">'.$langs->trans("Heure").'</td><td colspan="3">';
-        print '<input name="heure" type="time" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->heure).'">';
+		// Nbre_aff
+		print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
+		print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'"> Place(s)';
 		print '</td></tr>';
 
+		// Nbre_eco
+		print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
+		print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'"> Place(s)';
+		print '</td></tr>';
 
-		// Ship
-		print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
-
-		$ship = '<td><select class="flat" name="fk_ship">';
-		if (empty($shiprecords))
-		{
-			$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-		}else{
-			foreach ($shiprecords as $line)
-			{
-				$ship .= '<option value="';
-				$ship .= $line->rowid;
-				$ship .= '"';
-				$ship .= '>';
-				$ship .= $line->label;
-				$ship .= '</option>';
-			}
-		}
-
-		$ship .= '</select>';
-
-		print $ship;
-
-		print '</td>';
-
-		print '</tr>';
-
-		print '</table>';
-
-		print '<hr>';
-
-		print '<table class="border centpercent">';
-
-			// lieu_depart
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
-
-			$city_depart = '<td><select class="flat" name="lieu_depart">';
-			if (empty($cityrecords))
-			{
-				$city_depart .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($cityrecords as $lines)
-				{
-					$city_depart .= '<option value="';
-					$city_depart .= $lines->label;
-					$city_depart .= '"';
-					$city_depart .= '>';
-					$city_depart .= $lines->label;
-					$city_depart .= '</option>';
-				}
-			}
-
-			$city_depart .= '</select>';
-
-			print $city_depart;
-
-			print '</td></tr>';
-
-			// lieu_arrive
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
-
-			$city_arrive = '<td><select class="flat" name="lieu_arrive">';
-			if (empty($cityrecords))
-			{
-				$city_arrive .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($cityrecords as $lines)
-				{
-					$city_arrive .= '<option value="';
-					$city_arrive .= $lines->label;
-					$city_arrive .= '"';
-					$city_arrive .= '>';
-					$city_arrive .= $lines->label;
-					$city_arrive .= '</option>';
-				}
-			}
-
-			$city_arrive .= '</select>';
-
-			print $city_arrive;
-
-			print '</td></tr>';
 
 		print '</table>';
 
@@ -609,7 +428,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</form>';
 	} elseif ($object->id > 0) {
 		/*
-         * travel card
+         * reservation card
          */
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
@@ -627,7 +446,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</script>'."\n";
 
 
-			$type = $langs->trans('travel');
+			$type = $langs->trans('Reservation');
 
 			// Main official, simple, and not duplicated code
 			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST" name="formprod">'."\n";
@@ -636,9 +455,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
 			print '<input type="hidden" name="canvas" value="'.$object->canvas.'">';
 
-			$head = travel_prepare_head($object);
-			$titre = $langs->trans("Cardtravel".$object->type);
-			$picto =  'travel';
+			$head = reservation_prepare_head($object);
+			$titre = $langs->trans("CardReservation".$object->type);
+			$picto =  'reservation';
 			print dol_get_fiche_head($head, 'card', $titre, 0, $picto);
 
 
@@ -647,85 +466,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
 
-			// Jour
-			print '<tr><td class="fieldrequired">'.$langs->trans("Jour").'</td><td colspan="3"><input name="jour" type="date" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->jour).'"></td></tr>';
-
-			// heure
-			print '<tr><td class="fieldrequired">'.$langs->trans("Heure").'</td><td colspan="3"><input name="heure" type="time" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->heure).'"></td></tr>';
-
-			// Ship
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
-
-			$ship = '<td><select class="flat" name="fk_ship">';
-			if (empty($shiprecords))
-			{
-				$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($shiprecords as $lines)
-				{
-					$ship .= '<option value="';
-					$ship .= $lines->rowid;
-					$ship .= '"';
-					$ship .= '>';
-					$ship .= $langs->trans($lines->label);
-					$ship .= '</option>';
-				}
-			}
-
-			$ship .= '</select>';
-
-			print $ship;
-
+			// Nbre_vip
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
+			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'"> Place(s)';
 			print '</td></tr>';
 
-			// lieu_depart
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuDepart").'</td>';
-
-			$city_depart = '<td><select class="flat" name="lieu_depart">';
-			if (empty($cityrecords))
-			{
-				$city_depart .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($cityrecords as $lines)
-				{
-					$city_depart .= '<option value="';
-					$city_depart .= $lines->rowid;
-					$city_depart .= '"';
-					$city_depart .= '>';
-					$city_depart .= $langs->trans($lines->label);
-					$city_depart .= '</option>';
-				}
-			}
-
-			$city_depart .= '</select>';
-
-			print $city_depart;
-
+			// Nbre_aff
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreAff").'</td>';
+			print '<td><input name="nbre_aff" class="maxwidth50" value="'.$object->nbre_aff.'"> Place(s)';
 			print '</td></tr>';
 
-			// lieu_arrive
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("LieuArrive").'</td>';
-
-			$city_arrive = '<td><select class="flat" name="lieu_arrive">';
-			if (empty($cityrecords))
-			{
-				$city_arrive .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($cityrecords as $lines)
-				{
-					$city_arrive .= '<option value="';
-					$city_arrive .= $lines->rowid;
-					$city_arrive .= '"';
-					$city_arrive .= '>';
-					$city_arrive .= $langs->trans($lines->label);
-					$city_arrive .= '</option>';
-				}
-			}
-
-			$city_arrive .= '</select>';
-
-			print $city_arrive;
-
+			// Nbre_eco
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreEco").'</td>';
+			print '<td><input name="nbre_eco" class="maxwidth50" value="'.$object->nbre_eco.'"> Place(s)';
 			print '</td></tr>';
 
 			print '</table>';
@@ -743,19 +496,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
-			$object_ship = new Ship($db);
-			$object_ship->fetch($object->fk_ship);
+			$object_travel = new Travel($db);
+			$object_travel->fetch($object->fk_travel);
 
-			$head = travel_prepare_head($object);
-			$titre = $langs->trans("CardTravel");
-			$picto = 'travel';
+			$head = reservation_prepare_head($object);
+			$titre = $langs->trans("CardReservation");
+			$picto = 'reservation';
 
 			print dol_get_fiche_head($head, 'card', $titre, -1, $picto);
 
-			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/travel_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
+			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/reservation_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
-			if ($user->socid && !in_array('travel', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
+			if ($user->socid && !in_array('reservation', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
 			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
@@ -778,14 +531,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("Jour").'</td>';
 				print '<td>';
-				print dol_print_date($object->jour, 'day', 'tzuser');
+				print dol_print_date($object_travel->jour, 'day', 'tzuser');
 				print '</td></tr>';
 
 				// heure
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("Heure").'</td>';
 				print '<td>';
-				print $object->heure;
+				print $object_travel->heure;
 				print '</td></tr>';
 
 
@@ -793,14 +546,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("LieuDepart").'</td>';
 				print '<td>';
-				print $object->lieu_depart;
+				print $object_travel->lieu_depart;
 				print '</td></tr>';
 
 				// LieuArrive
 				print '<tr>';
 				print '<td class="titlefield">'.$langs->trans("LieuArrive").'</td>';
 				print '<td>';
-				print $object->lieu_arrive;
+				print $object_travel->lieu_arrive;
 				print '</td></tr>';
 
 
@@ -813,7 +566,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbrePlaceDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_place." / ".$object_ship->nbre_place;
+				print $object->nbre_place." / ".$object_travel->nbre_place;
 				print '</td>';
 				print '</tr>';
 
@@ -825,7 +578,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbreVipDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_vip." / ".$object_ship->nbre_vip;
+				print $object->nbre_vip." / ".$object_travel->nbre_vip;
 				print '</td>';
 				print '</tr>';
 
@@ -837,7 +590,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbreAffDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_aff." / ".$object_ship->nbre_aff;
+				print $object->nbre_aff." / ".$object_travel->nbre_aff;
 				print '</td>';
 				print '</tr>';
 
@@ -849,7 +602,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbreEcoDispo'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_eco." / ".$object_ship->nbre_eco;
+				print $object->nbre_eco." / ".$object_travel->nbre_eco;
 				print '</td>';
 				print '</tr>';
 
@@ -942,10 +695,6 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate)
 		{
-			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&travel='.$object->id.'">'.$langs->trans('NewBTicket').'</a>';
-
-			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/reservation_card.php?action=create&travel='.$object->id.'">'.$langs->trans('NewReservation').'</a>';
-
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
 			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
@@ -959,19 +708,14 @@ if ($action != 'create' && $action != 'edit')
 			}*/
 		}
 
-		if ($usercancreate && $object->status == Travel::STATUS_DRAFT)		// If draft
+		if ($usercancreate && $object->status == Reservation::STATUS_DRAFT)		// If draft
 		{
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
 		}
 
-		if ($usercancreate &&  ($object->status == Travel::STATUS_APPROVED || $object->status == Travel::STATUS_LOCK))		// If draft
+		if ($usercancreate && $object->status == Reservation::STATUS_APPROVED)		// If draft
 		{
 			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("PRINT").'</a>';
-		}
-
-		if ($usercancreate && $object->status == Travel::STATUS_APPROVED)		// If draft
-		{
-			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=lock" class="butAction">'.$langs->trans("CLOTURER").'</a>';
 		}
 
 		if ($usercandelete)

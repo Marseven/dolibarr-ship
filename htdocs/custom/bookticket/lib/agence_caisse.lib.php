@@ -30,7 +30,7 @@
 /**
  * Prepare array with list of tabs
  *
- * @param  Bticket	$object		Object related to tabs
+ * @param  AgenceCaise	$object		Object related to tabs
  * @return  array				Array of tabs to show
  */
 function agence_caisse_prepare_head($object)
