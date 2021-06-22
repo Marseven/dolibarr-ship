@@ -80,9 +80,7 @@ if (empty($action)) $action = 'list';
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-	't.ref'=>"Ref",
-	't.jour'=>"TravelJour",
-	't.ship'=>"TravelShip",
+	'r.ref'=>"Ref",
 );
 
 //$isInEEC = isInEEC($mysoc);
@@ -149,9 +147,9 @@ $sql .= ' t.date_creation, t.tms as date_update';
 $parameters = array();
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_reservation as r';
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as t ON r.fk_travel = t.rowid";
-$sql .= ' WHERE t.entity IN ('.getEntity('travel').')';
+$sql .= ' WHERE r.entity IN ('.getEntity('reservation').')';
 
-if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
+if ($search_ref)     $sql .= natural_search('r.ref', $search_ref);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -179,7 +177,7 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 		$id = $obj->rowid;
-		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/travel_card.php?id='.$id);
+		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/reservation_card.php?id='.$id);
 		exit;
 	}
 
@@ -190,7 +188,7 @@ if ($resql)
 
 	// Displays Travel removal confirmation
 	if (GETPOST('delprod')) {
-		setEventMessages($langs->trans("TravelDeleted", GETPOST('delprod')), null, 'mesgs');
+		setEventMessages($langs->trans("ReservationDeleted", GETPOST('delprod')), null, 'mesgs');
 	}
 
 	$param = '';
