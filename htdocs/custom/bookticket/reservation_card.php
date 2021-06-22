@@ -329,7 +329,7 @@ if ($object->id > 0 && $action == 'addin')
 $title = $langs->trans('ReservationCard');
 $helpurl = '';
 $shortlabel = dol_trunc($object->ref, 16);
-$title = $langs->trans('reservation')." ".$shortlabel." - ".$langs->trans('Card');
+$title = $langs->trans('Reservation')." ".$shortlabel." - ".$langs->trans('Card');
 $helpurl = 'EN:Module_Bookticket|FR:Module_Bookticket|ES:M&oacute;dulo_Bookticket';
 
 llxHeader('', $title, $helpurl);
