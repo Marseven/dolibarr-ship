@@ -169,7 +169,7 @@ $texte = $langs->trans("Affectation");
 
 
 $sql_a = 'SELECT DISTINCT au.rowid, ba.label as caisse,  a.label as agence';
-$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_Caisse as ac';
+$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
 $sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON ac.fk_agence = a.rowid";
 $sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_account as ba ON ac.fk_caisse = ba.rowid";
 
