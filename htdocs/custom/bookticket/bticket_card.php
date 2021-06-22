@@ -195,7 +195,7 @@ if ($resql_agence)
 }
 
 $travelrecords = [];
-$sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.entity,';
+$sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.lieu_depart, t.lieu_arrive, t.fk_ship, t.entity,';
 $sql_travel .= ' t.date_creation, t.tms as date_update';
 $sql_travel .= ' FROM '.MAIN_DB_PREFIX.'bookticket_travel as t';
 $sql_travel .= ' WHERE t.entity IN ('.getEntity('travel').')';
@@ -889,7 +889,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print "</td></tr>";
 
 			// travel
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Jour").'</td>';
 
 			$travel = '<td><select class="flat" name="fk_travel">';
 			if (empty($travelrecords))
@@ -902,7 +902,31 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$travel .= $lines->rowid;
 					$travel .= '"';
 					$travel .= '>';
-					$travel .= $langs->trans($lines->ref);
+					$travel .= $langs->trans($lines->jour);
+					$travel .= '</option>';
+				}
+			}
+
+			$travel .= '</select>';
+
+			print $travel;
+
+			print '</td></tr>';
+
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Trajet").'</td>';
+
+			$travel = '<td><select class="flat" name="fk_travel">';
+			if (empty($travelrecords))
+			{
+				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($travelrecords as $lines)
+				{
+					$travel .= '<option value="';
+					$travel .= $lines->rowid;
+					$travel .= '"';
+					$travel .= '>';
+					$travel .= $langs->trans($lines->heure).' : '.$langs->trans($lines->lieu_depart).' - '.$langs->trans($lines->lieu_arrive);
 					$travel .= '</option>';
 				}
 			}
@@ -1021,7 +1045,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="date_naissance" type="date" class="maxwidth50" value="'.$object_passenger->date_naissance.'"> ANS';
+			print '<td><input name="date_naissance" type="date" class="maxwidth300" value="'.$object_passenger->date_naissance.'">';
 			print '</td></tr>';
 
 			// adresse
@@ -1051,7 +1075,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth50" value="'.$object_passenger->date_naissance_enfant.'"> ANS';
+			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth300" value="'.$object_passenger->date_naissance_enfant.'">';
 			print '</td></tr>';
 
 
@@ -1239,7 +1263,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateNaissance").'</td>';
-			print '<td><input name="date_naissance" type="date" class="maxwidth50" value="'.$obj_p->date_naissance.'"> ANS';
+			print '<td><input name="date_naissance" type="date" class="maxwidth300" value="'.$obj_p->date_naissance.'">';
 			print '</td></tr>';
 
 			// adresse
@@ -1269,7 +1293,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age_enfant
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth50" value="'.$obj_p->date_naissance_enfant.'"> ANS';
+			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth300" value="'.$obj_p->date_naissance_enfant.'">';
 			print '</td></tr>';
 
 			// fk_passenger

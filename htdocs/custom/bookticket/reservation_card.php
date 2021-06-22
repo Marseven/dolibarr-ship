@@ -163,13 +163,23 @@ if ($action == 'add' && $usercancreate)
 		if(GETPOST('nbre_vip') <= $object_travel->nbre_vip) $object->nbre_vip = GETPOST('nbre_vip');
 		if(GETPOST('nbre_aff') <= $object_travel->nbre_aff) $object->nbre_aff = GETPOST('nbre_aff');
 		if(GETPOST('nbre_eco') <= $object_travel->nbre_eco) $object->nbre_eco = GETPOST('nbre_eco');
-		$object->nbre_place = $object->nbre_vip + $object->nbre_eco + $object->nbre_aff;
+		$object_travel->nbre_place = $object->nbre_vip + $object->nbre_eco + $object->nbre_aff;
 
 
 		// Fill array 'array_options' with data from add form
 		if (!$error)
 		{
 			$id = $object->create($user);
+
+			$object_travel->fetch($object->travel);
+
+
+			$object_travel->nbre_vip = $object_travel->nbre_vip - $object->nbre_vip;
+			$object_travel->nbre_eco = $object_travel->nbre_eco - $object->nbre_eco;
+			$object_travel->nbre_aff = $object_travel->nbre_aff - $object->nbre_aff;
+			$object_travel->nbre_place = $object_travel->nbre_place - $object->nbre_place;
+
+			$object_travel->update($user);
 		}
 
 		if ($id > 0)
@@ -209,6 +219,13 @@ if ($action == 'update' && $usercancreate)
 			$object_travel = new Travel($db);
 			$object_travel->fetch($object->fk_travel);
 
+			$object_travel->nbre_vip = $object_travel->nbre_vip + $object->nbre_vip;
+			$object_travel->nbre_eco = $object_travel->nbre_eco + $object->nbre_eco;
+			$object_travel->nbre_aff = $object_travel->nbre_aff + $object->nbre_aff;
+			$object_travel->nbre_place = $object_travel->nbre_place + $object->nbre_place;
+
+			$object_travel->update($user);
+
 			if(GETPOST('nbre_vip') <= $object_travel->nbre_vip) $object->nbre_vip = GETPOST('nbre_vip');
 			if(GETPOST('nbre_aff') <= $object_travel->nbre_aff) $object->nbre_aff = GETPOST('nbre_aff');
 			if(GETPOST('nbre_eco') <= $object_travel->nbre_eco) $object->nbre_eco = GETPOST('nbre_eco');
@@ -218,6 +235,12 @@ if ($action == 'update' && $usercancreate)
 			{
 				if ($object->update($user) > 0)
 				{
+					$object_travel->nbre_vip = $object_travel->nbre_vip - $object->nbre_vip;
+					$object_travel->nbre_eco = $object_travel->nbre_eco - $object->nbre_eco;
+					$object_travel->nbre_aff = $object_travel->nbre_aff - $object->nbre_aff;
+					$object_travel->nbre_place = $object_travel->nbre_place - $object->nbre_place;
+
+					$object_travel->update($user);
 					$action = 'view';
 				} else {
 					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
@@ -399,6 +422,31 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '</td></tr>';
 
+		// travel
+		print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
+
+		$travel = '<td><select class="flat" name="fk_travel">';
+		if (empty($travelrecords))
+		{
+			$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+		}else{
+			foreach ($travelrecords as $lines)
+			{
+				$travel .= '<option value="';
+				$travel .= $lines->rowid;
+				$travel .= '"';
+				$travel .= '>';
+				$travel .= $langs->trans($lines->ref);
+				$travel .= '</option>';
+			}
+		}
+
+		$travel .= '</select>';
+
+		print $travel;
+
+		print '</td></tr>';
+
 		// Nbre_vip
 		print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
 		print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'"> Place(s)';
@@ -465,6 +513,31 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
+
+			// travel
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
+
+			$travel = '<td><select class="flat" name="fk_travel">';
+			if (empty($travelrecords))
+			{
+				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($travelrecords as $lines)
+				{
+					$travel .= '<option value="';
+					$travel .= $lines->rowid;
+					$travel .= '"';
+					$travel .= '>';
+					$travel .= $langs->trans($lines->ref);
+					$travel .= '</option>';
+				}
+			}
+
+			$travel .= '</select>';
+
+			print $travel;
+
+			print '</td></tr>';
 
 			// Nbre_vip
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
