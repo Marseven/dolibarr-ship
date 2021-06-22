@@ -913,28 +913,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
-			// ship
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
+			// categorie
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("CatégorieBillet").'</td>';
 
-			$ship = '<td><select class="flat" name="fk_ship">';
-			if (empty($shiprecords))
-			{
-				$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($shiprecords as $lines)
-				{
-					$ship .= '<option value="';
-					$ship .= $lines->rowid;
-					$ship .= '"';
-					$ship .= '>';
-					$ship .= $langs->trans($lines->label);
-					$ship .= '</option>';
-				}
-			}
-
-			$ship .= '</select>';
-
-			print $ship;
+			print '<td><select class="flat" name="categorie">';
+			print '<option value="A">'.($langs->trans("BilletNormal")).'</option>';
+			print '<option value="B">'.($langs->trans("BilletEnfantBasAge")).'</option>';
+			print '<option value="C">'.($langs->trans("BilletMineur")).'</option>';
+			print '<option value="D">'.($langs->trans("BilletMineurConfie")).'</option>';
+			print '</select>';
 
 			print '</td></tr>';
 
@@ -969,7 +956,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<table class="border centpercent">';
 
-			/*print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
 			// passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
@@ -998,9 +985,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// new_passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passager").'</td>';
 			print '<td><input type="checkbox" name="new_passenger" >';
-			print '</td></tr>';*/
+			print '</td></tr>';
 
-			// ship
+			// type de piece
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("TypePiece").'</td>';
 
 			$piece = '<td><select class="flat" name="type_piece">';
@@ -1177,27 +1164,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
-			// ship
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Ship").'</td>';
-			$ship = '<td><select class="flat" name="fk_ship">';
-			if (empty($shiprecords))
-			{
-				$ship .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($shiprecords as $lines)
-				{
-					$ship .= '<option value="';
-					$ship .= $lines->rowid;
-					$ship .= '"';
-					$ship .= '>';
-					$ship .= $langs->trans($lines->label);
-					$ship .= '</option>';
-				}
-			}
+			// categorie
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("CategorieBillet").'</td>';
 
-			$ship .= '</select>';
-
-			print $ship;
+			print '<td><select class="flat" name="categorie">';
+			print '<option value="A">'.($langs->trans("BilletNormal")).'</option>';
+			print '<option value="B">'.($langs->trans("BilletEnfantBasAge")).'</option>';
+			print '<option value="C">'.($langs->trans("BilletMineur")).'</option>';
+			print '<option value="D">'.($langs->trans("BilletMineurConfie")).'</option>';
+			print '</select>';
 
 			print '</td></tr>';
 
