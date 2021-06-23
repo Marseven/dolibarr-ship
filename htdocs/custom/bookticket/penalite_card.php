@@ -48,10 +48,16 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/penalite.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/penalite.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
+
+require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/paymentvarious.class.php';
+require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';
+require_once DOL_DOCUMENT_ROOT.'/accountancy/class/accountingaccount.class.php';
+require_once DOL_DOCUMENT_ROOT.'/accountancy/class/accountingjournal.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bookticket', 'other'));
@@ -313,6 +319,33 @@ if ($action == 'add' && $usercancreate)
 		if (!$error && $id_passenger > 0 && $id_bticket > 0)
 		{
 			$id = $object->create($user);
+
+			$object_travel->update($user);
+
+			$object_bank = new PaymentVarious($db);
+			$object_caisse = new AgenceCaisse($db);
+			$object_caisse->fetch($user->id);
+
+			$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
+			$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
+			$prix = $object->prix_ce + $object->prix_c + $object->prix_n + $object->prix_bp + $object->prix_da + $object->prix_db;
+			if (empty($datev)) $datev = $datep;
+
+			$object_bank->ref = ''; // TODO
+			$object_bank->accountid = $object_caisse->fk_account > 0 ? $object_caisse->fk_account : 0;
+			$object_bank->datev = $datev;
+			$object_bank->datep = $datep;
+			$object_bank->amount = price2num($prix);
+			$object_bank->label = 'Pénalité sur le Billet N° '.$object_bticket->ref;
+			$object_bank->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
+			$object_bank->fk_user_author = $user->id;
+
+			$object_bank->sens = 1;
+
+
+			$db->begin();
+
+			$ret = $object_bank->create($user);
 		}
 
 		if ($id > 0)

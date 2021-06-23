@@ -48,10 +48,16 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/modules_bticket.php';
+
+require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/paymentvarious.class.php';
+require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';
+require_once DOL_DOCUMENT_ROOT.'/accountancy/class/accountingaccount.class.php';
+require_once DOL_DOCUMENT_ROOT.'/accountancy/class/accountingjournal.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bookticket', 'other'));
@@ -336,6 +342,7 @@ if (empty($reshook))
 				$object->fk_passenger = GETPOST('fk_passenger');
 			}else{
 				$object_passenger->ref             	 = GETPOST('pref');
+				$object_passenger->civility          = GETPOST('civilite');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom            = GETPOST('prenom');
 				$object_passenger->nationalite       = GETPOST('nationalite');
@@ -351,83 +358,36 @@ if (empty($reshook))
 
 				$customer = new Societe($db);
 
-				if (GETPOST("private", 'int') == 1)	// Ask to create a contact
-				{
-					$customer->particulier		= GETPOST("private", 'int');
+				$customer->particulier	= 1;
+				$customer->status	= 1;
 
-					$customer->name = dolGetFirstLastname(GETPOST('firstname', 'alphanohtml'), GETPOST('name', 'alphanohtml'));
-					$customer->civility_id		= GETPOST('civility_id', 'alphanohtml'); // Note: civility id is a code, not an int
-					// Add non official properties
-					$customer->name_bis = GETPOST('name', 'alphanohtml');
-					$customer->firstname = GETPOST('firstname', 'alphanohtml');
-				} else {
-					$object->name = GETPOST('name', 'alphanohtml');
-				}
-				$customer->entity					= (GETPOSTISSET('entity') ? GETPOST('entity', 'int') : $conf->entity);
-				$customer->name_alias = GETPOST('name_alias', 'alphanohtml');
-				$customer->address				= GETPOST('address', 'alphanohtml');
-				$customer->zip = GETPOST('zipcode', 'alphanohtml');
-				$customer->town = GETPOST('town', 'alphanohtml');
-				$customer->country_id = GETPOST('country_id', 'int');
-				$customer->state_id = GETPOST('state_id', 'int');
-				//$object->skype					= GETPOST('skype', 'alpha');
-				//$object->twitter				= GETPOST('twitter', 'alpha');
-				//$object->facebook				= GETPOST('facebook', 'alpha');
-				//$object->linkedin				= GETPOST('linkedin', 'alpha');
-				$customer->socialnetworks = array();
-				if (!empty($conf->socialnetworks->enabled)) {
-					foreach ($socialnetworks as $key => $value) {
-						if (GETPOSTISSET($key) && GETPOST($key, 'alphanohtml') != '') {
-							$object->socialnetworks[$key] = GETPOST($key, 'alphanohtml');
-						}
-					}
-				}
-				$customer->phone = GETPOST('phone', 'alpha');
-				$customer->fax					= GETPOST('fax', 'alpha');
+				$customer->name = dolGetFirstLastname(GETPOST('prenom', 'alphanohtml'), GETPOST('nom', 'alphanohtml'));
+				$customer->civility_id	= GETPOST('civilite', 'alphanohtml'); // Note: civility id is a code, not an int
+
+				// Add non official properties
+				$customer->name_bis = GETPOST('nom', 'alphanohtml');
+				$customer->firstname = GETPOST('prenom', 'alphanohtml');
+
+
+				$customer->entity	  = (GETPOSTISSET('entity') ? GETPOST('entity', 'int') : $conf->entity);
+				$customer->address	  = GETPOST('adresse', 'alphanohtml');
+				$customer->country_id = GETPOST('nationalite', 'int');
+
+				$customer->phone = GETPOST('telephone', 'alpha');
 				$customer->email = trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
-				$customer->url					= trim(GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL));
-				$customer->idprof1				= trim(GETPOST('idprof1', 'alphanohtml'));
-				$customer->idprof2				= trim(GETPOST('idprof2', 'alphanohtml'));
-				$customer->idprof3				= trim(GETPOST('idprof3', 'alphanohtml'));
-				$customer->idprof4				= trim(GETPOST('idprof4', 'alphanohtml'));
-				$customer->idprof5				= trim(GETPOST('idprof5', 'alphanohtml'));
-				$customer->idprof6				= trim(GETPOST('idprof6', 'alphanohtml'));
-				$customer->prefix_comm			= GETPOST('prefix_comm', 'alphanohtml');
-				$customer->code_client			= GETPOSTISSET('customer_code') ?GETPOST('customer_code', 'alpha') : GETPOST('code_client', 'alpha');
-				$customer->code_fournisseur 		= GETPOSTISSET('supplier_code') ?GETPOST('supplier_code', 'alpha') : GETPOST('code_fournisseur', 'alpha');
-				$customer->capital				= GETPOST('capital', 'alphanohtml');
-				$customer->barcode				= GETPOST('barcode', 'alphanohtml');
-
-				$customer->tva_intra				= GETPOST('tva_intra', 'alphanohtml');
-				$customer->tva_assuj				= GETPOST('assujtva_value', 'alpha');
-				$customer->status = GETPOST('status', 'alpha');
-
-				// Local Taxes
-				$customer->localtax1_assuj		= GETPOST('localtax1assuj_value', 'alpha');
-				$customer->localtax2_assuj		= GETPOST('localtax2assuj_value', 'alpha');
-
-				$customer->localtax1_value		= GETPOST('lt1', 'alpha');
-				$customer->localtax2_value		= GETPOST('lt2', 'alpha');
-
-				$customer->forme_juridique_code = GETPOST('forme_juridique_code', 'int');
-				$customer->effectif_id			= GETPOST('effectif_id', 'int');
-				$customer->typent_id = GETPOST('typent_id', 'int');
-
-				$customer->typent_code			= dol_getIdFromCode($db, $object->typent_id, 'c_typent', 'id', 'code'); // Force typent_code too so check in verify() will be done on new type
+				$customer->code_client	= GETPOSTISSET('customer_code') ? GETPOST('pref', 'alpha') : GETPOST('pref', 'alpha');
+				$customer->typent_code	= dol_getIdFromCode($db, $object->typent_id, 'c_typent', 'id', 'code'); // Force typent_code too so check in verify() will be done on new type
 
 				$customer->client = GETPOST('client', 'int');
-				$customer->fournisseur			= GETPOST('fournisseur', 'int');
-
-				$customer->commercial_id = GETPOST('commercial_id', 'int');
+				$customer->commercial_id = $user->id;
 
 				$db->begin();
 
 				if (empty($customer->client))      $customer->code_client = '';
-				if (empty($customer->fournisseur)) $customer->code_fournisseur = '';
 
 				$result = $customer->create($user);
 
-
+				$object_passenger->fk_socid = $result;
 
 				$id_passenger = $object_passenger->create($user);
 
@@ -488,6 +448,30 @@ if (empty($reshook))
 				$object_travel->nbre_place--;
 
 				$object_travel->update($user);
+
+				$object_bank = new PaymentVarious($db);
+				$object_caisse = new AgenceCaisse($db);
+				$object_caisse->fetch($user->id);
+
+				$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
+				$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
+				if (empty($datev)) $datev = $datep;
+
+				$object_bank->ref = ''; // TODO
+				$object_bank->accountid = $object_caisse->fk_account > 0 ? $object_caisse->fk_account : 0;
+				$object_bank->datev = $datev;
+				$object_bank->datep = $datep;
+				$object_bank->amount = price2num($object->prix);
+				$object_bank->label = 'Vente de Billet N° '.$object->ref;
+				$object_bank->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
+				$object_bank->fk_user_author = $user->id;
+
+				$object_bank->sens = 1;
+
+
+				$db->begin();
+
+				$ret = $object_bank->create($user);
 			}
 
 			if ($id > 0)
@@ -531,6 +515,7 @@ if (empty($reshook))
 				$object->fk_passenger             	 = GETPOST('fk_passenger');
 
 				$object_passenger->ref             	 = GETPOST('pref');
+				$object_passenger->civility             	 = GETPOST('civilite');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom             	 = GETPOST('prenom');
 				$object_passenger->nationalite       = GETPOST('nationalite');
@@ -983,6 +968,18 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object_passenger->ref).'"></td></tr>';
 
+			// civilite
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Civilite").'</td>';
+
+			$civilite = '<td><select class="flat" name="civilite">';
+			$civilite .= '<option value="MR">'.($langs->trans("MR")).'</option>';
+			$civilite .= '<option value="MME">'.($langs->trans("MME")).'</option>';
+			$civilite .= '</select>';
+
+			print $civilite;
+
+			print '</td></tr>';
+
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
 			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
@@ -1178,6 +1175,18 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("PieceIdentite").'</td><td colspan="3"><input name="pref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($obj_p->ref).'"></td></tr>';
+
+			// civilite
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Civilite").'</td>';
+
+			$civilite = '<td><select class="flat" name="civilite">';
+			$civilite .= '<option value="MR">'.($langs->trans("MR")).'</option>';
+			$civilite .= '<option value="MME">'.($langs->trans("MME")).'</option>';
+			$civilite .= '</select>';
+
+			print $civilite;
+
+			print '</td></tr>';
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';

@@ -21,6 +21,7 @@ create table llx_bookticket_passenger
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   ref                       varchar(128) DEFAULT 0 NOT NULL,
+  civility				          varchar(255) DEFAULT NULL,
   nom				                varchar(255) DEFAULT NULL,
   prenom				            varchar(255) DEFAULT NULL,
   nationalite				        varchar(255) DEFAULT NULL,
@@ -35,7 +36,8 @@ create table llx_bookticket_passenger
   date_creation             datetime,                    
   tms                       timestamp,                   
   import_key                varchar(32),                 
-  status                    smallint DEFAULT 1 NOT NULL, 
+  status                    smallint DEFAULT 1 NOT NULL,
+  fk_socid                  integer      DEFAULT NULL,
   fk_user_creat             integer      DEFAULT NULL,
   fk_user_modif             integer      DEFAULT NULL,
   active                    tinyint      DEFAULT 1  NOT NULL
