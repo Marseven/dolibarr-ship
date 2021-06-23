@@ -402,11 +402,16 @@ if (empty($reshook))
 			$resql_prix =$db->query($sql_prix);
 			$obj_prix = $db->fetch_object($resql_prix);
 
-			if(GETPOST('date_naissance') > 13){
+			$firstDate  = new DateTime(date('Y-m-d'));
+			$secondDate = new DateTime(GETPOST('date_naissance'));
+			$age = $firstDate->diff($secondDate);
+
+
+			if($age > 13){
 				$object->prix = $obj_prix->prix_standard;
-			}elseif(GETPOST('date_naissance') <= 13 && GETPOST('date_naissance') >= 5){
+			}elseif($age <= 13 && GETPOST('date_naissance') >= 5){
 				$object->prix = $obj_prix->prix_enfant;
-			}elseif(GETPOST('date_naissance') < 5 && GETPOST('date_naissance') >= 0){
+			}elseif($age < 5 && GETPOST('date_naissance') >= 0){
 				$object->prix = $obj_prix->prix_enfant;
 			}else{
 				$error++;
@@ -416,7 +421,11 @@ if (empty($reshook))
 
 			if(GETPOST('accompagne') == 'on'){
 
-				if(GETPOST('date_naissance_enfant') > 13){
+				$firstDate  = new DateTime(date('Y-m-d'));
+				$secondDate = new DateTime(GETPOST('date_naissance_enfant'));
+				$age_enfant = $firstDate->diff($secondDate);
+
+				if($age_enfant > 13){
 					$error++;
 					$mesg = 'Age enfant passager renseigne superieur ';
 					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
