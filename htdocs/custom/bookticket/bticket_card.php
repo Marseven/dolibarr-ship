@@ -1355,7 +1355,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr>';
 			print '<td class="titlefield">'.$langs->trans("CategorieBillet").'</td>';
 			print '<td>';
-			print $obj->categorie;
+			print $obj->ref;
 			print '</td></tr>';
 
 
