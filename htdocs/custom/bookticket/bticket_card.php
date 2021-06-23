@@ -61,6 +61,7 @@ $mesg = ''; $error = 0; $errors = array();
 $refalreadyexists = 0;
 
 $id = GETPOST('id', 'int');
+$travel = GETPOST('travel', 'int');
 $ref = GETPOST('ref', 'alpha');
 $action = (GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view');
 $cancel = GETPOST('cancel', 'alpha');
@@ -888,54 +889,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print "</td></tr>";
 
-			// travel
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Jour").'</td>';
+			//travel
+			if($travel) print '<input type="hidden" name="fk_travel" class="maxwidth300" value="'.$travel.'">';
 
-			$travel = '<td><select class="flat" name="fk_travel">';
-			if (empty($travelrecords))
-			{
-				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($travelrecords as $lines)
-				{
-					$travel .= '<option value="';
-					$travel .= $lines->rowid;
-					$travel .= '"';
-					$travel .= '>';
-					$travel .= $langs->trans($lines->jour);
-					$travel .= '</option>';
-				}
-			}
-
-			$travel .= '</select>';
-
-			print $travel;
-
-			print '</td></tr>';
-
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Trajet").'</td>';
-
-			$travel = '<td><select class="flat" name="fk_travel">';
-			if (empty($travelrecords))
-			{
-				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($travelrecords as $lines)
-				{
-					$travel .= '<option value="';
-					$travel .= $lines->rowid;
-					$travel .= '"';
-					$travel .= '>';
-					$travel .= $langs->trans($lines->heure).' : '.$langs->trans($lines->lieu_depart).' - '.$langs->trans($lines->lieu_arrive);
-					$travel .= '</option>';
-				}
-			}
-
-			$travel .= '</select>';
-
-			print $travel;
-
-			print '</td></tr>';
 
 			// categorie
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("CatégorieBillet").'</td>';
@@ -1163,30 +1119,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</td></tr>';
 			}
 
-			// travel
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-
-			$travel = '<td><select class="flat" name="fk_travel">';
-			if (empty($travelrecords))
-			{
-				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($travelrecords as $lines)
-				{
-					$travel .= '<option value="';
-					$travel .= $lines->rowid;
-					$travel .= '"';
-					$travel .= '>';
-					$travel .= $langs->trans($lines->ref);
-					$travel .= '</option>';
-				}
-			}
-
-			$travel .= '</select>';
-
-			print $travel;
-
-			print '</td></tr>';
+			//travel
+			print '<input type="hidden" name="fk_travel" class="maxwidth300" value="'.$object->fk_travel.'">';
 
 			// categorie
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("CategorieBillet").'</td>';
@@ -1319,7 +1253,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, t.categorie, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -1415,6 +1349,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td class="titlefield">'.$langs->trans("Passenger").'</td>';
 			print '<td>';
 			print $obj->nom.' '.$obj->prenom;
+			print '</td></tr>';
+
+			// categorie
+			print '<tr>';
+			print '<td class="titlefield">'.$langs->trans("CategorieBillet").'</td>';
+			print '<td>';
+			print $obj->categorie;
 			print '</td></tr>';
 
 

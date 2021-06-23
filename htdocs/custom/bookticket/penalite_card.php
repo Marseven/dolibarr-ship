@@ -61,6 +61,7 @@ $mesg = ''; $error = 0; $errors = array();
 $refalreadyexists = 0;
 
 $id = GETPOST('id', 'int');
+$bticket = GETPOST('bticket', 'int');
 $ref = GETPOST('ref', 'alpha');
 $action = (GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view');
 $cancel = GETPOST('cancel', 'alpha');
@@ -587,30 +588,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$tmpref = "DVM-PN-".$code;
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.$tmpref.'"></td></tr>';
 
-			// bticket
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Bticket").'</td>';
 
-			$bticket = '<td><select class="flat" name="fk_bticket">';
-			if (empty($bticketrecords))
-			{
-				$bticket .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($bticketrecords as $lines)
-				{
-					$bticket .= '<option value="';
-					$bticket .= $lines->rowid;
-					$bticket .= '"';
-					$bticket .= '>';
-					$bticket .= $langs->trans($lines->ref);
-					$shbticketip .= '</option>';
-				}
-			}
-
-			$bticket .= '</select>';
-
-			print $bticket;
-
-			print '</td></tr>';
+			//bticket
+			print '<input type="hidden" name="fk_bticket" class="maxwidth300" value="'.$bticket.'">';
 
 			// datea
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateA").'</td>';
@@ -638,7 +618,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$travel .= $lines->rowid;
 					$travel .= '"';
 					$travel .= '>';
-					$travel .= $langs->trans($lines->ref);
+					$travel .= $langs->trans($lines->jour).' - '.$langs->trans($lines->ref);
 					$travel .= '</option>';
 				}
 			}
@@ -791,30 +771,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
 
-			// bticket
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Bticket").'</td>';
-
-			$bticket = '<td><select class="flat" name="fk_bticket">';
-			if (empty($bticketrecords))
-			{
-				$bticket .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($bticketrecords as $lines)
-				{
-					$bticket .= '<option value="';
-					$bticket .= $lines->rowid;
-					$bticket .= '"';
-					$bticket .= '>';
-					$bticket .= $langs->trans($lines->ref);
-					$shbticketip .= '</option>';
-				}
-			}
-
-			$bticket .= '</select>';
-
-			print $bticket;
-
-			print '</td></tr>';
+			//bticket
+			print '<input type="hidden" name="fk_bticket" class="maxwidth300" value="'.$object->fk_bticket.'">';
 
 			// datea
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateA").'</td>';
