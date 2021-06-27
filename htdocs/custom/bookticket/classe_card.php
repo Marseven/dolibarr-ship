@@ -140,8 +140,9 @@ if ($action == 'add' && $usercancreate)
 		$object->label                 = GETPOST('label', $label_security_check);
 		$object->labelshort            = GETPOST('labelshort');
 		$object->prix_standard         = GETPOST('prix_standard');
-		$object->prix_enfant           = GETPOST('prix_enfant');
-		$object->prix_enf_stand        = GETPOST('prix_enf_stand');
+		$object->prix_enf_por           = GETPOST('prix_enf_por');
+		$object->prix_enf_acc        	= GETPOST('prix_enf_acc');
+		$object->prix_enf_dvm        	= GETPOST('prix_enf_dvm');
 		$object->kilo_bagage           = GETPOST('kilo_bagage');
 
 
@@ -186,8 +187,9 @@ if ($action == 'update' && $usercancreate)
 			$object->label                  = GETPOST('label', $label_security_check);
 			$object->labelshort             = GETPOST('labelshort');
 			$object->prix_standard          = GETPOST('prix_standard');
-			$object->prix_enfant            = GETPOST('prix_enfant');
-			$object->prix_enf_stand         = GETPOST('prix_enf_stand');
+			$object->prix_enf_por           = GETPOST('prix_enf_por');
+			$object->prix_enf_acc        	= GETPOST('prix_enf_acc');
+			$object->prix_enf_dvm        	= GETPOST('prix_enf_dvm');
 			$object->kilo_bagage            = GETPOST('kilo_bagage');
 
 			if (!$error && $object->check())
@@ -426,14 +428,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'"> FCFA';
 			print '</td></tr>';
 
-			// prix_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfant").'</td>';
-			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'"> FCFA';
+			// prix_enf_por
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfantPorte").'</td>';
+			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enf_por.'"> FCFA';
 			print '</td></tr>';
 
-			// prix_enf_stand
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfStand").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'"> FCFA';
+			// prix_enf_acc
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfAcc").'</td>';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_acc.'"> FCFA';
+			print '</td></tr>';
+
+			// prix_enf_dvm
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfDVM").'</td>';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_dvm.'"> FCFA';
 			print '</td></tr>';
 
 			// kilo_bagage
@@ -504,14 +511,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input name="prix_standard" class="maxwidth50" value="'.$object->prix_standard.'"> FCFA';
 			print '</td></tr>';
 
-			// prix_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfant").'</td>';
-			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enfant.'"> FCFA';
+			// prix_enf_por
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfantPorte").'</td>';
+			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enf_por.'"> FCFA';
 			print '</td></tr>';
 
-			// prix_enf_stand
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfStand").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_stand.'"> FCFA';
+			// prix_enf_acc
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfAcc").'</td>';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_acc.'"> FCFA';
+			print '</td></tr>';
+
+			// prix_enf_dvm
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfDVM").'</td>';
+			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_dvm.'"> FCFA';
 			print '</td></tr>';
 
 			// kilo_bagage
@@ -586,10 +598,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td>';
 				$htmlhelp = $langs->trans('PrixEnfantHelp');
-				print $form->textwithpicto($langs->trans('PrixEnfant'), $htmlhelp);
+				print $form->textwithpicto($langs->trans('PrixEnfPor'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->prix_enfant." FCFA";
+				print $object->prix_enf_por." FCFA";
 				print '</td>';
 				print '</tr>';
 
@@ -597,10 +609,21 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<tr>';
 				print '<td>';
 				$htmlhelp = $langs->trans('PrixEnfStandHelp');
-				print $form->textwithpicto($langs->trans('PrixEnfStand'), $htmlhelp);
+				print $form->textwithpicto($langs->trans('PrixEnfAcc'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->prix_enf_stand." FCFA";
+				print $object->prix_enf_acc." FCFA";
+				print '</td>';
+				print '</tr>';
+
+				// prix_enf_dvm
+				print '<tr>';
+				print '<td>';
+				$htmlhelp = $langs->trans('PrixEnfStandHelp');
+				print $form->textwithpicto($langs->trans('PrixEnfDvm'), $htmlhelp);
+				print '</td>';
+				print '<td>';
+				print $object->prix_enf_dvm." FCFA";
 				print '</td>';
 				print '</tr>';
 
