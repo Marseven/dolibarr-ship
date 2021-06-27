@@ -394,7 +394,7 @@ if (empty($reshook))
 				$object->fk_passenger = $id_passenger;
 			}
 
-			$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.entity,';
+			$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
 			$sql_prix .= ' c.date_creation, c.tms as date_update';
 			$sql_prix .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
 			$sql_prix .= ' WHERE c.entity IN ('.getEntity('classe').')';
@@ -407,12 +407,14 @@ if (empty($reshook))
 			$age = $firstDate->diff($secondDate);
 
 
-			if($age > 13){
+			if($age->y >= 15 && $object->categorie == 'A'){
 				$object->prix = $obj_prix->prix_standard;
-			}elseif($age <= 13 && GETPOST('date_naissance') >= 5){
-				$object->prix = $obj_prix->prix_enfant;
-			}elseif($age < 5 && GETPOST('date_naissance') >= 0){
-				$object->prix = $obj_prix->prix_enfant;
+			}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+				$object->prix = $obj_prix->prix_enf_por;
+			}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
+				$object->prix = $obj_prix->prix_enf_acc;
+			}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
+				$object->prix = $obj_prix->prix_enf_dvm;
 			}else{
 				$error++;
 				$mesg = 'Age passager renseigne invalide ';

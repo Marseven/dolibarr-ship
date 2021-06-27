@@ -122,8 +122,9 @@ class Classe extends CommonObject
 		'label'         => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'labelshort'         => array('type'=>'varchar(255)', 'label'=>'Labelshort', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'searchall'=>1, 'css'=>'minwidth300', 'cssview'=>'wordbreak', 'help'=>'Help text', 'showoncombobox'=>1),
 		'prix_standard'        => array('type'=>'price', 'label'=>'Prix standard', 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
-		'prix_enfant'        => array('type'=>'price', 'label'=>'Prix enfant', 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
-		'prix_enf_stand'        => array('type'=>'price', 'label'=>'Prix standard avec enfant', 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
+		'prix_enf_por'        => array('type'=>'price', 'label'=>'Prix enfant porté' , 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
+		'prix_enf_acc'        => array('type'=>'price', 'label'=>'Prix enfant accompagné', 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
+		'prix_enf_dvm'        => array('type'=>'price', 'label'=>'Prix enfant confié', 'enabled'=>1, 'visible'=>1, 'default'=>'null', 'position'=>40, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for amount'),
 		'kilo_bagage'           => array('type'=>'real', 'label'=>'Nombre de kilo de bagage', 'enabled'=>1, 'visible'=>1, 'default'=>'0', 'position'=>45, 'searchall'=>0, 'isameasure'=>1, 'help'=>'Help text for quantity', 'css'=>'maxwidth75imp'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
@@ -164,14 +165,19 @@ class Classe extends CommonObject
 	public $prix_standard;
 
 	/**
-	 * @var string prix_enfant
+	 * @var string prix_enf_por
 	 */
-	public $prix_enfant;
+	public $prix_enf_por;
 
 	/**
-	 * @var string prix_enf_stand
+	 * @var string prix_enf_acc
 	 */
-	public $prix_enf_stand;
+	public $prix_enf_acc;
+
+	/**
+	 * @var string prix_enf_dvm
+	 */
+	public $prix_enf_dvm;
 
 	/**
 	 * @var string kilo_bagage
