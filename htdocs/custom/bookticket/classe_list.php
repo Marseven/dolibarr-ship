@@ -94,11 +94,12 @@ $arrayfields = array(
 	'c.label'=>array('label'=>$langs->trans("Label"), 'checked'=>1, 'position'=>10),
 	'c.labelshort'=>array('label'=>$langs->trans("LabelShort"), 'checked'=>1, 'position'=>20),
 	'c.prix_standard'=>array('label'=>$langs->trans('PrixStandard'), 'checked'=>1,  'position'=>30),
-	'c.prix_enfant'=>array('label'=>$langs->trans("PrixEnfant"), 'checked'=>1,  'position'=>52),
-	'c.prix_enf_stand'=>array('label'=>$langs->trans("PrixEnfStand"), 'checked'=>1,  'position'=>53),
+	'c.prix_enf_por'=>array('label'=>$langs->trans("PrixEnfPor"), 'checked'=>1,  'position'=>52),
+	'c.prix_enf_acc'=>array('label'=>$langs->trans("PrixEnfAcc"), 'checked'=>1,  'position'=>53),
+	'c.prix_enf_devn'=>array('label'=>$langs->trans("PrixEnfDVM"), 'checked'=>1,  'position'=>53),
 	'c.kilo_bagage'=>array('label'=>$langs->trans("KiloBagage"), 'checked'=>1,  'position'=>54),
 	'c.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-	'c.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+
 );
 
 
@@ -147,7 +148,7 @@ $title = $langs->trans("Classes");
 $texte = $langs->trans("Classes");
 
 
-$sql = 'SELECT DISTINCT c.rowid, c.ref, c.label, c.labelshort, c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.kilo_bagage, c.entity,';
+$sql = 'SELECT DISTINCT c.rowid, c.ref, c.label, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc, c.prix_enf_dvm, c.kilo_bagage, c.entity,';
 $sql .= ' c.date_creation, c.tms as date_update';
 
 // Add fields from hooks
@@ -290,14 +291,21 @@ if ($resql)
 	}
 
 	// prix_enfant
-	if (!empty($arrayfields['c.prix_enfant']['checked']))
+	if (!empty($arrayfields['c.prix_enf_por']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
 
 	// prix_enf_stand
-	if (!empty($arrayfields['c.prix_enf_stand']['checked']))
+	if (!empty($arrayfields['c.prix_enf_acc']['checked']))
+	{
+		print '<td class="liste_titre">';
+		print '</td>';
+	}
+
+	// prix_enf_stand
+	if (!empty($arrayfields['c.prix_enf_dvm']['checked']))
 	{
 		print '<td class="liste_titre">';
 		print '</td>';
@@ -316,12 +324,7 @@ if ($resql)
 		print '<td class="liste_titre">';
 		print '</td>';
 	}
-	// Date modification
-	if (!empty($arrayfields['c.tms']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '</td>';
-	}
+
 	print '<td class="liste_titre center maxwidthsearch">';
 	$searchpicto = $form->showFilterButtons();
 	print $searchpicto;
@@ -341,15 +344,13 @@ if ($resql)
 	}
 
 	if (!empty($arrayfields['c.prix_standard']['checked']))  print_liste_field_titre($arrayfields['c.prix_standard']['label'], $_SERVER['PHP_SELF'], 'c.prix_standard', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['c.prix_enfant']['checked']))  print_liste_field_titre($arrayfields['c.prix_enfant']['label'], $_SERVER['PHP_SELF'], 'c.prix_enfant', '', $param, '', $sortfield, $sortorder, 'center ');
-	if (!empty($arrayfields['c.prix_enf_stand']['checked']))  print_liste_field_titre($arrayfields['c.prix_enf_stand']['label'], $_SERVER['PHP_SELF'], 'c.prix_enf_stand', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['c.prix_enf_por']['checked']))  print_liste_field_titre($arrayfields['c.prix_enf_por']['label'], $_SERVER['PHP_SELF'], 'c.prix_enf_por', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['c.prix_enf_acc']['checked']))  print_liste_field_titre($arrayfields['c.prix_enf_acc']['label'], $_SERVER['PHP_SELF'], 'c.prix_enf_acc', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['c.prix_enf_dvm']['checked']))  print_liste_field_titre($arrayfields['c.prix_enf_dvm']['label'], $_SERVER['PHP_SELF'], 'c.prix_enf_dvm', '', $param, '', $sortfield, $sortorder, 'center ');
 	if (!empty($arrayfields['c.kilo_bagage']['checked']))  print_liste_field_titre($arrayfields['c.kilo_bagage']['label'], $_SERVER['PHP_SELF'], 'c.kilo_bagage', '', $param, '', $sortfield, $sortorder, 'center ');
 
 	if (!empty($arrayfields['c.date_creation']['checked'])) {
 		print_liste_field_titre($arrayfields['c.date_creation']['label'], $_SERVER["PHP_SELF"], "c.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
-	}
-	if (!empty($arrayfields['c.tms']['checked'])) {
-		print_liste_field_titre($arrayfields['c.tms']['label'], $_SERVER["PHP_SELF"], "c.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	print "</tr>\n";
@@ -398,17 +399,24 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// prix_enfant
-		if (!empty($arrayfields['c.prix_enfant']['checked']))
+		// prix_enf_por
+		if (!empty($arrayfields['c.prix_enf_por']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->prix_enfant).'">'.$obj->prix_enfant.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->prix_enf_por).'">'.$obj->prix_enf_por.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
-		// prix_enf_stand
-		if (!empty($arrayfields['c.prix_enf_stand']['checked']))
+		// prix_enf_acc
+		if (!empty($arrayfields['c.prix_enf_acc']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->prix_enf_stand).'">'.$obj->prix_enf_stand.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->prix_enf_acc).'">'.$obj->prix_enf_acc.'</td>';
+			if (!$i) $totalarray['nbfield']++;
+		}
+
+		// prix_enf_dvm
+		if (!empty($arrayfields['c.prix_enf_dvm']['checked']))
+		{
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->prix_enf_dvm).'">'.$obj->prix_enf_dvm.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
@@ -426,14 +434,6 @@ if ($resql)
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
-			print '</td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-		// Date modification
-		if (!empty($arrayfields['c.tms']['checked']))
-		{
-			print '<td class="center nowraponall">';
-			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
 			print '</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
