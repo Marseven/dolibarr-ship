@@ -870,7 +870,7 @@ class Societe extends CommonObject
 				} else {
 					$error++;
 				}
-				var_dump($ret);die;
+				var_dump($error);die;
 				if (!$error) {
 					dol_syslog(get_class($this)."::Create success id=".$this->id);
 					$this->db->commit();
