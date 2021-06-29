@@ -330,8 +330,10 @@ if (empty($reshook))
 			$object->barcode_type_label     = $stdobject->barcode_type_label;
 
 			$object->fk_travel             	 = GETPOST('fk_travel');
-			$object->fk_ship             	 = GETPOST('fk_ship');
+			$object_travel->fetch($object->fk_travel);
+			$object->fk_ship             	 = $object_travel->fk_ship;
 			$object->fk_classe             	 = GETPOST('fk_classe');
+			$object->categorie             	 = GETPOST('categorie');
 
 			$sql_a = 'SELECT DISTINCT au.rowid, au.fk_agence';
 			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
@@ -439,7 +441,7 @@ if (empty($reshook))
 			{
 				$id = $object->create($user);
 
-				$object_travel->fetch($object->travel);
+				$object_travel->fetch($object->fk_travel);
 
 				if($obj_prix->labelshort == "VIP"){
 					$object_travel->nbre_vip--;
