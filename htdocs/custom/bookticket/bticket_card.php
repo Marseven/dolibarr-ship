@@ -49,6 +49,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_user.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
@@ -310,7 +311,7 @@ if (empty($reshook))
 		{
 
 
-			$object->ref                   = $ref;
+			$object->ref   = $ref;
 
 			$object->barcode_type          = GETPOST('fk_barcode_type');
 			$object->barcode = GETPOST('barcode');
@@ -479,8 +480,6 @@ if (empty($reshook))
 
 				$ret = $object_bank->create($user);
 			}
-
-			var_dump($id);die;
 
 			if ($id > 0)
 			{
