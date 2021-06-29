@@ -70,7 +70,7 @@ $socid = GETPOST('socid', 'int');
 
 if (!empty($user->socid)) $socid = $user->socid;
 
-$object = new Bticket($db);
+$object = new AgenceUser($db);
 $object_passenger = new Passenger($db);
 $object_travel = new Travel($db);
 
@@ -595,7 +595,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$linkback = '<a href="'.DOL_URL_ROOT.'/custom/bookticket/agence_user_list.php?restore_lastsearch_values=1&type=">'.$langs->trans("BackToList").'</a>';
 
 			$shownav = 1;
-			if ($user->socid && !in_array('bticket', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
+			if ($user->socid && !in_array('agence_user', explode(',', $conf->global->MAIN_MODULES_FOR_EXTERNAL))) $shownav = 0;
 
 			dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
