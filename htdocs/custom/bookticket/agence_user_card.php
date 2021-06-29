@@ -495,8 +495,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
 
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
-
 			$sql_a = 'SELECT DISTINCT au.rowid, u.lastname, u.firstname,  a.label';
 			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
 			$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON au.fk_agence = a.rowid";
