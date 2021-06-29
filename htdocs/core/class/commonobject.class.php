@@ -7741,8 +7741,12 @@ abstract class CommonObject
 				else $values[$key] = 'null';
 			}
 			if (!empty($this->fields[$key]['foreignkey']) && empty($values[$key])) $values[$key] = 'null';
+
+			
 		}
 
+		var_dump($keys);
+		var_dump($values);
 		if ($error) return -1;
 		
 		$this->db->begin();
@@ -7752,7 +7756,7 @@ abstract class CommonObject
 			$sql = 'INSERT INTO '.MAIN_DB_PREFIX.$this->table_element;
 			$sql .= ' ('.implode(", ", $keys).')';
 			$sql .= ' VALUES ('.implode(", ", $values).')';
-			var_dump($sql);die;
+			
 			$res = $this->db->query($sql);
 			var_dump($this->db->lasterror());
 
