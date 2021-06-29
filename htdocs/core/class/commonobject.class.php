@@ -7756,6 +7756,7 @@ abstract class CommonObject
 			$res = $this->db->query($sql);
 			var_dump($this->db->lasterror());
 			var_dump($res);die;
+			
 			if ($res === false) {
 				$error++;
 				$this->errors[] = $this->db->lasterror();
