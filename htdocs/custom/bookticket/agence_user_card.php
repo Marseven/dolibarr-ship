@@ -182,6 +182,8 @@ if ($action == 'add' && $usercancreate)
 
 		$object->status = AgenceUser::STATUS_APPROVED;
 
+		var_dump($object);die;
+
 		if (!$error)
 		{
 			$id = $object->create($user);

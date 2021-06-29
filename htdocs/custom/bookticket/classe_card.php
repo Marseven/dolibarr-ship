@@ -430,17 +430,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// prix_enf_por
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfantPorte").'</td>';
-			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enf_por.'"> FCFA';
+			print '<td><input name="prix_enf_por" class="maxwidth50" value="'.$object->prix_enf_por.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enf_acc
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfAcc").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_acc.'"> FCFA';
+			print '<td><input name="prix_enf_acc" class="maxwidth50" value="'.$object->prix_enf_acc.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enf_dvm
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfDVM").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_dvm.'"> FCFA';
+			print '<td><input name="prix_enf_dvm" class="maxwidth50" value="'.$object->prix_enf_dvm.'"> FCFA';
 			print '</td></tr>';
 
 			// kilo_bagage
@@ -513,17 +513,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// prix_enf_por
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfantPorte").'</td>';
-			print '<td><input name="prix_enfant" class="maxwidth50" value="'.$object->prix_enf_por.'"> FCFA';
+			print '<td><input name="prix_enf_por" class="maxwidth50" value="'.$object->prix_enf_por.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enf_acc
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfAcc").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_acc.'"> FCFA';
+			print '<td><input name="prix_enf_acc" class="maxwidth50" value="'.$object->prix_enf_acc.'"> FCFA';
 			print '</td></tr>';
 
 			// prix_enf_dvm
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixEnfDVM").'</td>';
-			print '<td><input name="prix_enf_stand" class="maxwidth50" value="'.$object->prix_enf_dvm.'"> FCFA';
+			print '<td><input name="prix_enf_dvm" class="maxwidth50" value="'.$object->prix_enf_dvm.'"> FCFA';
 			print '</td></tr>';
 
 			// kilo_bagage
