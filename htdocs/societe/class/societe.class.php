@@ -824,8 +824,6 @@ class Societe extends CommonObject
 		// If error, this->errors[] is filled
 		$result = $this->verify();
 
-		var_dump($result);die;
-
 		if ($result >= 0) {
 			$this->entity = ((isset($this->entity) && is_numeric($this->entity)) ? $this->entity : $conf->entity);
 
@@ -841,6 +839,8 @@ class Societe extends CommonObject
 			$sql .= ", ".(!empty($this->import_key) ? "'".$this->db->escape($this->import_key)."'" : "null");
 			$sql .= ", ".(int) $this->fk_multicurrency;
 			$sql .= ", '".$this->db->escape($this->multicurrency_code)."')";
+
+			var_dump($sql);die;
 
 			dol_syslog(get_class($this)."::create", LOG_DEBUG);
 			$result = $this->db->query($sql);
