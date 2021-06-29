@@ -74,6 +74,10 @@ $object = new AgenceUser($db);
 $object_passenger = new Passenger($db);
 $object_travel = new Travel($db);
 
+if ($id > 0)
+{
+	$result = $object->fetch($id);
+}
 
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = !empty($object->canvas) ? $object->canvas : GETPOST("canvas");
