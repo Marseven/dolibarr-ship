@@ -858,7 +858,7 @@ class Societe extends CommonObject
 					$this->add_commercial($user, $user->id);
 				}
 
-				var_dump($ret);die;
+				
 
 				if ($ret >= 0) {
 					// Call trigger
@@ -870,7 +870,7 @@ class Societe extends CommonObject
 				} else {
 					$error++;
 				}
-
+				var_dump($ret);die;
 				if (!$error) {
 					dol_syslog(get_class($this)."::Create success id=".$this->id);
 					$this->db->commit();
