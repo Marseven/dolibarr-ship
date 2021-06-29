@@ -74,19 +74,6 @@ $object = new AgenceUser($db);
 $object_passenger = new Passenger($db);
 $object_travel = new Travel($db);
 
-if ($id > 0 || !empty($ref))
-{
-	$result = $object->fetch($id, $ref);
-
-	if (!empty($conf->agence_user->enabled)) $upload_dir = $conf->agence_user->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'agence_user').dol_sanitizeFileName($object->ref);
-	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'agence_user').dol_sanitizeFileName($object->ref);
-
-	if (!empty($conf->global->AGENCEUSER_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
-	{
-		if (!empty($conf->agence_user->enabled)) $upload_dirold = $conf->agence_user->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
-		else $upload_dirold = $conf->service->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
-	}
-}
 
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = !empty($object->canvas) ? $object->canvas : GETPOST("canvas");
@@ -239,71 +226,6 @@ if ($action == 'update' && $usercancreate)
 		}
 	}
 }
-
-/* Action clone object
-if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-{
-	if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-	{
-		setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-	} else {
-		$db->begin();
-
-		$originalId = $id;
-		if ($object->id > 0)
-		{
-			$object->ref = GETPOST('clone_ref', 'alphanohtml');
-			$object->id = null;
-			$object->barcode = -1;
-
-			if ($object->check())
-			{
-				$object->context['createfromclone'] = 'createfromclone';
-				$id = $object->create($user);
-				if ($id > 0)
-				{
-
-					$db->commit();
-					$db->close();
-
-					header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-					exit;
-				} else {
-					$id = $originalId;
-
-					if ($object->error == 'ErrorAgenceUserAlreadyExists')
-					{
-						$db->rollback();
-
-						$refalreadyexists++;
-						$action = "";
-
-						$mesg = $langs->trans("ErrorAgenceUserAlreadyExists", $object->ref);
-						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-						setEventMessages($mesg, null, 'errors');
-						$object->fetch($id);
-					} else {
-						$db->rollback();
-						if (count($object->errors))
-						{
-							setEventMessages($object->error, $object->errors, 'errors');
-							dol_print_error($db, $object->errors);
-						} else {
-							setEventMessages($langs->trans($object->error), null, 'errors');
-							dol_print_error($db, $object->error);
-						}
-					}
-				}
-
-				unset($object->context['createfromclone']);
-			}
-		} else {
-			$db->rollback();
-			dol_print_error($db, $object->error);
-		}
-	}
-}*/
 
 // Delete a agence_user
 //if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
