@@ -7747,6 +7747,7 @@ abstract class CommonObject
 
 		var_dump($keys);
 		var_dump($values);
+		
 		if ($error) return -1;
 		
 		$this->db->begin();
