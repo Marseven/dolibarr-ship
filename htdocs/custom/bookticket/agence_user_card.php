@@ -182,8 +182,6 @@ if ($action == 'add' && $usercancreate)
 
 		$object->status = AgenceUser::STATUS_APPROVED;
 
-		var_dump($object);die;
-
 		if (!$error)
 		{
 			$id = $object->create($user);
@@ -409,7 +407,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// user
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Users").'</td>';
 
-			$user = '<td><select class="flat" name="fk_classe">';
+			$user = '<td><select class="flat" name="fk_user">';
 			if (empty($userrecords))
 			{
 				$user .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
