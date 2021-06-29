@@ -842,9 +842,10 @@ class Societe extends CommonObject
 
 			dol_syslog(get_class($this)."::create", LOG_DEBUG);
 			$result = $this->db->query($sql);
-			var_dump($result);die;
+			
 			if ($result) {
 				$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."societe");
+				var_dump($this->id);die;
 
 				$ret = $this->update($this->id, $user, 0, 1, 1, 'add');
 
