@@ -355,8 +355,6 @@ if (empty($reshook))
 				$object_passenger->accompagne        = GETPOST('accompagne');
 				$object_passenger->status = Passenger::STATUS_VALIDATED;
 
-				var_dump($object_passenger);die;
-
 
 				$customer = new Societe($db);
 
@@ -386,6 +384,8 @@ if (empty($reshook))
 				$db->begin();
 
 				if (empty($customer->client))      $customer->code_client = '';
+
+				var_dump($customer);die;
 
 				$result = $customer->create($user);
 
