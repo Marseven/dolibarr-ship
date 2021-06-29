@@ -348,7 +348,7 @@ if (empty($reshook))
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom            = GETPOST('prenom');
 				$object_passenger->nationalite       = GETPOST('nationalite');
-				$object_passenger->age             	 = GETPOST('age');
+				$object_passenger->date_naissance    = GETPOST('date_naissance');
 				$object_passenger->adresse           = GETPOST('adresse');
 				$object_passenger->telephone         = GETPOST('telephone');
 				$object_passenger->email             = GETPOST('email');
