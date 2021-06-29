@@ -96,6 +96,8 @@ if ($id > 0 || !empty($ref))
 	}
 }
 
+var_dump($object->id);die;
+
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = !empty($object->canvas) ? $object->canvas : GETPOST("canvas");
 $objcanvas = null;
