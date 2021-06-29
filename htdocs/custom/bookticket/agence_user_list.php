@@ -340,15 +340,14 @@ if ($resql)
 		$obj = $db->fetch_object($resql);
 
 		$agence_user_static->id = $obj->rowid;
-		$ticket_static->passenger = $obj->passenger;
 		print '<tr class="oddeven">';
 
 		// Agence
 		if (!empty($arrayfields['Agence']['checked']))
 		{
-			print '<td class="tdoverflowmax200">';
+			print '<td class="tdoverflowmax200"><a href="'.dol_buildpath('/bookticket/agence_user_card.php', 1).'?id='.$obj->rowid.'">';
 			print $obj->label;
-			print '</td>';
+			print '</a></td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
