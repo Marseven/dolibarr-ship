@@ -385,8 +385,6 @@ if (empty($reshook))
 
 				if (empty($customer->client))      $customer->code_client = '';
 
-
-
 				$result = $customer->create($user);
 
 				var_dump($result);die;

@@ -824,6 +824,8 @@ class Societe extends CommonObject
 		// If error, this->errors[] is filled
 		$result = $this->verify();
 
+		var_dump($result);die;
+
 		if ($result >= 0) {
 			$this->entity = ((isset($this->entity) && is_numeric($this->entity)) ? $this->entity : $conf->entity);
 
