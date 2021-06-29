@@ -1248,14 +1248,28 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input type="checkbox" name="accompagne"'.($obj_p->accompagne == "on" ? 'checked' : '').'>';
 			print '</td></tr>';
 
-			// nom_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$obj_p->nom_enfant.'">';
-			print '</td></tr>';
+			// passenger
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
+			if (empty($passengerrecords))
+			{
+				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($passengerrecords as $lines)
+				{
+					$passenger .= '<option value="';
+					$passenger .= $lines->rowid;
+					$passenger .= '"';
+					$passenger .= '>';
+					$passenger .= $langs->trans($lines->nom).' '. $langs->trans($lines->prenom);
+					$passenger .= '</option>';
+				}
+			}
 
-			// age_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth300" value="'.$obj_p->date_naissance_enfant.'">';
+			$passenger .= '</select>';
+
+			print $passenger;
+
 			print '</td></tr>';
 
 			// fk_passenger
