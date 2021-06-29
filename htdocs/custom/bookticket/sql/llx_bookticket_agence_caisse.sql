@@ -20,7 +20,7 @@
 create table llx_bookticket_agence_caisse
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
-  fk_caisse                   integer      DEFAULT NULL,
+  fk_caisse                 integer      DEFAULT NULL,
   fk_agence                 integer      DEFAULT NULL,
   entity                    integer default 1,                    
   date_creation             datetime,                    
