@@ -308,6 +308,8 @@ if (empty($reshook))
 
 		if (!$error)
 		{
+			var_dump($_POST);die;
+
 			$object->ref                   = $ref;
 
 			$object->barcode_type          = GETPOST('fk_barcode_type');
@@ -351,8 +353,6 @@ if (empty($reshook))
 				$object_passenger->telephone         = GETPOST('telephone');
 				$object_passenger->email             = GETPOST('email');
 				$object_passenger->accompagne        = GETPOST('accompagne');
-				$object_passenger->nom_enfant        = GETPOST('nom_enfant');
-				$object_passenger->age_enfant        = GETPOST('age_enfant');
 				$object_passenger->status = Passenger::STATUS_VALIDATED;
 
 
@@ -423,19 +423,9 @@ if (empty($reshook))
 
 			if(GETPOST('accompagne') == 'on'){
 
-				$firstDate  = new DateTime(date('Y-m-d'));
-				$secondDate = new DateTime(GETPOST('date_naissance_enfant'));
-				$age_enfant = $firstDate->diff($secondDate);
-
-				if($age_enfant > 13){
+				if($age > 13){
 					$error++;
 					$mesg = 'Age enfant passager renseigne superieur ';
-					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-				}elseif(GETPOST('age_enfant') <= 13 && GETPOST('age_enfant') >= 0){
-					$object->prix = $obj_prix->prix_enf_stand;
-				}else{
-					$error++;
-					$mesg = 'Age enfant accompagne renseigne invalide ';
 					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 				}
 			}
@@ -521,8 +511,6 @@ if (empty($reshook))
 				$object->fk_ship             	 = GETPOST('fk_ship');
 				$object->fk_classe             	 = GETPOST('fk_classe');
 
-				//$object->fk_agence             	 = GETPOST('fk_agence');
-
 				$object->fk_passenger             	 = GETPOST('fk_passenger');
 
 				$object_passenger->ref             	 = GETPOST('pref');
@@ -535,16 +523,28 @@ if (empty($reshook))
 				$object_passenger->telephone             	 = GETPOST('telephone');
 				$object_passenger->email             	 = GETPOST('email');
 				$object_passenger->accompagne             	 = GETPOST('accompagne');
-				$object_passenger->nom_enfant             	 = GETPOST('nom_enfant');
-				$object_passenger->age_enfant             	 = GETPOST('age_enfant');
 				$object_passenger->status = Passenger::STATUS_VALIDATED;
 
-				if(GETPOST('age') > 13){
+				$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
+				$sql_prix .= ' c.date_creation, c.tms as date_update';
+				$sql_prix .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
+				$sql_prix .= ' WHERE c.entity IN ('.getEntity('classe').')';
+				$sql_prix .= ' AND c.rowid IN ('.$object->fk_classe.')';
+				$resql_prix =$db->query($sql_prix);
+				$obj_prix = $db->fetch_object($resql_prix);
+
+				$firstDate  = new DateTime(date('Y-m-d'));
+				$secondDate = new DateTime(GETPOST('date_naissance'));
+				$age = $firstDate->diff($secondDate);
+
+				if($age->y >= 15 && $object->categorie == 'A'){
 					$object->prix = $obj_prix->prix_standard;
-				}elseif(GETPOST('age') <= 13 && GETPOST('age') >= 5){
-					$object->prix = $obj_prix->prix_enfant;
-				}elseif(GETPOST('age') < 5 && GETPOST('age') >= 0){
-					$object->prix = $obj_prix->prix_enfant;
+				}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+					$object->prix = $obj_prix->prix_enf_por;
+				}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
+					$object->prix = $obj_prix->prix_enf_acc;
+				}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
+					$object->prix = $obj_prix->prix_enf_dvm;
 				}else{
 					$error++;
 					$mesg = 'Age passager renseigne invalide ';
@@ -553,15 +553,9 @@ if (empty($reshook))
 
 				if(GETPOST('accompagne') == 'on'){
 
-					if(GETPOST('age_enfant') > 13){
+					if($age > 13){
 						$error++;
 						$mesg = 'Age enfant passager renseigne superieur ';
-						setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-					}elseif(GETPOST('age_enfant') <= 13 && GETPOST('age_enfant') >= 0){
-						$object->prix = $obj_prix->prix_enf_stand;
-					}else{
-						$error++;
-						$mesg = 'Age enfant accompagne renseigne invalide ';
 						setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 					}
 				}
@@ -959,7 +953,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// new_passenger
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passager").'</td>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NewPassager").'</td>';
 			print '<td><input type="checkbox" name="new_passenger" >';
 			print '</td></tr>';
 
@@ -1032,14 +1026,28 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input type="checkbox" name="accompagne"'.($object_passenger->accompagne == 1 ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
 
-			// nom_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object_passenger->nom_enfant.'">';
-			print '</td></tr>';
+			// passenger
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
+			if (empty($passengerrecords))
+			{
+				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($passengerrecords as $lines)
+				{
+					$passenger .= '<option value="';
+					$passenger .= $lines->rowid;
+					$passenger .= '"';
+					$passenger .= '>';
+					$passenger .= $langs->trans($lines->nom).' '. $langs->trans($lines->prenom);
+					$passenger .= '</option>';
+				}
+			}
 
-			// age_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="date_naissance_enfant" type="date" class="maxwidth300" value="'.$object_passenger->date_naissance_enfant.'">';
+			$passenger .= '</select>';
+
+			print $passenger;
+
 			print '</td></tr>';
 
 

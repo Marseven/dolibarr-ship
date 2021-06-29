@@ -33,6 +33,7 @@ create table llx_bookticket_bticket
   fk_valideur               integer      DEFAULT NULL,
   fk_ship                   integer      DEFAULT NULL,
   fk_passenger              integer      DEFAULT NULL,
+  fk_passenger_acc          integer      DEFAULT NULL,
   fk_travel                 integer      DEFAULT NULL,
   fk_classe                 integer      DEFAULT NULL,
   fk_agence                 integer      DEFAULT NULL, 
