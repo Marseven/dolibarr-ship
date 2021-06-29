@@ -387,13 +387,13 @@ if (empty($reshook))
 
 				$result = $customer->create($user);
 
-				var_dump($result);die;
-
 				$object_passenger->fk_socid = $result;
 
 				$id_passenger = $object_passenger->create($user);
 
 				$object->fk_passenger = $id_passenger;
+
+				var_dump($id_passenger);
 			}
 
 			$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
