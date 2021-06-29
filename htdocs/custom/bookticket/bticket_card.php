@@ -480,12 +480,7 @@ if (empty($reshook))
 				$ret = $object_bank->create($user);
 			}
 
-			var_dump($object_passenger);
-			var_dump($customer);
-			var_dump($object_caisse);
-			var_dump($object_travel);
-			die;
-
+			var_dump($id);die;
 
 			if ($id > 0)
 			{
