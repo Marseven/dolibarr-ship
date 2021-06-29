@@ -393,7 +393,7 @@ if (empty($reshook))
 
 				$object->fk_passenger = $id_passenger;
 
-				var_dump($id_passenger);
+				var_dump($id_passenger); die;
 			}
 
 			$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
