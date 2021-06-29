@@ -308,7 +308,7 @@ if (empty($reshook))
 
 		if (!$error)
 		{
-			var_dump($_POST);die;
+
 
 			$object->ref                   = $ref;
 
@@ -354,6 +354,8 @@ if (empty($reshook))
 				$object_passenger->email             = GETPOST('email');
 				$object_passenger->accompagne        = GETPOST('accompagne');
 				$object_passenger->status = Passenger::STATUS_VALIDATED;
+
+				var_dump($object_passenger);die;
 
 
 				$customer = new Societe($db);
