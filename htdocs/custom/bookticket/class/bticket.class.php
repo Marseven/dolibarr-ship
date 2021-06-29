@@ -176,6 +176,11 @@ class Bticket extends CommonObject
 	public $fk_valideur;
 
 	/**
+	 * @var int ID
+	 */
+	public $fk_passenger_acc;
+
+	/**
 	 * @var int Status
 	 */
 	public $status;
