@@ -508,8 +508,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql_a = $db->query($sql_a);
 			$obj = $db->fetch_object($resql_a);
 
-			var_dump($obj);die;
-
 			$head = agence_user_prepare_head($object);
 			$titre = $langs->trans("CardAffectation");
 			$picto = 'agence_user';
