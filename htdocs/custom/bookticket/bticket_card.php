@@ -385,9 +385,11 @@ if (empty($reshook))
 
 				if (empty($customer->client))      $customer->code_client = '';
 
-				var_dump($customer);die;
+
 
 				$result = $customer->create($user);
+
+				var_dump($result);die;
 
 				$object_passenger->fk_socid = $result;
 
