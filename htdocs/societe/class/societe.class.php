@@ -845,7 +845,7 @@ class Societe extends CommonObject
 			
 			if ($result) {
 				$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."societe");
-				var_dump($this->id);die;
+				
 
 				$ret = $this->update($this->id, $user, 0, 1, 1, 'add');
 
@@ -857,6 +857,8 @@ class Societe extends CommonObject
 				elseif (empty($user->rights->societe->client->voir)) {
 					$this->add_commercial($user, $user->id);
 				}
+
+				var_dump($ret);die;
 
 				if ($ret >= 0) {
 					// Call trigger
