@@ -7753,10 +7753,8 @@ abstract class CommonObject
 			$sql .= ' ('.implode(", ", $keys).')';
 			$sql .= ' VALUES ('.implode(", ", $values).')';
 			
-			var_dump($sql);
 			$res = $this->db->query($sql);
 			var_dump($this->db->lasterror());
-			var_dump($res);die;
 
 			if ($res === false) {
 				$error++;
