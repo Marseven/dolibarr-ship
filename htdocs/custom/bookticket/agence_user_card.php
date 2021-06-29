@@ -78,12 +78,12 @@ if ($id > 0 || !empty($ref))
 {
 	$result = $object->fetch($id, $ref);
 
-	if (!empty($conf->bticket->enabled)) $upload_dir = $conf->bticket->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'bticket').dol_sanitizeFileName($object->ref);
-	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'bticket').dol_sanitizeFileName($object->ref);
+	if (!empty($conf->agence_user->enabled)) $upload_dir = $conf->agence_user->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'agence_user').dol_sanitizeFileName($object->ref);
+	elseif (!empty($conf->service->enabled)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 0, $object, 'agence_user').dol_sanitizeFileName($object->ref);
 
-	if (!empty($conf->global->BTICKET_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
+	if (!empty($conf->global->AGENCEUSER_USE_OLD_PATH_FOR_PHOTO))    // For backward compatiblity, we scan also old dirs
 	{
-		if (!empty($conf->bticket->enabled)) $upload_dirold = $conf->bticket->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
+		if (!empty($conf->agence_user->enabled)) $upload_dirold = $conf->agence_user->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 		else $upload_dirold = $conf->service->multidir_output[$object->entity].'/'.substr(substr("000".$object->id, -2), 1, 1).'/'.substr(substr("000".$object->id, -2), 0, 1).'/'.$object->id."/photos";
 	}
 }
@@ -95,11 +95,11 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('bticket', 'card', $canvas);
+	$objcanvas->getCanvas('agence_user', 'card', $canvas);
 }
 
 // Security check
-//$result = restrictedArea($user, 'bticket');
+//$result = restrictedArea($user, 'agence_user');
 
 /*
  * Actions
@@ -233,7 +233,7 @@ if ($action == 'update' && $usercancreate)
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans("ErrorBticketBadRefOrLabel"), null, 'errors');
+				else setEventMessages($langs->trans("ErrorAgenceUserBadRefOrLabel"), null, 'errors');
 				$action = 'edit';
 			}
 		}
@@ -272,14 +272,14 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
 				} else {
 					$id = $originalId;
 
-					if ($object->error == 'ErrorBticketAlreadyExists')
+					if ($object->error == 'ErrorAgenceUserAlreadyExists')
 					{
 						$db->rollback();
 
 						$refalreadyexists++;
 						$action = "";
 
-						$mesg = $langs->trans("ErrorBticketAlreadyExists", $object->ref);
+						$mesg = $langs->trans("ErrorAgenceUserAlreadyExists", $object->ref);
 						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
 						setEventMessages($mesg, null, 'errors');
 						$object->fetch($id);
@@ -313,7 +313,7 @@ if ($action == 'delete' && $usercandelete)
 
 	if ($result > 0)
 	{
-		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?type='.$object->type.'&delbticket='.urlencode($object->ref));
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/agence_user_list.php?type='.$object->type.'&delagence_user='.urlencode($object->ref));
 		exit;
 	} else {
 		setEventMessages($langs->trans($object->error), null, 'errors');
@@ -356,7 +356,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	if (empty($object->error) && $id)
 	{
-		$object = new Bticket($db);
+		$object = new AgenceUser($db);
 		$result = $object->fetch($id);
 		if ($result <= 0) dol_print_error('', $object->error);
 	}
@@ -385,9 +385,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add">';
 		print '<input type="hidden" name="type" value="'.$type.'">'."\n";
-		if (!empty($modCodeBticket->code_auto))
+		if (!empty($modCodeAgenceUser->code_auto))
 			print '<input type="hidden" name="code_auto" value="1">';
-		if (!empty($modBarCodeBticket->code_auto))
+		if (!empty($modBarCodeAgenceUser->code_auto))
 			print '<input type="hidden" name="barcode_auto" value="1">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
@@ -467,7 +467,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</form>';
 	} elseif ($object->id > 0) {
 		/*
-         * bticket card
+         * agence_user card
          */
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
