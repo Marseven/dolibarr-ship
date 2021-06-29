@@ -345,6 +345,7 @@ if (empty($reshook))
 			}else{
 				$object_passenger->ref             	 = GETPOST('pref');
 				$object_passenger->civility          = GETPOST('civilite');
+				$object_passenger->type_piece        = GETPOST('civilite');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom            = GETPOST('prenom');
 				$object_passenger->nationalite       = GETPOST('nationalite');
@@ -427,6 +428,8 @@ if (empty($reshook))
 					$error++;
 					$mesg = 'Age enfant passager renseigne superieur ';
 					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+				}else{
+					$object->fk_passenger_acc = GETPOST('fk_passenger_acc');
 				}
 			}
 
