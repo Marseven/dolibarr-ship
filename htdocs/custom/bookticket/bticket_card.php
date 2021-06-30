@@ -200,102 +200,221 @@ if ($resql_passenger)
 	}
 }
 
-
-if (empty($reshook))
+// Add a bticket
+if ($action == 'add' && $usercancreate)
 {
+	$error = 0;
 
-	// Actions to build doc
-	$upload_dir = $conf->bookticket->dir_output;
-	$permissiontoadd = $usercancreate;
-	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
-	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
-
-	// Add a bticket
-	if ($action == 'add' && $usercancreate)
+	if (empty($ref))
 	{
-		$error = 0;
+		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
+		$action = "create";
+		$error++;
+	}
 
-        if (empty($ref))
-        {
-            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Ref')), null, 'errors');
-            $action = "create";
-            $error++;
-        }
+	if (!$error)
+	{
+
+		$object->ref   = $ref;
+
+		$object->fk_travel             	 = GETPOST('fk_travel');
+		$object_travel->fetch($object->fk_travel);
+		$object->fk_ship             	 = $object_travel->fk_ship;
+		$object->fk_classe             	 = GETPOST('fk_classe');
+		$object->categorie             	 = GETPOST('categorie');
+
+		$sql_a = 'SELECT DISTINCT au.rowid, au.fk_agence';
+		$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
+		$sql_a .= ' WHERE au.fk_user IN ('.$user->id.')';
+		$resql_a = $db->query($sql_a);
+		$obj = $db->fetch_object($resql_a);
+
+		$object->fk_agence             	 = $obj->fk_agence;
+
+		if(GETPOST('new_passenger') != 'on'){
+			$object->fk_passenger = GETPOST('fk_passenger');
+		}else{
+			$object_passenger->ref             	 = GETPOST('pref');
+			$object_passenger->civility          = GETPOST('civilite');
+			$object_passenger->type_piece        = GETPOST('type_piece');
+			$object_passenger->nom             	 = GETPOST('nom');
+			$object_passenger->prenom            = GETPOST('prenom');
+			$object_passenger->nationalite       = GETPOST('nationalite');
+			$object_passenger->date_naissance    = GETPOST('date_naissance');
+			$object_passenger->adresse           = GETPOST('adresse');
+			$object_passenger->telephone         = GETPOST('telephone');
+			$object_passenger->email             = GETPOST('email');
+			$object_passenger->accompagne        = GETPOST('accompagne');
+			$object_passenger->status = Passenger::STATUS_VALIDATED;
+
+
+			$customer = new Societe($db);
+
+			$customer->particulier	= 1;
+			$customer->status	= 1;
+
+			$customer->name = dolGetFirstLastname(GETPOST('prenom', 'alphanohtml'), GETPOST('nom', 'alphanohtml'));
+			$customer->civility_id	= GETPOST('civilite', 'alphanohtml'); // Note: civility id is a code, not an int
+
+			// Add non official properties
+			$customer->name_bis = GETPOST('nom', 'alphanohtml');
+			$customer->firstname = GETPOST('prenom', 'alphanohtml');
+
+			$customer->entity	  = (GETPOSTISSET('entity') ? GETPOST('entity', 'int') : $conf->entity);
+			$customer->address	  = GETPOST('adresse', 'alphanohtml');
+			$customer->country_id = GETPOST('nationalite', 'int');
+
+			$customer->phone = GETPOST('telephone', 'alpha');
+			$customer->email = trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
+			$customer->code_client	= GETPOSTISSET('customer_code') ? GETPOST('pref', 'alpha') : GETPOST('pref', 'alpha');
+			$customer->typent_code	= dol_getIdFromCode($db, 8, 'c_typent', 'id', 'code'); // Force typent_code too so check in verify() will be done on new type
+
+			$customer->client = NULL;
+			$customer->commercial_id = $user->id;
+
+			if (empty($customer->client))      $customer->code_client = '';
+
+			$result = $customer->create($user);
+
+			$object_passenger->fk_socid = $result;
+
+			$id_passenger = $object_passenger->create($user);
+
+			$object->fk_passenger = $id_passenger;
+		}
+
+		$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
+		$sql_prix .= ' c.date_creation, c.tms as date_update';
+		$sql_prix .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
+		$sql_prix .= ' WHERE c.entity IN ('.getEntity('classe').')';
+		$sql_prix .= ' AND c.rowid IN ('.$object->fk_classe.')';
+		$resql_prix =$db->query($sql_prix);
+		$obj_prix = $db->fetch_object($resql_prix);
+
+		$firstDate  = new DateTime(date('Y-m-d'));
+		$secondDate = new DateTime(GETPOST('date_naissance'));
+		$age = $firstDate->diff($secondDate);
+
+
+		if($age->y >= 15 && $object->categorie == 'A'){
+			$object->prix = $obj_prix->prix_standard;
+		}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+			$object->prix = $obj_prix->prix_enf_por;
+		}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
+			$object->prix = $obj_prix->prix_enf_acc;
+		}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
+			$object->prix = $obj_prix->prix_enf_dvm;
+		}else{
+			$error++;
+			$mesg = "L'âge du passager renseigné est invalide.";
+			setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+		}
+
+		if(GETPOST('accompagne') == 'on'){
+
+			if($age > 13){
+				$error++;
+				$mesg = "L'âge du passager renseigné est supérieur au maximum requis.";
+				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+			}else{
+				$object->fk_passenger_acc = GETPOST('fk_passenger_acc');
+			}
+		}
+
+		$object->status = Bticket::STATUS_APPROVED;
 
 		if (!$error)
 		{
+			$id = $object->create($user);
 
+			$object_travel->fetch($object->fk_travel);
 
-			$object->ref   = $ref;
+			if($obj_prix->labelshort == "VIP"){
+				$object_travel->nbre_vip--;
+			}elseif($obj_prix->labelshort == "ECO"){
+				$object_travel->nbre_eco--;
+			}else{
+				$object_travel->nbre_aff--;
+			}
 
+			$object_travel->nbre_place--;
+
+			$object_travel->update($user);
+
+			$object_bank = new PaymentVarious($db);
+			$object_caisse = new AgenceCaisse($db);
+			$object_caisse->fetch($user->id);
+
+			$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
+			$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
+			if (empty($datev)) $datev = $datep;
+
+			$object_bank->ref = ''; // TODO
+			$object_bank->accountid = $object_caisse->fk_account > 0 ? $object_caisse->fk_account : 0;
+			$object_bank->datev = $datev;
+			$object_bank->datep = $datep;
+			$object_bank->amount = price2num($object->prix);
+			$object_bank->label = 'Vente de Billet N° '.$object->ref;
+			$object_bank->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
+			$object_bank->fk_user_author = $user->id;
+
+			$object_bank->sens = 1;
+
+			$ret = $object_bank->create($user);
+		}
+
+		if ($id > 0)
+		{
+			if (!empty($backtopage))
+			{
+				$backtopage = preg_replace('/--IDFORBACKTOPAGE--/', $object->id, $backtopage); // New method to autoselect project after a New on another form object creation
+				if (preg_match('/\?/', $backtopage)) $backtopage .= '&socid='.$object->id; // Old method
+				header("Location: ".$backtopage);
+				exit;
+			} else {
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
+				exit;
+			}
+		} else {
+			if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+			else setEventMessages($langs->trans($object->error), null, 'errors');
+			$action = "create";
+		}
+	}
+}
+
+// Update a bticket
+if ($action == 'update' && $usercancreate)
+{
+	if (GETPOST('cancel', 'alpha'))
+	{
+		$action = '';
+	} else {
+		if ($object->id > 0)
+		{
+			$object->oldcopy = clone $object;
+
+			$object->ref                    = $ref;
 			$object->fk_travel             	 = GETPOST('fk_travel');
 			$object_travel->fetch($object->fk_travel);
 			$object->fk_ship             	 = $object_travel->fk_ship;
 			$object->fk_classe             	 = GETPOST('fk_classe');
+
 			$object->categorie             	 = GETPOST('categorie');
 
-			$sql_a = 'SELECT DISTINCT au.rowid, au.fk_agence';
-			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
-			$sql_a .= ' WHERE au.fk_user IN ('.$user->id.')';
-			$resql_a = $db->query($sql_a);
-			$obj = $db->fetch_object($resql_a);
+			$object->fk_passenger             	 = GETPOST('fk_passenger');
 
-			$object->fk_agence             	 = $obj->fk_agence;
-
-			if(GETPOST('new_passenger') != 'on'){
-				$object->fk_passenger = GETPOST('fk_passenger');
-			}else{
-				$object_passenger->ref             	 = GETPOST('pref');
-				$object_passenger->civility          = GETPOST('civilite');
-				$object_passenger->type_piece        = GETPOST('type_piece');
-				$object_passenger->nom             	 = GETPOST('nom');
-				$object_passenger->prenom            = GETPOST('prenom');
-				$object_passenger->nationalite       = GETPOST('nationalite');
-				$object_passenger->date_naissance    = GETPOST('date_naissance');
-				$object_passenger->adresse           = GETPOST('adresse');
-				$object_passenger->telephone         = GETPOST('telephone');
-				$object_passenger->email             = GETPOST('email');
-				$object_passenger->accompagne        = GETPOST('accompagne');
-				$object_passenger->status = Passenger::STATUS_VALIDATED;
-
-
-				$customer = new Societe($db);
-
-				$customer->particulier	= 1;
-				$customer->status	= 1;
-
-				$customer->name = dolGetFirstLastname(GETPOST('prenom', 'alphanohtml'), GETPOST('nom', 'alphanohtml'));
-				$customer->civility_id	= GETPOST('civilite', 'alphanohtml'); // Note: civility id is a code, not an int
-
-				// Add non official properties
-				$customer->name_bis = GETPOST('nom', 'alphanohtml');
-				$customer->firstname = GETPOST('prenom', 'alphanohtml');
-
-
-				$customer->entity	  = (GETPOSTISSET('entity') ? GETPOST('entity', 'int') : $conf->entity);
-				$customer->address	  = GETPOST('adresse', 'alphanohtml');
-				$customer->country_id = GETPOST('nationalite', 'int');
-
-				$customer->phone = GETPOST('telephone', 'alpha');
-				$customer->email = trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
-				$customer->code_client	= GETPOSTISSET('customer_code') ? GETPOST('pref', 'alpha') : GETPOST('pref', 'alpha');
-				$customer->typent_code	= dol_getIdFromCode($db, $object->typent_id, 'c_typent', 'id', 'code'); // Force typent_code too so check in verify() will be done on new type
-
-				$customer->client = GETPOST('client', 'int');
-				$customer->commercial_id = $user->id;
-
-				$db->begin();
-
-				if (empty($customer->client))      $customer->code_client = '';
-
-				$result = $customer->create($user);
-
-				$object_passenger->fk_socid = $result;
-
-				$id_passenger = $object_passenger->create($user);
-
-				$object->fk_passenger = $id_passenger;
-			}
+			$object_passenger->ref             	 = GETPOST('pref');
+			$object_passenger->civility          = GETPOST('civilite');
+			$object_passenger->nom             	 = GETPOST('nom');
+			$object_passenger->prenom            = GETPOST('prenom');
+			$object_passenger->nationalite       = GETPOST('nationalite');
+			$object_passenger->date_naissance    = GETPOST('date_naissance');
+			$object_passenger->adresse           = GETPOST('adresse');
+			$object_passenger->telephone         = GETPOST('telephone');
+			$object_passenger->email             = GETPOST('email');
+			$object_passenger->accompagne        = GETPOST('accompagne');
+			$object_passenger->status 			 = Passenger::STATUS_VALIDATED;
 
 			$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
 			$sql_prix .= ' c.date_creation, c.tms as date_update';
@@ -308,7 +427,6 @@ if (empty($reshook))
 			$firstDate  = new DateTime(date('Y-m-d'));
 			$secondDate = new DateTime(GETPOST('date_naissance'));
 			$age = $firstDate->diff($secondDate);
-
 
 			if($age->y >= 15 && $object->categorie == 'A'){
 				$object->prix = $obj_prix->prix_standard;
@@ -330,257 +448,119 @@ if (empty($reshook))
 					$error++;
 					$mesg = 'Age enfant passager renseigne superieur ';
 					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-				}else{
-					$object->fk_passenger_acc = GETPOST('fk_passenger_acc');
 				}
 			}
 
-			$object->status = Bticket::STATUS_APPROVED;
+			$object->fk_valideur = $user->fk_user;
 
-			if (!$error)
+			$object->status = Bticket::STATUS_VALIDATED;
+
+
+			if (!$error && $object->check())
 			{
-				$id = $object->create($user);
-
-				$object_travel->fetch($object->fk_travel);
-
-				if($obj_prix->labelshort == "VIP"){
-					$object_travel->nbre_vip--;
-				}elseif($obj_prix->labelshort == "ECO"){
-					$object_travel->nbre_eco--;
-				}else{
-					$object_travel->nbre_aff--;
-				}
-
-				$object_travel->nbre_place--;
-
-				$object_travel->update($user);
-
-				$object_bank = new PaymentVarious($db);
-				$object_caisse = new AgenceCaisse($db);
-				$object_caisse->fetch($user->id);
-
-				$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
-				$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
-				if (empty($datev)) $datev = $datep;
-
-				$object_bank->ref = ''; // TODO
-				$object_bank->accountid = $object_caisse->fk_account > 0 ? $object_caisse->fk_account : 0;
-				$object_bank->datev = $datev;
-				$object_bank->datep = $datep;
-				$object_bank->amount = price2num($object->prix);
-				$object_bank->label = 'Vente de Billet N° '.$object->ref;
-				$object_bank->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
-				$object_bank->fk_user_author = $user->id;
-
-				$object_bank->sens = 1;
-
-
-				$db->begin();
-
-				$ret = $object_bank->create($user);
-			}
-
-			if ($id > 0)
-			{
-				if (!empty($backtopage))
+				if ($object->update($user) > 0 && $object_passenger->update($user) > 0)
 				{
-					$backtopage = preg_replace('/--IDFORBACKTOPAGE--/', $object->id, $backtopage); // New method to autoselect project after a New on another form object creation
-					if (preg_match('/\?/', $backtopage)) $backtopage .= '&socid='.$object->id; // Old method
-					header("Location: ".$backtopage);
-					exit;
+					$action = 'view';
 				} else {
-					header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
-					exit;
+					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+					else setEventMessages($langs->trans($object->error), null, 'errors');
+					$action = 'edit';
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans($object->error), null, 'errors');
-				$action = "create";
+				else setEventMessages($langs->trans("ErrorBticketBadRefOrLabel"), null, 'errors');
+				$action = 'edit';
 			}
 		}
-	}
-
-	// Update a bticket
-	if ($action == 'update' && $usercancreate)
-	{
-		if (GETPOST('cancel', 'alpha'))
-		{
-			$action = '';
-		} else {
-			if ($object->id > 0)
-			{
-				$object->oldcopy = clone $object;
-
-				$object->ref                    = $ref;
-				$object->fk_travel             	 = GETPOST('fk_travel');
-				$object_travel->fetch($object->fk_travel);
-				$object->fk_ship             	 = $object_travel->fk_ship;
-				$object->fk_classe             	 = GETPOST('fk_classe');
-
-				$object->categorie             	 = GETPOST('categorie');
-
-				$object->fk_passenger             	 = GETPOST('fk_passenger');
-
-				$object_passenger->ref             	 = GETPOST('pref');
-				$object_passenger->civility          = GETPOST('civilite');
-				$object_passenger->nom             	 = GETPOST('nom');
-				$object_passenger->prenom            = GETPOST('prenom');
-				$object_passenger->nationalite       = GETPOST('nationalite');
-				$object_passenger->date_naissance    = GETPOST('date_naissance');
-				$object_passenger->adresse           = GETPOST('adresse');
-				$object_passenger->telephone         = GETPOST('telephone');
-				$object_passenger->email             = GETPOST('email');
-				$object_passenger->accompagne        = GETPOST('accompagne');
-				$object_passenger->status 			 = Passenger::STATUS_VALIDATED;
-
-				$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
-				$sql_prix .= ' c.date_creation, c.tms as date_update';
-				$sql_prix .= ' FROM '.MAIN_DB_PREFIX.'bookticket_classe as c';
-				$sql_prix .= ' WHERE c.entity IN ('.getEntity('classe').')';
-				$sql_prix .= ' AND c.rowid IN ('.$object->fk_classe.')';
-				$resql_prix =$db->query($sql_prix);
-				$obj_prix = $db->fetch_object($resql_prix);
-
-				$firstDate  = new DateTime(date('Y-m-d'));
-				$secondDate = new DateTime(GETPOST('date_naissance'));
-				$age = $firstDate->diff($secondDate);
-
-				if($age->y >= 15 && $object->categorie == 'A'){
-					$object->prix = $obj_prix->prix_standard;
-				}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
-					$object->prix = $obj_prix->prix_enf_por;
-				}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
-					$object->prix = $obj_prix->prix_enf_acc;
-				}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
-					$object->prix = $obj_prix->prix_enf_dvm;
-				}else{
-					$error++;
-					$mesg = 'Age passager renseigne invalide ';
-					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-				}
-
-				if(GETPOST('accompagne') == 'on'){
-
-					if($age > 13){
-						$error++;
-						$mesg = 'Age enfant passager renseigne superieur ';
-						setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-					}
-				}
-
-				$object->fk_valideur = $user->fk_user;
-
-				$object->status = Bticket::STATUS_VALIDATED;
-
-
-				if (!$error && $object->check())
-				{
-					if ($object->update($user) > 0 && $object_passenger->update($user) > 0)
-					{
-						$action = 'view';
-					} else {
-						if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-						else setEventMessages($langs->trans($object->error), null, 'errors');
-						$action = 'edit';
-					}
-				} else {
-					if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-					else setEventMessages($langs->trans("ErrorBticketBadRefOrLabel"), null, 'errors');
-					$action = 'edit';
-				}
-			}
-		}
-	}
-
-	//Approve
-	if($action == 'valid' && $usercancreate){
-
-		$object->fetch($id);
-
-		// If status is waiting approval and approver is also user
-		if ($object->status == Bticket::STATUS_VALIDATED && $user->id == $object->fk_valideur)
-		{
-			$object->status = Bticket::STATUS_APPROVED;
-
-			$db->begin();
-
-			$verif = $object->approve($user);
-			if ($verif <= 0)
-			{
-				setEventMessages($object->error, $object->errors, 'errors');
-				$error++;
-			}
-
-			if (!$error)
-			{
-				$db->commit();
-
-			   	header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
-			   	exit;
-			} else {
-				$db->rollback();
-				$action = '';
-			}
-		}
-	}
-
-	//Refuse
-	if($action == 'refuse' && $usercancreate){
-
-		$object->fetch($id);
-
-		// If status is waiting refuse and refuser is also user
-		if ($object->status == Bticket::STATUS_VALIDATED && $user->id == $object->fk_valideur)
-		{
-			$object->status = Bticket::STATUS_REFUSED;
-
-			$db->begin();
-
-			$verif = $object->refuse($user);
-			if ($verif <= 0)
-			{
-				setEventMessages($object->error, $object->errors, 'errors');
-				$error++;
-			}
-
-			if (!$error)
-			{
-				$db->commit();
-
-			   	header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
-			   	exit;
-			} else {
-				$db->rollback();
-				$action = '';
-			}
-		}
-	}
-
-	// Delete a bticket
-	//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'delete' && $usercandelete)
-	{
-		$result = $object->delete($user);
-
-		if ($result > 0)
-		{
-			header('Location: '.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?type='.$object->type.'&delbticket='.urlencode($object->ref));
-			exit;
-		} else {
-			setEventMessages($langs->trans($object->error), null, 'errors');
-			$reload = 0;
-			$action = '';
-		}
-	}
-
-
-	// Add bticket into object
-	if ($object->id > 0 && $action == 'addin')
-	{
-		$thirpdartyid = 0;
 	}
 }
 
+//Approve
+if($action == 'valid' && $usercancreate){
+
+	$object->fetch($id);
+
+	// If status is waiting approval and approver is also user
+	if ($object->status == Bticket::STATUS_VALIDATED && $user->id == $object->fk_valideur)
+	{
+		$object->status = Bticket::STATUS_APPROVED;
+
+		$db->begin();
+
+		$verif = $object->approve($user);
+		if ($verif <= 0)
+		{
+			setEventMessages($object->error, $object->errors, 'errors');
+			$error++;
+		}
+
+		if (!$error)
+		{
+			$db->commit();
+
+			header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
+			exit;
+		} else {
+			$db->rollback();
+			$action = '';
+		}
+	}
+}
+
+//Refuse
+if($action == 'refuse' && $usercancreate){
+
+	$object->fetch($id);
+
+	// If status is waiting refuse and refuser is also user
+	if ($object->status == Bticket::STATUS_VALIDATED && $user->id == $object->fk_valideur)
+	{
+		$object->status = Bticket::STATUS_REFUSED;
+
+		$db->begin();
+
+		$verif = $object->refuse($user);
+		if ($verif <= 0)
+		{
+			setEventMessages($object->error, $object->errors, 'errors');
+			$error++;
+		}
+
+		if (!$error)
+		{
+			$db->commit();
+
+			header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
+			exit;
+		} else {
+			$db->rollback();
+			$action = '';
+		}
+	}
+}
+
+// Delete a bticket
+//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
+if ($action == 'delete' && $usercandelete)
+{
+	$result = $object->delete($user);
+
+	if ($result > 0)
+	{
+		header('Location: '.DOL_URL_ROOT.'/custom/bookticket/bticket_list.php?type='.$object->type.'&delbticket='.urlencode($object->ref));
+		exit;
+	} else {
+		setEventMessages($langs->trans($object->error), null, 'errors');
+		$reload = 0;
+		$action = '';
+	}
+}
+
+// Add bticket into object
+if ($object->id > 0 && $action == 'addin')
+{
+	$thirpdartyid = 0;
+}
 
 /*
  * View
