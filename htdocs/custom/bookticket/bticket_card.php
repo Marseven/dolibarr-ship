@@ -322,6 +322,7 @@ if ($action == 'add' && $usercancreate)
 		}
 
 		$object->status = Bticket::STATUS_APPROVED;
+		die('ici');
 
 		if (!$error)
 		{
@@ -341,7 +342,7 @@ if ($action == 'add' && $usercancreate)
 
 			$object_travel->update($user);
 
-			die('ici');
+
 			$object_payment = new PaymentVarious($db);
 
 			$object_caisse = new AgenceCaisse($db);
