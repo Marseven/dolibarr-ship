@@ -349,7 +349,7 @@ if (empty($reshook))
 			}else{
 				$object_passenger->ref             	 = GETPOST('pref');
 				$object_passenger->civility          = GETPOST('civilite');
-				$object_passenger->type_piece        = GETPOST('civilite');
+				$object_passenger->type_piece        = GETPOST('type_piece');
 				$object_passenger->nom             	 = GETPOST('nom');
 				$object_passenger->prenom            = GETPOST('prenom');
 				$object_passenger->nationalite       = GETPOST('nationalite');
@@ -521,16 +521,16 @@ if (empty($reshook))
 				$object->fk_passenger             	 = GETPOST('fk_passenger');
 
 				$object_passenger->ref             	 = GETPOST('pref');
-				$object_passenger->civility             	 = GETPOST('civilite');
+				$object_passenger->civility          = GETPOST('civilite');
 				$object_passenger->nom             	 = GETPOST('nom');
-				$object_passenger->prenom             	 = GETPOST('prenom');
+				$object_passenger->prenom            = GETPOST('prenom');
 				$object_passenger->nationalite       = GETPOST('nationalite');
-				$object_passenger->date_naissance             	 = GETPOST('date_naissance');
-				$object_passenger->adresse             	 = GETPOST('adresse');
-				$object_passenger->telephone             	 = GETPOST('telephone');
-				$object_passenger->email             	 = GETPOST('email');
-				$object_passenger->accompagne             	 = GETPOST('accompagne');
-				$object_passenger->status = Passenger::STATUS_VALIDATED;
+				$object_passenger->date_naissance    = GETPOST('date_naissance');
+				$object_passenger->adresse           = GETPOST('adresse');
+				$object_passenger->telephone         = GETPOST('telephone');
+				$object_passenger->email             = GETPOST('email');
+				$object_passenger->accompagne        = GETPOST('accompagne');
+				$object_passenger->status 			 = Passenger::STATUS_VALIDATED;
 
 				$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
 				$sql_prix .= ' c.date_creation, c.tms as date_update';
@@ -887,7 +887,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print "</td></tr>";
 
 			//travel
-			if($travel) print '<input type="hidden" name="fk_travel" class="maxwidth300" value="'.$travel.'">';
+			print '<tr><input type="hidden" name="fk_travel" value="'.$travel.'"></tr>';
 
 
 			// categorie
@@ -1143,7 +1143,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 
 			//travel
-			print '<input type="hidden" name="fk_travel" class="maxwidth300" value="'.$object->fk_travel.'">';
+			print '<tr><input type="hidden" name="fk_travel" value="'.$object->fk_travel.'"></tr>';
 
 			// categorie
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("CategorieBillet").'</td>';
@@ -1529,34 +1529,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 $tmpcode = '';
 
-/*$formconfirm = '';
-
-// Confirm delete bticket
-if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeleteBTicket"), $langs->trans("ConfirmDeleteTicket"), "confirm_delete", '', 0, "action-delete");
-}
-
-// Clone confirmation
-if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))		// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	// Define confirmation messages
-	$formquestionclone = array(
-		'text' => $langs->trans("ConfirmClone"),
-		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentTicket"), 'value' => 1),
-	);
-
-
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneTicket', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
-}
-
-
-// Print form confirm
-print $formconfirm;*/
-
 // Si validation de la demande
 if ($action == 'valid')
 {
@@ -1582,15 +1554,6 @@ if ($action != 'create' && $action != 'edit')
 
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
-			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
-			{
-				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
-				{
-					print '<span id="action-clone" class="butAction">'.$langs->trans('ToClone').'</span>'."\n";
-				} else {
-					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
-				}
-			}*/
 		}
 
 		if ($usercancreate && $object->status == Bticket::STATUS_APPROVED)		// If draft
