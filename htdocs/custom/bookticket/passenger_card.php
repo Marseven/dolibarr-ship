@@ -205,69 +205,6 @@ if ($action == 'update' && $usercancreate)
 	}
 }
 
-/* Action clone object
-if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-{
-	if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-	{
-		setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-	} else {
-		$db->begin();
-
-		$originalId = $id;
-		if ($object->id > 0)
-		{
-			$object->ref = GETPOST('clone_ref', 'alphanohtml');
-			$object->id = null;
-
-			if ($object->check())
-			{
-				$object->context['createfromclone'] = 'createfromclone';
-				$id = $object->create($user);
-				if ($id > 0)
-				{
-
-					$db->commit();
-					$db->close();
-
-					header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-					exit;
-				} else {
-					$id = $originalId;
-
-					if ($object->error == 'ErrorpassengerAlreadyExists')
-					{
-						$db->rollback();
-
-						$refalreadyexists++;
-						$action = "";
-
-						$mesg = $langs->trans("ErrorpassengerAlreadyExists", $object->ref);
-						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-						setEventMessages($mesg, null, 'errors');
-						$object->fetch($id);
-					} else {
-						$db->rollback();
-						if (count($object->errors))
-						{
-							setEventMessages($object->error, $object->errors, 'errors');
-							dol_print_error($db, $object->errors);
-						} else {
-							setEventMessages($langs->trans($object->error), null, 'errors');
-							dol_print_error($db, $object->error);
-						}
-					}
-				}
-
-				unset($object->context['createfromclone']);
-			}
-		} else {
-			$db->rollback();
-			dol_print_error($db, $object->error);
-		}
-	}
-}*/
 
 // Delete a passenger
 //if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
@@ -378,7 +315,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'"> ANS';
+			print '<td><input name="date_naissance" type="date" class="maxwidth50" value="'.$object->date_naissance.'">';
 			print '</td></tr>';
 
 			// adresse
@@ -401,14 +338,28 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == "on" ? 'checked' : '').'>';
 			print '</td></tr>';
 
-			// nom_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
-			print '</td></tr>';
+			// passenger
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
+			if (empty($passengerrecords))
+			{
+				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($passengerrecords as $lines)
+				{
+					$passenger .= '<option value="';
+					$passenger .= $lines->rowid;
+					$passenger .= '"';
+					$passenger .= '>';
+					$passenger .= $langs->trans($lines->nom).' '. $langs->trans($lines->prenom);
+					$passenger .= '</option>';
+				}
+			}
 
-			// age_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'"> ANS';
+			$passenger .= '</select>';
+
+			print $passenger;
+
 			print '</td></tr>';
 
 
@@ -473,8 +424,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// age
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
-			print '<td><input name="age" type="number" class="maxwidth50" value="'.$object->age.'"> ANS';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateNaissance").'</td>';
+			print '<td><input name="date_naissance" type="date" class="maxwidth50" value="'.$object->date_naissance.'">';
 			print '</td></tr>';
 
 			// adresse
@@ -496,15 +447,30 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
 			print '<td><input type="checkbox" name="accompagne"'.($object->accompagne == "on" ? 'checked' : '').'>';
 			print '</td></tr>';
-
-			// nom_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomEnfant").'</td>';
-			print '<td><input name="nom_enfant" class="maxwidth300" value="'.$object->nom_enfant.'">';
 			print '</td></tr>';
 
-			// age_enfant
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("AgeEnfant").'</td>';
-			print '<td><input name="age_enfant" type="number" class="maxwidth50" value="'.$object->age_enfant.'"> ANS';
+			// passenger
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
+			if (empty($passengerrecords))
+			{
+				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($passengerrecords as $lines)
+				{
+					$passenger .= '<option value="';
+					$passenger .= $lines->rowid;
+					$passenger .= '"';
+					$passenger .= '>';
+					$passenger .= $langs->trans($lines->nom).' '. $langs->trans($lines->prenom);
+					$passenger .= '</option>';
+				}
+			}
+
+			$passenger .= '</select>';
+
+			print $passenger;
+
 			print '</td></tr>';
 
 			print '</table>';
@@ -522,9 +488,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
-			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
-
 			$sql_a = 'SELECT DISTINCT ct.label as nationalite';
 			$sql_a .= ' FROM '.MAIN_DB_PREFIX.'c_country as ct';
 			$sql_a .= ' WHERE ct.rowid IN ('.$object->nationalite.')';
@@ -550,6 +513,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 				print '<table class="border tableforfield centpercent">';
 				print '<tbody>';
+
+				// Type_piece
+				print '<tr>';
+				print '<td class="titlefield">'.$langs->trans("TypePiece").'</td>';
+				print '<td>';
+				print $object->type_piece;
+				print '</td></tr>';
 
 				// ref
 				print '<tr>';
@@ -579,11 +549,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $obj->nationalite;
 				print '</td></tr>';
 
-				// age
+				// date_naissance
 				print '<tr>';
-				print '<td class="titlefield">'.$langs->trans("Age").'</td>';
+				print '<td class="titlefield">'.$langs->trans("DateNaissance").'</td>';
 				print '<td>';
-				print $object->age.' ANS';
+				print dol_print_date($object->date_naissance, 'day', 'tzuser');
 				print '</td></tr>';
 
 				// telephone
@@ -613,27 +583,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</td>';
 				print '</tr>';
 
-				// nom_enfant
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('NomEnfnatHelp');
-				print $form->textwithpicto($langs->trans('NomEnfant'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->nom_enfant;
-				print '</td>';
-				print '</tr>';
 
-				// age_enfant
-				print '<tr>';
-				print '<td>';
-				$htmlhelp = $langs->trans('AgeEnfantHelp');
-				print $form->textwithpicto($langs->trans('AgeEnfant'), $htmlhelp);
-				print '</td>';
-				print '<td>';
-				print $object->age_enfant.' ANS';
-				print '</td>';
-				print '</tr>';
 
 				// Other attributes
 				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';

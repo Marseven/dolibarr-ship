@@ -467,7 +467,8 @@ if (empty($reshook))
 
 				$object->ref                    = $ref;
 				$object->fk_travel             	 = GETPOST('fk_travel');
-				$object->fk_ship             	 = GETPOST('fk_ship');
+				$object_travel->fetch($object->fk_travel);
+				$object->fk_ship             	 = $object_travel->fk_ship;
 				$object->fk_classe             	 = GETPOST('fk_classe');
 
 				$object->categorie             	 = GETPOST('categorie');
@@ -1121,11 +1122,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 
-			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
-
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, t.categorie, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -1158,56 +1155,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<table class="border tableforfield centpercent">';
 			print '<tbody>';
-
-			if ($showbarcode)
-			{
-				// Barcode type
-				print '<tr><td class="nowrap">';
-				print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-				print $langs->trans("BarcodeType");
-				print '</td>';
-				if (($action != 'editbarcodetype') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcodetype&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
-				print '</tr></table>';
-				print '</td><td colspan="2">';
-				if ($action == 'editbarcodetype' || $action == 'editbarcode')
-				{
-					require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
-					$formbarcode = new FormBarCode($db);
-				}
-				if ($action == 'editbarcodetype')
-				{
-					print $formbarcode->formBarcodeType($_SERVER['PHP_SELF'].'?id='.$object->id, $object->barcode_type, 'fk_barcode_type');
-				} else {
-					$object->fetch_barcode();
-					print $object->barcode_type_label ? $object->barcode_type_label : ($object->barcode ? '<div class="warning">'.$langs->trans("SetDefaultBarcodeType").'<div>' : '');
-				}
-				print '</td></tr>'."\n";
-
-				// Barcode value
-				print '<tr><td class="nowrap">';
-				print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-				print $langs->trans("BarcodeValue");
-				print '</td>';
-				if (($action != 'editbarcode') && $usercancreate && $createbarcode) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editbarcode&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
-				print '</tr></table>';
-				print '</td><td colspan="2">';
-				if ($action == 'editbarcode')
-				{
-					$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-					if (empty($tmpcode) && !empty($modBarCodeTicket->code_auto)) $tmpcode = $modBarCodeTicket->getNextValue($object);
-
-					print '<form method="post" action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'">';
-					print '<input type="hidden" name="token" value="'.newToken().'">';
-					print '<input type="hidden" name="action" value="setbarcode">';
-					print '<input type="hidden" name="barcode_type_code" value="'.$object->barcode_type_code.'">';
-					print '<input size="40" class="maxwidthonsmartphone" type="text" name="barcode" value="'.$tmpcode.'">';
-					print '&nbsp;<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
-					print '</form>';
-				} else {
-					print $obj->barcode;
-				}
-				print '</td></tr>'."\n";
-			}
 
 			// Ref
 			print '<tr>';
