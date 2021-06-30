@@ -177,9 +177,7 @@ if($usercancreate && $type == 'bticket'){
 	$prix = 0;
 
 	$firstDate  = new DateTime(date('Y-m-d'));
-	var_dump($object_passenger->date_naissance);
-	die;
-	$secondDate = new DateTime($object_passenger->date_naissance);
+	$secondDate = new DateTime(date('Y-m-d', $object_passenger->date_naissance));
 	$age = $firstDate->diff($secondDate);
 
 	if($age->y >= 15 && $obj->categorie == 'A'){
