@@ -175,7 +175,7 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addCadrePrice();
 	$prix = 0;
-
+	die;
 	$firstDate  = new DateTime(date('Y-m-d'));
 	$secondDate = new DateTime($object_passenger->date_naissance);
 	$age = $firstDate->diff($secondDate);
@@ -190,7 +190,7 @@ if($usercancreate && $type == 'bticket'){
 	}elseif(($age->y < 15 && $age->y >= 6) && $obj->categorie == 'D'){
 		$prix = $obj->prix_enf_dvm;
 	}
-	die;
+
 	$pdf->addPrice($prix, 0, $penalites, $obj->prix);
 
 	$pdf->addCondition(utf8_decode("CONDITIONS GÉNÉRALES DE TRANSPORT
