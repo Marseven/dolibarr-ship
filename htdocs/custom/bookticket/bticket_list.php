@@ -58,7 +58,6 @@ $toselect = GETPOST('toselect', 'array');
 
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_ref = GETPOST("search_ref", 'alpha');
-$search_barcode = GETPOST("search_barcode", 'alpha');
 $search_passenger = GETPOST("search_passenger", 'alpha');
 $search_type = GETPOST("search_type", 'int');
 $search_finished = GETPOST("search_finished", 'int');
@@ -113,7 +112,6 @@ if (!empty($conf->barcode->enabled)) {
 // Definition of fields for lists
 $arrayfields = array(
 	't.ref'=>array('label'=>$langs->trans("Ref"), 'checked'=>1),
-	't.barcode'=>array('label'=>$langs->trans("Gencod"), 'checked'=>1, 'position'=>12),
 	't.travel'=>array('label'=>$langs->trans('Travel'), 'checked'=>1, 'position'=>20),
 	't.ship'=>array('label'=>$langs->trans("Ship"), 'checked'=>1, 'position'=>52),
 	't.classe'=>array('label'=>$langs->trans('Classe'), 'checked'=>1, 'position'=>20),
@@ -177,7 +175,7 @@ $title = $langs->trans("BTickets");
 $texte = $langs->trans("BTickets");
 
 
-$sql = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, p.nom as passenger, p.prenom as prenom,  c.label as classe, tr.ref as travel, t.entity, fk_passenger';
+$sql = 'SELECT DISTINCT t.rowid, t.ref, s.label as ship, p.nom as passenger, p.prenom as prenom,  c.label as classe, tr.ref as travel, t.entity, fk_passenger';
 $sql .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -187,7 +185,6 @@ $sql .= ' WHERE t.entity IN ('.getEntity('ticket').')';
 
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
 if ($search_passenger)   $sql .= natural_search('passenger', $search_passenger);
-if ($search_barcode) $sql .= natural_search('t.barcode', $search_barcode);
 $sql .= $db->order($sortfield, $sortorder);
 
 $nbtotalofrecords = '';
@@ -236,7 +233,6 @@ if ($resql)
 	if ($limit > 0 && $limit != $conf->liste_limit) $param .= '&limit='.urlencode($limit);
 	if ($sall) $param .= "&sall=".urlencode($sall);
 	if ($search_ref) $param = "&search_ref=".urlencode($search_ref);
-	if ($search_barcode) $param .= ($search_barcode ? "&search_barcode=".urlencode($search_barcode) : "");
 	if ($search_passenger) $param .= "&search_passenger=".urlencode($search_passenger);
 	if ($search_finished) $param = "&search_finished=".urlencode($search_finished);
 
@@ -309,14 +305,6 @@ if ($resql)
 		print '</td>';
 	}
 
-	// Barcode
-	if (!empty($arrayfields['t.barcode']['checked']))
-	{
-		print '<td class="liste_titre">';
-		print '<input class="flat" type="text" name="search_barcode" size="6" value="'.dol_escape_htmltag($search_barcode).'">';
-		print '</td>';
-	}
-
 	// travel
 	if (!empty($arrayfields['t.travel']['checked']))
 	{
@@ -364,9 +352,7 @@ if ($resql)
 	if (!empty($arrayfields['passenger']['checked'])) {
 		print_liste_field_titre($arrayfields['passenger']['label'], $_SERVER["PHP_SELF"], "passenger", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['t.barcode']['checked'])) {
-		print_liste_field_titre($arrayfields['t.barcode']['label'], $_SERVER["PHP_SELF"], "t.barcode", "", $param, "", $sortfield, $sortorder);
-	}
+
 	if (!empty($arrayfields['t.travel']['checked'])) {
 		print_liste_field_titre($arrayfields['t.travel']['label'], $_SERVER["PHP_SELF"], "t.travel", "", $param, '', $sortfield, $sortorder, 'center ');
 	}
@@ -412,13 +398,6 @@ if ($resql)
 		if (!empty($arrayfields['passenger']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.dol_buildpath('/bookticket/passenger_card.php', 1).'?id='.$obj->fk_passenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
-			if (!$i) $totalarray['nbfield']++;
-		}
-
-		// Barcode
-		if (!empty($arrayfields['t.barcode']['checked']))
-		{
-			print '<td>'.$obj->barcode.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
