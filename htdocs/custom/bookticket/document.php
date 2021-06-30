@@ -76,7 +76,7 @@ if($usercancreate && $type == 'bticket'){
 	$object_passenger = new Passenger($db);
 	$object_passenger->fetch($object->fk_passenger);
 
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.barcode, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, t.prix as prix, c.prix_standard as prix_standard, c.prix_enfant as prix_enfant, c.prix_enf_stand as prix_enf_stand, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity, t.date_creation';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, t.prix as prix, c.prix_standard as prix_standard, c.prix_enf_por as prix_enf_por, c.prix_enf_acc as prix_enf_acc, c.prix_enf_dvm as prix_enf_dvm, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity, t.date_creation';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -175,13 +175,22 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addCadrePrice();
 	$prix = 0;
-	if($object_passenger->accompagne == "on" && $object_passenger->age > 13){
-		$prix = $obj->prix_enf_stand;
-	}elseif($object_passenger->accompagne != "on" && $object_passenger->age <= 13){
-		$prix = $obj->prix_enfant;
-	}else{
+
+	$firstDate  = new DateTime(date('Y-m-d'));
+	$secondDate = new DateTime($object_passenger->date_naissance);
+	$age = $firstDate->diff($secondDate);
+
+
+	if($age->y >= 15 && $obj->categorie == 'A'){
 		$prix = $obj->prix_standard;
+	}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+		$prix = $obj->prix_enf_por;
+	}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
+		$prix = $obj->prix_enf_acc;
+	}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
+		$prix = $obj->prix_enf_dvm;
 	}
+
 	$pdf->addPrice($prix, 0, $penalites, $obj->prix);
 
 	$pdf->addCondition(utf8_decode("CONDITIONS GÉNÉRALES DE TRANSPORT
