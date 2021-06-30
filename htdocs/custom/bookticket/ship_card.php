@@ -140,7 +140,7 @@ if ($action == 'add' && $usercancreate)
 		$object->ref                   = $ref;
 		$object->label                 = GETPOST('label', $label_security_check);
 		$object->labelshort             = GETPOST('labelshort');
-		$object->nbre_place             = GETPOST('nbre_place');
+		$object->nbre_place             = GETPOST('nbre_vip') + GETPOST('nbre_eco') + GETPOST('nbre_aff');
 		$object->nbre_vip             	 = GETPOST('nbre_vip');
 		$object->nbre_aff             	 = GETPOST('nbre_aff');
 		$object->nbre_eco             	 = GETPOST('nbre_eco');
@@ -186,7 +186,7 @@ if ($action == 'update' && $usercancreate)
 			$object->ref                    = $ref;
 			$object->label                  = GETPOST('label', $label_security_check);
 			$object->labelshort             = GETPOST('labelshort');
-			$object->nbre_place             = GETPOST('nbre_place');
+			$object->nbre_place             = GETPOST('nbre_vip') + GETPOST('nbre_eco') + GETPOST('nbre_aff');
 			$object->nbre_vip             	 = GETPOST('nbre_vip');
 			$object->nbre_aff             	 = GETPOST('nbre_aff');
 			$object->nbre_eco             	 = GETPOST('nbre_eco');
@@ -420,11 +420,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 		print '<table class="border centpercent">';
 
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'"> Place(s)';
-			print '</td></tr>';
-
 			// Nbre_vip
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
 			print '<td><input name="nbre_vip" class="maxwidth50" value="'.$object->nbre_vip.'"> Place(s)';
@@ -496,11 +491,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Labelshort
 			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'"></td></tr>';
-
-			// Nbre_place
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbrePlace").'</td>';
-			print '<td><input name="nbre_place" class="maxwidth50" value="'.$object->nbre_place.'"> Place(s)';
-			print '</td></tr>';
 
 			// Nbre_vip
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NbreVip").'</td>';
