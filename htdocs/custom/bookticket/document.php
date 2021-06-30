@@ -76,6 +76,12 @@ if($usercancreate && $type == 'bticket'){
 	$object_passenger = new Passenger($db);
 	$object_passenger->fetch($object->fk_passenger);
 
+	if($object_passenger->accompagne == "on"){
+		$object_accompgneur = new Passenger($db);
+		$object_accompgneur->fetch($object->fk_passenger_acc);
+	}
+
+
 	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, s.label as ship, tr.lieu_depart as de, tr.lieu_arrive as vers,  c.labelshort as classe, c.kilo_bagage as kilo, t.prix as prix, c.prix_standard as prix_standard, c.prix_enf_por as prix_enf_por, c.prix_enf_acc as prix_enf_acc, c.prix_enf_dvm as prix_enf_dvm, tr.jour as jour, tr.heure as heure, tr.ref as travel, a.label as agence, t.entity, t.date_creation';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
@@ -167,7 +173,7 @@ if($usercancreate && $type == 'bticket'){
 					"De"     	=> $obj->de,
 					"Vers" 	 	=> $obj->vers,
 					"Classe"    => $obj->classe,
-					"Details"   => $object_passenger->accompagne == "on" ? "Accompagné" : "",
+					"Details"   => $object_passenger->accompagne == "on" ? "Accompagné par ".$object_accompgneur->nom." ".$object_accompgneur->prenom : "",
 					"Bg"   	    => $obj->kilo." Kg",
 					"St"    	=> $object->status == 2 ? "C" : "R"  );
 	$size = $pdf->addLine( $y, $line );
