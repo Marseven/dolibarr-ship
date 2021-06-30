@@ -344,9 +344,9 @@ if ($action == 'add' && $usercancreate)
 
 			$object_payment = new PaymentVarious($db);
 
-			$sql_ac = 'SELECT DISTINCT ac.rowid, ac.fk_caisse';
+			$sql_ac = 'SELECT ac.rowid, ac.fk_caisse';
 			$sql_ac .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
-			$sql_ac .= ' WHERE au.fk_user IN ('.$user->id.')';
+			$sql_ac .= ' WHERE ac.fk_user IN ('.$user->id.')';
 			$resql_ac = $db->query($sql_ac);
 			$object_caisse = $db->fetch_object($resql_ac);
 
