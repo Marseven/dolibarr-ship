@@ -361,7 +361,7 @@ if ($action == 'add' && $usercancreate)
 			$object_payment->datev = $datev;
 			$object_payment->datep = $datep;
 			$object_payment->amount = price2num($object->prix);
-			$object_payment->label = 'Vente de Billet N° '.$object->ref;
+			$object_payment->label = 'Vente du Billet N° '.$object->ref;
 			$object_payment->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
 			$object_payment->fk_user_author = $user->id;
 			$object_payment->sens = 1;

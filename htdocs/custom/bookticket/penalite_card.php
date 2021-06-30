@@ -322,30 +322,36 @@ if ($action == 'add' && $usercancreate)
 
 			$object_travel->update($user);
 
-			$object_bank = new PaymentVarious($db);
-			$object_caisse = new AgenceCaisse($db);
-			$object_caisse->fetch($user->id);
+
+			$prix = $object->prix_ce + $object->prix_c + $object->prix_n + $object->prix_bp + $object->prix_da + $object->prix_db;
+			$object_payment = new PaymentVarious($db);
+
+			$sql_ac = 'SELECT ac.rowid, ac.fk_caisse';
+			$sql_ac .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
+			$sql_ac .= ' WHERE ac.fk_agence IN ('.$object_bticket->fk_agence.')';
+			$resql_ac = $db->query($sql_ac);
+			$object_caisse = $db->fetch_object($resql_ac);
 
 			$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
 			$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
-			$prix = $object->prix_ce + $object->prix_c + $object->prix_n + $object->prix_bp + $object->prix_da + $object->prix_db;
+
 			if (empty($datev)) $datev = $datep;
 
-			$object_bank->ref = ''; // TODO
-			$object_bank->accountid = $object_caisse->fk_account > 0 ? $object_caisse->fk_account : 0;
-			$object_bank->datev = $datev;
-			$object_bank->datep = $datep;
-			$object_bank->amount = price2num($prix);
-			$object_bank->label = 'Pénalité sur le Billet N° '.$object_bticket->ref;
-			$object_bank->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
-			$object_bank->fk_user_author = $user->id;
-
-			$object_bank->sens = 1;
-
-
+			$object_payment->ref = '';
+			$object_payment->fk_account = $object_caisse->fk_caisse;
+			$object_payment->accountid = $object_caisse->fk_caisse;
+			$object_payment->datev = $datev;
+			$object_payment->datep = $datep;
+			$object_payment->amount = price2num($prix);
+			$object_payment->label = 'Pénalité sur le Billet N° '.$object->ref;
+			$object_payment->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
+			$object_payment->fk_user_author = $user->id;
+			$object_payment->sens = 1;
+			$object_payment->accountancy_code = "DVM-PE";
+			$object_payment->subledger_account = $object->ref;
 			$db->begin();
-
-			$ret = $object_bank->create($user);
+			$ret = $object_payment->create($user);
+			$db->commit();
 		}
 
 		if ($id > 0)
