@@ -606,7 +606,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbrePlaceReserve'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_place." / ".$object_travel->nbre_place;
+				print $object->nbre_place." / ".($object_travel->nbre_place +$object->nbre_place);
 				print '</td>';
 				print '</tr>';
 
@@ -618,7 +618,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbreVipReserve'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_vip." / ".$object_travel->nbre_vip;
+				print $object->nbre_vip." / ".($object_travel->nbre_vip + $object->nbre_vip);
 				print '</td>';
 				print '</tr>';
 
@@ -630,7 +630,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbreAffReserve'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_aff." / ".$object_travel->nbre_aff;
+				print $object->nbre_aff." / ".($object_travel->nbre_aff+$object->nbre_aff);
 				print '</td>';
 				print '</tr>';
 
@@ -642,7 +642,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbreEcoReserve'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_eco." / ".$object_travel->nbre_eco;
+				print $object->nbre_eco." / ".($object_travel->nbre_aff+$object->nbre_aff);
 				print '</td>';
 				print '</tr>';
 
