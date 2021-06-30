@@ -175,12 +175,12 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addCadrePrice();
 	$prix = 0;
-	die;
+
 	$firstDate  = new DateTime(date('Y-m-d'));
 	$secondDate = new DateTime($object_passenger->date_naissance);
 	$age = $firstDate->diff($secondDate);
 
-
+	die;
 	if($age->y >= 15 && $obj->categorie == 'A'){
 		$prix = $obj->prix_standard;
 	}elseif(($age->y <= 5 && $age->y >= 0) && $obj->categorie == 'B'){
