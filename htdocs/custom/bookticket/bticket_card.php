@@ -266,8 +266,8 @@ if ($action == 'add' && $usercancreate)
 
 			$customer->phone = GETPOST('telephone', 'alpha');
 			$customer->email = trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
-			$customer->code_client	= GETPOSTISSET('customer_code') ? GETPOST('pref', 'alpha') : GETPOST('pref', 'alpha');
-			$customer->typent_code	= 'TE_PRIVATE'; // Force typent_code too so check in verify() will be done on new type
+			$customer->code_client	=GETPOST('pref');
+			$customer->typent_code	= 'TE_PRIVATE';
 
 			$customer->client = '';
 			$customer->commercial_id = $user->id;
@@ -322,7 +322,6 @@ if ($action == 'add' && $usercancreate)
 		}
 
 		$object->status = Bticket::STATUS_APPROVED;
-		die('ici');
 
 		if (!$error)
 		{
@@ -348,12 +347,6 @@ if ($action == 'add' && $usercancreate)
 			$object_caisse = new AgenceCaisse($db);
 			$object_caisse->fetch($user->id);
 
-			$sql_bank = 'SELECT b.rowid, b.fk_account';
-			$sql_bank .= ' FROM '.MAIN_DB_PREFIX.'bank as b';
-			$sql_bank .= ' WHERE b.fk_account IN ('.$object_caisse->fk_account.')';
-			$resql_bank =$db->query($sql_bank);
-			$obj_bank = $db->fetch_object($resql_bank);
-
 			$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
 			$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
 
@@ -368,9 +361,9 @@ if ($action == 'add' && $usercancreate)
 			$object_payment->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
 			$object_payment->fk_user_author = $user->id;
 			$object_payment->sens = 1;
-			$db->begin();
+			$object_payment->accountancy_code = "DVM-BL";
+			$object_payment->subledger_account = $object->ref;
 			$ret = $object_payment->create($user);
-			$db->commit();
 		}
 
 		if ($id > 0)
