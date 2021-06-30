@@ -121,38 +121,9 @@ $usercanread = $user->rights->bookticket->bticket->read;
 $usercancreate = $user->rights->bookticket->bticket->write;
 $usercandelete = $user->rights->bookticket->bticket->delete;
 
-$createbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->creer_advance)) $createbarcode = 0;
-
 $parameters = array('id'=>$id, 'ref'=>$ref, 'objcanvas'=>$objcanvas);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
-
-$shiprecords = [];
-$sql_ship = "SELECT s.rowid, s.ref, s.label, s.labelshort,  s.nbre_place, s.nbre_vip, s.nbre_aff, s.nbre_eco,";
-$sql_ship .= " s.entity";
-$sql_ship .= " FROM ".MAIN_DB_PREFIX."bookticket_ship as s";
-$sql_ship .= ' WHERE s.entity IN ('.getEntity('ship').')';
-$sql_ship .= ' AND s.status = 2';
-
-$resql_ship =$db->query($sql_ship);
-if ($resql_ship)
-{
-	$num = $db->num_rows($resql_ship);
-	$i = 0;
-	if ($num)
-	{
-		while ($i < $num)
-		{
-			$obj = $db->fetch_object($resql_ship);
-			if ($obj)
-			{
-				$shiprecords[$i] = $obj;
-			}
-			$i++;
-		}
-	}
-}
 
 $classerecords = [];
 $sql_classe = 'SELECT c.rowid, c.label, c.labelshort, c.entity,';
@@ -179,30 +150,6 @@ if ($resql_classe)
 	}
 }
 
-$agencerecords = [];
-$sql_agence = 'SELECT a.rowid, a.label, a.labelshort, a.ville, a.entity,';
-$sql_agence .= ' a.date_creation, a.tms as date_update';
-$sql_agence .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence as a';
-$sql_agence .= ' WHERE a.entity IN ('.getEntity('agence').')';
-$sql_agence .= ' AND a.status = 2';
-$resql_agence =$db->query($sql_agence);
-if ($resql_agence)
-{
-	$num = $db->num_rows($resql_agence);
-	$i = 0;
-	if ($num)
-	{
-		while ($i < $num)
-		{
-			$obj = $db->fetch_object($resql_agence);
-			if ($obj)
-			{
-				$agencerecords[$i] = $obj;
-			}
-			$i++;
-		}
-	}
-}
 
 $travelrecords = [];
 $sql_travel = 'SELECT t.rowid, t.ref, t.jour, t.heure, t.lieu_depart, t.lieu_arrive, t.fk_ship, t.entity,';
@@ -261,7 +208,6 @@ if (empty($reshook))
 	$upload_dir = $conf->bookticket->dir_output;
 	$permissiontoadd = $usercancreate;
 	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
-
 	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 	// Add a bticket
@@ -652,24 +598,6 @@ $form = new Form($db);
 $formfile = new FormFile($db);
 $formcompany = new FormCompany($db);
 
-// Load object modBarCodeTicket
-$res = 0;
-if (!empty($conf->barcode->enabled) && !empty($conf->global->BARCODE_BTICKET_ADDON_NUM))
-{
-	$module = strtolower($conf->global->BARCODE_BTICKET_ADDON_NUM);
-	$dirbarcode = array_merge(array('/core/modules/barcode/'), $conf->modules_parts['barcode']);
-	foreach ($dirbarcode as $dirroot)
-	{
-		$res = dol_include_once($dirroot.$module.'.php');
-		if ($res) break;
-	}
-	if ($res > 0)
-	{
-			$modBarCodeTicket = new $module();
-	}
-}
-
-
 if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// -----------------------------------------
 	// When used with CANVAS
@@ -807,7 +735,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// new_passenger
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("NewPassager").'</td>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("NewPassenger").'</td>';
 			print '<td><input type="checkbox" name="new_passenger" >';
 			print '</td></tr>';
 
@@ -852,11 +780,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// nationalite
 			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
 			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth100 maxwidth150 widthcentpercentminusx');
+			print $form->select_country((GETPOSTISSET('nationalite') ? 16 : $object->nationalite), 'nationalite', '', 0, 'minwidth100 maxwidth150 widthcentpercentminusx');
 			print '</td></tr>';
 
 			// age
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Age").'</td>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateNaissance").'</td>';
 			print '<td><input name="date_naissance" type="date" class="maxwidth300" value="'.$object_passenger->date_naissance.'">';
 			print '</td></tr>';
 
@@ -881,7 +809,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// passenger
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Par").'</td>';
 			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
 			if (empty($passengerrecords))
 			{
@@ -923,7 +851,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
 		{
-			$sql_p = 'SELECT DISTINCT p.rowid, p.nom, p.prenom, p.age, p.adresse,  p.telephone, p.email, p.accompagne,  p.nom_enfant,  p.age_enfant, p.entity';
+			$sql_p = 'SELECT DISTINCT p.rowid, p.ref, p.type_piece, p.civility, p.nom, p.prenom, p.date_naissance, p.adresse,  p.telephone, p.email, p.accompagne, p.entity';
 			$sql_p .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
 			$sql_p .= ' WHERE p.entity IN ('.getEntity('passenger').')';
 			$sql_p .= ' AND p.rowid IN ('.$object->fk_passenger.')';
@@ -1080,7 +1008,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// passenger
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Par").'</td>';
 			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
 			if (empty($passengerrecords))
 			{
