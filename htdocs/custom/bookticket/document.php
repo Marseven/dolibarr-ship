@@ -284,7 +284,7 @@ if($usercancreate && $type == 'travel'){
 	//   First page contains the table for all employees
 	// ====================================================
 
-	$pdf->AddPage("P");
+	$pdf->AddPage("L");
 
 	// Template #2 is used for the part which builds a table containing all employees
 	$template = $pdf->LoadTemplate($file_tpl);
