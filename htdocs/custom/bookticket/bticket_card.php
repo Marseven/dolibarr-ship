@@ -449,7 +449,7 @@ if (empty($reshook))
 
 				$ret = $object_bank->create($user);
 			}
-
+			die;
 			if ($id > 0)
 			{
 				if (!empty($backtopage))

@@ -7754,7 +7754,7 @@ abstract class CommonObject
 			$sql = 'INSERT INTO '.MAIN_DB_PREFIX.$this->table_element;
 			$sql .= ' ('.implode(", ", $keys).')';
 			$sql .= ' VALUES ('.implode(", ", $values).')';
-			
+			var_dump($sql);
 			$res = $this->db->query($sql);
 			var_dump($this->db->lasterror());
 
