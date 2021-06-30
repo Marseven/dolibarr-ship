@@ -642,7 +642,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbreEcoReserve'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_eco." / ".($object_travel->nbre_aff+$object->nbre_aff);
+				print $object->nbre_eco." / ".($object_travel->nbre_eco+$object->nbre_eco);
 				print '</td>';
 				print '</tr>';
 
