@@ -102,9 +102,8 @@ if (empty($reshook))
 	{
 		$error = 0;
 
-		$datep = dol_mktime(12, 0, 0, GETPOST("datepmonth", 'int'), GETPOST("datepday", 'int'), GETPOST("datepyear", 'int'));
-		$datev = dol_mktime(12, 0, 0, GETPOST("datevmonth", 'int'), GETPOST("datevday", 'int'), GETPOST("datevyear", 'int'));
-		if (empty($datev)) $datev = $datep;
+		$datep = date('Y-m-d');
+		$datev = $datep;
 
 		$object->ref = ''; // TODO
 		$object->accountid = GETPOST("accountid", 'int') > 0 ? GETPOST("accountid", "int") : 0;
