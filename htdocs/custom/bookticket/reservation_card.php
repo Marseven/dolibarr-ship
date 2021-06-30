@@ -164,7 +164,7 @@ if ($action == 'add' && $usercancreate)
 		if(GETPOST('nbre_vip') <= $object_travel->nbre_vip) $object->nbre_vip = GETPOST('nbre_vip');
 		if(GETPOST('nbre_aff') <= $object_travel->nbre_aff) $object->nbre_aff = GETPOST('nbre_aff');
 		if(GETPOST('nbre_eco') <= $object_travel->nbre_eco) $object->nbre_eco = GETPOST('nbre_eco');
-		$object_travel->nbre_place = $object->nbre_vip + $object->nbre_eco + $object->nbre_aff;
+		$object->nbre_place = $object->nbre_vip + $object->nbre_eco + $object->nbre_aff;
 
 
 		// Fill array 'array_options' with data from add form
@@ -606,7 +606,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $form->textwithpicto($langs->trans('NbrePlaceReserve'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print $object->nbre_place." / ".($object_travel->nbre_place +$object->nbre_place);
+				print $object->nbre_place." / ".($object_travel->nbre_place + $object->nbre_place);
 				print '</td>';
 				print '</tr>';
 
@@ -694,33 +694,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	}
 }
 
-
-/*$formconfirm = '';
-
-// Confirm delete travel
-if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeleteTravel"), $langs->trans("ConfirmDeleteTravel"), "confirm_delete", '', 0, "action-delete");
-}
-
-// Clone confirmation
-if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))		// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	// Define confirmation messages
-	$formquestionclone = array(
-		'text' => $langs->trans("ConfirmClone"),
-		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-	);
-
-
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneTravel', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
-}
-;
-// Print form confirm
-print $formconfirm;*/
-
 /* ************************************************************************** */
 /*                                                                            */
 /* Barre d'action                                                             */
@@ -736,16 +709,6 @@ if ($action != 'create' && $action != 'edit')
 		if ($usercancreate && $object->status != Reservation::STATUS_LOCK)
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
-
-			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
-			{
-				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
-				{
-					print '<span id="action-clone" class="butAction">'.$langs->trans('ToClone').'</span>'."\n";
-				} else {
-					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
-				}
-			}*/
 		}
 
 		if ($usercancreate && $object->status == Reservation::STATUS_DRAFT)		// If draft
