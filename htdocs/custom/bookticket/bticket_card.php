@@ -341,6 +341,7 @@ if ($action == 'add' && $usercancreate)
 
 			$object_travel->update($user);
 
+			die('ici');
 			$object_payment = new PaymentVarious($db);
 
 			$object_caisse = new AgenceCaisse($db);
@@ -367,7 +368,7 @@ if ($action == 'add' && $usercancreate)
 			$object_payment->fk_user_author = $user->id;
 			$object_payment->sens = 1;
 			$db->begin();
-				$ret = $object_payment->create($user);
+			$ret = $object_payment->create($user);
 			$db->commit();
 		}
 
