@@ -50,6 +50,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_user.class.php';
+require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
@@ -263,43 +264,10 @@ if (empty($reshook))
 
 	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
-	// Barcode type
-	if ($action == 'setfk_barcode_type' && $createbarcode)
-	{
-		$result = $object->setValueFrom('fk_barcode_type', GETPOST('fk_barcode_type'), '', null, 'text', '', $user, 'BTICKET_MODIFY');
-		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-		exit;
-	}
-
-	// Barcode value
-	if ($action == 'setbarcode' && $createbarcode)
-	{
-		$result = $object->check_barcode(GETPOST('barcode'), GETPOST('barcode_type_code'));
-
-		if ($result >= 0)
-		{
-			$result = $object->setValueFrom('barcode', GETPOST('barcode'), '', null, 'text', '', $user, 'BTICKET_MODIFY');
-			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-			exit;
-		} else {
-			$langs->load("errors");
-			if ($result == -1) $errors[] = 'ErrorBadBarCodeSyntax';
-			elseif ($result == -2) $errors[] = 'ErrorBarCodeRequired';
-			elseif ($result == -3) $errors[] = 'ErrorBarCodeAlreadyUsed';
-			else $errors[] = 'FailedToValidateBarCode';
-
-			$error++;
-			setEventMessages($errors, null, 'errors');
-		}
-	}
-
 	// Add a bticket
 	if ($action == 'add' && $usercancreate)
 	{
 		$error = 0;
-
-		// Générateur de références aléatoires Compatible EAN13 (13 chiffres)
-
 
         if (empty($ref))
         {
@@ -673,71 +641,6 @@ if (empty($reshook))
 		}
 	}
 
-	/* Action clone object
-	if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-	{
-		if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-		{
-			setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-		} else {
-			$db->begin();
-
-			$originalId = $id;
-			if ($object->id > 0)
-			{
-				$object->ref = GETPOST('clone_ref', 'alphanohtml');
-				$object->id = null;
-				$object->barcode = -1;
-
-				if ($object->check())
-				{
-					$object->context['createfromclone'] = 'createfromclone';
-					$id = $object->create($user);
-					if ($id > 0)
-					{
-
-						$db->commit();
-						$db->close();
-
-						header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-						exit;
-					} else {
-						$id = $originalId;
-
-						if ($object->error == 'ErrorBticketAlreadyExists')
-						{
-							$db->rollback();
-
-							$refalreadyexists++;
-							$action = "";
-
-							$mesg = $langs->trans("ErrorBticketAlreadyExists", $object->ref);
-							$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-							setEventMessages($mesg, null, 'errors');
-							$object->fetch($id);
-						} else {
-							$db->rollback();
-							if (count($object->errors))
-							{
-								setEventMessages($object->error, $object->errors, 'errors');
-								dol_print_error($db, $object->errors);
-							} else {
-								setEventMessages($langs->trans($object->error), null, 'errors');
-								dol_print_error($db, $object->error);
-							}
-						}
-					}
-
-					unset($object->context['createfromclone']);
-				}
-			} else {
-				$db->rollback();
-				dol_print_error($db, $object->error);
-			}
-		}
-	}*/
-
 	// Delete a bticket
 	//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
 	if ($action == 'delete' && $usercandelete)
@@ -860,31 +763,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $langs->trans("RefAlreadyExists");
 			}
 			print '</td></tr>';
-
-			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
-
-			if ($showbarcode)
-			{
-				print '<tr><td>'.$langs->trans('BarcodeType').'</td><td>';
-				if (GETPOSTISSET('fk_barcode_type')) {
-					$fk_barcode_type = GETPOST('fk_barcode_type');
-				} else {
-					if (empty($fk_barcode_type) && !empty($conf->global->PRODUIT_DEFAULT_BARCODE_TYPE)) $fk_barcode_type = $conf->global->PRODUIT_DEFAULT_BARCODE_TYPE;
-				}
-				require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
-				$formbarcode = new FormBarCode($db);
-				print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
-				print '</td>';
-				if ($conf->browser->layout == 'phone') print '</tr><tr>';
-				print '<td>'.$langs->trans("BarcodeValue").'</td><td>';
-				$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-				if (empty($tmpcode) && !empty($modBarCodeBticket->code_auto)) $tmpcode = $modBarCodeBticket->getNextValue($object, $type);
-				print '<input class="maxwidth100" type="text" name="barcode" value="'.dol_escape_htmltag($tmpcode).'">';
-				print '</td></tr>';
-			}
-
-			print "</td></tr>";
 
 			//travel
 			print '<tr><input type="hidden" name="fk_travel" value="'.$travel.'"></tr>';
@@ -1118,29 +996,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// Ref
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
-
-			// Barcode
-			$showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
-			if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
-
-			if ($showbarcode)
-			{
-				print '<tr><td>'.$langs->trans('BarcodeType').'</td><td>';
-				if (GETPOSTISSET('fk_barcode_type')) {
-				 	$fk_barcode_type = GETPOST('fk_barcode_type');
-				} else {
-					$fk_barcode_type = $object->barcode_type;
-					if (empty($fk_barcode_type) && !empty($conf->global->PRODUIT_DEFAULT_BARCODE_TYPE)) $fk_barcode_type = $conf->global->PRODUIT_DEFAULT_BARCODE_TYPE;
-				}
-				require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
-				$formbarcode = new FormBarCode($db);
-				print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
-				print '</td><td>'.$langs->trans("BarcodeValue").'</td><td>';
-				$tmpcode = GETPOSTISSET('barcode') ? GETPOST('barcode') : $object->barcode;
-				if (empty($tmpcode) && !empty($modBarCodeTicket->code_auto)) $tmpcode = $modBarCodeTicket->getNextValue($object, $type);
-				print '<input size="40" class="maxwidthonsmartphone" type="text" name="barcode" value="'.dol_escape_htmltag($tmpcode).'">';
-				print '</td></tr>';
-			}
 
 			//travel
 			print '<tr><input type="hidden" name="fk_travel" value="'.$object->fk_travel.'"></tr>';
