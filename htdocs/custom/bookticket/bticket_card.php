@@ -363,7 +363,9 @@ if ($action == 'add' && $usercancreate)
 			$object_payment->sens = 1;
 			$object_payment->accountancy_code = "DVM-BL";
 			$object_payment->subledger_account = $object->ref;
+			$db->begin();
 			$ret = $object_payment->create($user);
+			$db->commit();
 		}
 
 		if ($id > 0)
