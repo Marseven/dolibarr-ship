@@ -103,9 +103,6 @@ $fieldstosearchall = array(
 	'passenger'=>"Passenger",
 );
 
-if (!empty($conf->barcode->enabled)) {
-	$fieldstosearchall['t.barcode'] = 'Gencod';
-}
 
 //$isInEEC = isInEEC($mysoc);
 
@@ -148,7 +145,6 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 {
 	$sall = "";
 	$search_ref = "";
-	$search_barcode = "";
 	$search_travel = "";
 	$search_ship = "";
 	$search_classe = '';
