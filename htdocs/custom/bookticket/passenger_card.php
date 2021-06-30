@@ -634,34 +634,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	}
 }
 
-/*$formconfirm = '';
-
-// Confirm delete Passenger
-if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeletePassenger"), $langs->trans("ConfirmDeletePassenger"), "confirm_delete", '', 0, "action-delete");
-}
-
-// Clone confirmation
-if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))		// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	// Define confirmation messages
-	$formquestionclone = array(
-		'text' => $langs->trans("ConfirmClone"),
-		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentPassenger"), 'value' => 1),
-	);
-
-
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmClonePassenger', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
-}
-
-
-// Print form confirm
-print $formconfirm;*/
-
 /* ************************************************************************** */
 /*                                                                            */
 /* Barre d'action                                                             */
