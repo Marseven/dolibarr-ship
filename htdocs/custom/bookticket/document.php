@@ -125,7 +125,7 @@ if($usercancreate && $type == 'bticket'){
 	$userCreate->fetch($object->fk_user_creat);
 	$pdf->addAgent( $userCreate->lastname." ".$userCreate->firstname );
 
-
+die;
 	$pdf->fact_dev( "Billet ", $obj->ref );
 
 	$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
