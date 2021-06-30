@@ -173,7 +173,7 @@ if($usercancreate && $type == 'bticket'){
 					"De"     	=> $obj->de,
 					"Vers" 	 	=> $obj->vers,
 					"Classe"    => $obj->classe,
-					"Details"   => $object_passenger->accompagne == "on" ? "Accompagné par ".$object_accompgneur->nom." ".$object_accompgneur->prenom : "",
+					"Details"   => $object_passenger->accompagne == "on" ? "Accompagné par ".$object_accompgneur->nom." ".$object_accompgneur->prenom : "Aucun",
 					"Bg"   	    => $obj->kilo." Kg",
 					"St"    	=> $object->status == 2 ? "C" : "R"  );
 	$size = $pdf->addLine( $y, $line );
