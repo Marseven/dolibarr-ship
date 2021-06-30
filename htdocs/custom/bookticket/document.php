@@ -125,7 +125,7 @@ if($usercancreate && $type == 'bticket'){
 	$userCreate->fetch($object->fk_user_creat);
 	$pdf->addAgent( $userCreate->lastname." ".$userCreate->firstname );
 
-die;
+
 	$pdf->fact_dev( "Billet ", $obj->ref );
 
 	$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
@@ -190,7 +190,7 @@ die;
 	}elseif(($age->y < 15 && $age->y >= 6) && $obj->categorie == 'D'){
 		$prix = $obj->prix_enf_dvm;
 	}
-
+	die;
 	$pdf->addPrice($prix, 0, $penalites, $obj->prix);
 
 	$pdf->addCondition(utf8_decode("CONDITIONS GÉNÉRALES DE TRANSPORT
