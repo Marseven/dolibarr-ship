@@ -141,10 +141,10 @@ ShipDeleted = Supprimer le Bâteau
 ShipIsUsed = Bâteau utilisé
 ShipCard = Détails du Bâteau 
 CardShip = Détails du Bâteau
-NbrePlace = Nombre de places total	
-NbreVip	= Nombre de places VIP
-NbreAff = Nombre de places Affaire
-NbreEco	= Nombre de places Économique
+NbrePlace =  Nombre de places total	
+NbreVip	=  Nombre de places VIP
+NbreAff =  Nombre de places Affaire
+NbreEco	=  Nombre de places Économique
 
 #
 # Travel
@@ -229,8 +229,15 @@ PrixBillet = Prix total du billet
 #
 # AgenceUser
 #
+ListAgenceUser = Affectation Agent
+ListAgenceCaisse = Affectation Caisse
+NewAffectation = Nouvelle Affectation
 
-
+Reservations = Réservations
+NbrePlaceReserve = Nombre de places réservées
+NbreVipReserve = Nombre de places VIP réservées
+NbreAffReserve = Nombre de places Affaire réservées
+NbreEcoReserve = Nombre de places Économique réservées
 
 #
 # Box d'exemple
