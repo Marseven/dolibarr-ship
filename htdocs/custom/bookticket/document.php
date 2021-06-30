@@ -183,11 +183,11 @@ if($usercancreate && $type == 'bticket'){
 
 	if($age->y >= 15 && $obj->categorie == 'A'){
 		$prix = $obj->prix_standard;
-	}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+	}elseif(($age->y <= 5 && $age->y >= 0) && $obj->categorie == 'B'){
 		$prix = $obj->prix_enf_por;
-	}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
+	}elseif(($age->y < 15 && $age->y >= 6) && $obj->categorie == 'C'){
 		$prix = $obj->prix_enf_acc;
-	}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
+	}elseif(($age->y < 15 && $age->y >= 6) && $obj->categorie == 'D'){
 		$prix = $obj->prix_enf_dvm;
 	}
 
