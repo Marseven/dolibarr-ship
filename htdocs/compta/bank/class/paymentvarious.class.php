@@ -470,7 +470,6 @@ class PaymentVarious extends CommonObject
 		$sql .= ", ".$conf->entity;
 		$sql .= ")";
 
-		var_dump($sql);die;
 
 		dol_syslog(get_class($this)."::create", LOG_DEBUG);
 		$result = $this->db->query($sql);
