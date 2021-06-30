@@ -305,7 +305,7 @@ if($action == 'valid' && $usercancreate){
 }
 
 //Lock
-if($action == 'valid' && $usercancreate){
+if($action == 'lock' && $usercancreate){
 
 	$object->fetch($id);
 

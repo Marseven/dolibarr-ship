@@ -54,6 +54,7 @@ $mesg = ''; $error = 0; $errors = array();
 $refalreadyexists = 0;
 
 $id = GETPOST('id', 'int');
+$travel = GETPOST('travel', 'int');
 $ref = GETPOST('ref', 'alpha');
 $action = (GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view');
 $cancel = GETPOST('cancel', 'alpha');
@@ -289,7 +290,7 @@ if($action == 'valid' && $usercancreate){
 }
 
 //Lock
-if($action == 'valid' && $usercancreate){
+if($action == 'lock' && $usercancreate){
 
 	$object->fetch($id);
 
@@ -298,24 +299,30 @@ if($action == 'valid' && $usercancreate){
 	{
 		$object->status = Reservation::STATUS_LOCK;
 
-		$db->begin();
+		$object_travel = new Travel($db);
+		$object_travel->fetch($object->fk_travel);
 
-		$verif = $object->lock($user);
-		if ($verif <= 0)
+		$object_travel->nbre_vip = $object_travel->nbre_vip + $object->nbre_vip;
+		$object_travel->nbre_eco = $object_travel->nbre_eco + $object->nbre_eco;
+		$object_travel->nbre_aff = $object_travel->nbre_aff + $object->nbre_aff;
+		$object_travel->nbre_place = $object_travel->nbre_place + $object->nbre_place;
+
+		$object_travel->update($user);
+
+		if (!$error && $object->check())
 		{
-			setEventMessages($object->error, $object->errors, 'errors');
-			$error++;
-		}
-
-		if (!$error)
-		{
-			$db->commit();
-
-			   header('Location: '.$_SERVER["PHP_SELF"].'?id='.$object->id);
-			   exit;
+			if ($object->update($user) > 0)
+			{
+				$action = 'view';
+			} else {
+				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+				else setEventMessages($langs->trans($object->error), null, 'errors');
+				$action = 'edit';
+			}
 		} else {
-			$db->rollback();
-			$action = '';
+			if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+			else setEventMessages($langs->trans("ErrortravelBadRefOrLabel"), null, 'errors');
+			$action = 'edit';
 		}
 	}
 }
@@ -423,28 +430,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</td></tr>';
 
 		// travel
-		print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-
-		$travel = '<td><select class="flat" name="fk_travel">';
-		if (empty($travelrecords))
-		{
-			$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-		}else{
-			foreach ($travelrecords as $lines)
-			{
-				$travel .= '<option value="';
-				$travel .= $lines->rowid;
-				$travel .= '"';
-				$travel .= '>';
-				$travel .= $langs->trans($lines->ref);
-				$travel .= '</option>';
-			}
-		}
-
-		$travel .= '</select>';
-
-		print $travel;
-
+		print '<tr>';
+		print '<td><input name="fk_travel" type="hidden" value="'.$travel.'"> Place(s)';
 		print '</td></tr>';
 
 		// Nbre_vip
@@ -515,28 +502,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
 
 			// travel
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
-
-			$travel = '<td><select class="flat" name="fk_travel">';
-			if (empty($travelrecords))
-			{
-				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
-			}else{
-				foreach ($travelrecords as $lines)
-				{
-					$travel .= '<option value="';
-					$travel .= $lines->rowid;
-					$travel .= '"';
-					$travel .= '>';
-					$travel .= $langs->trans($lines->ref);
-					$travel .= '</option>';
-				}
-			}
-
-			$travel .= '</select>';
-
-			print $travel;
-
+			print '<tr>';
+			print '<td><input name="fk_travel" type="hidden" value="'.$object->fk_travel.'"> Place(s)';
 			print '</td></tr>';
 
 			// Nbre_vip
@@ -788,7 +755,7 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate && $object->status == Reservation::STATUS_APPROVED)		// If draft
 		{
-			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("PRINT").'</a>';
+			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=lock" class="butAction">'.$langs->trans("Vendre").'</a>';
 		}
 
 		if ($usercandelete)
