@@ -282,23 +282,6 @@ if (empty($reshook))
 
 			$object->ref   = $ref;
 
-			$object->barcode_type          = GETPOST('fk_barcode_type');
-			$object->barcode = GETPOST('barcode');
-			// Set barcode_type_xxx from barcode_type id
-			$stdobject = new GenericObject($db);
-			$stdobject->element = 'bticket';
-			$stdobject->barcode_type = GETPOST('fk_barcode_type');
-			$result = $stdobject->fetch_barcode();
-			if ($result < 0)
-			{
-				$error++;
-				$mesg = 'Failed to get bar code type information ';
-				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-			}
-			$object->barcode_type_code      = $stdobject->barcode_type_code;
-			$object->barcode_type_coder     = $stdobject->barcode_type_coder;
-			$object->barcode_type_label     = $stdobject->barcode_type_label;
-
 			$object->fk_travel             	 = GETPOST('fk_travel');
 			$object_travel->fetch($object->fk_travel);
 			$object->fk_ship             	 = $object_travel->fk_ship;
@@ -310,6 +293,7 @@ if (empty($reshook))
 			$sql_a .= ' WHERE au.fk_user IN ('.$user->id.')';
 			$resql_a = $db->query($sql_a);
 			$obj = $db->fetch_object($resql_a);
+
 			$object->fk_agence             	 = $obj->fk_agence;
 
 			if(GETPOST('new_passenger') != 'on'){
@@ -449,7 +433,7 @@ if (empty($reshook))
 
 				$ret = $object_bank->create($user);
 			}
-			die;
+
 			if ($id > 0)
 			{
 				if (!empty($backtopage))
@@ -485,6 +469,8 @@ if (empty($reshook))
 				$object->fk_travel             	 = GETPOST('fk_travel');
 				$object->fk_ship             	 = GETPOST('fk_ship');
 				$object->fk_classe             	 = GETPOST('fk_classe');
+
+				$object->categorie             	 = GETPOST('categorie');
 
 				$object->fk_passenger             	 = GETPOST('fk_passenger');
 
@@ -534,24 +520,6 @@ if (empty($reshook))
 						setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 					}
 				}
-
-
-				$object->barcode_type = GETPOST('fk_barcode_type');
-				$object->barcode = GETPOST('barcode');
-				// Set barcode_type_xxx from barcode_type id
-				$stdobject = new GenericObject($db);
-				$stdobject->element = 'bticket';
-				$stdobject->barcode_type = GETPOST('fk_barcode_type');
-				$result = $stdobject->fetch_barcode();
-				if ($result < 0)
-				{
-					$error++;
-					$mesg = 'Failed to get bar code type information ';
-					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
-				}
-				$object->barcode_type_code      = $stdobject->barcode_type_code;
-				$object->barcode_type_coder     = $stdobject->barcode_type_coder;
-				$object->barcode_type_label     = $stdobject->barcode_type_label;
 
 				$object->fk_valideur = $user->fk_user;
 
