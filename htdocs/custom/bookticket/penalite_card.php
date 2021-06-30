@@ -248,7 +248,8 @@ if ($action == 'add' && $usercancreate)
 
 	if (!$error)
 	{
-		$object_bticket->fetch($bticket);
+		$idbticket = GETPOST('fk_bticket');
+		$object_bticket->fetch($idbticket);
 		$idpassenger = $object_bticket->fk_passenger;
 		$object_passenger->fetch($idpassenger);
 
@@ -656,7 +657,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$travel .= $lines->rowid;
 					$travel .= '"';
 					$travel .= '>';
-					$travel .= $langs->trans($lines->jour).' à '.$langs->trans($lines->heure).' - '.$langs->trans($lines->ref);
+					$travel .= $langs->trans($lines->jour).' à '.$langs->trans($lines->jour).' - '.$langs->trans($lines->ref);
 					$travel .= '</option>';
 				}
 			}
