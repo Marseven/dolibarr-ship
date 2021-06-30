@@ -269,7 +269,7 @@ if ($action == 'add' && $usercancreate)
 			$customer->code_client	= GETPOSTISSET('customer_code') ? GETPOST('pref', 'alpha') : GETPOST('pref', 'alpha');
 			$customer->typent_code	= 'TE_PRIVATE'; // Force typent_code too so check in verify() will be done on new type
 
-			$customer->client = 1;
+			$customer->client = '';
 			$customer->commercial_id = $user->id;
 
 			if (empty($customer->client))      $customer->code_client = '';
