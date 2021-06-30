@@ -248,8 +248,7 @@ if ($action == 'add' && $usercancreate)
 
 	if (!$error)
 	{
-		$idbticket = GETPOST('fk_bticket');
-		$object_bticket->fetch($idbticket);
+		$object_bticket->fetch($bticket);
 		$idpassenger = $object_bticket->fk_passenger;
 		$object_passenger->fetch($idpassenger);
 
