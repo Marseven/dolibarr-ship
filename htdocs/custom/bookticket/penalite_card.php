@@ -643,8 +643,30 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '<tr>';
 
-			//travel
-			print '<tr><input type="hidden" name="fk_travel" value="'.$object_bticket->fk_travel.'"></tr>';
+			// travel
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("Travel").'</td>';
+
+			$travel = '<td><select class="flat" name="fk_travel">';
+			if (empty($travelrecords))
+			{
+				$travel .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
+			}else{
+				foreach ($travelrecords as $lines)
+				{
+					$travel .= '<option value="';
+					$travel .= $lines->rowid;
+					$travel .= '"';
+					$travel .= '>';
+					$travel .= $langs->trans($lines->jour).' - '.$langs->trans($lines->ref);
+					$travel .= '</option>';
+				}
+			}
+
+			$travel .= '</select>';
+
+			print $travel;
+
+			print '</td></tr>';
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NomPrenom").'</td>';
