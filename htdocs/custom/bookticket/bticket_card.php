@@ -341,26 +341,35 @@ if ($action == 'add' && $usercancreate)
 
 			$object_travel->update($user);
 
-			$object_bank = new PaymentVarious($db);
+			$object_payment = new PaymentVarious($db);
+
 			$object_caisse = new AgenceCaisse($db);
 			$object_caisse->fetch($user->id);
 
+			$sql_bank = 'SELECT b.rowid, b.dateo as do, b.datev as dv, b.amount, b.label, b.rappro as conciliated, b.num_releve, b.num_chq,';
+			$sql_bank .= '  b.fk_account, b.fk_type';
+			$sql_bank .= ' FROM '.MAIN_DB_PREFIX.'bank as b';
+			$sql_bank .= ' WHERE b.fk_account IN ('.$object_caisse->fk_account.')';
+			$resql_bank =$db->query($sql_bank);
+			$obj_bank = $db->fetch_object($resql_bank);
+
 			$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
 			$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
+
 			if (empty($datev)) $datev = $datep;
 
-			$object_bank->ref = ''; // TODO
-			$object_bank->accountid = $object_caisse->fk_account > 0 ? $object_caisse->fk_account : 0;
-			$object_bank->datev = $datev;
-			$object_bank->datep = $datep;
-			$object_bank->amount = price2num($object->prix);
-			$object_bank->label = 'Vente de Billet N° '.$object->ref;
-			$object_bank->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
-			$object_bank->fk_user_author = $user->id;
+			$object_payment->ref = ''; // TODO
+			$object_payment->fk_bank = $obj_bank->rowid;
+			$object_payment->fk_account = $object_caisse->fk_account;
+			$object_payment->datev = $datev;
+			$object_payment->datep = $datep;
+			$object_payment->amount = price2num($object->prix);
+			$object_payment->label = 'Vente de Billet N° '.$object->ref;
+			$object_payment->type_payment = dol_getIdFromCode($db, 'LIQ', 'c_paiement', 'code', 'id', 1);
+			$object_payment->fk_user_author = $user->id;
+			$object_payment->sens = 1;
 
-			$object_bank->sens = 1;
-
-			$ret = $object_bank->create($user);
+			$ret = $object_payment->create($user);
 		}
 
 		if ($id > 0)
