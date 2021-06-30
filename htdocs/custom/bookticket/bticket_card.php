@@ -346,8 +346,7 @@ if ($action == 'add' && $usercancreate)
 
 			$sql_ac = 'SELECT ac.rowid, ac.fk_caisse';
 			$sql_ac .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
-			$sql_ac .= ' WHERE ac.fk_user IN ('.$user->id.')';
-			var_dump($sql_ac);die;
+			$sql_ac .= ' WHERE ac.fk_agence IN ('.$object->fk_agence.')';
 			$resql_ac = $db->query($sql_ac);
 			$object_caisse = $db->fetch_object($resql_ac);
 
