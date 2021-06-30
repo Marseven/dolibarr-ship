@@ -14,7 +14,7 @@ SetTextProp ("SOCIETY3", 30, 22, -1, -1, 0, 0, 0,"Arial", "I", 9);
 SetTextProp ("SOCIETY4", 30, 26, -1, -1, 0, 0, 0,"Arial", "I", 9);
 SetTextProp ("SOCIETY5", 30, 30, -1, -1, 0, 0, 0,"Arial", "I", 9);
 
-SetTextProp ("TITLE", 60, 40, -1, -1, 0, 0, 0,"Arial", "B", 16);     
+SetTextProp ("TITLE", 70, 40, -1, -1, 0, 0, 0,"Arial", "B", 20);     
 
 SetTextProp ("SHIP", 15, 52, -1, -1, 0, 0, 0,"Arial", "", 12);
 SetTextProp ("DEPART", 15, 58, -1, -1, 0, 0, 0,"Arial", "", 12);
