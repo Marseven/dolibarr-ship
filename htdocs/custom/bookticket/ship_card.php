@@ -139,11 +139,11 @@ if ($action == 'add' && $usercancreate)
 	{
 		$object->ref                   = $ref;
 		$object->label                 = GETPOST('label', $label_security_check);
-		$object->labelshort             = GETPOST('labelshort');
-		$object->nbre_place             = GETPOST('nbre_vip') + GETPOST('nbre_eco') + GETPOST('nbre_aff');
-		$object->nbre_vip             	 = GETPOST('nbre_vip');
-		$object->nbre_aff             	 = GETPOST('nbre_aff');
-		$object->nbre_eco             	 = GETPOST('nbre_eco');
+		$object->labelshort            = GETPOST('labelshort');
+		$object->nbre_place            = GETPOST('nbre_vip') + GETPOST('nbre_eco') + GETPOST('nbre_aff');
+		$object->nbre_vip              = GETPOST('nbre_vip');
+		$object->nbre_aff              = GETPOST('nbre_aff');
+		$object->nbre_eco              = GETPOST('nbre_eco');
 
 
 		// Fill array 'array_options' with data from add form
