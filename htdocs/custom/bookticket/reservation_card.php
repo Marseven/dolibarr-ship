@@ -733,7 +733,7 @@ if ($action != 'create' && $action != 'edit')
 	$parameters = array();
 
 
-		if ($usercancreate)
+		if ($usercancreate && $object->status != Reservation::STATUS_LOCK)
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 
