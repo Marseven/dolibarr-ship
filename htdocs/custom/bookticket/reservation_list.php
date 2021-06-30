@@ -91,9 +91,9 @@ $arrayfields = array(
 	't.jour'=>array('label'=>$langs->trans("Jour"), 'checked'=>1, 'position'=>10),
 	't.heure'=>array('label'=>$langs->trans("Heure"), 'checked'=>1, 'position'=>10),
 	'trajet'=>array('label'=>$langs->trans("Trajet"), 'checked'=>1, 'position'=>20),
-	'r.nbre_vip'=>array('label'=>$langs->trans('NbreVip'), 'checked'=>1,  'position'=>30),
-	'r.nbre_aff'=>array('label'=>$langs->trans("NbreAff"), 'checked'=>1,  'position'=>52),
-	'r.nbre_eco'=>array('label'=>$langs->trans("NbreEco"), 'checked'=>1,  'position'=>52),
+	'r.nbre_vip'=>array('label'=>$langs->trans('NbreVipReserve'), 'checked'=>1,  'position'=>30),
+	'r.nbre_aff'=>array('label'=>$langs->trans("NbreAffReserve"), 'checked'=>1,  'position'=>52),
+	'r.nbre_eco'=>array('label'=>$langs->trans("NbreEcoReserve"), 'checked'=>1,  'position'=>52),
 	'r.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
 );
 
