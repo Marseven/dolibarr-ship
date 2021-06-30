@@ -87,7 +87,7 @@ if($usercancreate && $type == 'bticket'){
 	$sql_t .= ' AND t.rowid IN ('.$object->id.')';
 	$resql_t = $db->query($sql_t);
 	$obj = $db->fetch_object($resql_t);
-
+die;
 	$sql_p = "SELECT sum(b.prix_da) as da, sum(b.prix_db) as db, sum(b.prix_n) as n, sum(b.prix_bp) as bp, sum(b.prix_c) as c, sum(b.prix_ce) as ce";
 	$sql_p .= " FROM ".MAIN_DB_PREFIX."bookticket_penalite as b";
 	$sql_p .= " WHERE b.status > 0";
@@ -167,7 +167,7 @@ if($usercancreate && $type == 'bticket'){
 					"De"     	=> $obj->de,
 					"Vers" 	 	=> $obj->vers,
 					"Classe"    => $obj->classe,
-					"Details"   => $object_passenger->accompagne == "on" ? " 1 Adulte avec enfant" : "1 Adulte",
+					"Details"   => $object_passenger->accompagne == "on" ? "Accompagné" : "",
 					"Bg"   	    => $obj->kilo." Kg",
 					"St"    	=> $object->status == 2 ? "C" : "R"  );
 	$size = $pdf->addLine( $y, $line );
