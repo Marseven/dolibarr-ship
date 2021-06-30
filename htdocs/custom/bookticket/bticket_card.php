@@ -267,9 +267,9 @@ if ($action == 'add' && $usercancreate)
 			$customer->phone = GETPOST('telephone', 'alpha');
 			$customer->email = trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
 			$customer->code_client	= GETPOSTISSET('customer_code') ? GETPOST('pref', 'alpha') : GETPOST('pref', 'alpha');
-			$customer->typent_code	= dol_getIdFromCode($db, 8, 'c_typent', 'id', 'code'); // Force typent_code too so check in verify() will be done on new type
+			$customer->typent_code	= 'TE_PRIVATE'; // Force typent_code too so check in verify() will be done on new type
 
-			$customer->client = NULL;
+			$customer->client = 1;
 			$customer->commercial_id = $user->id;
 
 			if (empty($customer->client))      $customer->code_client = '';
