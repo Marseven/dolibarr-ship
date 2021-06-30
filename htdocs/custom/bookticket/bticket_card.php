@@ -354,6 +354,7 @@ if ($action == 'add' && $usercancreate)
 
 			$object_payment->ref = '';
 			$object_payment->fk_account = $object_caisse->fk_account;
+			$object_payment->accountid = $object_caisse->fk_account;
 			$object_payment->datev = $datev;
 			$object_payment->datep = $datep;
 			$object_payment->amount = price2num($object->prix);
@@ -363,7 +364,7 @@ if ($action == 'add' && $usercancreate)
 			$object_payment->sens = 1;
 			$object_payment->accountancy_code = "DVM-BL";
 			$object_payment->subledger_account = $object->ref;
-			var_dump($object_payment);die;
+			var_dump($object_caisse->fk_account);die;
 			$db->begin();
 			$ret = $object_payment->create($user);
 			$db->commit();
