@@ -347,7 +347,7 @@ if ($action == 'add' && $usercancreate)
 			$object_caisse->fetch($user->id);
 
 			$sql_bank = 'SELECT b.rowid, b.dateo as do, b.datev as dv, b.amount, b.label, b.rappro as conciliated, b.num_releve, b.num_chq,';
-			$sql_bank .= '  b.fk_account, b.fk_type';
+			$sql_bank .= ' b.fk_account, b.fk_type';
 			$sql_bank .= ' FROM '.MAIN_DB_PREFIX.'bank as b';
 			$sql_bank .= ' WHERE b.fk_account IN ('.$object_caisse->fk_account.')';
 			$resql_bank =$db->query($sql_bank);
