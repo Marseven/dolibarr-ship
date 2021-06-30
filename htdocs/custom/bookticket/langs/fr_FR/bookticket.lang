@@ -191,14 +191,13 @@ InformationPassager = Informations du Passager
 NouveauPassager = Créer un nouveau passager	
 PieceIdentite = N° de la pièce d'identité
 Pays = Nationalité	
-Age	= Âge
+DateNaissance	= Date de Naissance
 Adresse = Adresse	
 Telephone = Téléphone	
 Email = Adresse Email	
-Accompagne = Accompagné d'un enfant ?	
-NomEnfant = Nom & Prénom de l'enfant
-AgeEnfant = Âge de l'enfant
+Accompagne = Accompagné ?
 LastName = Nom
+TypePiece = Type de Pièce d'identité
 
 #
 # Penalite
