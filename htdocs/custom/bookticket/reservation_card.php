@@ -299,6 +299,14 @@ if($action == 'lock' && $usercancreate){
 	{
 		$object->status = Reservation::STATUS_LOCK;
 
+		$object_travel = new Travel($db);
+		$object_travel->fetch($object->fk_travel);
+
+		$object_travel->nbre_vip = $object_travel->nbre_vip + $object->nbre_vip;
+		$object_travel->nbre_eco = $object_travel->nbre_eco + $object->nbre_eco;
+		$object_travel->nbre_aff = $object_travel->nbre_aff + $object->nbre_aff;
+		$object_travel->nbre_place = $object_travel->nbre_place + $object->nbre_place;
+
 		$object_travel->update($user);
 
 		if (!$error && $object->check())
@@ -319,7 +327,7 @@ if($action == 'lock' && $usercancreate){
 	}
 }
 
-//Lock
+//Cancel
 if($action == 'cancel' && $usercancreate){
 
 	$object->fetch($id);
