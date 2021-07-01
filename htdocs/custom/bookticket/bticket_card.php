@@ -491,6 +491,7 @@ if ($action == 'update' && $usercancreate)
 
 			$object->status = Bticket::STATUS_VALIDATED;
 
+			var_dump($object_passenger->update($user));die;
 
 			if (!$error && $object->check())
 			{
