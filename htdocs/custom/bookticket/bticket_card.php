@@ -917,6 +917,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("CategorieBillet").'</td>';
 
 			print '<td><select class="flat" name="categorie">';
+			$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			print '<option value="A">'.($langs->trans("BilletNormal")).'</option>';
 			print '<option value="B">'.($langs->trans("BilletEnfantBasAge")).'</option>';
 			print '<option value="C">'.($langs->trans("BilletMineur")).'</option>';
@@ -957,7 +958,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("TypePiece").'</td>';
 
 			$piece = '<td><select class="flat" name="type_piece">';
-			$piece .= '<option value="'.$obj_p->type_piece.'">'.($langs->trans("'.$obj_p->type_piece.'")).'</option>';
+			$piece .= '<option value="'.$obj_p->type_piece.'">'.($langs->trans($obj_p->type_piece)).'</option>';
 			$piece .= '<option value="CNI">'.($langs->trans("CNI")).'</option>';
 			$piece .= '<option value="Passeport">'.($langs->trans("Passeport")).'</option>';
 			$piece .= '<option value="Carte de Séjour">'.($langs->trans("CarteSéjour")).'</option>';
@@ -974,6 +975,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Civilite").'</td>';
 
 			$civilite = '<td><select class="flat" name="civilite">';
+			$civilite .= '<option value="'.$obj_p->civility.'">'.($langs->trans($obj_p->civility)).'</option>';
 			$civilite .= '<option value="MR">'.($langs->trans("MR")).'</option>';
 			$civilite .= '<option value="MME">'.($langs->trans("MME")).'</option>';
 			$civilite .= '</select>';
@@ -995,7 +997,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// nationalite
 			print '<tr><td>'.$form->editfieldkey('Country', 'selectnationalite', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
 			print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-			print $form->select_country((GETPOSTISSET('nationalite') ? GETPOST('nationalite') : $object->nationalite), 'nationalite', '', 0, 'minwidth100 maxwidth150 widthcentpercentminusx');
+			print $form->select_country($object->nationalite, 'nationalite', '', 0, 'minwidth100 maxwidth150 widthcentpercentminusx');
 			print '</td></tr>';
 
 			// age
