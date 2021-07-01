@@ -440,7 +440,7 @@ if ($action == 'update' && $usercancreate)
 
 			$object->fk_passenger             	 = GETPOST('fk_passenger');
 
-			$object_passenger->fetch($object->fk_travel);
+			$object_passenger->fetch($object->fk_passenger);
 
 			$object_passenger->ref             	 = GETPOST('pref');
 			$object_passenger->civility          = GETPOST('civilite');
