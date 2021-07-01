@@ -67,18 +67,22 @@ class Bticket extends CommonObject
 	 * Draft status
 	 */
 	const STATUS_DRAFT = 0;
+
 	/**
 	 * Validated status
 	 */
 	const STATUS_VALIDATED = 1;
+
 	/**
 	 * Approved
 	 */
 	const STATUS_APPROVED = 2;
+
 	/**
 	 * Canceled
 	 */
 	const STATUS_CANCELED = 3;
+
 	/**
 	 * Refused
 	 */

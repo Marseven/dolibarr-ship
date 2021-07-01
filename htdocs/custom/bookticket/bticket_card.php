@@ -315,7 +315,7 @@ if ($action == 'add' && $usercancreate)
 
 		if(GETPOST('accompagne') == 'on'){
 
-			if($age > 13){
+			if($age->y >= 15){
 				$error++;
 				$mesg = "L'âge du passager renseigné est supérieur au maximum requis.";
 				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
@@ -482,10 +482,12 @@ if ($action == 'update' && $usercancreate)
 
 			if(GETPOST('accompagne') == 'on'){
 
-				if($age > 13){
+				if($age->y >= 15){
 					$error++;
-					$mesg = 'Age enfant passager renseigne superieur ';
+					$mesg = "L'âge du passager renseigné est supérieur au maximum requis.";
 					setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+				}else{
+					$object->fk_passenger_acc = GETPOST('fk_passenger_acc');
 				}
 			}
 
