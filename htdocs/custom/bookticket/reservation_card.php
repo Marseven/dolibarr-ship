@@ -738,8 +738,6 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate && ($object->status != Reservation::STATUS_LOCK && $object->status != Reservation::STATUS_CANCELED))
 		{
-			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&travel='.$object->fk_travel.'&reservation='.$object->id.'">'.$langs->trans('NewBTicket').'</a>';
-
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 		}
 
@@ -750,6 +748,8 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate && $object->status == Reservation::STATUS_APPROVED)		// If draft
 		{
+			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&travel='.$object->fk_travel.'&reservation='.$object->id.'">'.$langs->trans('NewBTicket').'</a>';
+
 			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=cancel" class="butAction">'.$langs->trans("CancelReserve").'</a>';
 		}
 
