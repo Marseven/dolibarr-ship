@@ -954,8 +954,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
-			print '<hr>';
-
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("TypePiece").'</td>';
@@ -1231,6 +1229,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</tbody>';
 			print '</table>';
+
+
 
 			print '</div>';
 			print '</div>';
