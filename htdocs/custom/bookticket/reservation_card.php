@@ -299,6 +299,36 @@ if($action == 'lock' && $usercancreate){
 	{
 		$object->status = Reservation::STATUS_LOCK;
 
+		$object_travel->update($user);
+
+		if (!$error && $object->check())
+		{
+			if ($object->update($user) > 0)
+			{
+				$action = 'view';
+			} else {
+				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+				else setEventMessages($langs->trans($object->error), null, 'errors');
+				$action = 'edit';
+			}
+		} else {
+			if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
+			else setEventMessages($langs->trans("ErrortravelBadRefOrLabel"), null, 'errors');
+			$action = 'edit';
+		}
+	}
+}
+
+//Lock
+if($action == 'cancel' && $usercancreate){
+
+	$object->fetch($id);
+
+	// If status is waiting lock and
+	if ($object->status == Reservation::STATUS_APPROVED)
+	{
+		$object->status = Reservation::STATUS_CANCELED;
+
 		$object_travel = new Travel($db);
 		$object_travel->fetch($object->fk_travel);
 
@@ -706,8 +736,10 @@ if ($action != 'create' && $action != 'edit')
 	$parameters = array();
 
 
-		if ($usercancreate && $object->status != Reservation::STATUS_LOCK)
+		if ($usercancreate && ($object->status != Reservation::STATUS_LOCK && $object->status != Reservation::STATUS_CANCELED))
 		{
+			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&travel='.$object->fk_travel.'&reservation='.$object->id.'">'.$langs->trans('NewBTicket').'</a>';
+
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 		}
 
@@ -718,7 +750,12 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate && $object->status == Reservation::STATUS_APPROVED)		// If draft
 		{
-			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=lock" class="butAction">'.$langs->trans("Vendre").'</a>';
+			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=cancel" class="butAction">'.$langs->trans("CancelReserve").'</a>';
+		}
+
+		if ($usercancreate && $object->status == Reservation::STATUS_APPROVED)		// If draft
+		{
+			print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=lock" class="butAction">'.$langs->trans("ArchiveReserve").'</a>';
 		}
 
 		if ($usercandelete)

@@ -50,6 +50,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_user.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/reservation.class.php';
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
@@ -70,6 +71,7 @@ $refalreadyexists = 0;
 
 $id = GETPOST('id', 'int');
 $travel = GETPOST('travel', 'int');
+$reservation = GETPOST('reservation', 'int');
 $ref = GETPOST('ref', 'alpha');
 $action = (GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view');
 $cancel = GETPOST('cancel', 'alpha');
@@ -82,6 +84,7 @@ if (!empty($user->socid)) $socid = $user->socid;
 $object = new Bticket($db);
 $object_passenger = new Passenger($db);
 $object_travel = new Travel($db);
+$object_reservation = new Reservation($db);
 
 if ($id > 0 || !empty($ref))
 {
@@ -327,19 +330,43 @@ if ($action == 'add' && $usercancreate)
 		{
 			$id = $object->create($user);
 
-			$object_travel->fetch($object->fk_travel);
+			if($reservation){
+				$object_reservation->fetch($reservation);
 
-			if($obj_prix->labelshort == "VIP"){
-				$object_travel->nbre_vip--;
-			}elseif($obj_prix->labelshort == "ECO"){
-				$object_travel->nbre_eco--;
+				if($obj_prix->labelshort == "VIP"){
+					$object_reservation->nbre_vip--;
+				}elseif($obj_prix->labelshort == "ECO"){
+					$object_reservation->nbre_eco--;
+				}else{
+					$object_reservation->nbre_aff--;
+				}
+
+				$object_reservation->nbre_place--;
+
+				if($object_reservation->nbre_place == 0 && $object_reservation->status == Reservation::STATUS_APPROVED){
+					$object_reservation->status = Reservation::STATUS_LOCK;
+				}
+
+				$object_reservation->update($user);
 			}else{
-				$object_travel->nbre_aff--;
+				$object_travel->fetch($object->fk_travel);
+
+				if($obj_prix->labelshort == "VIP"){
+					$object_travel->nbre_vip--;
+				}elseif($obj_prix->labelshort == "ECO"){
+					$object_travel->nbre_eco--;
+				}else{
+					$object_travel->nbre_aff--;
+				}
+
+				$object_travel->nbre_place--;
+
+				if($object_travel->nbre_place == 0 && $object_travel->status == Travel::STATUS_APPROVED){
+					$object_travel->status = Travel::STATUS_LOCK;
+				}
+
+				$object_travel->update($user);
 			}
-
-			$object_travel->nbre_place--;
-
-			$object_travel->update($user);
 
 
 			$object_payment = new PaymentVarious($db);

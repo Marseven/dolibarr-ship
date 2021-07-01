@@ -85,6 +85,7 @@ class Reservation extends CommonObject
 	 * Canceled
 	 */
 	const STATUS_CANCELED = 3;
+
 	/**
 	 * Refused
 	 */
