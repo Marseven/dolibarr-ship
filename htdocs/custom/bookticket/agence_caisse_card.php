@@ -207,7 +207,7 @@ if ($action == 'update' && $usercancreate)
 		{
 			$object->oldcopy = clone $object;
 
-			$$object->fk_agence             	 = GETPOST('fk_agence');
+			$object->fk_agence             	 = GETPOST('fk_agence');
 			$object->fk_caisse             	 = GETPOST('fk_caisse');
 
 			if (!$error && $object->check())
