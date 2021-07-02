@@ -243,70 +243,6 @@ if($action == 'valid' && $usercancreate){
 	}
 }
 
-/* Action clone object
-if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-{
-	if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-	{
-		setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-	} else {
-		$db->begin();
-
-		$originalId = $id;
-		if ($object->id > 0)
-		{
-			$object->ref = GETPOST('clone_ref', 'alphanohtml');
-			$object->id = null;
-
-			if ($object->check())
-			{
-				$object->context['createfromclone'] = 'createfromclone';
-				$id = $object->create($user);
-				if ($id > 0)
-				{
-
-					$db->commit();
-					$db->close();
-
-					header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-					exit;
-				} else {
-					$id = $originalId;
-
-					if ($object->error == 'ErrorClasseAlreadyExists')
-					{
-						$db->rollback();
-
-						$refalreadyexists++;
-						$action = "";
-
-						$mesg = $langs->trans("ErrorClasseAlreadyExists", $object->ref);
-						$mesg .= ' <a href="'.$_SERVER["PHP_SELF"].'?ref='.$object->ref.'">'.$langs->trans("ShowCardHere").'</a>.';
-						setEventMessages($mesg, null, 'errors');
-						$object->fetch($id);
-					} else {
-						$db->rollback();
-						if (count($object->errors))
-						{
-							setEventMessages($object->error, $object->errors, 'errors');
-							dol_print_error($db, $object->errors);
-						} else {
-							setEventMessages($langs->trans($object->error), null, 'errors');
-							dol_print_error($db, $object->error);
-						}
-					}
-				}
-
-				unset($object->context['createfromclone']);
-			}
-		} else {
-			$db->rollback();
-			dol_print_error($db, $object->error);
-		}
-	}
-}*/
-
 // Delete a classe
 //if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
 if ($action == 'delete' && $usercandelete)
@@ -407,7 +343,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$number = "0123456789";
 			$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
 			$tmpref = "DVM-CL-".$code;
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($tmpref).'"></td></tr>';
+			print '<tr><td colspan="3"><input name="ref" type="hidden" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($tmpref).'"></td></tr>';
 		}
 		print '</td></tr>';
 
@@ -498,7 +434,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<table class="border allwidth">';
 
 			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
+			print '<tr><td colspan="3"><input name="ref" type="hidden" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
 
 			// Label
 			print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
@@ -685,34 +621,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		exit;
 	}
 }
-
-
-/*$formconfirm = '';
-
-// Confirm delete classe
-if (($action == 'delete' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))	// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	$formconfirm = $form->formconfirm("card.php?id=".$object->id, $langs->trans("DeleteClasse"), $langs->trans("ConfirmDeleteClasse"), "confirm_delete", '', 0, "action-delete");
-}
-
-// Clone confirmation
-if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->dol_use_jmobile)))		// Output when action = clone if jmobile or no js
-	|| (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)))							// Always output when not jmobile nor js
-{
-	// Define confirmation messages
-	$formquestionclone = array(
-		'text' => $langs->trans("ConfirmClone"),
-		array('type' => 'text', 'name' => 'clone_ref', 'label' => $langs->trans("NewRefForClone"), 'value' => empty($tmpcode) ? $langs->trans("CopyOf").' '.$object->ref : $tmpcode, 'size'=>24),
-		array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneContentClasse"), 'value' => 1),
-	);
-
-
-	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneClasse', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
-}
-;
-// Print form confirm
-print $formconfirm;*/
 
 /* ************************************************************************** */
 /*                                                                            */

@@ -913,23 +913,17 @@ if ($action != 'create' && $action != 'edit')
 	$parameters = array();
 
 
-		if ($usercancreate)
+		if ($usercancreate &&  $object->status == Travel::STATUS_APPROVED)
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/bticket_card.php?action=create&travel='.$object->id.'">'.$langs->trans('NewBTicket').'</a>';
 
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/reservation_card.php?action=create&travel='.$object->id.'">'.$langs->trans('NewReservation').'</a>';
 
-			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
+		}
 
-			/*if (!isset($object->no_button_copy) || $object->no_button_copy <> 1)
-			{
-				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile))
-				{
-					print '<span id="action-clone" class="butAction">'.$langs->trans('ToClone').'</span>'."\n";
-				} else {
-					print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=clone&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
-				}
-			}*/
+		if ($usercancreate && $object->status != Travel::STATUS_LOCK)
+		{
+			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 		}
 
 		if ($usercancreate && $object->status == Travel::STATUS_DRAFT)		// If draft

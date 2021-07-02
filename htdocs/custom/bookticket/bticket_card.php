@@ -184,6 +184,7 @@ $sql_passenger = 'SELECT p.rowid, p.nom, p.prenom, p.entity,';
 $sql_passenger .= ' p.date_creation, p.tms as date_update';
 $sql_passenger .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
 $sql_passenger .= ' WHERE p.entity IN ('.getEntity('passenger').')';
+$sql_passenger .= ' AND p.status = 2';
 $resql_passenger =$db->query($sql_passenger);
 if ($resql_passenger)
 {
@@ -673,7 +674,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$number = "0123456789";
 			$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
 			$tmpref = "DVM-BL-".$code;
-			print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input id="ref" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpref).'">';
+			print '<td colspan="3"><input id="ref" type="hidden" name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag(GETPOSTISSET('ref') ? GETPOST('ref', 'alphanohtml') : $tmpref).'">';
 			if ($refalreadyexists)
 			{
 				print $langs->trans("RefAlreadyExists");
@@ -867,6 +868,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		/*
          * bticket card
          */
+
+		$date = dol_print_date($obj->date_creation, 'day', 'tzuser');
+		$date1 = new DateTime($obj->date_creation);
+		$date1 = $date1->modify("+ 3 months");
+		$expire = $date1->format('d/m/Y');
+		$today = date('d/m/Y');
+
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
 		{
@@ -911,7 +919,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<table class="border allwidth">';
 
 			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
+			print '<tr><td colspan="3"><input name="ref" type="hidden" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
 
 			//travel
 			print '<tr><input type="hidden" name="fk_travel" value="'.$object->fk_travel.'"></tr>';
@@ -1267,25 +1275,27 @@ if ($action != 'create' && $action != 'edit')
 	$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 	if (empty($reshook))
 	{
-		if ($usercancreate)
+		if ($usercancreate  && $object->status == Bticket::STATUS_DRAFT)
 		{
-			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?action=create&bticket='.$object->id.'">'.$langs->trans("NewPenalite").'</a>';
-
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
-
 		}
 
 		if ($usercancreate && $object->status == Bticket::STATUS_APPROVED)		// If draft
 		{
-			print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
+			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?action=create&bticket='.$object->id.'">'.$langs->trans("NewPenalite").'</a>';
+
+			if($expire >= $today) print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
 
 		if ($object->status == Bticket::STATUS_VALIDATED)	// If validated
 		{
 			if ($user->id == $object->fk_valideur)
 			{
+				if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 				print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=valid" class="butAction">'.$langs->trans("Approve").'</a>';
 				print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=refuse" class="butAction">'.$langs->trans("ActionRefuse").'</a>';
+			}elseif($object->fk_valideur){
+				if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&amp;id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 			}
 		}
 

@@ -625,7 +625,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$number = "0123456789";
 			$code = substr(str_shuffle(str_repeat($number, 6)), 0, 6);
 			$tmpref = "DVM-PN-".$code;
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.$tmpref.'"></td></tr>';
+			print '<tr><td colspan="3"><input name="ref" type="hidden" class="maxwidth200" maxlength="128" value="'.$tmpref.'"></td></tr>';
 
 
 			//bticket
@@ -808,7 +808,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<table class="border allwidth">';
 
 			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
+			print '<tr><td colspan="3"><input name="ref" type="hidden" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
 
 			//bticket
 			print '<input type="hidden" name="fk_bticket" class="maxwidth300" value="'.$object->fk_bticket.'">';

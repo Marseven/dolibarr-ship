@@ -224,65 +224,6 @@ if (empty($reshook))
 		}
 	}
 
-	/* Action clone object
-	if ($action == 'confirm_clone' && $confirm != 'yes') { $action = ''; }
-	if ($action == 'confirm_clone' && $confirm == 'yes' && $usercancreate)
-	{
-		if (!GETPOST('clone_content') && !GETPOST('clone_prices'))
-		{
-			setEventMessages($langs->trans("NoCloneOptionsSpecified"), null, 'errors');
-		} else {
-			$db->begin();
-
-			$originalId = $id;
-			if ($object->id > 0)
-			{
-				$object->id = null;
-
-				if ($object->check())
-				{
-					$object->context['createfromclone'] = 'createfromclone';
-					$id = $object->create($user);
-					if ($id > 0)
-					{
-
-						$db->commit();
-						$db->close();
-
-						header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
-						exit;
-					} else {
-						$id = $originalId;
-
-						if ($object->error == 'ErrorCityAlreadyExists')
-						{
-							$db->rollback();
-
-							$action = "";
-
-							$object->fetch($id);
-						} else {
-							$db->rollback();
-							if (count($object->errors))
-							{
-								setEventMessages($object->error, $object->errors, 'errors');
-								dol_print_error($db, $object->errors);
-							} else {
-								setEventMessages($langs->trans($object->error), null, 'errors');
-								dol_print_error($db, $object->error);
-							}
-						}
-					}
-
-					unset($object->context['createfromclone']);
-				}
-			} else {
-				$db->rollback();
-				dol_print_error($db, $object->error);
-			}
-		}
-	}*/
-
 	// Delete a city
 	//if ($action == 'confirm_delete' && $confirm != 'yes') { $action = ''; }
 	if ($action == 'delete' && $usercandelete)
