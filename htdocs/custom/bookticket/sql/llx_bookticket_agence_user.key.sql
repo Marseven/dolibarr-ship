@@ -17,3 +17,4 @@
 
 ALTER TABLE llx_bookticket_agence_user ADD CONSTRAINT fk_agence_user_fk_user FOREIGN KEY (fk_user) REFERENCES llx_user (rowid);
 ALTER TABLE llx_bookticket_agence_user ADD CONSTRAINT fk_agence_user_fk_agence FOREIGN KEY (fk_agence) REFERENCES llx_bookticket_agence (rowid);
+ALTER TABLE llx_bookticket_agence_user ADD UNIQUE( fk_user, fk_agence);
