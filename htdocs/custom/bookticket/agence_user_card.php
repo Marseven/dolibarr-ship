@@ -209,10 +209,10 @@ if ($action == 'update' && $usercancreate)
 		{
 
 			$object->oldcopy = clone $object;
-
+			die;
 			$$object->fk_agence             	 = GETPOST('fk_agence');
 			$object->fk_user             	 = GETPOST('fk_user');
-			die;
+
 			if (!$error && $object->check())
 			{
 				if ($object->update($user) > 0)
