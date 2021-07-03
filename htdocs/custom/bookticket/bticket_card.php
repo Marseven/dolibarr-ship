@@ -753,8 +753,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			//print $passenger;
 
 
-			if (empty($conf->global->MAIN_USE_JQUERY_MULTISELECT) && !defined('REQUIRE_JQUERY_MULTISELECT')) return '';
-
 			$htmlname = 'fk_passenger';
 			$morecss = 'vmenusearchselectcombo';
 			$minimumInputLength = 10;
@@ -795,7 +793,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$out .= $outdelayed;
 
 			print $out;
-
 
 			print '</td></tr>';
 
