@@ -754,61 +754,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print $passenger;
 
-			print "<script>
-					$(document).ready(function() {
-						$('.fk_passenger').select2();
-					});
-			</script>";
-
-			$htmlname = 'fk_passenger';
-			$morecss = '';
-			$minimumInputLength = 10;
-			$placeholder = 'Selectionner un passager';
-			$out = '<td><select type="text" class="'.$htmlname.($morecss ? ' '.$morecss : '').'" '.($moreparam ? $moreparam.' ' : '').'name="'.$htmlname.'"><option></option></select>';
-
-			$formattedarrayresult = array();
-
-			foreach ($passengerrecords as $lines) {
-				$o = new stdClass();
-				$o->id = $lines->rowid;
-				$o->text = $langs->trans($lines->nom).' '. $langs->trans($lines->prenom);
-				$formattedarrayresult[] = $o;
-			}
-
-			$tmpplugin = 'select2';
-			$outdelayed = "\n".'<!-- JS CODE TO ENABLE '.$tmpplugin.' for id '.$htmlname.' -->
-				<script>
-				$(document).ready(function () {
-					var data = '.json_encode($formattedarrayresult).';
-
-					$(".'.$htmlname.'").select2({
-						data: data,
-						language: select2arrayoflanguage,
-						containerCssClass: \':all:\',					/* Line to add class of origin SELECT propagated to the new <span class="select2-selection...> tag */
-						placeholder: "'.dol_escape_js($placeholder).'",
-						escapeMarkup: function (markup) { return markup; }, 	// let our custom formatter work
-						minimumInputLength: '.$minimumInputLength.',
-						formatResult: function(result, container, query, escapeMarkup) {
-							return escapeMarkup(result.text);
-						},
-						matcher: function (params, data) {
-
-							if(! data.id) return null;';
-
-			$outdelayed .= '
-								return data; }
-
-							});
-
-						});
-						</script>';
-
-			$out .= $outdelayed;
-
-			//print $out;
-
 			print '</td></tr>';
 
+			print "<script>
+						$(document).ready(function() {
+							$('.fk_passenger').select2();
+						});
+				</script>";
 			// new_passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("NewPassenger").'</td>';
 			print '<td><input type="checkbox" name="new_passenger" >';
@@ -1091,7 +1043,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Par").'</td>';
-			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
+			$passenger = '<td><select class="fk_passenger flat" name="fk_passenger_acc" id="fk_passenger_acc">';
 			if (empty($passengerrecords))
 			{
 				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
@@ -1112,6 +1064,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $passenger;
 
 			print '</td></tr>';
+
+			print "<script>
+					$(document).ready(function() {
+						$('.fk_passenger').select2();
+					});
+			</script>";
 
 			// fk_passenger
 			print '<td><input name="fk_passenger" type="hidden" value="'.$object->fk_passenger.'">';
