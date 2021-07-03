@@ -1477,8 +1477,6 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
 			else print '<script src="'.DOL_URL_ROOT.'/includes/jquery/js/jquery-ui.min.js'.($ext ? '?'.$ext : '').'"></script>'."\n";*/
 
 			print '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-			// Fall back to a local copy of jQuery if the CDN fails
 			<script>
 				window.jQuery || document.write(\'<script src="'.JS_JQUERY.'jquery.min.js'.($ext ? '?'.$ext : '').'"><\/script>\')
 			</script>';
@@ -1486,7 +1484,6 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
 
 			print '<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-			// Fall back to a local copy of jQuery if the CDN fails
 			<script>
 				window.jQuery || document.write(\'<script src="'.JS_JQUERY_UI.'jquery-ui.min.js'.($ext ? '?'.$ext : '').'"><\/script>\')
 			</script>';
