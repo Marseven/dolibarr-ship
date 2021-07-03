@@ -2,7 +2,7 @@
 
 ## Features
 
-BookTicket est un module de vente, réservation et gestion de billet de voyage. Il est prends en compte l'existant au Gabon.
+BookTicket est un module de vente, réservation et gestion de billet de voyage. Il est basé sur l'existant du transport maritime commerciale au Gabon.
 
 <!--
 ![Screenshot bookticket](img/screenshot_bookticket.png?raw=true "BookTicket"){imgmd}
