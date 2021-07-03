@@ -751,13 +751,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 
 			$passenger .= '</select>';
+
+			print $passenger;
+
 			print "<script>
 					$(document).ready(function() {
 						$('.fk_passenger').select2();
 					});
 			</script>";
-
-			print $passenger;
 
 			$htmlname = 'fk_passenger';
 			$morecss = '';
