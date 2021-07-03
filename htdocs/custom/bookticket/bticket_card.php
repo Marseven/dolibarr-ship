@@ -184,7 +184,6 @@ $sql_passenger = 'SELECT p.rowid, p.nom, p.prenom, p.entity,';
 $sql_passenger .= ' p.date_creation, p.tms as date_update';
 $sql_passenger .= ' FROM '.MAIN_DB_PREFIX.'bookticket_passenger as p';
 $sql_passenger .= ' WHERE p.entity IN ('.getEntity('passenger').')';
-$sql_passenger .= ' AND p.status = 2';
 $resql_passenger =$db->query($sql_passenger);
 if ($resql_passenger)
 {
