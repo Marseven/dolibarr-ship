@@ -788,7 +788,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 							if(! data.id) return null;';
 
-			$outdelayed .= 'return data;';
+			$outdelayed .= 'return data; }
+
+							});
+
+						});
+						</script>';
 
 			$out .= $outdelayed;
 
