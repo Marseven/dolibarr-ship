@@ -238,6 +238,12 @@ NbrePlaceReserve = Nombre de places réservées
 NbreVipReserve = Nombre de places VIP réservées
 NbreAffReserve = Nombre de places Affaire réservées
 NbreEcoReserve = Nombre de places Économique réservées
+NewReservation = Nouvelle Réservations
+
+BilletNormal = Billet Standard
+BilletEnfantBasAge = Billet pour Enfant Porté
+BilletMineur = Billet pour Mineur Accompagné
+BilletMineurConfie = Billet pour Mineur confié à DVM
 
 #
 # Box d'exemple
