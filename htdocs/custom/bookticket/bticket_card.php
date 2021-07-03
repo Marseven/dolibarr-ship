@@ -752,6 +752,51 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print $passenger;
 
+
+			if (empty($conf->global->MAIN_USE_JQUERY_MULTISELECT) && !defined('REQUIRE_JQUERY_MULTISELECT')) return '';
+
+			$htmlname = 'fk_passenger';
+			$morecss = 'vmenusearchselectcombo';
+			$minimumInputLength = 10;
+			$placeholder = 'Selectionner un passager';
+			$out = '<select type="text" class="'.$htmlname.($morecss ? ' '.$morecss : '').'" '.($moreparam ? $moreparam.' ' : '').'name="'.$htmlname.'"><option></option></select>';
+
+			$formattedarrayresult = array();
+
+			foreach ($passengerrecords as $lines) {
+				$o = new stdClass();
+				$o->id = $lines->rowid;
+				$o->text = $langs->trans($lines->nom).' '. $langs->trans($lines->prenom);
+				$formattedarrayresult[] = $o;
+			}
+
+			$tmpplugin = 'select2';
+			$outdelayed = "\n".'<!-- JS CODE TO ENABLE '.$tmpplugin.' for id '.$htmlname.' -->
+				<script>
+				$(document).ready(function () {
+					var data = '.json_encode($formattedarrayresult).';
+
+					$(".'.$htmlname.'").select2({
+						data: data,
+						language: select2arrayoflanguage,
+						containerCssClass: \':all:\',					/* Line to add class of origin SELECT propagated to the new <span class="select2-selection...> tag */
+						placeholder: "'.dol_escape_js($placeholder).'",
+						escapeMarkup: function (markup) { return markup; }, 	// let our custom formatter work
+						minimumInputLength: '.$minimumInputLength.',
+						formatResult: function(result, container, query, escapeMarkup) {
+							return escapeMarkup(result.text);
+						},
+						matcher: function (params, data) {
+
+							if(! data.id) return null;';
+
+			$outdelayed .= 'return data;';
+
+			$out .= $outdelayed;
+
+			print $out;
+
+
 			print '</td></tr>';
 
 			// new_passenger

@@ -17,3 +17,4 @@
 
 ALTER TABLE llx_bookticket_agence_caisse ADD CONSTRAINT fk_agence_caisse_fk_caisse FOREIGN KEY (fk_caisse) REFERENCES llx_bank_account (rowid);
 ALTER TABLE llx_bookticket_agence_caisse ADD CONSTRAINT fk_agence_caisse_fk_agence FOREIGN KEY (fk_agence) REFERENCES llx_bookticket_agence (rowid);
+ALTER TABLE llx_bookticket_agence_caisse ADD UNIQUE( fk_caisse, fk_agence);
