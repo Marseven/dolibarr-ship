@@ -731,6 +731,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
+
 			$passenger = '<td><select class="flat" name="fk_passenger" id="fk_passenger">';
 			if (empty($passengerrecords))
 			{
@@ -749,7 +750,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$passenger .= '</select>';
 
-			print $passenger;
+			//print $passenger;
 
 
 			if (empty($conf->global->MAIN_USE_JQUERY_MULTISELECT) && !defined('REQUIRE_JQUERY_MULTISELECT')) return '';
@@ -758,7 +759,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$morecss = 'vmenusearchselectcombo';
 			$minimumInputLength = 10;
 			$placeholder = 'Selectionner un passager';
-			$out = '<select type="text" class="'.$htmlname.($morecss ? ' '.$morecss : '').'" '.($moreparam ? $moreparam.' ' : '').'name="'.$htmlname.'"><option></option></select>';
+			$out = '<td><select type="text" class="'.$htmlname.($morecss ? ' '.$morecss : '').'" '.($moreparam ? $moreparam.' ' : '').'name="'.$htmlname.'"><option></option></select>';
 
 			$formattedarrayresult = array();
 
