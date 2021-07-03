@@ -752,9 +752,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			//print $passenger;
 
+			if (empty($conf->global->MAIN_USE_JQUERY_MULTISELECT) && !defined('REQUIRE_JQUERY_MULTISELECT')) return '';
 
 			$htmlname = 'fk_passenger';
-			$morecss = 'vmenusearchselectcombo';
+			$morecss = '';
 			$minimumInputLength = 10;
 			$placeholder = 'Selectionner un passager';
 			$out = '<td><select type="text" class="'.$htmlname.($morecss ? ' '.$morecss : '').'" '.($moreparam ? $moreparam.' ' : '').'name="'.$htmlname.'"><option></option></select>';
@@ -788,7 +789,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 							if(! data.id) return null;';
 
-			$outdelayed .= 'return data; }
+			$outdelayed .= '
+								return data; }
 
 							});
 
