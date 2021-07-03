@@ -2,13 +2,13 @@
 
 ## Features
 
-Description of the module...
+BookTicket est un module de vente, réservation et gestion de billet de voyage. Il est prends en compte l'existant au Gabon.
 
 <!--
 ![Screenshot bookticket](img/screenshot_bookticket.png?raw=true "BookTicket"){imgmd}
 -->
 
-Other external modules are available on [Dolistore.com](https://www.dolistore.com).
+[Dolistore.com](https://www.dolistore.com).
 
 ## Translations
 
