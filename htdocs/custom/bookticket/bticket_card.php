@@ -837,7 +837,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// passenger
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Par").'</td>';
-			$passenger = '<td><select class="flat" name="fk_passenger_acc" id="fk_passenger_acc">';
+			$passenger = '<td><select class="fk_passenger flat" name="fk_passenger_acc" id="fk_passenger_acc">';
 			if (empty($passengerrecords))
 			{
 				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
@@ -858,6 +858,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $passenger;
 
 			print '</td></tr>';
+
+			print "<script>
+						$(document).ready(function() {
+							$('.fk_passenger').select2();
+						});
+				</script>";
 
 
 		print '</table>';
