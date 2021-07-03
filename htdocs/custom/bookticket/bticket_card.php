@@ -753,7 +753,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$passenger .= '</select>';
 			print "<script>
 					$(document).ready(function() {
-						$('.fk_manager').select2();
+						$('.fk_passenger').select2();
 					});
 			</script>";
 
