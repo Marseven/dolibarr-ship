@@ -730,9 +730,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("InformationPassager").'</td></tr>';
 
 			// passenger
+			if (empty($conf->global->MAIN_USE_JQUERY_MULTISELECT) && !defined('REQUIRE_JQUERY_MULTISELECT')) return '';
+
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Passenger").'</td>';
 
-			$passenger = '<td><select class="flat" name="fk_passenger" id="fk_passenger">';
+			$passenger = '<td><select class="fk_passenger flat" name="fk_passenger" id="fk_passenger">';
 			if (empty($passengerrecords))
 			{
 				$passenger .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
@@ -749,10 +751,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 
 			$passenger .= '</select>';
+			print "<script>
+					$(document).ready(function() {
+						$('.fk_manager').select2();
+					});
+			</script>";
 
-			//print $passenger;
-
-			if (empty($conf->global->MAIN_USE_JQUERY_MULTISELECT) && !defined('REQUIRE_JQUERY_MULTISELECT')) return '';
+			print $passenger;
 
 			$htmlname = 'fk_passenger';
 			$morecss = '';
@@ -799,7 +804,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$out .= $outdelayed;
 
-			print $out;
+			//print $out;
 
 			print '</td></tr>';
 
