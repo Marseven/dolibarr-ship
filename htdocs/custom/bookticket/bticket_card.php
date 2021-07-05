@@ -480,6 +480,8 @@ if ($action == 'update' && $usercancreate)
 			$secondDate = new DateTime(GETPOST('date_naissance'));
 			$age = $firstDate->diff($secondDate);
 
+			var_dump($age->y);die;
+
 			if($age->y >= 15 && $object->categorie == 'A'){
 				$object->prix = $obj_prix->prix_standard;
 			}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
