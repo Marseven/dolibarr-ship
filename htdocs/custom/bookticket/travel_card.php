@@ -746,6 +746,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$object_ship = new Ship($db);
 			$object_ship->fetch($object->fk_ship);
 
+			if(date('Y-m-d') < $object->jour){
+				$object->status = Travel::STATUS_LOCK;
+				$object->update($user);
+			}
+
 			$head = travel_prepare_head($object);
 			$titre = $langs->trans("CardTravel");
 			$picto = 'travel';
