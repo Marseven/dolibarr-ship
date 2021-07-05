@@ -184,7 +184,7 @@ if ($action == 'update' && $usercancreate)
 			$object->oldcopy = clone $object;
 
 			$object->ref                    = $ref;
-			$object->label                  = GETPOST('label', $label_security_check);
+			$object->label                  = GETPOST('label');
 			$object->labelshort             = GETPOST('labelshort');
 			$object->prix_standard          = GETPOST('prix_standard');
 			$object->prix_enf_por           = GETPOST('prix_enf_por');
