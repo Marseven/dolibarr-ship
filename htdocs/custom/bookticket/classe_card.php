@@ -348,10 +348,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print '</td></tr>';
 
 		// Label
-		print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label', $label_security_check)).'"></td></tr>';
+		print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label', $label_security_check)).'" required></td></tr>';
 
 		// Labelshort
-		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'"></td></tr>';
+		print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('labelshort')).'" required></td></tr>';
 
 		print '</table>';
 
@@ -434,13 +434,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<table class="border allwidth">';
 
 			// Ref
-			print '<tr><td colspan="3"><input name="ref" type="hidden" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
+			print '<tr><td colspan="3"><input name="ref" type="hidden" class="maxwidth200" maxlength="128" value="'.$object->ref.'"></td></tr>';
 
 			// Label
-			print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
+			print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'" required></td></tr>';
 
 			// Labelshort
-			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'"></td></tr>';
+			print '<tr><td class="fieldrequired">'.$langs->trans("Labelshort").'</td><td colspan="3"><input name="labelshort" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->labelshort).'" required></td></tr>';
 
 			// prix_standard
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("PrixStandard").'</td>';
@@ -464,7 +464,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// kilo_bagage
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("KiloBagage").'</td>';
-			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'"> Kg';
+			print '<td><input name="kilo_bagage" class="maxwidth50" value="'.$object->kilo_bagage.'" required> Kg';
 			print '</td></tr>';
 
 			print '</table>';
