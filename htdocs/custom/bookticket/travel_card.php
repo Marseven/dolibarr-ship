@@ -745,7 +745,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Fiche en mode visu
 			$object_ship = new Ship($db);
 			$object_ship->fetch($object->fk_ship);
-
+			$firstDate  = new DateTime($object->jour);
+			$secondDate = new DateTime(date('Y-m-d'));
 			var_dump(date('Y-m-d'));
 			var_dump($object->jour);
 			var_dump(date('Y-m-d') < $object->jour);die;
