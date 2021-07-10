@@ -749,9 +749,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			var_dump(date('Y-m-d', $object->jour));
 			$date1 = date('Y-m-d');
 			$date2 = date('Y-m-d', $object->jour);
-			var_dump($date1 < $date2);
+			var_dump($date2 < $date1);
 			die;
-			if(($date1 < $date2) && $object->status != Travel::STATUS_LOCK){
+			if(($date2 < $date1) && $object->status != Travel::STATUS_LOCK){
 				$object->status = Travel::STATUS_LOCK;
 				$object->update($user);
 			}
