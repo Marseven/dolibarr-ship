@@ -748,7 +748,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$object->status = Travel::STATUS_DRAFT;
 			$object->update($user);
 
-			if(date('Y-m-d') < dol_print_date($object->jour, 'day', 'tzuser')){
+			if((date('d/m/Y') < dol_print_date($object->jour, 'day', 'tzuser')) && $object->status != Travel::STATUS_LOCK){
 				$object->status = Travel::STATUS_LOCK;
 				$object->update($user);
 			}
