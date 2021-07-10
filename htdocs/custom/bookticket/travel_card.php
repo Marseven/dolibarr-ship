@@ -745,8 +745,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Fiche en mode visu
 			$object_ship = new Ship($db);
 			$object_ship->fetch($object->fk_ship);
-			$object->status = Travel::STATUS_DRAFT;
-			$object->update($user);
 
 			if((date('Y-m-d') < dol_print_date($object->jour, 'day', 'tzuser')) && $object->status != Travel::STATUS_LOCK){
 				$object->status = Travel::STATUS_LOCK;
