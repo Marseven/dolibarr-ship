@@ -746,6 +746,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$object_ship = new Ship($db);
 			$object_ship->fetch($object->fk_ship);
 
+			var_dump(date('Y-m-d') < $object->jour);die;
+
 			if(date('Y-m-d') < $object->jour){
 				$object->status = Travel::STATUS_LOCK;
 				$object->update($user);
