@@ -246,7 +246,7 @@ if ($action == 'add' && $usercancreate)
 		$resql_a = $db->query($sql_a);
 		$obj = $db->fetch_object($resql_a);
 
-		$object->fk_agence             	 = $obj->fk_agence;
+		$object->fk_agence = $obj->fk_agence;
 
 		if(GETPOST('new_passenger') != 'on'){
 			$object->fk_passenger = GETPOST('fk_passenger');
@@ -317,13 +317,13 @@ if ($action == 'add' && $usercancreate)
 			$object->prix = $obj_prix->prix_standard;
 		}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
 			$object->prix = $obj_prix->prix_enf_por;
-		}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
+		}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'C'){
 			$object->prix = $obj_prix->prix_enf_acc;
-		}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
+		}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
 			$object->prix = $obj_prix->prix_enf_dvm;
 		}else{
 			$error++;
-			$mesg = "L'âge du passager renseigné est invalide.";
+			$mesg = "L'âge du passager renseigne invalide pour la catégorie choisie.";
 			setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 		}
 
@@ -495,7 +495,6 @@ if ($action == 'update' && $usercancreate)
 			}
 
 			if(GETPOST('accompagne') == 'on'){
-
 				if($age->y >= 15){
 					$error++;
 					$mesg = "L'âge du passager renseigné est supérieur au maximum requis.";
