@@ -490,7 +490,7 @@ if ($action == 'update' && $usercancreate)
 				$object->prix = $obj_prix->prix_enf_dvm;
 			}else{
 				$error++;
-				$mesg = 'Age passager renseigne invalide ';
+				$mesg = 'L\'âge du passager renseigne invalide pour la catégorie choisie.';
 				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 			}
 
