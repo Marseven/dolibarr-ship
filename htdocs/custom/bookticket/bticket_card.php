@@ -833,7 +833,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateNaissance").'</td>';
-			print '<td><input name="date_naissance" type="date" class="maxwidth300" value="'.$object_passenger->date_naissance.'" required>';
+			print '<td><input name="date_naissance" type="date" class="maxwidth300" value="'.$object_passenger->date_naissance.'">';
 			print '</td></tr>';
 
 			// adresse
@@ -843,7 +843,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// telephone
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Telephone").'</td>';
-			print '<td><input name="telephone" class="maxwidth300" value="'.$object_passenger->telephone.'" required>';
+			print '<td><input name="telephone" class="maxwidth300" value="'.$object_passenger->telephone.'">';
 			print '</td></tr>';
 
 			// email
@@ -1045,7 +1045,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// age
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("DateNaissance").'</td>';
-			print '<td><input name="date_naissance" type="date" class="maxwidth300" value="'.$obj_p->date_naissance.'" required>';
+			print '<td><input name="date_naissance" type="date" class="maxwidth300" value="'.$obj_p->date_naissance.'" >';
 			print '</td></tr>';
 
 			// adresse
@@ -1055,7 +1055,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// telephone
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Telephone").'</td>';
-			print '<td><input name="telephone" class="maxwidth300" value="'.$obj_p->telephone.'" required>';
+			print '<td><input name="telephone" class="maxwidth300" value="'.$obj_p->telephone.'" >';
 			print '</td></tr>';
 
 			// email
