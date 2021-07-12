@@ -1117,10 +1117,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, s.label as ship, p.nom as nom, p.prenom as prenom,  c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, s.label as ship, p.nom as nom, p.prenom as prenom, pc.nom as nom_acc, pc.prenom as prenom_acc, c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as pc ON t.fk_passenger_acc = pc.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
@@ -1228,6 +1230,29 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $obj->prix.' FCFA';
 			print '</td>';
 			print '</tr>';
+
+			// Prix
+			print '<tr>';
+			print '<td>';
+			$htmlhelp = $langs->trans('AccompagneHelp');
+			print $form->textwithpicto($langs->trans('Accompagne'), $htmlhelp);
+			print '</td>';
+			print '<td>';
+			print $obj->accompagne == 'on'  ? "OUI" : "NON";
+			print '</td>';
+			print '</tr>';
+
+			if($obj->accompagne == 'on'){
+				print '<tr>';
+				print '<td>';
+
+				print $langs->trans('Par');
+				print '</td>';
+				print '<td>';
+				print $obj->nom_acc.' '.$obj->prenom_acc;
+				print '</td>';
+				print '</tr>';
+			}
 
 			// Other attributes
 			include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
