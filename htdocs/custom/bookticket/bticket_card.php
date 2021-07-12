@@ -1126,13 +1126,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
-			var_dump($sql_t);die;
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
-
-			var_dump($obj);
-
-			die('NON');
 
 			$object_passenger->fetch($obj->fk_passenger_acc);
 
