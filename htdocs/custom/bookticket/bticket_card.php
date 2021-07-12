@@ -333,6 +333,10 @@ if ($action == 'add' && $usercancreate)
 				$error++;
 				$mesg = "L'âge du passager renseigné est supérieur au maximum requis pour être accompagné.";
 				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+			}elseif($object->categorie == 'D'){
+				$error++;
+				$mesg = "La catégorie choisie ne correspond pas. Un billet pour enfant confié à DVM ne peut pas avoir d'accompagnateur.";
+				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 			}else{
 				$object->fk_passenger_acc = GETPOST('fk_passenger_acc');
 			}
