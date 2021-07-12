@@ -1116,7 +1116,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</form>';
 		} else {
 			// Fiche en mode visu
-			die('ici');
+
 			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, s.label as ship, p.nom as nom, p.prenom as prenom, c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity, t.accompagne, t.fk_passenger_acc';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
@@ -1129,6 +1129,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
+
+			var_dump($obj);
+
+			die('NON');
 
 			$object_passenger->fetch($obj->fk_passenger_acc);
 
