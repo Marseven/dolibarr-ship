@@ -1130,6 +1130,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
 
+			$object_passenger->fetch($obj->fk_passenger_acc);
+
 			$head = bticket_prepare_head($object);
 			$titre = $langs->trans("CardTicket");
 			$picto = 'bticket';
@@ -1246,7 +1248,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $langs->trans('Par');
 				print '</td>';
 				print '<td>';
-				print $obj->nom_acc.' '.$obj->prenom_acc;
+				print $object_passenger->nom.' '.$object_passenger->prenom;
 				print '</td>';
 				print '</tr>';
 			}
