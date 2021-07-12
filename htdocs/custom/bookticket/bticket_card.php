@@ -1128,8 +1128,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
 			$resql_t = $db->query($sql_t);
 			$obj = $db->fetch_object($resql_t);
+			if($obj->accompagne == 'on'){
+				$object_passenger->fetch($obj->fk_passenger_acc);
+			}
 
-			$object_passenger->fetch($obj->fk_passenger_acc);
 
 			$head = bticket_prepare_head($object);
 			$titre = $langs->trans("CardTicket");
