@@ -333,9 +333,9 @@ if ($resql)
 		print_liste_field_titre($arrayfields['t.ship']['label'], $_SERVER["PHP_SELF"], "t.ship", "", $param, "", $sortfield, $sortorder);
 	}
 
-	if (!empty($arrayfields['t.lieu_depart']['checked']))  print_liste_field_titre($arrayfields['t.lieu_depart']['label'], $_SERVER['PHP_SELF'], 't.lieu_depart', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.lieu_depart']['checked']))  print_liste_field_titre($arrayfields['t.lieu_depart']['label'], $_SERVER['PHP_SELF'], 't.lieu_depart', '', $param, '', $sortfield, $sortorder);
 
-	if (!empty($arrayfields['t.lieu_arrive']['checked']))  print_liste_field_titre($arrayfields['t.lieu_arrive']['label'], $_SERVER['PHP_SELF'], 't.lieu_arrive', '', $param, '', $sortfield, $sortorder, 'center ');
+	if (!empty($arrayfields['t.lieu_arrive']['checked']))  print_liste_field_titre($arrayfields['t.lieu_arrive']['label'], $_SERVER['PHP_SELF'], 't.lieu_arrive', '', $param, '', $sortfield, $sortorder);
 
 	if (!empty($arrayfields['t.date_creation']['checked'])) {
 		print_liste_field_titre($arrayfields['t.date_creation']['label'], $_SERVER["PHP_SELF"], "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
@@ -379,7 +379,7 @@ if ($resql)
 		// Heure
 		if (!empty($arrayfields['t.heure']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.date('H:i', $obj->heure).'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.$obj->heure.'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
