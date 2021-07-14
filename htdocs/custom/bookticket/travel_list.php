@@ -167,6 +167,7 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 }
 
 $sql .= $db->plimit($limit + 1, $offset);
+$sql .= "ORDER BY t.date_creation DESC";
 
 var_dump($sql);
 
@@ -378,7 +379,7 @@ if ($resql)
 		// Heure
 		if (!empty($arrayfields['t.heure']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.dol_print_date($obj->heure, 'hour', 'tzuser').'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.date('H:i', $obj->heure).'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
