@@ -100,7 +100,7 @@ if (!empty($canvas))
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
 	't.ref'=>"Ref",
-	'p.nom'=>"Passenger",
+	'passenger'=>"Passenger",
 );
 
 
@@ -294,7 +294,7 @@ if ($resql)
 		print '<input class="flat" type="text" name="search_ref" size="8" value="'.dol_escape_htmltag($search_ref).'">';
 		print '</td>';
 	}
-	if (!empty($arrayfields['p.nom']['checked']))
+	if (!empty($arrayfields['passenger']['checked']))
 	{
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_passenger" size="12" value="'.dol_escape_htmltag($search_passenger).'">';
@@ -345,8 +345,8 @@ if ($resql)
 	if (!empty($arrayfields['t.ref']['checked'])) {
 		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER["PHP_SELF"], "t.ref", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['p.nom']['checked'])) {
-		print_liste_field_titre($arrayfields['p.nom']['label'], $_SERVER["PHP_SELF"], "p.nom", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['passenger']['checked'])) {
+		print_liste_field_titre($arrayfields['passenger']['label'], $_SERVER["PHP_SELF"], "passenger", "", $param, "", $sortfield, $sortorder);
 	}
 
 	if (!empty($arrayfields['t.travel']['checked'])) {
@@ -391,7 +391,7 @@ if ($resql)
 		}
 
 		// Passenger
-		if (!empty($arrayfields['p.nom']['checked']))
+		if (!empty($arrayfields['passenger']['checked']))
 		{
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->passenger).'"><a href="'.dol_buildpath('/bookticket/passenger_card.php', 1).'?id='.$obj->fk_passenger.'">'.$obj->passenger.' '.$obj->prenom.'</a></td>';
 			if (!$i) $totalarray['nbfield']++;
