@@ -181,7 +181,7 @@ if ($search_passenger)   $sql .= natural_search('p.nom', $search_passenger);
 
 $sql .= " ORDER BY t.date_creation DESC";
 
-$sql .= $db->order($sortfield, $sortorder);
+//$sql .= $db->order($sortfield, $sortorder);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
