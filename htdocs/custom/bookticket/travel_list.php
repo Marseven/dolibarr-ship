@@ -154,7 +154,7 @@ $sql .= ' WHERE t.entity IN ('.getEntity('travel').')';
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
 if ($search_jour)   $sql .= natural_search('t.jour', $search_jour);
 
-$sql .= "ORDER BY t.date_creation DESC";
+$sql .= " ORDER BY t.date_creation DESC";
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
