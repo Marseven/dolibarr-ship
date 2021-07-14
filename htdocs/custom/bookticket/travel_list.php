@@ -50,8 +50,7 @@ $toselect = GETPOST('toselect', 'array');
 
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_ref = GETPOST("search_ref", 'alpha');
-$search_jour_heure = GETPOST("search_jour_heure", 'alpha');
-$search_ship = GETPOST("search_ship", 'alpha');
+$search_jour = GETPOST("search_jour", 'alpha');
 $search_finished = GETPOST("search_finished", 'int');
 $optioncss = GETPOST('optioncss', 'alpha');
 
