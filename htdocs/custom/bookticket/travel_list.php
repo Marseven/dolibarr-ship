@@ -82,7 +82,6 @@ if (empty($action)) $action = 'list';
 $fieldstosearchall = array(
 	't.ref'=>"Ref",
 	't.jour'=>"TravelJour",
-	't.ship'=>"TravelShip",
 );
 
 //$isInEEC = isInEEC($mysoc);
@@ -120,7 +119,6 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
 	$sall = "";
 	$search_ref = "";
 	$search_jour = "";
-	$search_ship = "";
 	$search_finished = ''; // There is 2 types of list: a list of product and a list of services. No list with both. So when we clear search criteria, we must keep the filter on type.
 	$search_array_options = array();
 }
@@ -155,7 +153,6 @@ $sql .= ' WHERE t.entity IN ('.getEntity('travel').')';
 
 if ($search_ref)     $sql .= natural_search('t.ref', $search_ref);
 if ($search_jour)   $sql .= natural_search('t.jour', $search_jour);
-if ($search_ship) $sql .= natural_search('t.ship', $search_ship);
 
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -170,6 +167,8 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 }
 
 $sql .= $db->plimit($limit + 1, $offset);
+
+var_dump($sql);die;
 
 $resql = $db->query($sql);
 
@@ -203,7 +202,6 @@ if ($resql)
 	if ($sall) $param .= "&sall=".urlencode($sall);
 	if ($search_ref) $param = "&search_ref=".urlencode($search_ref);
 	if ($search_jour) $param .= "&search_jour=".urlencode($search_jour);
-	if ($search_ship) $param .= "&search_ship=".urlencode($search_ship);
 
 	// List of mass actions available
 	$arrayofmassactions = array(
@@ -281,7 +279,7 @@ if ($resql)
 	if (!empty($arrayfields['t.ship']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_ship" size="12" value="'.dol_escape_htmltag($search_ship).'">';
+		//print '<input class="flat" type="text" name="search_ship" size="12" value="'.dol_escape_htmltag($search_ship).'">';
 		print '</td>';
 	}
 
@@ -335,6 +333,7 @@ if ($resql)
 	}
 
 	if (!empty($arrayfields['t.lieu_depart']['checked']))  print_liste_field_titre($arrayfields['t.lieu_depart']['label'], $_SERVER['PHP_SELF'], 't.lieu_depart', '', $param, '', $sortfield, $sortorder, 'center ');
+
 	if (!empty($arrayfields['t.lieu_arrive']['checked']))  print_liste_field_titre($arrayfields['t.lieu_arrive']['label'], $_SERVER['PHP_SELF'], 't.lieu_arrive', '', $param, '', $sortfield, $sortorder, 'center ');
 
 	if (!empty($arrayfields['t.date_creation']['checked'])) {
@@ -354,23 +353,6 @@ if ($resql)
 	while ($i < min($num, $limit))
 	{
 		$obj = $db->fetch_object($resql);
-
-		/* Multilangs
-		if (!empty($conf->global->MAIN_MULTILANGS))  // If multilang is enabled
-		{
-			$sql = "SELECT label";
-			$sql .= " FROM ".MAIN_DB_PREFIX."product_lang";
-			$sql .= " WHERE fk_product=".$obj->rowid;
-			$sql .= " AND lang='".$db->escape($langs->getDefaultLang())."'";
-			$sql .= " LIMIT 1";
-
-			$result = $db->query($sql);
-			if ($result)
-			{
-				$objtp = $db->fetch_object($result);
-				if (!empty($objtp->label)) $obj->label = $objtp->label;
-			}
-		}*/
 
 		$travel_static->id = $obj->rowid;
 		$travel_static->ref = $obj->ref;
@@ -396,7 +378,7 @@ if ($resql)
 		// Heure
 		if (!empty($arrayfields['t.heure']['checked']))
 		{
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.$obj->heure.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->heure).'">'.dol_print_date($obj->heure, 'hour', 'tzuser').'</td>';
 			if (!$i) $totalarray['nbfield']++;
 		}
 
