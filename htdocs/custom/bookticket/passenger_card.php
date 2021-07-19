@@ -572,7 +572,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 
 
-				// accompagne
+				/* accompagne
 				print '<tr>';
 				print '<td>';
 				$htmlhelp = $langs->trans('AccompagneHelp');
@@ -581,7 +581,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<td>';
 				print $object->accompagne == "on" ? "Oui" : "Non";
 				print '</td>';
-				print '</tr>';
+				print '</tr>';*/
 
 
 
