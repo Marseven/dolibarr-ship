@@ -327,7 +327,7 @@ if ($action == 'add' && $usercancreate)
 			setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 		}
 
-		if(GETPOST('accompagne') == 'on'){
+		/*if(GETPOST('accompagne') == 'on'){
 
 			if($age->y >= 15){
 				$error++;
@@ -340,7 +340,7 @@ if ($action == 'add' && $usercancreate)
 			}else{
 				$object->fk_passenger_acc = GETPOST('fk_passenger_acc');
 			}
-		}
+		}*/
 
 		$object->status = Bticket::STATUS_APPROVED;
 
@@ -498,7 +498,7 @@ if ($action == 'update' && $usercancreate)
 				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 			}
 
-			if(GETPOST('accompagne') == 'on'){
+			/*if(GETPOST('accompagne') == 'on'){
 				if($age->y >= 15){
 					$error++;
 					$mesg = "L'âge du passager renseigné est supérieur au maximum requis.";
@@ -510,7 +510,7 @@ if ($action == 'update' && $usercancreate)
 				}else{
 					$object->fk_passenger_acc = GETPOST('fk_passenger_acc');
 				}
-			}
+			}*/
 
 			$object->fk_valideur = $user->fk_user;
 
@@ -852,7 +852,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input name="email" type="email" class="maxwidth300" value="'.$object_passenger->email.'">';
 			print '</td></tr>';
 
-			// accompagne
+			/* accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
 			print '<td><input type="checkbox" name="accompagne"'.($object_passenger->accompagne == 1 ? 'checked="checked"' : '').'>';
 			print '</td></tr>';
@@ -879,7 +879,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print $passenger;
 
-			print '</td></tr>';
+			print '</td></tr>';*/
 
 			print "<script>
 						$(document).ready(function() {
@@ -1065,7 +1065,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<td><input name="email" type="email" class="maxwidth300" value="'.$obj_p->email.'">';
 			print '</td></tr>';
 
-			// accompagne
+			/* accompagne
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Accompagne").'</td>';
 			print '<td><input type="checkbox" name="accompagne"'.($obj_p->accompagne == "on" ? 'checked' : '').'>';
 			print '</td></tr>';
@@ -1101,7 +1101,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			</script>";
 
 			// fk_passenger
-			print '<td><input name="fk_passenger" type="hidden" value="'.$object->fk_passenger.'">';
+			print '<td><input name="fk_passenger" type="hidden" value="'.$object->fk_passenger.'">';*/
 
 			print '</table>';
 
@@ -1233,7 +1233,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td>';
 			print '</tr>';
 
-			// Prix
+			/* Prix
 			print '<tr>';
 			print '<td>';
 			$htmlhelp = $langs->trans('AccompagneHelp');
@@ -1254,7 +1254,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $object_passenger->nom.' '.$object_passenger->prenom;
 				print '</td>';
 				print '</tr>';
-			}
+			}*/
 
 			// Other attributes
 			include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
