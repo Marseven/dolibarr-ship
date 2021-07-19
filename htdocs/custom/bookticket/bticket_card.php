@@ -791,6 +791,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("TypePiece").'</td>';
 
 			$piece = '<td><select class="flat" name="type_piece">';
+			$piece .= '<option value="Aucun">'.($langs->trans("Aucun")).'</option>';
 			$piece .= '<option value="CNI">'.($langs->trans("CNI")).'</option>';
 			$piece .= '<option value="Passeport">'.($langs->trans("Passeport")).'</option>';
 			$piece .= '<option value="Carte de Séjour">'.($langs->trans("CarteSéjour")).'</option>';
@@ -1003,6 +1004,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$piece = '<td><select class="flat" name="type_piece">';
 			$piece .= '<option value="'.$obj_p->type_piece.'">'.($langs->trans($obj_p->type_piece)).'</option>';
+			$piece .= '<option value="Aucun">'.($langs->trans("Aucun")).'</option>';
 			$piece .= '<option value="CNI">'.($langs->trans("CNI")).'</option>';
 			$piece .= '<option value="Passeport">'.($langs->trans("Passeport")).'</option>';
 			$piece .= '<option value="Carte de Séjour">'.($langs->trans("CarteSéjour")).'</option>';
