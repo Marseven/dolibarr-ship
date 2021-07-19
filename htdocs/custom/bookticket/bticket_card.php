@@ -794,6 +794,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$piece .= '<option value="CNI">'.($langs->trans("CNI")).'</option>';
 			$piece .= '<option value="Passeport">'.($langs->trans("Passeport")).'</option>';
 			$piece .= '<option value="Carte de Séjour">'.($langs->trans("CarteSéjour")).'</option>';
+			$piece .= '<option value="Permis de Conduire">'.($langs->trans("PermisConduire")).'</option>';
 			$piece .= '</select>';
 
 			print $piece;
@@ -817,7 +818,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'" required>';
+			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
 			print '</td></tr>';
 
 			// prenom
@@ -1005,6 +1006,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$piece .= '<option value="CNI">'.($langs->trans("CNI")).'</option>';
 			$piece .= '<option value="Passeport">'.($langs->trans("Passeport")).'</option>';
 			$piece .= '<option value="Carte de Séjour">'.($langs->trans("CarteSéjour")).'</option>';
+			$piece .= '<option value="Permis de Conduire">'.($langs->trans("PermisConduire")).'</option>';
 			$piece .= '</select>';
 
 			print $piece;
@@ -1029,7 +1031,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			// nom
 			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
-			print '<td><input name="nom" class="maxwidth300" value="'.$obj_p->nom.'" required>';
+			print '<td><input name="nom" class="maxwidth300" value="'.$obj_p->nom.'">';
 			print '</td></tr>';
 
 			// prenom
