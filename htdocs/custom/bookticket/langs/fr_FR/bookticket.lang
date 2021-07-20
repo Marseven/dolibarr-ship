@@ -93,7 +93,7 @@ Last Name = Nom
 
 NomObligatoire = Le champ Nom est obligatoire
 TelephoneObligatoire = Le champ Téléphone est obligatoire
-DatenaissanceObligatoire = Le champ Nom est obligatoire
+DatenaissanceObligatoire = Le champ Date de naissance est obligatoire
 
 #
 # City
