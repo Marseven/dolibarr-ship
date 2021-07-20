@@ -236,6 +236,21 @@ if ($action == 'add' && $usercancreate)
 		$error++;
 	}
 
+	if($age->y >= 15 && $object->categorie == 'A'){
+
+	}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+
+	}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'C'){
+
+	}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
+
+	}else{
+		$error++;
+		$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
+		setEventMessages($mesg, null, 'errors');
+		$action = "create";
+	}
+
 	if (!$error)
 	{
 
@@ -328,10 +343,6 @@ if ($action == 'add' && $usercancreate)
 			$object->prix = $obj_prix->prix_enf_acc;
 		}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
 			$object->prix = $obj_prix->prix_enf_dvm;
-		}else{
-			$error++;
-			$mesg = "L'âge du passager renseigne invalide pour la catégorie choisie.";
-			setEventMessages($mesg.$stdobject->error, '', 'errors');
 		}
 
 		/*if(GETPOST('accompagne') == 'on'){
@@ -456,6 +467,44 @@ if ($action == 'update' && $usercancreate)
 			$object->oldcopy = clone $object;
 
 			$object->ref                    = $ref;
+
+			if($age->y >= 15 && $object->categorie == 'A'){
+
+			}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+
+			}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'C'){
+
+			}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
+
+			}else{
+				$error++;
+				$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
+				setEventMessages($mesg, null, 'errors');
+				$action = "create";
+			}
+
+			if (empty(GETPOST('nom')) || GETPOST('nom') == '')
+			{
+				setEventMessages($langs->trans('NomObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				$action = "create";
+				$error++;
+			}
+
+			if (empty(GETPOST('telephone')) || GETPOST('telephone') == '')
+			{
+				setEventMessages($langs->trans('TelephoneObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				$action = "create";
+				$error++;
+			}
+
+			if (empty(GETPOST('date_naissance')) || GETPOST('date_naissance') == '')
+			{
+				setEventMessages($langs->trans('DatenaissanceObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				$action = "create";
+				$error++;
+			}
+
+
 			$object->fk_travel             	 = GETPOST('fk_travel');
 			$object_travel->fetch($object->fk_travel);
 			$object->fk_ship             	 = $object_travel->fk_ship;
@@ -499,10 +548,6 @@ if ($action == 'update' && $usercancreate)
 				$object->prix = $obj_prix->prix_enf_acc;
 			}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
 				$object->prix = $obj_prix->prix_enf_dvm;
-			}else{
-				$error++;
-				$mesg = 'L\'âge du passager renseigne invalide pour la catégorie choisie.';
-				setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
 			}
 
 			/*if(GETPOST('accompagne') == 'on'){
@@ -535,7 +580,7 @@ if ($action == 'update' && $usercancreate)
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans("ErrorBticketBadRefOrLabel"), null, 'errors');
+				else setEventMessages($langs->trans("ErrorFieldRequired"), null, 'errors');
 				$action = 'edit';
 			}
 		}
