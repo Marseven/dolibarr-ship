@@ -181,7 +181,7 @@ if ($user->rights->bookticket->bticket->read)
 		'users' => DOL_URL_ROOT.'/user/list.php',
 		'travel' => DOL_URL_ROOT.'/custom/bookticket/travelindex.php',
 		'ship' => DOL_URL_ROOT.'/custom/bookticket/shipindex.php',
-		'passenger' => DOL_URL_ROOT.'/custom/bookticket/passengerindex.php',
+		'passenger' => DOL_URL_ROOT.'/custom/bookticket/bticketindex.php',
 		'classe' => DOL_URL_ROOT.'/custom/bookticket/classeindex.php',
 		'city' => DOL_URL_ROOT.'/custom/bookticket/city_list.php',
 		'agence' => DOL_URL_ROOT.'/custom/bookticket/agence_list.php',
