@@ -176,7 +176,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 if ($user->rights->classe->lire)
 {
 	$max = 15;
-	$sql = "SELECT c.rowid, c.ref, c.label, c.labelshort,  c.prix_standard, c.prix_enfant, c.prix_enf_stand, c.kilo_bagage,";
+	$sql = "SELECT c.rowid, c.ref, c.label, c.labelshort,  c.prix_standard, c.prix_enf_por, c.prix_enf_acc, c.prix_enf_dvm, c.kilo_bagage,";
 	$sql .= " c.entity,";
 	$sql .= " c.tms as datem";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bookticket_classe as c";
@@ -251,13 +251,16 @@ if ($user->rights->classe->lire)
 				print $classe_static->LibStatut($objp->prix_standard, 3, 0);
 				print "</span></td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $classe_static->LibStatut($objp->prix_enfant, 3, 1);
+				print $classe_static->LibStatut($objp->prix_enf_por, 3, 1);
 				print "</span></td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $classe_static->LibStatut($objp->prix_enf_stand, 3, 2);
+				print $classe_static->LibStatut($objp->prix_enf_acc, 3, 2);
 				print "</span></td>";
 				print '<td class="right nowrap width25"><span class="statusrefbuy">';
-				print $classe_static->LibStatut($objp->kilo_bagage, 3, 3);
+				print $classe_static->LibStatut($objp->prix_enf_dvm, 3, 3);
+				print "</span></td>";
+				print '<td class="right nowrap width25"><span class="statusrefbuy">';
+				print $classe_static->LibStatut($objp->kilo_bagage, 3, 4);
 				print "</span></td>";
 				print "</tr>\n";
 				$i++;
