@@ -89,6 +89,12 @@ PermisConduire = Permis de Conduire
 CategorieBillet = Catégorie du Billet
 CarteSéjour = Carte de Séjour
 
+Last Name = Nom
+
+NomObligatoire = Le champ Nom est obligatoire
+TelephoneObligatoire = Le champ Téléphone est obligatoire
+DatenaissanceObligatoire = Le champ Nom est obligatoire
+
 #
 # City
 #
