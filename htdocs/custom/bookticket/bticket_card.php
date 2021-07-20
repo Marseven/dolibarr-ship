@@ -215,16 +215,23 @@ if ($action == 'add' && $usercancreate)
 		$error++;
 	}
 
-	if (empty(GETPOST('nom')))
+	if (empty(GETPOST('nom')) || GETPOST('nom') == '')
 	{
 		setEventMessages($langs->trans('NomObligatoire', $langs->transnoentities('Ref')), null, 'errors');
 		$action = "create";
 		$error++;
 	}
 
-	if (empty(GETPOST('telephone')))
+	if (empty(GETPOST('telephone')) || GETPOST('telephone') == '')
 	{
 		setEventMessages($langs->trans('TelephoneObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+		$action = "create";
+		$error++;
+	}
+
+	if (empty(GETPOST('date_naissance')) || GETPOST('date_naissance') == '')
+	{
+		setEventMessages($langs->trans('DatenaissanceObligatoire', $langs->transnoentities('Ref')), null, 'errors');
 		$action = "create";
 		$error++;
 	}
@@ -324,7 +331,7 @@ if ($action == 'add' && $usercancreate)
 		}else{
 			$error++;
 			$mesg = "L'âge du passager renseigne invalide pour la catégorie choisie.";
-			setEventMessages($mesg.$stdobject->error, $mesg.$stdobject->errors, 'errors');
+			setEventMessages($mesg.$stdobject->error, '', 'errors');
 		}
 
 		/*if(GETPOST('accompagne') == 'on'){
