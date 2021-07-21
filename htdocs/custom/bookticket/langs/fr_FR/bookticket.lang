@@ -135,8 +135,9 @@ ClasseIsUsed = Classe utilisée
 ClasseCard = Détails de la classe 
 CardClasse = Détails de la classe
 PrixStandard = Prix Adulte	
-PrixEnfant = Prix Enfant	
-PrixEnfStand = Prix Adulte Accompagné	
+PrixEnfantPorte	= Prix de l'enfant porté
+PrixEnfAcc = Prix de l'enfant accompagné
+PrixEnfDVM = Prix de lenfant accompagné par DVM
 KiloBagage = Nombre de Kilo des Bagages
 
 #

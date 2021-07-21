@@ -785,14 +785,32 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			{
 				$classe .= '<option value="0">'.($langs->trans("AucuneEntree")).'</option>';
 			}else{
+				$object_travel->fetch($travel);
 				foreach ($classerecords as $lines)
 				{
-					$classe .= '<option value="';
-					$classe .= $lines->rowid;
-					$classe .= '"';
-					$classe .= '>';
-					$classe .= $langs->trans($lines->label);
-					$classe .= '</option>';
+					if($lines->labelshort == "VIP" && $object_travel->nbre_vip > 0){
+						$classe .= '<option value="';
+						$classe .= $lines->rowid;
+						$classe .= '"';
+						$classe .= '>';
+						$classe .= $langs->trans($lines->label);
+						$classe .= '</option>';
+					}elseif($lines->labelshort == "ECO" && $object_travel->nbre_eco > 0){
+						$classe .= '<option value="';
+						$classe .= $lines->rowid;
+						$classe .= '"';
+						$classe .= '>';
+						$classe .= $langs->trans($lines->label);
+						$classe .= '</option>';
+					}elseif($lines->labelshort == "AFF" && $object_travel->nbre_aff > 0){
+						$classe .= '<option value="';
+						$classe .= $lines->rowid;
+						$classe .= '"';
+						$classe .= '>';
+						$classe .= $langs->trans($lines->label);
+						$classe .= '</option>';
+					}
+
 				}
 			}
 
