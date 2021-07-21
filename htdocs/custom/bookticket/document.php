@@ -256,6 +256,7 @@ if($usercancreate && $type == 'travel'){
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
 	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
+	$sql_t .= " ORDER BY p.nom ASC";
 	$resql_t = $db->query($sql_t);
 
 	if ($resql_t)
