@@ -236,7 +236,7 @@ if ($action == 'add' && $usercancreate)
 		$error++;
 	}
 
-	$firstDate  = new DateTime(date('Y-m-d'));
+	/*$firstDate  = new DateTime(date('Y-m-d'));
 	$secondDate = new DateTime(GETPOST('date_naissance'));
 	$age = $firstDate->diff($secondDate);
 
@@ -254,7 +254,7 @@ if ($action == 'add' && $usercancreate)
 		$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
 		setEventMessages($mesg, null, 'errors');
 		$action = "create";
-	}
+	}*/
 
 	if (!$error)
 	{
@@ -477,7 +477,7 @@ if ($action == 'update' && $usercancreate)
 			$secondDate = new DateTime(GETPOST('date_naissance'));
 			$age = $firstDate->diff($secondDate);
 
-			if($age->y >= 15 && GETPOST('categorie') == 'A'){
+			/*if($age->y >= 15 && GETPOST('categorie') == 'A'){
 
 			}elseif(($age->y <= 5 && $age->y >= 0) && GETPOST('categorie') == 'B'){
 
@@ -490,7 +490,7 @@ if ($action == 'update' && $usercancreate)
 				$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
 				setEventMessages($mesg, null, 'errors');
 				$action = "create";
-			}
+			}*/
 
 			if (empty(GETPOST('nom')) || GETPOST('nom') == '')
 			{
