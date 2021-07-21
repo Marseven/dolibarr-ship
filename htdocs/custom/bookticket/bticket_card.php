@@ -236,6 +236,10 @@ if ($action == 'add' && $usercancreate)
 		$error++;
 	}
 
+	$firstDate  = new DateTime(date('Y-m-d'));
+	$secondDate = new DateTime(GETPOST('date_naissance'));
+	$age = $firstDate->diff($secondDate);
+
 	if($age->y >= 15 && $object->categorie == 'A'){
 
 	}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
@@ -467,6 +471,10 @@ if ($action == 'update' && $usercancreate)
 			$object->oldcopy = clone $object;
 
 			$object->ref                    = $ref;
+
+			$firstDate  = new DateTime(date('Y-m-d'));
+			$secondDate = new DateTime(GETPOST('date_naissance'));
+			$age = $firstDate->diff($secondDate);
 
 			if($age->y >= 15 && $object->categorie == 'A'){
 
