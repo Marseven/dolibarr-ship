@@ -239,15 +239,15 @@ if ($action == 'add' && $usercancreate)
 	$firstDate  = new DateTime(date('Y-m-d'));
 	$secondDate = new DateTime(GETPOST('date_naissance'));
 	$age = $firstDate->diff($secondDate);
-	var_dump($age->y);
-	if($age->y >= 15 && $object->categorie == 'A'){
-		die('1');
-	}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
-		die('2');
-	}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'C'){
-		die('3');
-	}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
-		die('4');
+
+	if($age->y >= 15 && GETPOST('categorie') == 'A'){
+
+	}elseif(($age->y <= 5 && $age->y >= 0) && GETPOST('categorie') == 'B'){
+
+	}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'C'){
+
+	}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'D'){
+
 	}else{
 
 		$error++;
@@ -479,13 +479,13 @@ if ($action == 'update' && $usercancreate)
 			$secondDate = new DateTime(GETPOST('date_naissance'));
 			$age = $firstDate->diff($secondDate);
 
-			if($age->y >= 15 && $object->categorie == 'A'){
+			if($age->y >= 15 && GETPOST('categorie') == 'A'){
 
-			}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+			}elseif(($age->y <= 5 && $age->y >= 0) && GETPOST('categorie') == 'B'){
 
-			}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'C'){
+			}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'C'){
 
-			}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
+			}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'D'){
 
 			}else{
 				$error++;
