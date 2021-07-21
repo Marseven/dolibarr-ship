@@ -936,7 +936,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// nom
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
+			print '<tr><td class="titlefieldcreate">Nom</td>';
 			print '<td><input name="nom" class="maxwidth300" value="'.$object_passenger->nom.'">';
 			print '</td></tr>';
 
@@ -1150,7 +1150,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td></tr>';
 
 			// nom
-			print '<tr><td class="titlefieldcreate">'.$langs->trans("Nom").'</td>';
+			print '<tr><td class="titlefieldcreate">Nom</td>';
 			print '<td><input name="nom" class="maxwidth300" value="'.$obj_p->nom.'">';
 			print '</td></tr>';
 
