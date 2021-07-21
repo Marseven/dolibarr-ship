@@ -144,14 +144,14 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addNote(utf8_decode("La convocation est prevue a ".$heuresave." et l'enregistrement termine a ".$heuresave1."."));
 
-	$cols=array( "REF"    	=> 17,
+	$cols=array( "REF"    	=> 20,
 				"Date"  	=> 23,
 				"Heure"  	=> 20,
 				"De"     	=> 30,
 				"Vers"     => 30,
 				"Classe" 	=> 15,
-				"Catégorie"  => 35,
-				"Bg"   => 10 );
+				"Categorie"  => 35,
+				"Bg"   => 15 );
 	$pdf->addCols( $cols);
 	$cols=array( "REF"   	 => "C",
 				"Date"  	 => "C",
@@ -159,7 +159,7 @@ if($usercancreate && $type == 'bticket'){
 				"De"     	 => "C",
 				"Vers" 	 => "C",
 				"Classe"    => "C",
-				"Catégorie"   => "C",
+				"Categorie"   => "C",
 				"Bg"    	 => "C");
 	$pdf->addLineFormat($cols);
 	$pdf->addLineFormat($cols);
@@ -171,7 +171,7 @@ if($usercancreate && $type == 'bticket'){
 					"De"     	=> $obj->de,
 					"Vers" 	 	=> $obj->vers,
 					"Classe"    => $obj->classe,
-					"Catégorie" => $obj->categorie,
+					"Categorie" => $obj->categorie,
 					"Bg"   	    => $obj->kilo." Kg" );
 	$size = $pdf->addLine( $y, $line );
 	$y   += $size + 2;
