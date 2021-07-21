@@ -548,19 +548,14 @@ if ($action == 'update' && $usercancreate)
 			$secondDate = new DateTime(GETPOST('date_naissance'));
 			$age = $firstDate->diff($secondDate);
 
-			if($age->y >= 15 && $object->categorie == 'A'){
+			if($object->categorie == 'A'){
 				$object->prix = $obj_prix->prix_standard;
-			}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
+			}elseif($object->categorie == 'B'){
 				$object->prix = $obj_prix->prix_enf_por;
-			}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'C'){
+			}elseif($object->categorie == 'C'){
 				$object->prix = $obj_prix->prix_enf_acc;
-			}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
+			}elseif($object->categorie == 'D'){
 				$object->prix = $obj_prix->prix_enf_dvm;
-			}else{
-				$error++;
-				$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
-				setEventMessages($mesg, null, 'errors');
-				$action = "create";
 			}
 
 			/*if(GETPOST('accompagne') == 'on'){
