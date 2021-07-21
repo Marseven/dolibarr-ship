@@ -236,7 +236,7 @@ if ($action == 'add' && $usercancreate)
 		$error++;
 	}
 
-	$firstDate  = new DateTime(date('Y-m-d'));
+	/*$firstDate  = new DateTime(date('Y-m-d'));
 	$secondDate = new DateTime(GETPOST('date_naissance'));
 	$age = $firstDate->diff($secondDate);
 
@@ -248,12 +248,7 @@ if ($action == 'add' && $usercancreate)
 
 	}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
 
-	}else{
-		$error++;
-		$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
-		setEventMessages($mesg, null, 'errors');
-		$action = "create";
-	}
+	}*/
 
 	if (!$error)
 	{
@@ -347,6 +342,11 @@ if ($action == 'add' && $usercancreate)
 			$object->prix = $obj_prix->prix_enf_acc;
 		}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
 			$object->prix = $obj_prix->prix_enf_dvm;
+		}else{
+			$error++;
+			$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
+			setEventMessages($mesg, null, 'errors');
+			$action = "create";
 		}
 
 		/*if(GETPOST('accompagne') == 'on'){
@@ -472,7 +472,7 @@ if ($action == 'update' && $usercancreate)
 
 			$object->ref                    = $ref;
 
-			$firstDate  = new DateTime(date('Y-m-d'));
+			/*$firstDate  = new DateTime(date('Y-m-d'));
 			$secondDate = new DateTime(GETPOST('date_naissance'));
 			$age = $firstDate->diff($secondDate);
 
@@ -489,7 +489,7 @@ if ($action == 'update' && $usercancreate)
 				$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
 				setEventMessages($mesg, null, 'errors');
 				$action = "create";
-			}
+			}*/
 
 			if (empty(GETPOST('nom')) || GETPOST('nom') == '')
 			{
@@ -556,6 +556,11 @@ if ($action == 'update' && $usercancreate)
 				$object->prix = $obj_prix->prix_enf_acc;
 			}elseif(($age->y < 15 && $age->y >= 6) && $object->categorie == 'D'){
 				$object->prix = $obj_prix->prix_enf_dvm;
+			}else{
+				$error++;
+				$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
+				setEventMessages($mesg, null, 'errors');
+				$action = "create";
 			}
 
 			/*if(GETPOST('accompagne') == 'on'){
