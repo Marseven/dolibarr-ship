@@ -239,7 +239,7 @@ if ($action == 'add' && $usercancreate)
 	$firstDate  = new DateTime(date('Y-m-d'));
 	$secondDate = new DateTime(GETPOST('date_naissance'));
 	$age = $firstDate->diff($secondDate);
-
+	var_dump($age);
 	if($age->y >= 15 && $object->categorie == 'A'){
 		die('1');
 	}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
