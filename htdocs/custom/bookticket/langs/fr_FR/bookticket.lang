@@ -95,6 +95,9 @@ NomObligatoire = Le champ Nom est obligatoire
 TelephoneObligatoire = Le champ Téléphone est obligatoire
 DatenaissanceObligatoire = Le champ Date de naissance est obligatoire
 
+CancelReserve = Annuler la Réservation
+ArchiveReserve = Archiver la Réservation
+
 #
 # City
 #
@@ -134,10 +137,10 @@ ClasseDeleted = Supprimer la classe
 ClasseIsUsed = Classe utilisée
 ClasseCard = Détails de la classe 
 CardClasse = Détails de la classe
-PrixStandard = Prix Adulte	
-PrixEnfantPorte	= Prix de l'enfant porté
+PrixStandard = Prix Adulte
+PrixEnfantPorte = Prix de l'enfant porté
 PrixEnfAcc = Prix de l'enfant accompagné
-PrixEnfDVM = Prix de lenfant accompagné par DVM
+PrixEnfDVM = Prix de l'enfant accompagné par DVM
 KiloBagage = Nombre de Kilo des Bagages
 
 #
