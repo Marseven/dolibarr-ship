@@ -252,9 +252,7 @@ if ($action == 'add' && $usercancreate)
 
 		$error++;
 		$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
-		var_dump($mesg);
 		setEventMessages($mesg, null, 'errors');
-		die();
 		$action = "create";
 	}
 
