@@ -150,9 +150,8 @@ if($usercancreate && $type == 'bticket'){
 				"De"     	=> 30,
 				"Vers"     => 30,
 				"Classe" 	=> 15,
-				"Details"  => 35,
-				"Bg"   => 10,
-				"St"   => 10 );
+				"Catégorie"  => 35,
+				"Bg"   => 10 );
 	$pdf->addCols( $cols);
 	$cols=array( "REF"   	 => "C",
 				"Date"  	 => "C",
@@ -160,9 +159,8 @@ if($usercancreate && $type == 'bticket'){
 				"De"     	 => "C",
 				"Vers" 	 => "C",
 				"Classe"    => "C",
-				"Details"   => "C",
-				"Bg"    	 => "C",
-				"St"    	 => "C" );
+				"Catégorie"   => "C",
+				"Bg"    	 => "C");
 	$pdf->addLineFormat($cols);
 	$pdf->addLineFormat($cols);
 
@@ -173,9 +171,8 @@ if($usercancreate && $type == 'bticket'){
 					"De"     	=> $obj->de,
 					"Vers" 	 	=> $obj->vers,
 					"Classe"    => $obj->classe,
-					"Details"   => $object_passenger->accompagne == "on" ? "Accompagné par ".$object_accompgneur->nom." ".$object_accompgneur->prenom : "Aucun",
-					"Bg"   	    => $obj->kilo." Kg",
-					"St"    	=> $object->status == 2 ? "C" : "R"  );
+					"Catégorie" => $obj->categorie,
+					"Bg"   	    => $obj->kilo." Kg" );
 	$size = $pdf->addLine( $y, $line );
 	$y   += $size + 2;
 
