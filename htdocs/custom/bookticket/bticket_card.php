@@ -241,17 +241,20 @@ if ($action == 'add' && $usercancreate)
 	$age = $firstDate->diff($secondDate);
 
 	if($age->y >= 15 && $object->categorie == 'A'){
-
+		die('1');
 	}elseif(($age->y <= 5 && $age->y >= 0) && $object->categorie == 'B'){
-
+		die('2');
 	}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'C'){
-
+		die('3');
 	}elseif(($age->y < 15 && $age->y > 5) && $object->categorie == 'D'){
-
+		die('4');
 	}else{
+
 		$error++;
 		$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
+		var_dump($mesg);
 		setEventMessages($mesg, null, 'errors');
+		die();
 		$action = "create";
 	}
 
