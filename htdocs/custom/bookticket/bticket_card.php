@@ -261,7 +261,7 @@ if ($action == 'add' && $usercancreate)
 
 			if (empty(GETPOST('nationalite')) || GETPOST('nationalite') == '')
 			{
-				setEventMessages($langs->trans('NationaliteObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				setEventMessages($langs->trans('NationaliteObligatoire'), null, 'errors');
 				$action = "create";
 				$error++;
 			}
