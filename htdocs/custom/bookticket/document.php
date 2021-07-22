@@ -200,11 +200,10 @@ if($usercancreate && $type == 'bticket'){
 	Validité du billet:
 	Le transporteur se réserve le droit de modifier l'itinéraire, les horaires de départ ou annuler le voyage.
 	Il n'est responsable des horaires à l'arrivée en fonction des marées ou du mauvais temps.
-	Le billet paye a une validité 03 mois à compter de sa date d'émission. Il est modifiable contre une pénalité de
-	5.000F CFA. Le billet est non remboursable. sauf en cas de non exécution du trajet par la compagnie. Le billet
-	est annulé, si le passager n'a pas notifié le changement de la date de son voyage au moins 24 h avant le départ.
-	Si le passager a déjà sa carte d'embarquement et qu'il vienne après le départ du bateau, son billet devient nul
-	et sans remboursement.
+	Le billet paye a une validité 03 mois à compter de sa date d'émission.Le billet est non remboursable. sauf en cas
+	de non exécution du trajet par la compagnie. Le billet est annulé, si le passager n'a pas notifié le changement de
+	la date de son voyage au moins 24 h avant le départ. Si le passager a déjà sa carte d'embarquement et qu'il vienne
+	après le départ du bateau, son billet devient nul et sans remboursement.
 
 	Heure limite d'enregistrement :
 	La convocation est prévue 2h avant l'heure du départ et l'enregistrement termine 30 min avant l'heure du départ.

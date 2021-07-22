@@ -215,47 +215,6 @@ if ($action == 'add' && $usercancreate)
 		$error++;
 	}
 
-	if (empty(GETPOST('nom')) || GETPOST('nom') == '')
-	{
-		setEventMessages($langs->trans('NomObligatoire', $langs->transnoentities('Ref')), null, 'errors');
-		$action = "create";
-		$error++;
-	}
-
-	if (empty(GETPOST('telephone')) || GETPOST('telephone') == '')
-	{
-		setEventMessages($langs->trans('TelephoneObligatoire', $langs->transnoentities('Ref')), null, 'errors');
-		$action = "create";
-		$error++;
-	}
-
-	if (empty(GETPOST('date_naissance')) || GETPOST('date_naissance') == '')
-	{
-		setEventMessages($langs->trans('DatenaissanceObligatoire', $langs->transnoentities('Ref')), null, 'errors');
-		$action = "create";
-		$error++;
-	}
-
-	/*$firstDate  = new DateTime(date('Y-m-d'));
-	$secondDate = new DateTime(GETPOST('date_naissance'));
-	$age = $firstDate->diff($secondDate);
-
-	if($age->y >= 15 && GETPOST('categorie') == 'A'){
-
-	}elseif(($age->y <= 5 && $age->y >= 0) && GETPOST('categorie') == 'B'){
-
-	}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'C'){
-
-	}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'D'){
-
-	}else{
-
-		$error++;
-		$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
-		setEventMessages($mesg, null, 'errors');
-		$action = "create";
-	}*/
-
 	if (!$error)
 	{
 
@@ -278,6 +237,54 @@ if ($action == 'add' && $usercancreate)
 		if(GETPOST('new_passenger') != 'on'){
 			$object->fk_passenger = GETPOST('fk_passenger');
 		}else{
+			if (empty(GETPOST('nom')) || GETPOST('nom') == '')
+			{
+				setEventMessages($langs->trans('NomObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				$action = "create";
+				$error++;
+			}
+
+			if (empty(GETPOST('telephone')) || GETPOST('telephone') == '')
+			{
+				setEventMessages($langs->trans('TelephoneObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				$action = "create";
+				$error++;
+			}
+
+			if (empty(GETPOST('date_naissance')) || GETPOST('date_naissance') == '')
+			{
+				setEventMessages($langs->trans('DatenaissanceObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				$action = "create";
+				$error++;
+			}
+
+			if (empty(GETPOST('nationalite')) || GETPOST('nationalite') == '')
+			{
+				setEventMessages($langs->trans('NationaliteObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+				$action = "create";
+				$error++;
+			}
+
+			/*$firstDate  = new DateTime(date('Y-m-d'));
+			$secondDate = new DateTime(GETPOST('date_naissance'));
+			$age = $firstDate->diff($secondDate);
+
+			if($age->y >= 15 && GETPOST('categorie') == 'A'){
+
+			}elseif(($age->y <= 5 && $age->y >= 0) && GETPOST('categorie') == 'B'){
+
+			}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'C'){
+
+			}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'D'){
+
+			}else{
+
+				$error++;
+				$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
+				setEventMessages($mesg, null, 'errors');
+				$action = "create";
+			}*/
+
 			$object_passenger->ref             	 = GETPOST('pref');
 			$object_passenger->civility          = GETPOST('civilite');
 			$object_passenger->type_piece        = GETPOST('type_piece');
@@ -318,13 +325,16 @@ if ($action == 'add' && $usercancreate)
 
 			if (empty($customer->client))      $customer->code_client = '';
 
-			$result = $customer->create($user);
+			if (!$error){
+				$result = $customer->create($user);
 
-			$object_passenger->fk_socid = $result;
+				$object_passenger->fk_socid = $result;
 
-			$id_passenger = $object_passenger->create($user);
+				$id_passenger = $object_passenger->create($user);
 
-			$object->fk_passenger = $id_passenger;
+				$object->fk_passenger = $id_passenger;
+			}
+
 		}
 
 		$sql_prix = 'SELECT c.rowid, c.labelshort, c.prix_standard, c.prix_enf_por, c.prix_enf_acc,c.prix_enf_dvm, c.entity,';
@@ -473,45 +483,7 @@ if ($action == 'update' && $usercancreate)
 
 			$object->ref                    = $ref;
 
-			$firstDate  = new DateTime(date('Y-m-d'));
-			$secondDate = new DateTime(GETPOST('date_naissance'));
-			$age = $firstDate->diff($secondDate);
 
-			/*if($age->y >= 15 && GETPOST('categorie') == 'A'){
-
-			}elseif(($age->y <= 5 && $age->y >= 0) && GETPOST('categorie') == 'B'){
-
-			}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'C'){
-
-			}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'D'){
-
-			}else{
-				$error++;
-				$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
-				setEventMessages($mesg, null, 'errors');
-				$action = "create";
-			}*/
-
-			if (empty(GETPOST('nom')) || GETPOST('nom') == '')
-			{
-				setEventMessages($langs->trans('NomObligatoire', $langs->transnoentities('Ref')), null, 'errors');
-				$action = "create";
-				$error++;
-			}
-
-			if (empty(GETPOST('telephone')) || GETPOST('telephone') == '')
-			{
-				setEventMessages($langs->trans('TelephoneObligatoire', $langs->transnoentities('Ref')), null, 'errors');
-				$action = "create";
-				$error++;
-			}
-
-			if (empty(GETPOST('date_naissance')) || GETPOST('date_naissance') == '')
-			{
-				setEventMessages($langs->trans('DatenaissanceObligatoire', $langs->transnoentities('Ref')), null, 'errors');
-				$action = "create";
-				$error++;
-			}
 
 
 			$object->fk_travel             	 = GETPOST('fk_travel');
@@ -524,6 +496,54 @@ if ($action == 'update' && $usercancreate)
 			$object->fk_passenger             	 = GETPOST('fk_passenger');
 
 			$object_passenger->fetch($object->fk_passenger);
+
+
+				$firstDate  = new DateTime(date('Y-m-d'));
+				$secondDate = new DateTime(GETPOST('date_naissance'));
+				$age = $firstDate->diff($secondDate);
+
+				/*if($age->y >= 15 && GETPOST('categorie') == 'A'){
+
+				}elseif(($age->y <= 5 && $age->y >= 0) && GETPOST('categorie') == 'B'){
+
+				}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'C'){
+
+				}elseif(($age->y < 15 && $age->y > 5) && GETPOST('categorie') == 'D'){
+
+				}else{
+					$error++;
+					$mesg = "L'âge du passager renseigné invalide pour la catégorie choisie.";
+					setEventMessages($mesg, null, 'errors');
+					$action = "create";
+				}*/
+
+				if (empty(GETPOST('nom')) || GETPOST('nom') == '')
+				{
+					setEventMessages($langs->trans('NomObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+					$action = "create";
+					$error++;
+				}
+
+				if (empty(GETPOST('telephone')) || GETPOST('telephone') == '')
+				{
+					setEventMessages($langs->trans('TelephoneObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+					$action = "create";
+					$error++;
+				}
+
+				if (empty(GETPOST('date_naissance')) || GETPOST('date_naissance') == '')
+				{
+					setEventMessages($langs->trans('DatenaissanceObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+					$action = "create";
+					$error++;
+				}
+
+				if (empty(GETPOST('nationalite')) || GETPOST('nationalite') == '')
+				{
+					setEventMessages($langs->trans('NationaliteObligatoire', $langs->transnoentities('Ref')), null, 'errors');
+					$action = "create";
+					$error++;
+				}
 
 			$object_passenger->ref             	 = GETPOST('pref');
 			$object_passenger->civility          = GETPOST('civilite');
