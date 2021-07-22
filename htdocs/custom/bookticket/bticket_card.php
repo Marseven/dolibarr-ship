@@ -237,6 +237,7 @@ if ($action == 'add' && $usercancreate)
 		if(GETPOST('new_passenger') != 'on'){
 			$object->fk_passenger = GETPOST('fk_passenger');
 		}else{
+
 			if (empty(GETPOST('nom')) || GETPOST('nom') == '')
 			{
 				setEventMessages($langs->trans('NomObligatoire', $langs->transnoentities('Ref')), null, 'errors');
