@@ -22,6 +22,7 @@ create table llx_bookticket_bticket
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   ref                       varchar(128) DEFAULT 0 NOT NULL,
   categorie                 varchar(255) DEFAULT NULL,
+  mode_paiement             varchar(255) DEFAULT NULL,
   prix                      float DEFAULT NULL,
   entity                    integer default 1,                    
   date_creation             datetime,                    

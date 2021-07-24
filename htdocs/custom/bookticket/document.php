@@ -136,7 +136,7 @@ if($usercancreate && $type == 'bticket'){
 
 	$pdf->addClientAdresse( $object_passenger->nom." ".$object_passenger->prenom, $object_passenger->adresse."\n".$object_passenger->telephone."\n".$object_passenger->email);
 
-	$pdf->addReglement("Airtel Money / Cash");
+	$pdf->addReglement(utf8_decode($obj->mode_paiement));
 
 	$pdf->addAchat($date);
 

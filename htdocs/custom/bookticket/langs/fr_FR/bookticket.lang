@@ -101,6 +101,9 @@ ArchiveReserve = Archiver la Réservation
 NationaliteObligatoire = Le champ Nationalité est obligatoire
 CatégorieBillet = Catégorie du Billet
 
+AirtelMoney = Airtel Money
+ChèqueVirement = Chèque / Virement
+
 #
 # City
 #

@@ -225,6 +225,7 @@ if ($action == 'add' && $usercancreate)
 		$object->fk_ship             	 = $object_travel->fk_ship;
 		$object->fk_classe             	 = GETPOST('fk_classe');
 		$object->categorie             	 = GETPOST('categorie');
+		$object->mode_paiement             	 = GETPOST('mode_paiement');
 
 		$sql_a = 'SELECT DISTINCT au.rowid, au.fk_agence';
 		$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
@@ -493,6 +494,7 @@ if ($action == 'update' && $usercancreate)
 			$object->fk_classe             	 = GETPOST('fk_classe');
 
 			$object->categorie             	 = GETPOST('categorie');
+			$object->mode_paiement             	 = GETPOST('mode_paiement');
 
 			$object->fk_passenger             	 = GETPOST('fk_passenger');
 
@@ -879,6 +881,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			print '</td></tr>';
 
+			// mode_paiement
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("ModePaiement").'</td>';
+
+			print '<td><select class="flat" name="mode_paiement">';
+			print '<option value="Cash">'.($langs->trans("Cash")).'</option>';
+			print '<option value="Airtel Money">'.($langs->trans("AirtelMoney")).'</option>';
+			print '<option value="Chèque/Virement">'.($langs->trans("ChèqueVirement")).'</option>';
+			print '</select>';
+
+			print '</td></tr>';
+
 		print '</table>';
 
 		print '<hr>';
@@ -1132,6 +1145,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$classe .= '</select>';
 
 			print $classe;
+
+			print '</td></tr>';
+
+			// mode_paiement
+			print '<tr><td class="titlefieldcreate">'.$langs->trans("ModePaiement").'</td>';
+
+			print '<td><select class="flat" name="mode_paiement">';
+			print '<option value="Cash">'.($langs->trans("Cash")).'</option>';
+			print '<option value="Airtel Money">'.($langs->trans("AirtelMoney")).'</option>';
+			print '<option value="Chèque/Virement">'.($langs->trans("ChèqueVirement")).'</option>';
+			print '</select>';
 
 			print '</td></tr>';
 
