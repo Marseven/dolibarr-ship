@@ -214,7 +214,7 @@ if ($action == 'update' && $usercancreate)
 		{
 			$object->oldcopy = clone $object;
 
-			$object->ref                    = $ref;
+			$object->ref                    = GETPOST('ref');
 			$object->fk_travel               = GETPOST('fk_travel');
 
 			$object_travel = new Travel($db);
@@ -250,7 +250,7 @@ if ($action == 'update' && $usercancreate)
 				}
 			} else {
 				if (count($object->errors)) setEventMessages($object->error, $object->errors, 'errors');
-				else setEventMessages($langs->trans("ErrortravelBadRefOrLabel"), null, 'errors');
+				else setEventMessages($langs->trans("Une erreur s'est produite"), null, 'errors');
 				$action = 'edit';
 			}
 		}
@@ -537,7 +537,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<table class="border allwidth">';
 
 			// Ref
-			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'" disabled></td></tr>';
+			print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("Ref").'</td><td colspan="3"><input name="ref" class="maxwidth200" maxlength="128" value="'.dol_escape_htmltag($object->ref).'"></td></tr>';
 
 			// travel
 			print '<tr>';
