@@ -339,37 +339,33 @@ if ($resql)
 		print '<tr class="oddeven">';
 
 		// Agence
-		if (!empty($arrayfields['Agence']['checked']))
-		{
+
 			print '<td class="tdoverflowmax200"><a href="'.dol_buildpath('/bookticket/agence_user_card.php', 1).'?id='.$obj->rowid.'">';
 			print $obj->label;
 			print '</a></td>';
 			if (!$i) $totalarray['nbfield']++;
-		}
+
 
 		// User
-		if (!empty($arrayfields['User']['checked']))
-		{
+
 			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->lastname).'">'.$obj->lastname.' '.$obj->firstname.'</td>';
 			if (!$i) $totalarray['nbfield']++;
-		}
+
 
 		// Date creation
-		if (!empty($arrayfields['au.date_creation']['checked']))
-		{
+
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
 			print '</td>';
 			if (!$i) $totalarray['nbfield']++;
-		}
+
 		// Date modification
-		if (!empty($arrayfields['au.tms']['checked']))
-		{
+
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
 			print '</td>';
 			if (!$i) $totalarray['nbfield']++;
-		}
+
 
 		// Action
 		print '<td class="nowrap center">';
