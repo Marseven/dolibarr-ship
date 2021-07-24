@@ -104,6 +104,7 @@ CatégorieBillet = Catégorie du Billet
 AirtelMoney = Airtel Money
 ChèqueVirement = Chèque / Virement
 ModePaiement = Mode de Paiement
+SELLLIST = Liste Vente
 
 #
 # City
