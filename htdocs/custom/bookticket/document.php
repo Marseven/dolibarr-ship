@@ -513,7 +513,7 @@ if($usercancreate && $type == 'sell'){
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->prix, "", 0, "L", $jj & 1);
+		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->prix.' XAF', "", 0, "L", $jj & 1);
 		// Column interspace is 1
 		$pdf->SetX ($pdf->GetX() + 1);
 		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
@@ -563,6 +563,6 @@ if($usercancreate && $type == 'sell'){
 
 	$py += $ptxp ['iy'];		// for row interspace
 
-	$file_pdf = $btickets[0]->travel."_".date("dmYHis").".pdf";
+	$file_pdf = $btickets[0]->travel."_Vente_".date("dmYHis").".pdf";
 	$pdf->Output("D", $file_pdf, true);
 }
