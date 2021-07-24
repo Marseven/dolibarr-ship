@@ -771,6 +771,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
 			$resql_t = $db->query($sql_t);
 
+			var_dump($resql_t);
+
 			if ($resql_t)
 			{
 				$num = $db->num_rows($resql_t);
