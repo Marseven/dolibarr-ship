@@ -103,18 +103,14 @@ $fieldstosearchall = array(
 	'User'=>"User",
 );
 
-if (!empty($conf->barcode->enabled)) {
-	$fieldstosearchall['t.barcode'] = 'Gencod';
-}
-
 //$isInEEC = isInEEC($mysoc);
 
 // Definition of fields for lists
 $arrayfields = array(
 	'Agence'=>array('label'=>$langs->trans("Agence"), 'checked'=>1),
 	'User'=>array('label'=>$langs->trans("User"), 'checked'=>1, 'position'=>12),
-	'au.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-	'au.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+	'au.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>1, 'position'=>500),
+	'au.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>1, 'position'=>500),
 );
 
 
@@ -322,10 +318,10 @@ if ($resql)
 		print_liste_field_titre($arrayfields['User']['label'], $_SERVER["PHP_SELF"], "User", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['au.date_creation']['checked'])) {
-		print_liste_field_titre($arrayfields['au.date_creation']['label'], $_SERVER["PHP_SELF"], "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+		print_liste_field_titre($arrayfields['au.date_creation']['label'], $_SERVER["PHP_SELF"], "au.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	if (!empty($arrayfields['au.tms']['checked'])) {
-		print_liste_field_titre($arrayfields['au.tms']['label'], $_SERVER["PHP_SELF"], "t.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+		print_liste_field_titre($arrayfields['au.tms']['label'], $_SERVER["PHP_SELF"], "au.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	print "</tr>\n";
