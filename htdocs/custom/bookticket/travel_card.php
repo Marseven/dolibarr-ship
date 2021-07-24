@@ -767,7 +767,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 			$resql_t = $db->query($sql_t);
 
-
 			if ($resql_t)
 			{
 				$num = $db->num_rows($resql_t);
@@ -799,13 +798,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 			$sql_t .= ' AND t.fk_travel IN ('.$object->id.')';
-			$sql_t .= " AND DAY(t.date_creation) = ( SELECT DAY( NOW() ) )";
-			$sql_t .= " AND MONTH(t.date_creation) = ( SELECT MONTH(NOW() ) )";
-			$sql_t .= " AND YEAR(t.date_creation) = ( SELECT YEAR(NOW()))";
+			$sql_t .= " AND DAY(t.date_creation) = (SELECT DAY( NOW()))";
+			$sql_t .= " AND MONTH(t.date_creation) = (SELECT MONTH(NOW()))";
+			$sql_t .= " AND YEAR(t.date_creation) = (SELECT YEAR(NOW()))";
 			$resql_t = $db->query($sql_t);
-
-			var_dump($sql_t);
-
 
 			if ($resql_t)
 			{
@@ -953,16 +949,16 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
 				print '<tr>';
 				print '<td>'.$langs->trans('VenteGlobaleVoyage').'</td>';
-				print '<td> Billets : '.$somme_billet.' XAF</td>';
-				print '<td> Pénalités : '.$somme_penalite.' XAF</td>';
-				print '<td> Total : '.$somme_total.' XAF</td>';
+				print '<td> Billets : <strong>'.$somme_billet.' XAF</strong></td>';
+				print '<td> Pénalités : <strong>'.$somme_penalite.' XAF</strong></td>';
+				print '<td> Total : <strong>'.$somme_total.' XAF</strong></td>';
 				print '</tr>';
 
 				print '<tr>';
 				print '<td>'.$langs->trans('VenteJour').'</td>';
-				print '<td> Billets : '.$somme_j_billet.' XAF</td>';
-				print '<td> Pénlités : '.$somme_j_penalite.' XAF</td>';
-				print '<td> Total : '.$somme_jour.' XAF</td>';
+				print '<td> Billets : <strong>'.$somme_j_billet.' XAF</strong></td>';
+				print '<td> Pénlités : <strong>'.$somme_j_penalite.' XAF</strong></td>';
+				print '<td> Total : <strong>'.$somme_jour.' XAF</strong></td>';
 				print '</tr>';
 
 				if (!empty($object->fk_user_creat))
