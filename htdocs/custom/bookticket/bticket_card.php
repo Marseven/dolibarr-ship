@@ -1058,8 +1058,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		$date = dol_print_date($obj->date_creation, 'day', 'tzuser');
 		$date1 = new DateTime($obj->date_creation);
 		$date1 = $date1->modify("+ 3 months");
-		$expire = $date1->format('d/m/Y');
-		$today = date('d/m/Y');
+		$expire = $date1->format('Y-m-d');
+		$today = date('Y-m-d');
 
 		// Fiche en mode edition
 		if ($action == 'edit' && $usercancreate)
@@ -1514,9 +1514,6 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?action=create&bticket='.$object->id.'">'.$langs->trans("NewPenalite").'</a>';
 
-			var_dump($expire);
-			var_dump($today);
-			var_dump($expire <= $today);
 			if($today <= $expire) print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
 
