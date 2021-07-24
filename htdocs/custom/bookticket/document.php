@@ -393,7 +393,7 @@ if($usercancreate && $type == 'sell'){
 	// This sample program uses data fetched from a CSV file
 
 	$btickets = [];
-	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, p.telephone as telephone, p.nom as nom, p.prenom as prenom, tr.ref as travel, tr.lieu_depart as lieu_depart, tr.lieu_arrive as lieu_arrive, tr.jour as depart, s.label as ship, s.ref as refship, ct.label as country, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, p.nom as nom, p.prenom as prenom, tr.ref as travel, tr.lieu_depart as lieu_depart, tr.lieu_arrive as lieu_arrive, tr.jour as depart, s.label as ship, s.ref as refship, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
 	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
@@ -401,9 +401,8 @@ if($usercancreate && $type == 'sell'){
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
 	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
-	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
 	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
-	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
+	$sql_t .= ' AND t.fk_travel IN ('.$object->id.')';
 	$sql_t .= " ORDER BY p.nom ASC";
 	$resql_t = $db->query($sql_t);
 
@@ -483,7 +482,7 @@ if($usercancreate && $type == 'sell'){
 	$pdf->SetX ($pdf->GetX() + 1);
 	$pdf->Cell ($pcol [3], $ptxp ['iy'], "Prix", 1, 0, "C", true);
 	$pdf->SetX ($pdf->GetX() + 1);
-	$pdf->Cell ($pcol [4], $ptxp ['iy'], "Pénalité", 1, 0, "C", true);
+	$pdf->Cell ($pcol [4], $ptxp ['iy'], utf8_decode("Pénalité"), 1, 0, "C", true);
 	$pdf->SetX ($pdf->GetX() + 1);
 	$pdf->Cell ($pcol [5], $ptxp ['iy'], "Total", 1, 0, "C", true);
 
@@ -494,7 +493,6 @@ if($usercancreate && $type == 'sell'){
 	$py = $ptxp ['py'];
 	$n = 0;		// Initial Y position for data rows
 	$offset = 0;
-	$onset = 0;
 	$somme = 0;
 	for ($jj = 0; $jj < $nn; $jj ++) {
 		$pdf->SetXY ($ptxp ['px'], $py);
@@ -531,14 +529,13 @@ if($usercancreate && $type == 'sell'){
 		$py += $ptxp ['iy'];		// for row interspace
 		$somme += $btickets[$jj]->prix+$penalite;
 		$offset = $jj;
-		$onset = $n;
 	}
 
 	$pdf->SetXY ($ptxp ['px'], $py);
 	// Column interspace is 1
 	$pdf->SetX ($pdf->GetX() + 1);
 	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-	$pdf->Cell ($pcol [0], $ptxp ['iy'], $onset , "", 0, "L", $offset & 1);
+	$pdf->Cell ($pcol [0], $ptxp ['iy'], "" , "", 0, "L", $offset & 1);
 	// Column interspace is 1
 	$pdf->SetX ($pdf->GetX() + 1);
 	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
