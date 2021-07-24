@@ -1514,6 +1514,9 @@ if ($action != 'create' && $action != 'edit')
 		{
 			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?action=create&bticket='.$object->id.'">'.$langs->trans("NewPenalite").'</a>';
 
+			var_dump($expire);
+			var_dump($today);
+			var_dump($expire >= $today);
 			if($expire >= $today) print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
 
