@@ -763,7 +763,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
-			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
+			$sql_t .= ' AND t.fk_travel IN ('.$object->id.')';
 
 			var_dump($sql_t);
 
@@ -802,7 +802,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
-			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
+			$sql_t .= ' AND t.fk_travel IN ('.$object->id.')';
 			$sql_t .= " AND DAY(t.date_creation) = ( SELECT DAY( NOW() ) )";
 			$sql_t .= " AND MONTH(t.date_creation) = ( SELECT MONTH(NOW() ) )";
 			$sql_t .= " AND YEAR(t.date_creation) = ( SELECT YEAR(NOW()))";
