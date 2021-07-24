@@ -792,7 +792,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$somme_j_penalite = 0;
 			$somme_jour = 0;
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, tr.ref as travel, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.prix, tr.ref as travel, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
