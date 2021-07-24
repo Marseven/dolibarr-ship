@@ -1516,8 +1516,8 @@ if ($action != 'create' && $action != 'edit')
 
 			var_dump($expire);
 			var_dump($today);
-			var_dump($expire >= $today);
-			if($expire >= $today) print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
+			var_dump($expire <= $today);
+			if($today <= $expire) print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
 
 		if ($object->status == Bticket::STATUS_VALIDATED)	// If validated
