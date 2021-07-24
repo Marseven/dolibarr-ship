@@ -281,6 +281,7 @@ if ($resql)
 	print '<tr class="liste_titre_filter">';
 	if (!empty($arrayfields['Agence']['checked']))
 	{
+		die('ici');
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_agence" size="8" value="'.dol_escape_htmltag($search_agence).'">';
 		print '</td>';
