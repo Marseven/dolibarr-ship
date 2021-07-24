@@ -758,15 +758,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$somme_penalite = 0;
 			$somme_total = 0;
 
-			$sql_t = 'SELECT DISTINCT t.rowid,  tr.ref as travel, ct.label as country, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid,  t.prix, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
-			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 			$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
 
 			var_dump($sql_t);
+
 			$resql_t = $db->query($sql_t);
 
 			var_dump($resql_t);
