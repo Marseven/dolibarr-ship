@@ -551,7 +551,7 @@ if($usercancreate && $type == 'sell'){
 	// Column interspace is 1
 	$pdf->SetX ($pdf->GetX() + 1);
 	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
-	$pdf->Cell ($pcol [4], $ptxp ['iy'], "Total", "", 0, "C", $offset & 1);
+	$pdf->Cell ($pcol [4], $ptxp ['iy'], "Total", 1, 0, "C", $offset & 1);
 	// Column interspace is 1
 	$pdf->SetX ($pdf->GetX() + 1);
 	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
