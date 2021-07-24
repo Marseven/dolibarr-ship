@@ -262,8 +262,6 @@ if ($resql)
 	$trackid = 'agence_user'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
-	var_dump(!empty($arrayfields['Agence']['checked']));
-
 	if ($sall)
 	{
 		foreach ($fieldstosearchall as $key => $val) $fieldstosearchall[$key] = $langs->trans($val);
@@ -281,7 +279,6 @@ if ($resql)
 	print '<tr class="liste_titre_filter">';
 	if (!empty($arrayfields['Agence']['checked']))
 	{
-		die('ici');
 		print '<td class="liste_titre left">';
 		print '<input class="flat" type="text" name="search_agence" size="8" value="'.dol_escape_htmltag($search_agence).'">';
 		print '</td>';
