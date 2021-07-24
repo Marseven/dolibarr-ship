@@ -262,7 +262,7 @@ if ($resql)
 	$trackid = 'agence_user'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
-	var_dump($arrayfields);
+	var_dump(!empty($arrayfields['Agence']['checked']));
 
 	if ($sall)
 	{
