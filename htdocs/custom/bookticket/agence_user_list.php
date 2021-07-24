@@ -173,8 +173,8 @@ $sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
 $sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON au.fk_agence = a.rowid";
 $sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."user as u ON au.fk_user = u.rowid";
 
-if ($search_agence)     $sql .= natural_search('Agence', $search_agence);
-if ($search_user)   $sql .= natural_search('User', $search_user);
+if ($search_agence)     $sql .= natural_search('fk_agence', $search_agence);
+if ($search_user)   $sql .= natural_search('fk_user', $search_user);
 $sql_a .= $db->order($sortfield, $sortorder);
 
 $nbtotalofrecords = '';
@@ -321,10 +321,10 @@ if ($resql)
 	if (!empty($arrayfields['User']['checked'])) {
 		print_liste_field_titre($arrayfields['User']['label'], $_SERVER["PHP_SELF"], "User", "", $param, "", $sortfield, $sortorder);
 	}
-	if (!empty($arrayfields['t.date_creation']['checked'])) {
+	if (!empty($arrayfields['au.date_creation']['checked'])) {
 		print_liste_field_titre($arrayfields['au.date_creation']['label'], $_SERVER["PHP_SELF"], "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
-	if (!empty($arrayfields['t.tms']['checked'])) {
+	if (!empty($arrayfields['au.tms']['checked'])) {
 		print_liste_field_titre($arrayfields['au.tms']['label'], $_SERVER["PHP_SELF"], "t.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	}
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
@@ -359,7 +359,7 @@ if ($resql)
 		}
 
 		// Date creation
-		if (!empty($arrayfields['t.date_creation']['checked']))
+		if (!empty($arrayfields['au.date_creation']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
@@ -367,7 +367,7 @@ if ($resql)
 			if (!$i) $totalarray['nbfield']++;
 		}
 		// Date modification
-		if (!empty($arrayfields['t.tms']['checked']))
+		if (!empty($arrayfields['au.tms']['checked']))
 		{
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
