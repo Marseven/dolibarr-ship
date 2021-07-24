@@ -106,6 +106,9 @@ ChèqueVirement = Chèque / Virement
 ModePaiement = Mode de Paiement
 SELLLIST = Liste Vente
 
+VenteGlobaleVoyage = Valeur des billets vendus
+VenteJour = Valeur des billets vendus aujourd'hui
+
 #
 # City
 #
