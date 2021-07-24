@@ -1396,6 +1396,16 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td>';
 			print '</tr>';
 
+			// Mode de paiement
+			print '<tr>';
+			print '<td>';
+			print '<td class="titlefield">'.$langs->trans("ModePaiement").'</td>';
+			print '</td>';
+			print '<td>';
+			print $obj->mode_paiement;
+			print '</td>';
+			print '</tr>';
+
 			/* Prix
 			print '<tr>';
 			print '<td>';

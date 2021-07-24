@@ -123,6 +123,7 @@ class Bticket extends CommonObject
 		'rowid'         	=> array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
 		'ref'           	=> array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>1, 'visible'=>1, 'noteditable'=>0, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Reference of object'),
 		'categorie'         => array('type'=>'varchar(128)', 'label'=>'Categorie', 'enabled'=>1, 'visible'=>1, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Categorie of ticket'),
+		'mode_paiement'     => array('type'=>'varchar(128)', 'label'=>'Mode de paiement', 'enabled'=>1, 'visible'=>1, 'default'=>'', 'notnull'=> 1, 'showoncombobox'=>1, 'index'=>1, 'position'=>10, 'searchall'=>1, 'comment'=>'Mode of payment'),
 		'prix'        		=> array('type'=>'float', 'label'=>'Prix', 'enabled'=>1, 'visible'=>1, 'notnull'=> 1, 'default'=>'', 'index'=>1, 'position'=>20),
 		'fk_ship' 			=> array('type'=>'integer:Ship:ship/class/ship.class.php', 'label'=>'Le bateau', 'picto'=>'ship', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'ship.rowid'),
 		'fk_passenger' 		=> array('type'=>'integer:Passenger:passenger/class/passenger.class.php', 'label'=>'Le passager', 'picto'=>'passenger', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'passenger.rowid'),
@@ -159,6 +160,11 @@ class Bticket extends CommonObject
 	 * @var string categorie
 	 */
 	public $categorie;
+
+	/**
+	 * @var string mode_paiement
+	 */
+	public $mode_paiement;
 
 	/**
 	 * @var int Entity

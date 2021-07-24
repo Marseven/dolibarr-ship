@@ -379,3 +379,193 @@ if($usercancreate && $type == 'travel'){
 	$file_pdf = $btickets[0]->travel."_".date("dmYHis").".pdf";
 	$pdf->Output("D", $file_pdf, true);
 }
+
+if($usercancreate && $type == 'sell'){
+
+	$object = new Travel($db);
+	$result_travel = $object->fetch($id);
+	if ($result_travel <= 0) dol_print_error('', $object->error);
+
+
+	// This sample program uses two distinct templates
+	$file_tpl = DOL_DOCUMENT_ROOT.'/custom/bookticket/plugins/manifeste/template.tpl';
+
+	// This sample program uses data fetched from a CSV file
+
+	$btickets = [];
+	$sql_t = 'SELECT DISTINCT t.rowid, t.ref, p.telephone as telephone, p.nom as nom, p.prenom as prenom, tr.ref as travel, tr.lieu_depart as lieu_depart, tr.lieu_arrive as lieu_arrive, tr.jour as depart, s.label as ship, s.ref as refship, ct.label as country, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
+	$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
+	$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
+	$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
+	$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
+	$sql_t .= " ORDER BY p.nom ASC";
+	$resql_t = $db->query($sql_t);
+
+	if ($resql_t)
+	{
+		$num = $db->num_rows($resql_t);
+		$i = 0;
+		if ($num)
+		{
+			while ($i < $num)
+			{
+				$obj = $db->fetch_object($resql_t);
+				if ($obj)
+				{
+					$btickets[$i] = $obj;
+				}
+				$i++;
+			}
+		}
+	}
+
+	$pdf = new Manifeste();
+	$pdf->AliasNbPages ("{nb}");			// For page numbering
+
+
+	// ====================================================
+	//   First page contains the table for all employees
+	// ====================================================
+
+	$pdf->AddPage("L");
+
+	// Template #2 is used for the part which builds a table containing all employees
+	$template = $pdf->LoadTemplate($file_tpl);
+	if ($template <= 0) {
+		die ("  ** Error couldn't load template file '$file_tpl'");
+	}
+	$pdf->IncludeTemplate ($template);
+	$pdf->Image('img/DVM.jpg', 10, 5, 15, 15);
+
+	$society = "DOUYA VOYAGE MARITIME";
+	$society1 =	"D.V.M S.A";
+	$society2 =	"Siège social - Libreville";
+	$society3 =	"B.P : 14050 Libreville - Gabon - Email : douya.voyagemaritime@gmail.com";
+	$society4 =	"Libreville  Tél : (+241) 07 52 56 05 - 04 18 67 36 -  06 03 29 85";
+	$society5 =	"Port-Gentil Tél : (+241 ) 06 35 90 35 - 05 34 54 88 - 07 44 85 19";
+
+	$pdf->ApplyTextProp("SOCIETY", utf8_decode($society));
+	$pdf->ApplyTextProp("SOCIETY1", utf8_decode($society1));
+	$pdf->ApplyTextProp("SOCIETY2", utf8_decode($society2));
+	$pdf->ApplyTextProp("SOCIETY3", utf8_decode($society3));
+	$pdf->ApplyTextProp("SOCIETY4", utf8_decode($society4));
+	$pdf->ApplyTextProp("SOCIETY5", utf8_decode($society5));
+
+	$pdf->ApplyTextProp("SHIP", utf8_decode("Nom : ".$btickets[0]->ship." - N° Immatriculation : ".$btickets[0]->refship));
+	$pdf->ApplyTextProp("DEPART", utf8_decode("Date du : ".dol_print_date($btickets[0]->depart, 'day', 'tzuser')));
+	$pdf->ApplyTextProp("TRAJET", utf8_decode("De : ".$btickets[0]->lieu_depart." à ".$btickets[0]->lieu_arrive));
+
+	$pdf->ApplyTextProp ("FOOTRNB2", "1 / {nb}");   //  Add a footer with page number
+	$pdf->ApplyTextProp ("TITLE", utf8_decode("Manifeste de Vente du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
+	$pdf->ApplyTextProp ("FOOTTITLE", utf8_decode("Manifeste de Vente du Voyage N° ").$btickets[0]->travel);   //  Add a footer with page number
+
+	// In the table of the first page, take into account only a subset of fields of CSV file; say fields #0,#2,#3,#5,#6,#7
+	$nn = count ($btickets);
+
+	// Get collumns widths with an anchor ID
+	$pcol = $pdf->GetColls ("COLSWDTH", "");
+	// Get Text properties of headers
+	$ptxp = $pdf->ApplyTextProp ("ROW0COL0", "");
+
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [0], $ptxp ['iy'], "No", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [1], $ptxp ['iy'], "Nom", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [2], $ptxp ['iy'], "Prenom", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [3], $ptxp ['iy'], "Prix", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [4], $ptxp ['iy'], "Pénalité", 1, 0, "C", true);
+	$pdf->SetX ($pdf->GetX() + 1);
+	$pdf->Cell ($pcol [5], $ptxp ['iy'], "Total", 1, 0, "C", true);
+
+
+	$pdf->SetFillColor (240, 240, 240);		// for "zebra" effect
+	// Get Text properties of data cell
+	$ptxp = $pdf->ApplyTextProp ("ROW1COL0", "");
+	$py = $ptxp ['py'];
+	$n = 0;		// Initial Y position for data rows
+	$offset = 0;
+	$onset = 0;
+	$somme = 0;
+	for ($jj = 0; $jj < $nn; $jj ++) {
+		$pdf->SetXY ($ptxp ['px'], $py);
+		$n++;
+		$penalite = $btickets[$jj]->prix_da + $btickets[$jj]->prix_db + $btickets[$jj]->prix_c + $btickets[$jj]->prix_ce + $btickets[$jj]->prix_n + $btickets[$jj]->prix_bp;
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [0], $ptxp ['iy'], $n , "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [1], $ptxp ['iy'], $btickets[$jj]->nom, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [2], $ptxp ['iy'], $btickets[$jj]->prenom, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [3], $ptxp ['iy'], $btickets[$jj]->prix, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [4], $ptxp ['iy'], $penalite, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [5], $ptxp ['iy'], $btickets[$jj]->prix+$penalite, "", 0, "L", $jj & 1);
+		// Column interspace is 1
+		$pdf->SetX ($pdf->GetX() + 1);
+		// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+		$pdf->Cell ($pcol [6], $ptxp ['iy'], "", "", 0, "L", $jj & 1);
+		$py += $ptxp ['iy'];		// for row interspace
+		$somme += $btickets[$jj]->prix+$penalite;
+		$offset = $jj;
+		$onset = $n;
+	}
+
+	$pdf->SetXY ($ptxp ['px'], $py);
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+	$pdf->Cell ($pcol [0], $ptxp ['iy'], $onset , "", 0, "L", $offset & 1);
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+	$pdf->Cell ($pcol [1], $ptxp ['iy'], "", "", 0, "L", $offset & 1);
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+	$pdf->Cell ($pcol [2], $ptxp ['iy'], "", "", 0, "L", $offset & 1);
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+	$pdf->Cell ($pcol [3], $ptxp ['iy'], "", "", 0, "L", $offset & 1);
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+	$pdf->Cell ($pcol [4], $ptxp ['iy'], "", "", 0, "L", $offset & 1);
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+	$pdf->Cell ($pcol [5], $ptxp ['iy'], $somme, "", 0, "L", $offset & 1);
+	// Column interspace is 1
+	$pdf->SetX ($pdf->GetX() + 1);
+	// Last fill boolean parameter switches from false to true to achieve a "zebra" effect
+	$pdf->Cell ($pcol [6], $ptxp ['iy'], "", "", 0, "L", $offset & 1);
+
+	$py += $ptxp ['iy'];		// for row interspace
+
+	$file_pdf = $btickets[0]->travel."_".date("dmYHis").".pdf";
+	$pdf->Output("D", $file_pdf, true);
+}

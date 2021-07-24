@@ -754,6 +754,85 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				$object->update($user);
 			}
 
+			$somme_billet = 0;
+			$somme_penalite = 0;
+			$somme_total = 0;
+
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, p.telephone as telephone, p.nom as nom, p.prenom as prenom, tr.ref as travel, tr.lieu_depart as lieu_depart, tr.lieu_arrive as lieu_arrive, tr.jour as depart, s.label as ship, s.ref as refship, ct.label as country, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
+			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
+			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
+			$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
+			$resql_t = $db->query($sql_t);
+
+			if ($resql_t)
+			{
+				$num = $db->num_rows($resql_t);
+				$i = 0;
+				if ($num)
+				{
+					while ($i < $num)
+					{
+						$obj = $db->fetch_object($resql_t);
+						if ($obj)
+						{
+							$somme_billet += $obj->prix;
+							$somme_penalite += $obj->prix_c+$obj->prix_n+$obj->prix_bp+$obj->prix_ce+$obj->prix_da+$obj->prix_db;
+						}
+						$i++;
+					}
+				}
+			}
+
+			$somme_total = $somme_billet + $somme_penalite;
+
+			$somme_j_billet = 0;
+			$somme_j_penalite = 0;
+			$somme_jour = 0;
+
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, p.telephone as telephone, p.nom as nom, p.prenom as prenom, tr.ref as travel, tr.lieu_depart as lieu_depart, tr.lieu_arrive as lieu_arrive, tr.jour as depart, s.label as ship, s.ref as refship, ct.label as country, pn.prix_da, pn.prix_db, pn.prix_n, pn.prix_bp, pn.prix_c, pn.prix_ce, t.entity';
+			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as ct ON p.nationalite = ct.rowid";
+			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
+			$sql_t .= ' AND tr.rowid IN ('.$object->id.')';
+			$sql_t .= " AND DAY(tr.date_creation) = ( SELECT DAY( NOW() ) )";
+			$sql_t .= " AND MONTH(tr.date_creation) = ( SELECT MONTH(NOW() ) )";
+			$sql_t .= " AND YEAR(tr.date_creation) = ( SELECT YEAR(NOW()))";
+			$resql_t = $db->query($sql_t);
+
+			if ($resql_t)
+			{
+				$num = $db->num_rows($resql_t);
+				$i = 0;
+				if ($num)
+				{
+					while ($i < $num)
+					{
+						$obj = $db->fetch_object($resql_t);
+						if ($obj)
+						{
+							$somme_j_billet += $obj->prix;
+							$somme_j_penalite += $obj->prix_c+$obj->prix_n+$obj->prix_bp+$obj->prix_ce+$obj->prix_da+$obj->prix_db;
+						}
+						$i++;
+					}
+				}
+			}
+
+			$somme_jour = $somme_j_billet + $somme_j_penalite;
+
 			$head = travel_prepare_head($object);
 			$titre = $langs->trans("CardTravel");
 			$picto = 'travel';
@@ -876,6 +955,20 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				// Info workflow
 				print '<table class="border tableforfield centpercent">'."\n";
 				print '<tbody>';
+
+				print '<tr>';
+				print '<td>'.$langs->trans('VenteGlobaleVoyage').'</td>';
+				print '<td> Billets : '.$somme_billet.' XAF</td>';
+				print '<td> Pénalités : '.$somme_penalite.' XAF</td>';
+				print '<td> Total : '.$somme_total.' XAF</td>';
+				print '</tr>';
+
+				print '<tr>';
+				print '<td>'.$langs->trans('VenteJour').'</td>';
+				print '<td> Billets : '.$somme_j_billet.' XAF</td>';
+				print '<td> Pénlités : '.$somme_j_penalite.' XAF</td>';
+				print '<td> Total : '.$somme_jour.' XAF</td>';
+				print '</tr>';
 
 				if (!empty($object->fk_user_creat))
 				{
