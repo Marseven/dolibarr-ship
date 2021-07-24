@@ -801,7 +801,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			$sql_t .= " AND DAY(t.date_creation) = (SELECT DAY( NOW()))";
 			$sql_t .= " AND MONTH(t.date_creation) = (SELECT MONTH(NOW()))";
 			$sql_t .= " AND YEAR(t.date_creation) = (SELECT YEAR(NOW()))";
-			var_dump($sql_t);
+
 			$resql_t = $db->query($sql_t);
 
 			if ($resql_t)
