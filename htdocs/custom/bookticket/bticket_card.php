@@ -218,7 +218,7 @@ if ($action == 'add' && $usercancreate)
 	if (!$error)
 	{
 
-		$object->ref   = $ref;
+		$object->ref = $ref;
 
 		$object->fk_travel             	 = GETPOST('fk_travel');
 		$object_travel->fetch($object->fk_travel);
