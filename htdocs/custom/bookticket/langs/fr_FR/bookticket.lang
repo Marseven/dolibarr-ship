@@ -104,7 +104,7 @@ CatégorieBillet = Catégorie du Billet
 AirtelMoney = Airtel Money
 ChèqueVirement = Chèque / Virement
 ModePaiement = Mode de Paiement
-SELLLIST = Liste Vente
+SELLLIST = Journal de Vente
 
 VenteGlobaleVoyage = Valeur des billets vendus
 VenteJour = Valeur des billets vendus aujourd'hui

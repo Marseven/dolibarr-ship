@@ -225,7 +225,7 @@ if ($action == 'add' && $usercancreate)
 		$object->fk_ship             	 = $object_travel->fk_ship;
 		$object->fk_classe             	 = GETPOST('fk_classe');
 		$object->categorie             	 = GETPOST('categorie');
-		$object->mode_paiement             	 = GETPOST('mode_paiement');
+		$object->mode_paiement           = GETPOST('mode_paiement');
 
 		$sql_a = 'SELECT DISTINCT au.rowid, au.fk_agence';
 		$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_user as au';
@@ -484,9 +484,6 @@ if ($action == 'update' && $usercancreate)
 			$object->oldcopy = clone $object;
 
 			$object->ref                    = $ref;
-
-
-
 
 			$object->fk_travel             	 = GETPOST('fk_travel');
 			$object_travel->fetch($object->fk_travel);
@@ -1282,7 +1279,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, s.label as ship, p.nom as nom, p.prenom as prenom, c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity, p.accompagne, t.fk_passenger_acc';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, t.mode_paiement, s.label as ship, p.nom as nom, p.prenom as prenom, c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
