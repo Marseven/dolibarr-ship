@@ -21,6 +21,7 @@
  *	\brief      Home page of ticket left menu
  */
 
+use Luracast\Restler\Data\Obj;
 
 // Load Dolibarr environment
 $res=0;
@@ -1279,13 +1280,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			// Fiche en mode visu
 
-			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, t.mode_paiement, s.label as ship, p.nom as nom, p.prenom as prenom, c.label as classe, t.prix, tr.ref as travel, a.label as agence, t.entity';
+			$sql_t = 'SELECT DISTINCT t.rowid, t.ref, t.categorie, t.mode_paiement, s.label as ship, p.nom as nom, p.prenom as prenom, c.label as classe, t.prix, tr.ref as travel, a.label as agence, pn.rowid as pnref, t.entity';
 			$sql_t .= ' FROM '.MAIN_DB_PREFIX.'bookticket_bticket as t';
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_ship as s ON t.fk_ship = s.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_passenger as p ON t.fk_passenger = p.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_classe as c ON t.fk_classe = c.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_travel as tr ON t.fk_travel = tr.rowid";
 			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON t.fk_agence = a.rowid";
+			$sql_t .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_penalite as pn ON t.rowid = pn.fk_bticket";
 			$sql_t .= ' WHERE t.entity IN ('.getEntity('bticket').')';
 			$sql_t .= ' AND t.rowid IN ('.$object->id.')';
 			$resql_t = $db->query($sql_t);
@@ -1517,8 +1519,8 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate && $object->status == Bticket::STATUS_APPROVED)		// If draft
 		{
-			if (!isset($object->no_button_edit) || $object->no_button_edit <> 1) print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?action=create&bticket='.$object->id.'">'.$langs->trans("NewPenalite").'</a>';
-
+			if ($obj->pnref == NULL) {print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?action=create&bticket='.$object->id.'">'.$langs->trans("NewPenalite").'</a>';}
+			else{print '<a class="butAction" href="'.DOL_URL_ROOT.'/custom/bookticket/penalite_card.php?id='.$obj->pnref.'">'.$langs->trans("Penalite").'</a>';}
 			if($today <= $expire) print '<a href="document.php?id='.$object->id.'&type=bticket" class="butAction">'.$langs->trans("PRINT").'</a>';
 		}
 
