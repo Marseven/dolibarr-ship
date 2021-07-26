@@ -100,21 +100,18 @@ $usercancreate = $user->rights->bookticket->user_caisse->write;
 $usercandelete = $user->rights->bookticket->user_caisse->delete;
 
 $userrecords = [];
-$sql_user = 'SELECT a.rowid, a.firstname, a.lastname, a.entity,';
-$sql_user .= ' a.date_creation, a.tms as date_update';
-$sql_user .= ' FROM '.MAIN_DB_PREFIX.'user as a';
-$sql_user .= ' WHERE a.entity IN ('.getEntity('user').')';
-$sql_user .= ' AND a.status = 2';
-$resql_user =$db->query($sql_user);
-if ($resql_user)
+$sql_passenger = 'SELECT u.rowid, u.lastname, u.firstname';
+$sql_passenger .= ' FROM '.MAIN_DB_PREFIX.'user as u';
+$resql_passenger =$db->query($sql_passenger);
+if ($resql_passenger)
 {
-	$num = $db->num_rows($resql_user);
+	$num = $db->num_rows($resql_passenger);
 	$i = 0;
 	if ($num)
 	{
 		while ($i < $num)
 		{
-			$obj = $db->fetch_object($resql_user);
+			$obj = $db->fetch_object($resql_passenger);
 			if ($obj)
 			{
 				$userrecords[$i] = $obj;
