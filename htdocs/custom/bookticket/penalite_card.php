@@ -48,7 +48,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/penalite.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/user_caisse.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/penalite.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
