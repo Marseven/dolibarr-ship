@@ -326,9 +326,9 @@ if ($action == 'add' && $usercancreate)
 			$prix = $object->prix_ce + $object->prix_c + $object->prix_n + $object->prix_bp + $object->prix_da + $object->prix_db;
 			$object_payment = new PaymentVarious($db);
 
-			$sql_ac = 'SELECT ac.rowid, ac.fk_caisse';
-			$sql_ac .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
-			$sql_ac .= ' WHERE ac.fk_agence IN ('.$object_bticket->fk_agence.')';
+			$sql_ac = 'SELECT uc.rowid, uc.fk_caisse';
+			$sql_ac .= ' FROM '.MAIN_DB_PREFIX.'bookticket_user_caisse as uc';
+			$sql_ac .= ' WHERE uc.fk_user IN ('.$user->id.')';
 			$resql_ac = $db->query($sql_ac);
 			$object_caisse = $db->fetch_object($resql_ac);
 
