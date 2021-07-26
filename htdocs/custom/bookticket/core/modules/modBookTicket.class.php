@@ -424,20 +424,20 @@ class modBookTicket extends DolibarrModules
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
-		//agence_caisse
+		//user_caisse
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read agence_caisse of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'agence_caisse'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Read user_caisse of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'user_caisse'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update agence_caisse of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'agence_caisse'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Create/Update user_caisse of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'user_caisse'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete agence_caisse of BookTicket'; // Permission label
-		$this->rights[$r][4] = 'agence_caisse'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
+		$this->rights[$r][1] = 'Delete user_caisse of BookTicket'; // Permission label
+		$this->rights[$r][4] = 'user_caisse'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->bookticket->level1->level2)
 		$r++;
 
