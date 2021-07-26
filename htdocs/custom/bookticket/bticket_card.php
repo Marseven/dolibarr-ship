@@ -49,10 +49,10 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/user_caisse.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_user.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/reservation.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
+require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/lib/bticket.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/genericobject.class.php';
@@ -425,11 +425,11 @@ if ($action == 'add' && $usercancreate)
 
 			$object_payment = new PaymentVarious($db);
 
-			$sql_ac = 'SELECT ac.rowid, ac.fk_caisse';
-			$sql_ac .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
-			$sql_ac .= ' WHERE ac.fk_agence IN ('.$object->fk_agence.')';
-			$resql_ac = $db->query($sql_ac);
-			$object_caisse = $db->fetch_object($resql_ac);
+			$sql_uc = 'SELECT uc.rowid, uc.fk_caisse';
+			$sql_uc .= ' FROM '.MAIN_DB_PREFIX.'bookticket_user_caisse as uc';
+			$sql_uc .= ' WHERE uc.fk_user IN ('.$user->id.')';
+			$resql_uc = $db->query($sql_uc);
+			$object_caisse = $db->fetch_object($resql_uc);
 
 			$datep = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
 			$datev = dol_mktime(12, 0, 0, date('m'), date('d'), date('Y'));
