@@ -255,7 +255,7 @@ PrixBillet = Prix total du billet
 # AgenceUser
 #
 ListAgenceUser = Affectation Agent
-ListAgenceCaisse = Affectation Caisse
+ListUserCaisse = Affectation Caisse
 NewAffectation = Nouvelle Affectation
 
 Reservations = Réservations
