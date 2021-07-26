@@ -17,9 +17,9 @@
  */
 
 /**
- * \file        htdocs/modulebuilder/template/class/agence_caisse.class.php
+ * \file        htdocs/modulebuilder/template/class/user_caisse.class.php
  * \ingroup     bookticket
- * \brief       This file is a CRUD class file for Agence_caisse (Create/Read/Update/Delete)
+ * \brief       This file is a CRUD class file for user_caisse (Create/Read/Update/Delete)
  */
 
 // Put here all includes required by your class file
@@ -27,9 +27,9 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 /**
- * Class for AgenceCaisse
+ * Class for UserCaisse
  */
-class AgenceCaisse extends CommonObject
+class UserCaisse extends CommonObject
 {
 	/**
 	 * @var string ID of module.
@@ -39,12 +39,12 @@ class AgenceCaisse extends CommonObject
 	/**
 	 * @var string ID to identify managed object.
 	 */
-	public $element = 'agence_caisse';
+	public $element = 'user_caisse';
 
 	/**
 	 * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.
 	 */
-	public $table_element = 'bookticket_agence_caisse';
+	public $table_element = 'bookticket_user_caisse';
 
 	/**
 	 * @var int  Does this object support multicompany module ?
@@ -58,9 +58,9 @@ class AgenceCaisse extends CommonObject
 	public $isextrafieldmanaged = 1;
 
 	/**
-	 * @var string String with name of icon for AgenceCaisse. Must be the part after the 'object_' into object_AgenceCaisse.png
+	 * @var string String with name of icon for UserCaisse. Must be the part after the 'object_' into object_UserCaisse.png
 	 */
-	public $picto = 'agence_caisse@bookticket';
+	public $picto = 'user_caisse@bookticket';
 
 
 	/**
@@ -123,7 +123,7 @@ class AgenceCaisse extends CommonObject
 	 */
 	public $fields = array(
 		'rowid'         => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-2, 'noteditable'=>1, 'notnull'=> 1, 'index'=>1, 'position'=>1, 'comment'=>'Id', 'css'=>'left'),
-		'fk_agence' 	=> array('type'=>'integer:Agence:agence/class/agence.class.php', 'label'=>'Agence', 'picto'=>'agence', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'agence.rowid'),
+		'fk_user' 	=> array('type'=>'integer:User:user/class/user.class.php', 'label'=>'User', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
 		'fk_caisse' 		=> array('type'=>'integer:User:user/class/user.class.php', 'label'=>'Utilisateur', 'picto'=>'user', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>510, 'foreignkey'=>'user.rowid'),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 1, 'position'=>500),
 		'tms'           => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>1, 'visible'=>-2, 'notnull'=> 0, 'position'=>501),
@@ -142,7 +142,7 @@ class AgenceCaisse extends CommonObject
 	/**
 	 * @var int ID
 	 */
-	public $fk_agence;
+	public $fk_user;
 
 	/**
 	 * @var int ID
@@ -198,7 +198,7 @@ class AgenceCaisse extends CommonObject
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->bookticket->agence_caisse->read) {
+		/*if ($user->rights->bookticket->user_caisse->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -643,8 +643,8 @@ class AgenceCaisse extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->agence_caisse->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->agence_caisse->agence_caisse_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->user_caisse->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->bookticket->user_caisse->user_caisse_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -685,7 +685,7 @@ class AgenceCaisse extends CommonObject
 			if (!$error && !$notrigger)
 			{
 				// Call trigger
-				$result = $this->call_trigger('AGENCE_CAISSE_VALIDATE', $user);
+				$result = $this->call_trigger('USER_CAISSE_VALIDATE', $user);
 				if ($result < 0) $error++;
 				// End call triggers
 			}
@@ -699,16 +699,16 @@ class AgenceCaisse extends CommonObject
 			if (preg_match('/^[\(]?PROV/i', $this->ref))
 			{
 				// Now we rename also files into index
-				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'agence_caisse/".$this->db->escape($this->newref)."'";
-				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'agence_caisse/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
+				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'user_caisse/".$this->db->escape($this->newref)."'";
+				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'user_caisse/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
 				$resql = $this->db->query($sql);
 				if (!$resql) { $error++; $this->error = $this->db->lasterror(); }
 
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->bookticket->dir_output.'/agence_caisse/'.$oldref;
-				$dirdest = $conf->bookticket->dir_output.'/agence_caisse/'.$newref;
+				$dirsource = $conf->bookticket->dir_output.'/user_caisse/'.$oldref;
+				$dirdest = $conf->bookticket->dir_output.'/user_caisse/'.$newref;
 				if (!$error && file_exists($dirsource))
 				{
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
@@ -717,7 +717,7 @@ class AgenceCaisse extends CommonObject
 					{
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/agence_caisse/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->bookticket->dir_output.'/user_caisse/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry)
 						{
 							$dirsource = $fileentry['name'];
@@ -771,7 +771,7 @@ class AgenceCaisse extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'AGENCE_CAISSE_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'USER_CAISSE_UNVALIDATE');
 	}
 
 	/**
@@ -796,7 +796,7 @@ class AgenceCaisse extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'AGENCE_CAISSE_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'USER_CAISSE_CANCEL');
 	}
 
 	/**
@@ -821,7 +821,7 @@ class AgenceCaisse extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'AGENCE_CAISSE_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'USER_CAISSE_REOPEN');
 	}
 
 	/**
@@ -842,14 +842,14 @@ class AgenceCaisse extends CommonObject
 
 		$result = '';
 
-		$label = img_picto('', $this->picto).' <u>'.$langs->trans("AgenceCaisse").'</u>';
+		$label = img_picto('', $this->picto).' <u>'.$langs->trans("UserCaisse").'</u>';
 		if (isset($this->status)) {
 			$label .= ' '.$this->getLibStatut(5);
 		}
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/bookticket/agence_caisse_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/bookticket/user_caisse_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink')
 		{
@@ -864,7 +864,7 @@ class AgenceCaisse extends CommonObject
 		{
 			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
 			{
-				$label = $langs->trans("ShowAgenceCaisse");
+				$label = $langs->trans("ShowUserCaisse");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
 			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
@@ -910,7 +910,7 @@ class AgenceCaisse extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('agence_caissedao'));
+		$hookmanager->initHooks(array('user_caissedao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) $result = $hookmanager->resPrint;
@@ -1031,8 +1031,8 @@ class AgenceCaisse extends CommonObject
 	{
 		$this->lines = array();
 
-		$objectline = new AgenceCaisseLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_agence_caisse = '.$this->id));
+		$objectline = new UserCaisseLine($this->db);
+		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_user_caisse = '.$this->id));
 
 		if (is_numeric($result))
 		{
@@ -1055,16 +1055,16 @@ class AgenceCaisse extends CommonObject
 		global $langs, $conf;
 		$langs->load("bookticket@bookticket");
 
-		if (empty($conf->global->BOOKTICKET_AGENCE_CAISSE_ADDON)) {
-			$conf->global->BOOKTICKET_AGENCE_CAISSE_ADDON = 'mod_agence_caisse_standard';
+		if (empty($conf->global->BOOKTICKET_USER_CAISSE_ADDON)) {
+			$conf->global->BOOKTICKET_USER_CAISSE_ADDON = 'mod_user_caisse_standard';
 		}
 
-		if (!empty($conf->global->BOOKTICKET_AGENCE_CAISSE_ADDON))
+		if (!empty($conf->global->BOOKTICKET_USER_CAISSE_ADDON))
 		{
 			$mybool = false;
 
-			$file = $conf->global->BOOKTICKET_AGENCE_CAISSE_ADDON.".php";
-			$classname = $conf->global->BOOKTICKET_AGENCE_CAISSE_ADDON;
+			$file = $conf->global->BOOKTICKET_USER_CAISSE_ADDON.".php";
+			$classname = $conf->global->BOOKTICKET_USER_CAISSE_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
@@ -1125,12 +1125,12 @@ class AgenceCaisse extends CommonObject
 		$langs->load("bookticket@bookticket");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_agence_caisse';
+			$modele = 'standard_user_caisse';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->AGENCE_CAISSE_ADDON_PDF)) {
-				$modele = $conf->global->AGENCE_CAISSE_ADDON_PDF;
+			} elseif (!empty($conf->global->USER_CAISSE_ADDON_PDF)) {
+				$modele = $conf->global->USER_CAISSE_ADDON_PDF;
 			}
 		}
 
@@ -1186,7 +1186,7 @@ class AgenceCaisse extends CommonObject
 		$error = 0;
 
 		// Update request
-		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_agence_caisse SET";
+		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_user_caisse SET";
 		$sql .= " status = '".self::STATUS_APPROVED."'";
 		$sql .= " WHERE rowid= ".$this->id;
 
@@ -1226,7 +1226,7 @@ class AgenceCaisse extends CommonObject
 		$error = 0;
 
 		// Update request
-		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_agence_caisse SET";
+		$sql = "UPDATE ".MAIN_DB_PREFIX."bookticket_user_caisse SET";
 		$sql .= " status = '".self::STATUS_LOCK."'";
 		$sql .= " WHERE rowid= ".$this->id;
 
@@ -1260,14 +1260,14 @@ class AgenceCaisse extends CommonObject
          $this->nb = array();
 
          $sql = "SELECT count(t.rowid) as nb";
-         $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_agence_caisse as t";
+         $sql .= " FROM ".MAIN_DB_PREFIX."bookticket_user_caisse as t";
          $sql .= " WHERE t.status > 0";
-         $sql .= " AND t.entity IN (".getEntity('agence_caisse').")";
+         $sql .= " AND t.entity IN (".getEntity('user_caisse').")";
 
          $resql = $this->db->query($sql);
          if ($resql) {
              while ($obj = $this->db->fetch_object($resql)) {
-                 $this->nb["agence_caisse"] = $obj->nb;
+                 $this->nb["user_caisse"] = $obj->nb;
              }
              $this->db->free($resql);
              return 1;
@@ -1283,12 +1283,12 @@ class AgenceCaisse extends CommonObject
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 
 /**
- * Class AgenceCaisseLine. You can also remove this and generate a CRUD class for lines objects.
+ * Class UserCaisseLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class AgenceCaisseLine extends CommonObjectLine
+class UserCaisseLine extends CommonObjectLine
 {
-	// To complete with content of an object AgenceCaisseLine
-	// We should have a field rowid, fk_agence_caisse and position
+	// To complete with content of an object UserCaisseLine
+	// We should have a field rowid, fk_user_caisse and position
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes

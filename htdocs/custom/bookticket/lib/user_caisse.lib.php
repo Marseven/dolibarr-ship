@@ -30,20 +30,20 @@
 /**
  * Prepare array with list of tabs
  *
- * @param  AgenceCaise	$object		Object related to tabs
+ * @param  UserCaise	$object		Object related to tabs
  * @return  array				Array of tabs to show
  */
-function agence_caisse_prepare_head($object)
+function user_caisse_prepare_head($object)
 {
 	global $db, $langs, $conf, $user;
 	$langs->load("bookticket");
 
-	$label = $langs->trans('AgenceCaisse');
+	$label = $langs->trans('UserCaisse');
 
 	$h = 0;
 	$head = array();
 
-	$head[$h][0] = DOL_URL_ROOT."/custom/bookticket/agence_caisse_card.php?id=".$object->id;
+	$head[$h][0] = DOL_URL_ROOT."/custom/bookticket/user_caisse_card.php?id=".$object->id;
 	$head[$h][1] = $label;
 	$head[$h][2] = 'card';
 	$h++;
@@ -52,7 +52,7 @@ function agence_caisse_prepare_head($object)
 	// Entries must be declared in modules descriptor with line
 	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
 	// $this->tabs = array('entity:-tabname);   												to remove a tab
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'AgenceCaisse');
+	complete_head_from_modules($conf, $langs, $object, $head, $h, 'UserCaisse');
 
 
 	// Attachments
@@ -71,7 +71,7 @@ function agence_caisse_prepare_head($object)
 	$head[$h][2] = 'documents';
 	$h++;
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'AgenceCaisse', 'remove');
+	complete_head_from_modules($conf, $langs, $object, $head, $h, 'UserCaisse', 'remove');
 
 	/* Log
 	$head[$h][0] = DOL_URL_ROOT.'/custom/bookticket/ticket_agenda.php?id='.$object->id;
@@ -93,7 +93,7 @@ function agence_caisse_prepare_head($object)
 *
 *  @return	array   	        head array with tabs
 */
-function agence_caisse_admin_prepare_head()
+function user_caisse_admin_prepare_head()
 {
 	global $langs, $conf, $user;
 
@@ -109,54 +109,9 @@ function agence_caisse_admin_prepare_head()
 	// Entries must be declared in modules descriptor with line
 	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
 	// $this->tabs = array('entity:-tabname);   												to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'agence_caisse_admin');
+	complete_head_from_modules($conf, $langs, null, $head, $h, 'user_caisse_admin');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'agence_caisse_admin', 'remove');
+	complete_head_from_modules($conf, $langs, null, $head, $h, 'user_caisse_admin', 'remove');
 
 	return $head;
-}
-
-
-/**
- * Show stats for company
- *
- * @param	Ticket		$ticket	ticket object
- * @param 	int			$socid		Thirdparty id
- * @return	integer					NB of lines shown into array
- */
-function show_stats_for_company($ticket, $socid)
-{
-	global $conf, $langs, $user, $db;
-	$form = new Form($db);
-
-	$nblines = 0;
-
-	print '<tr class="liste_titre">';
-	print '<td class="left" width="25%">'.$langs->trans("Referers").'</td>';
-	print '<td class="right" width="25%">'.$langs->trans("NbOfThirdParties").'</td>';
-	print '<td class="right" width="25%">'.$langs->trans("NbOfObjectReferers").'</td>';
-	print '<td class="right" width="25%">'.$langs->trans("TotalQuantity").'</td>';
-	print '</tr>';
-
-
-	// ticket
-	if (!empty($conf->contrat->enabled) && $user->rights->contrat->lire)
-	{
-		$nblines++;
-		$ret = $ticket->load_stats_contrat($socid);
-		if ($ret < 0) dol_print_error($db);
-		$langs->load("contracts");
-		print '<tr><td>';
-		print '<a href="contrat.php?id='.$ticket->id.'">'.img_object('', 'contract', 'class="paddingright"').$langs->trans("Contracts").'</a>';
-		print '</td><td class="right">';
-		print $ticket->stats_contrat['customers'];
-		print '</td><td class="right">';
-		print $ticket->stats_contrat['nb'];
-		print '</td><td class="right">';
-		print $ticket->stats_contrat['qty'];
-		print '</td>';
-		print '</tr>';
-	}
-
-	return $nblines++;
 }

@@ -45,8 +45,7 @@ require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/passenger.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/ship.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/travel.class.php';
 require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/classe.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence.class.php';
-require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/agence_caisse.class.php';
+require_once DOL_DOCUMENT_ROOT.'/custom/bookticket/class/user_caisse.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs('bookticket');
@@ -59,7 +58,7 @@ $toselect = GETPOST('toselect', 'array');
 
 $sall = trim((GETPOST('search_all', 'alphanohtml') != '') ?GETPOST('search_all', 'alphanohtml') : GETPOST('sall', 'alphanohtml'));
 $search_caisse = GETPOST("search_passenger", 'alpha');
-$search_agence = GETPOST("search_type", 'int');
+$search_user = GETPOST("search_type", 'int');
 $search_finished = GETPOST("search_finished", 'int');
 $optioncss = GETPOST('optioncss', 'alpha');
 
@@ -79,7 +78,7 @@ if (!$sortorder) $sortorder = "ASC";
 $contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'ticketlist';
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array of hooks
-$object = new AgenceCaisse($db);
+$object = new UserCaisse($db);
 $form = new Form($db);
 
 if (empty($action)) $action = 'list';
@@ -91,7 +90,7 @@ if (!empty($canvas))
 {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
 	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('agence_caisse', 'list', $canvas);
+	$objcanvas->getCanvas('user_caisse', 'list', $canvas);
 }
 
 // Security check
@@ -99,7 +98,7 @@ if (!empty($canvas))
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-	'Agence'=>"Agence",
+	'User'=>"User",
 	'Caisse'=>"Caisse",
 );
 
@@ -111,7 +110,7 @@ if (!empty($conf->barcode->enabled)) {
 
 // Definition of fields for lists
 $arrayfields = array(
-	'Agence'=>array('label'=>$langs->trans("Agence"), 'checked'=>1),
+	'User'=>array('label'=>$langs->trans("User"), 'checked'=>1),
 	'Caisse'=>array('label'=>$langs->trans("Caisse"), 'checked'=>1, 'position'=>12),
 	'au.date_creation'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
 	'au.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
@@ -135,7 +134,7 @@ if (!GETPOST('confirmmassaction', 'alpha') && $massaction != 'presend' && $massa
 
 $parameters = array();
 
-$rightskey = 'agence_caisse';
+$rightskey = 'user_caisse';
 
 // Selection of new fields
 include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
@@ -144,14 +143,14 @@ include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
 if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) // All tests are required to be compatible with all browsers
 {
 	$sall = "";
-	$search_agence = "";
+	$search_user = "";
 	$search_caisse = "";
 	$search_finished = '';
 	$search_array_options = array();
 }
 
 // Mass actions
-$objectclass = 'AgenceCaisse';
+$objectclass = 'UserCaisse';
 
 $permissiontoread = $user->rights->bookticket->{$rightskey}->read;
 $permissiontodelete = $user->rights->bookticket->{$rightskey}->delete;
@@ -168,12 +167,12 @@ $title = $langs->trans("Affectation");
 $texte = $langs->trans("Affectation");
 
 
-$sql_a = 'SELECT DISTINCT ac.rowid, ba.label as caisse,  a.label as agence';
-$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_agence_caisse as ac';
-$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bookticket_agence as a ON ac.fk_agence = a.rowid";
+$sql_a = 'SELECT DISTINCT ac.rowid, ba.label as caisse,  a.label as user';
+$sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_user_caisse as ac';
+$sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."user as a ON ac.fk_user = a.rowid";
 $sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_account as ba ON ac.fk_caisse = ba.rowid";
 
-if ($search_agence)     $sql .= natural_search('Agence', $search_agence);
+if ($search_user)     $sql .= natural_search('User', $search_user);
 if ($search_caisse)   $sql .= natural_search('Caisse', $search_caisse);
 $sql_a .= $db->order($sortfield, $sortorder);
 
@@ -203,7 +202,7 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 		$id = $obj->rowid;
-		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/agence_caisse_card.php?id='.$id);
+		header("Location: ".DOL_URL_ROOT.'/custom/bookticket/user_caisse_card.php?id='.$id);
 		exit;
 	}
 
@@ -213,16 +212,16 @@ if ($resql)
 
     llxHeader('', $title, $helpurl, '', 0, 0, "", "");
 
-	// Displays agence_caisse removal confirmation
+	// Displays user_caisse removal confirmation
 	if (GETPOST('delTicket')) {
-		setEventMessages($langs->trans("AgenceCaisseDeleted", GETPOST('delAgenceCaisse')), null, 'mesgs');
+		setEventMessages($langs->trans("UserCaisseDeleted", GETPOST('delUserCaisse')), null, 'mesgs');
 	}
 
 	$param = '';
 	if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param .= '&contextpage='.urlencode($contextpage);
 	if ($limit > 0 && $limit != $conf->liste_limit) $param .= '&limit='.urlencode($limit);
 	if ($sall) $param .= "&sall=".urlencode($sall);
-	if ($search_agence) $param = "&search_ref=".urlencode($search_agence);
+	if ($search_user) $param = "&search_ref=".urlencode($search_user);
 	if ($search_caisse) $param .= ($search_caisse ? "&search_caisse=".urlencode($search_caisse) : "");
 	if ($search_finished) $param = "&search_finished=".urlencode($search_finished);
 
@@ -240,10 +239,10 @@ if ($resql)
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 	$newcardbutton = '';
-	$perm = $user->rights->bookticket->agence_user->write;
+	$perm = $user->rights->bookticket->user_caisse->write;
 	$params = array();
 	$params['forcenohideoftext'] = 1;
-	$newcardbutton .= dolGetButtonTitle($langs->trans('NewAffectation'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/agence_caisse_card.php?action=create&type=0', '', $perm, $params);
+	$newcardbutton .= dolGetButtonTitle($langs->trans('NewAffectation'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/custom/bookticket/user_caisse_card.php?action=create&type=0', '', $perm, $params);
 	$label = 'NewAffectation';
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post" name="formulaire">';
@@ -261,9 +260,9 @@ if ($resql)
 	print_barre_liste($texte, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 	$topicmail = "Information";
-	$modelmail = "agence_caisse";
-	$objecttmp = new AgenceCaisse($db);
-	$trackid = 'agence_caisse'.$object->id;
+	$modelmail = "user_caisse";
+	$objecttmp = new UserCaisse($db);
+	$trackid = 'user_caisse'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 
@@ -282,10 +281,10 @@ if ($resql)
 
 	// Lines with input filters
 	print '<tr class="liste_titre_filter">';
-	if (!empty($arrayfields['Agence']['checked']))
+	if (!empty($arrayfields['User']['checked']))
 	{
 		print '<td class="liste_titre left">';
-		print '<input class="flat" type="text" name="search_agence" size="8" value="'.dol_escape_htmltag($search_agence).'">';
+		print '<input class="flat" type="text" name="search_user" size="8" value="'.dol_escape_htmltag($search_user).'">';
 		print '</td>';
 	}
 	if (!empty($arrayfields['Caisse']['checked']))
@@ -315,8 +314,8 @@ if ($resql)
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	if (!empty($arrayfields['Agence']['checked'])) {
-		print_liste_field_titre($arrayfields['Agence']['label'], $_SERVER["PHP_SELF"], "Agence", "", $param, "", $sortfield, $sortorder);
+	if (!empty($arrayfields['User']['checked'])) {
+		print_liste_field_titre($arrayfields['User']['label'], $_SERVER["PHP_SELF"], "User", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['Caisse']['checked'])) {
 		print_liste_field_titre($arrayfields['Caisse']['label'], $_SERVER["PHP_SELF"], "Caisse", "", $param, "", $sortfield, $sortorder);
@@ -331,7 +330,7 @@ if ($resql)
 	print "</tr>\n";
 
 
-	$agence_caisse_static = new AgenceCaisse($db);
+	$user_caisse_static = new UserCaisse($db);
 
 	$i = 0;
 	$totalarray = array();
@@ -339,14 +338,14 @@ if ($resql)
 	{
 		$obj = $db->fetch_object($resql);
 
-		$agence_caisse_static->id = $obj->rowid;
+		$user_caisse_static->id = $obj->rowid;
 		print '<tr class="oddeven">';
 
-		// Agence
-		if (!empty($arrayfields['Agence']['checked']))
+		// User
+		if (!empty($arrayfields['User']['checked']))
 		{
-			print '<td class="tdoverflowmax200"><a href="'.dol_buildpath('/bookticket/agence_caisse_card.php', 1).'?id='.$obj->rowid.'">';
-			print $obj->agence;
+			print '<td class="tdoverflowmax200"><a href="'.dol_buildpath('/bookticket/user_caisse_card.php', 1).'?id='.$obj->rowid.'">';
+			print $obj->user;
 			print '</a></td>';
 			if (!$i) $totalarray['nbfield']++;
 		}

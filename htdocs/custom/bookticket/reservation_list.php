@@ -151,6 +151,8 @@ $sql .= ' WHERE r.entity IN ('.getEntity('reservation').')';
 
 if ($search_ref)     $sql .= natural_search('r.ref', $search_ref);
 
+$sql .= " ORDER BY r.date_creation DESC";
+
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {

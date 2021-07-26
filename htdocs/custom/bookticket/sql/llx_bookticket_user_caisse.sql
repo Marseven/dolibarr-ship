@@ -17,11 +17,11 @@
 -- Table of 'city' for accountancy expert module
 -- ============================================================================
 
-create table llx_bookticket_agence_caisse
+create table llx_bookticket_user_caisse
 (
   rowid                     bigint AUTO_INCREMENT PRIMARY KEY,
   fk_caisse                 integer      DEFAULT NULL,
-  fk_agence                 integer      DEFAULT NULL,
+  fk_user                   integer      DEFAULT NULL,
   entity                    integer default 1,                    
   date_creation             datetime,                    
   tms                       timestamp,                   
