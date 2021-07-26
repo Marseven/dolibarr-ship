@@ -71,7 +71,7 @@ if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('b
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "a.label";
+if (!$sortfield) $sortfield = "a.lastname";
 if (!$sortorder) $sortorder = "ASC";
 
 // Initialize context for list
@@ -167,7 +167,7 @@ $title = $langs->trans("Affectation");
 $texte = $langs->trans("Affectation");
 
 
-$sql_a = 'SELECT DISTINCT ac.rowid, ba.label as caisse,  a.label as user';
+$sql_a = 'SELECT DISTINCT ac.rowid, ba.label as caisse,  a.lastname as user';
 $sql_a .= ' FROM '.MAIN_DB_PREFIX.'bookticket_user_caisse as ac';
 $sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."user as a ON ac.fk_user = a.rowid";
 $sql_a .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_account as ba ON ac.fk_caisse = ba.rowid";
