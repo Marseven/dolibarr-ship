@@ -1026,7 +1026,7 @@ if ($action != 'create' && $action != 'edit')
 
 		if ($usercancreate &&  ($object->status == Travel::STATUS_APPROVED || $object->status == Travel::STATUS_LOCK))		// If draft
 		{
-			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("PRINT").'</a>';
+			print '<a href="document.php?id='.$object->id.'&type=travel" class="butAction">'.$langs->trans("MANIFESTE").'</a>';
 			print '<a href="document.php?id='.$object->id.'&type=sell" class="butAction">'.$langs->trans("SELLLIST").'</a>';
 		}
 

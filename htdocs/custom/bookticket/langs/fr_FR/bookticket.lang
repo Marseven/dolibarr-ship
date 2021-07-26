@@ -265,6 +265,8 @@ NbreAffReserve = Nombre de places Affaire réservées
 NbreEcoReserve = Nombre de places Économique réservées
 NewReservation = Nouvelle Réservations
 
+MANIFESTE = Manifeste
+
 BilletNormal = Billet Standard
 BilletEnfantBasAge = Billet pour Enfant Porté
 BilletMineur = Billet pour Mineur Accompagné
